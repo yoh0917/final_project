@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<html lang="zh-TW">
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+    <meta charset="UTF-8">
+    <title>後臺管理系統</title>
+    <!-- 引入CSS文件 -->
+    <!-- <link rel="stylesheet" href="@//header.css"> -->
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .sidebar {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .sidebar form {
+            padding: 15px 25px;
+        }
+
+        .sidebar form input[type="submit"] {
+            background-color: #111;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .sidebar form input[type="submit"]:hover {
+            background-color: #575757;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <a th:href="@{/DashBoard/Home.jsp}" class="special">
+            <i class="fa-solid fa-house"></i> 後臺管理系統
+        </a>
+        <a th:href="@{/DashBoard/UserList}">
+            <i class="fa-solid fa-user"></i> 會員管理
+        </a>
+        <a th:href="@{/DashBoard/productlist}">
+            <i class="fa-solid fa-user"></i> 商品管理
+        </a>
+        <a th:href="@{/DashBoard/FindAllOrders}">
+            <i class="fa-solid fa-cart-shopping"></i> 訂單管理
+        </a>
+        <a th:href="@{/DashBoard/forums}">
+            <i class="fa-solid fa-comments"></i> 討論區管理
+        </a>
+        <a th:href="@{/DashBoard/phoneplans}">
+            <i class="fa-solid fa-clipboard-list"></i> 方案管理
+        </a>
+        <a th:href="@{/DashBoard/phonefixs}">
+            <i class="fa-solid fa-wrench"></i> 維修管理
+        </a>
+        <form th:action="@{/UserLogout}" method="get">
+            <input type="submit" value="登出">
+        </form>
+    </div>
+</body>
+
+</html>

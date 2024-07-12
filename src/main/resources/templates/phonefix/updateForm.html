@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>手機維修訂單修改</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f0f0; /* 淺灰色背景 */
+        }
+        .container {
+            background-color: #ffffff; /* 白色容器背景 */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333333; /* 深灰色標題 */
+        }
+        .table {
+            background-color: #ffffff;
+        }
+        .table thead th {
+            background-color: #333333; /* 深灰色表頭 */
+            color: #ffffff;
+        }
+        .table tbody tr:nth-child(odd) {
+            background-color: #f7f7f7; /* 淺灰色奇數行 */
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #e0e0e0; /* 淺灰色偶數行 */
+        }
+        .btn-success {
+            background-color: #555555; /* 深灰色 */
+            border-color: #444444;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-success:hover {
+            background-color: #444444;
+            border-color: #333333;
+        }
+        .btn-success:focus {
+            box-shadow: 0 0 5px rgba(85, 85, 85, 0.5); /* 深灰色陰影 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">手機維修訂單修改</h2>
+        <form th:action="@{/DashBoard/phonefixs/save}" method="post">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>維修ID</th>
+                        <th>送修者</th>
+                        <th>維修日期</th>
+                        <th>維修費用</th>
+                        <th>維修部件</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span th:text="${phone.fixID}"></span>
+                            <input type="hidden" th:name="fixID" th:value="${phone.fixID}"/>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" th:name="fixName" th:value="${phone.fixName}"/>
+                        </td>
+                        <td>
+                            <span th:text="${phone.fixDate}"></span>
+                            <input type="hidden" th:name="fixDate" th:value="${phone.fixDate}"/>
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" th:name="fixCost" th:value="${phone.fixCost}"/>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" th:name="fixPort" th:value="${phone.fixPort}"/>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-success btn-sm">保存</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果片段</title>
+</head>
+<body>
+    <div id="accordionExample">
+        <th:block th:each="oneMsg : ${posts}">
+            <div class="accordion-item">
+                <div class="accordion-header" th:attr="data-id=${oneMsg.postId}">
+                    <span th:text="${oneMsg.title}" style="flex: 1;">標題</span>
+                    <div class="tags-container">
+                        <span th:each="tag : ${oneMsg.tags}" th:text="${tag.name}" class="badge bg-secondary"></span>
+                    </div>
+                    <div class="edit-btn">
+                        <a th:href="@{/post/edit(id=${oneMsg.postId})}" class="btn btn-outline-dark btn-sm">編輯</a>
+                        <form th:action="@{/post/delete}" method="post" style="display: inline;">
+                            <input name="id" th:value="${oneMsg.postId}" type="hidden" />
+                            <input name="_method" value="DELETE" type="hidden">
+                            <input type="submit" value="刪除" onclick="return confirm('確定刪除嗎? ')" class="btn btn-outline-danger">
+                        </form>
+                    </div>
+                </div>
+                <div class="accordion-body" th:attr="id='collapse' + ${oneMsg.postId}">
+                    <h5 class="card-title"></h5>
+                    <p class="card-text" th:utext="${oneMsg.postContent}"></p>
+                    <hr>
+                    <div class="card-footer">
+                        發布時間: <span th:text="${#dates.format(oneMsg.postCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+    <div class="total" th:text="'總共有 ' + ${totalElements} + ' 筆'"></div>
+    <ul class="pagination">
+        <li th:each="i : ${#numbers.sequence(1, totalPages)}" class="page-item" th:classappend="${currentPage == i} ? 'active'">
+            <a class="page-link" th:href="@{'/post/page?p=' + ${i}}" th:text="${i}"></a>
+        </li>
+    </ul>
+</body>
+</html>

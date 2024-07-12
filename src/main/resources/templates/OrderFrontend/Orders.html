@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-tw" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Orders</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Orders</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Order Date</th>
+            <th>Total Amount</th>
+            <th>Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Iterate over the list of orders -->
+        <th:block th:each="order : ${orders}" class="card">
+            <tr class="card-header">
+                <td th:text="${order.id}"></td>
+                <td th:text="${#temporals.format(order.dateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td>$<span th:text="${order.totalPrice}"></span></td>
+                <td>
+                    <button class="btn btn-primary" data-toggle="collapse"
+                            th:data-target="'#order-details-' + ${order.id}">Details</button>
+                    <a class="btn btn-danger" th:href="@{/orders/delete/(orderId=${order.id})}"><i class="bi bi-trash3"></i></a>
+                </td>
+            </tr>
+
+            <!-- Add a hidden row for order details -->
+            <tr class="collapse card-body" th:id="'order-details-' + ${order.id}">
+                <td colspan="4">
+                    <!-- Render order details here -->
+                    <ul>
+                        <!-- Iterate over the order details -->
+                        <li th:each="detail : ${order.orderDetails}"
+                            th:text="${detail.id.dno+1} + ' '+ ${detail.dish.name} + ' $' + ${detail.total/detail.count}  + 'x' + ${detail.count} + ' ...... $' + ${detail.total}"></li>
+                    </ul>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

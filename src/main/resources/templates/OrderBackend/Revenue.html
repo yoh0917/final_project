@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>營收分析</title>
+  <link rel="stylesheet" th:href="@{/order/style.css}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+<div class="top-navbar">
+  <div class="top-navbar-container">
+    <a class="special" href="#">管理系統</a>
+    <a th:href="@{/DashBoard/orders/add}">新增訂單</a>
+    <a th:href="@{/DashBoard/orders}">訂單管理</a>
+    <a th:href="@{/DashBoard/revenue}">營收分析</a>
+<!--    <a href="#">商品管理</a>-->
+  </div>
+</div>
+
+<div class="container" style="margin-left: 220px; margin-top: 20px;">
+  <div class="btn-group" role="group" aria-label="年度選擇">
+    <button type="button" class="btn btn-secondary" onclick="loadData('2022')">2022</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('2023')">2023</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('2024')">2024</button>
+  </div>
+  <div class="btn-group" role="group" aria-label="月份選擇" style="margin-left: 10px;">
+    <button type="button" class="btn btn-secondary" onclick="loadData('01')">1月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('02')">2月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('03')">3月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('04')">4月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('05')">5月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('06')">6月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('07')">7月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('08')">8月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('09')">9月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('10')">10月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('11')">11月</button>
+    <button type="button" class="btn btn-secondary" onclick="loadData('12')">12月</button>
+  </div>
+
+  <canvas id="revenueChart" style="margin-top: 20px;"></canvas>
+</div>
+
+<script th:src="@{/order/revenueChart.js}"></script>
+</body>
+</html>

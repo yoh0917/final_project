@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>訂單管理系統</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link rel="stylesheet" th:href="@{/OrderBackend/style.css}">
+<!--    <link rel="stylesheet" th:href="@{/Orders/header.css}">-->
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+            var table = $('#orderTable').DataTable({
+                "autoWidth": false,
+                "columnDefs": [
+                    { "width": "10%", "targets": 0 },
+                    { "width": "10%", "targets": 1 },
+                    { "width": "10%", "targets": 2 },
+                    { "width": "10%", "targets": 3 },
+                    { "width": "10%", "targets": 4 },
+                    { "width": "15%", "targets": 5 },
+                    { "width": "10%", "targets": 6 },
+                    { "width": "15%", "targets": 7 },
+                    { "width": "10%", "targets": 8 }
+                ]
+            });
+
+            // 編輯按鈕
+            $('#orderTable').on('click', '.edit-btn', function () {
+                var row = $(this).closest('tr');
+                var rowData = table.row(row).data();
+
+                $('#orderIdInput').val(rowData[0]);
+                $('#userIdInput').val(rowData[1]);
+                $('#userNameInput').val(rowData[2]);
+                $('#statusInput').val(rowData[3]);
+                $('#totalAmountInput').val(rowData[4]);
+                $('#createDateInput').val(rowData[5]);
+                $('#payStatusInput').val(rowData[6]);
+                $('#payDateInput').val(rowData[7]);
+
+                $('.update-btn').show();
+                $('.cancel-btn').show();
+                $('button[type="submit"]').hide();
+
+                $('.update-btn').data('row', row);
+            });
+
+            // 更新按鈕
+            $('.update-btn').on('click', function () {
+                var row = $(this).data('row');
+                var updatedData = {
+                    orderId: $('#orderIdInput').val(),
+                    userId: $('#userIdInput').val(),
+                    userName: $('#userNameInput').val(),
+                    status: $('#statusInput').val(),
+                    totalAmount: $('#totalAmountInput').val(),
+                    createDate: $('#createDateInput').val(),
+                    payStatus: $('#payStatusInput').val(),
+                    payDate: $('#payDateInput').val()
+                };
+
+                // 更新功能
+                $.ajax({
+                    url: 'UpdateOrders', // 來源
+                    type: 'POST',
+                    data: updatedData,
+                    success: function (response) {
+                        table.row(row).data([
+                            updatedData.orderId,
+                            updatedData.userId,
+                            updatedData.userName,
+                            updatedData.status,
+                            updatedData.totalAmount,
+                            updatedData.createDate,
+                            updatedData.payStatus,
+                            updatedData.payDate,
+                            '<div class="edit-delete-btns"><button type="button" class="btn edit-btn">編輯</button><button type="button" class="btn btn-secondary delete-btn">刪除</button></div>'
+                        ]).draw();
+
+                        alert('更新成功');
+                        $('#orderForm')[0].reset();
+                        $('.update-btn').hide();
+                        $('.cancel-btn').hide();
+                        $('button[type="submit"]').show();
+                    },
+                    error: function () {
+                        alert('更新失敗');
+                    }
+                });
+            });
+
+            // 刪除按鈕
+            $('#orderTable').on('click', '.delete-btn', function () {
+                if (confirm('確定要刪除這個訂單嗎？')) {
+                    var row = $(this).closest('tr');
+                    var rowData = table.row(row).data();
+
+                    $.ajax({
+                        url: 'DeleteOrders', // 來源
+                        type: 'POST',
+                        data: { orderId: rowData[0] },
+                        success: function (response) {
+                            table.row(row).remove().draw(false);
+                            alert('刪除成功');
+                        },
+                        error: function () {
+                            alert('刪除失敗');
+                        }
+                    });
+                }
+            });
+
+            // 取消按鈕
+            $('.cancel-btn').on('click', function () {
+                $('#orderForm')[0].reset();
+                $('.update-btn').hide();
+                $('.cancel-btn').hide();
+                $('button[type="submit"]').show();
+            });
+
+            // 清除按鈕
+            $('.clear-btn').on('click', function () {
+                $('#orderForm')[0].reset();
+            });
+
+            // 保存表單數據
+            $('#orderForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var formData = {
+                    orderId: $('#orderIdInput').val(),
+                    userId: $('#userIdInput').val(),
+                    userName: $('#userNameInput').val(),
+                    status: $('#statusInput').val(),
+                    totalAmount: $('#totalAmountInput').val(),
+                    createDate: $('#createDateInput').val(),
+                    payStatus: $('#payStatusInput').val(),
+                    payDate: $('#payDateInput').val()
+                };
+
+                // 插入功能
+                $.ajax({
+                    url: 'InsertOrders', // 來源
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        table.row.add([
+                            formData.orderId,
+                            formData.userId,
+                            formData.userName,
+                            formData.status,
+                            formData.totalAmount,
+                            formData.createDate,
+                            formData.payStatus,
+                            formData.payDate,
+                            '<div class="edit-delete-btns"><button type="button" class="btn edit-btn">編輯</button><button type="button" class="btn btn-secondary delete-btn">刪除</button></div>'
+                        ]).draw(false);
+
+                        alert('插入成功');
+                        $('#orderForm')[0].reset();
+                    },
+                    error: function () {
+                        alert('插入失敗');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<!--<th:block th:replace="fragments/header :: header"></th:block>-->
+<div class="container" style="margin-left: 220px;">
+<!--    <div class="header">-->
+        <h1>訂單管理系統</h1>
+    </div>
+
+    <div class="mainContent">
+        <div class="order-details" style="margin-bottom: 20px; padding: 20px; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);">
+            <h3 class="details-title" style="margin-bottom: 20px; font-size: 24px; text-align: center;">訂單明細</h3>
+        </div>
+        <div class="table-responsive mb-4">
+            <table id="orderTable" class="display table">
+                <thead>
+                <tr>
+                    <th>訂單編號</th>
+                    <th>顧客ID</th>
+                    <th>顧客姓名</th>
+                    <th>訂單狀態</th>
+                    <th>總計</th>
+                    <th>創建日期</th>
+                    <th>支付狀態</th>
+                    <th>支付日期</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.orderId}">訂單編號</td>
+                    <td th:text="${order.userId}">顧客ID</td>
+                    <td th:text="${order.userName}">顧客姓名</td>
+                    <td th:text="${order.status}">訂單狀態</td>
+                    <td th:text="${order.totalAmount}">總計</td>
+                    <td th:text="${order.createDate}">創建日期</td>
+                    <td th:text="${order.payStatus}">支付狀態</td>
+                    <td th:text="${order.payDate}">支付日期</td>
+                    <td>
+                        <div class="edit-delete-btns">
+                            <button type="button" class="btn edit-btn">編輯</button>
+                            <button type="button" class="btn btn-secondary delete-btn">刪除</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+        <hr>
+        <br>
+        <br>
+        <div class="card form-section">
+            <div class="card-body">
+                <h3 class="form-title">新增與修改列表</h3>
+                <form id="orderForm">
+                    <div class="mb-3">
+                        <label for="orderIdInput" class="form-label">訂單編號</label>
+                        <input type="text" class="form-control" id="orderIdInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="userIdInput" class="form-label">顧客ID</label>
+                        <input type="text" class="form-control" id="userIdInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="userNameInput" class="form-label">顧客姓名</label>
+                        <input type="text" class="form-control" id="userNameInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="statusInput" class="form-label">訂單狀態</label>
+                        <input type="text" class="form-control" id="statusInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="totalAmountInput" class="form-label">總計</label>
+                        <input type="text" class="form-control" id="totalAmountInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="createDateInput" class="form-label">創建日期</label>
+                        <input type="date" class="form-control" id="createDateInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="payStatusInput" class="form-label">支付狀態</label>
+                        <input type="text" class="form-control" id="payStatusInput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="payDateInput" class="form-label">支付日期</label>
+                        <input type="date" class="form-control" id="payDateInput">
+                    </div>
+                    <button type="submit" class="btn">保存更改</button>
+                    <button type="button" class="btn btn-secondary update-btn" style="display: none;">更新</button>
+                    <button type="button" class="btn btn-secondary cancel-btn" style="display: none;">取消</button>
+                    <button type="button" class="btn btn-warning clear-btn">清除</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

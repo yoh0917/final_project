@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>最佳方案選擇</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link th:href="@{/phoneplancss/BestPlan.css}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>選擇最佳方案</h1>
+        </div>
+        <form id="planForm" class="form">
+            <div class="form-group">
+                <label for="telCompany">電信公司:</label>
+                <select id="telCompany" name="telCompany" class="form-control">
+                    <option value="台灣大哥大">台灣大哥大</option>
+                    <option value="中華電信">中華電信</option>
+                    <option value="遠傳">遠傳</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="contractType">合約類型:</label>
+                <select id="contractType" name="contractType" class="form-control">
+                    <option value="攜碼">攜碼</option>
+                    <option value="新申辦">新申辦</option>
+                    <option value="續約">續約</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="generation">網路:</label>
+                <select id="generation" name="generation" class="form-control">
+                    <option value="4G">4G</option>
+                    <option value="5G">5G</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="dataUsage">數據使用量:</label>
+                <select id="dataUsage" name="dataUsage" class="form-control">
+                    <option value="6GB">6GB</option>
+                    <option value="12GB">12GB</option>
+                    <option value="20GB">20GB</option>
+                    <option value="40GB">40GB</option>
+                    <option value="60GB">60GB</option>
+                    <option value="無限制">無限制</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn" onclick="getBestPlan()">提交</button>
+                <button type="button" class="btn clearBtn" onclick="clearForm()">清除選擇</button>
+                <button type="button" class="btn" onclick="window.location.href='/sellphone/DashBoard/phoneplans'">回上頁</button>
+            </div>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script th:src="@{/phoneplanjs/BestPlan.js}"></script>
+</body>
+</html>

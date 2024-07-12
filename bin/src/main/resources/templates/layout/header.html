@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+	<style>
+		/* 通用樣式 */
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		a {
+			color: black;
+			text-decoration:none;
+		}
+
+		body {
+			font-family: 'Satoshi', sans-serif;
+		}
+
+		/* 頂部廣告欄 */
+		.top-bar {
+			width: 100%;
+			padding: 9px 0;
+			background: black;
+			color: white;
+			text-align: center;
+			font-size: 14px;
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 1000;
+		}
+
+		.top-bar a {
+			color: white;
+			font-weight: 500;
+			text-decoration: underline;
+		}
+
+		/* 頂部導航欄 */
+		.navbar {
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+ 			padding: 20px; 
+			background: white;
+			position: fixed;
+ 			top: 40px; 
+			/* 高度根据top-bar调整 */
+			left: 0;
+			width: 100%;
+			z-index: 1000;
+		}
+
+		.navbar .logo img {
+			width: 180px;
+			height: auto;
+		}
+
+		.navbar .menu {
+			display: flex;
+			gap: 24px;
+		}
+
+		.navbar .menu a {
+			font-size: 16px;
+			color: black;
+			text-decoration: none;
+			position: relative;
+			padding: 10px 0;
+			line-height: 1;
+		}
+
+		.navbar .menu a:hover {
+			text-decoration: underline;
+		}
+
+		.navbar .menu-item {
+			position: relative;
+		}
+
+		.navbar .menu-item:hover .submenu {
+			display: block;
+		}
+
+		.submenu {
+			display: none;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			background: white;
+			border: 1px solid #ccc;
+			z-index: 1000;
+		}
+
+		.submenu a {
+			display: block;
+			padding: 10px 20px;
+			white-space: nowrap;
+		}
+
+		.submenu a:hover {
+			background: #f0f0f0;
+		}
+
+		.navbar .search-bar {
+			display: flex;
+			align-items: center;
+			background: #F0F0F0;
+			padding: 12px 16px;
+			border-radius: 62px;
+		}
+
+		.navbar .search-bar input {
+			border: none;
+			background: transparent;
+			outline: none;
+			color: rgba(0, 0, 0, 0.40);
+			font-size: 15px;
+			width: 100%;
+		}
+
+		.navbar .icons {
+			display: flex;
+			gap: 14px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="top-bar">
+		<div>
+			立即加入會員，可享首次購買產品8折優惠！ <a th:href="@{/UserRegist}">點我註冊會員</a>
+		</div>
+	</div>
+
+	<div class="navbar">
+		<div class="logo">
+			<a th:href="@{/mainPage}"><img th:src="@{/layout/img/logo.jpeg}" alt="SellPhone Logo"></a>
+		</div>
+		<div class="menu">
+			<a href="ProductHomepage.html">商品總覽</a> <a href="Orders/index.html">門號方案</a>
+			<a href="GetAllComments.html">售後維修</a> <a href="PhonePlanSearchAll.html">討論區</a>
+		</div>
+		<div class="search-bar">
+			<input type="text" placeholder="搜尋產品">
+		</div>
+		<div class="icons">
+			<th:block th:if="${session.ifAdminOrNot}">
+				<a th:href="@{/DashBoard/UserList}">後台</a>
+			</th:block>
+			<th:block th:if="${session.loginUsername != null}">
+				<a th:href="@{/UserLogout}"><i class="fa-solid fa-right-from-bracket"></i></a>
+				<a th:href="@{/UserInfo}"><i class="fa-solid fa-user"></i></a>
+			</th:block>
+			<th:block th:unless="${session.loginUsername != null}">
+				<a th:href="@{/UserLogin}">Login</a>
+			</th:block>
+			<a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>訂單管理系統</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link rel="stylesheet" th:href="@{/order/style.css}">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" th:src="@{/order/orderjs.js}"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+
+<header>
+    <div class="top-navbar">
+        <div class="top-navbar-container">
+            <a class="special" href="#">管理系統</a>
+            <a th:href="@{/DashBoard/orders}">訂單管理</a>
+            <a th:href="@{/DashBoard/orders/add}">新增訂單</a>
+            <a th:href="@{/DashBoard/orders/revenue}">營收分析</a>
+        </div>
+    </div>
+</header>
+
+<div class="container" style="margin-left: 220px;">
+
+    <div class="mainContent">
+        <div class="order-details" style="margin-bottom: 20px; padding: 20px; background-color: #f8f9fa; border-radius: 10px; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);">
+            <h3 class="details-title" style="margin-bottom: 20px; font-size: 24px; text-align: center;">訂單管理系統</h3>
+        </div>
+        <div class="table-responsive mb-4">
+            <table id="orderTable" class="display table">
+                <thead>
+                <tr>
+                    <th>訂單編號</th>
+                    <th>顧客ID</th>
+                    <th>顧客姓名</th>
+                    <th>訂單狀態</th>
+                    <th>總計</th>
+                    <th>創建日期</th>
+                    <th>支付狀態</th>
+                    <th>支付日期</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}" th:id="${order.orderId}">
+                    <td th:text="${order.orderId}">訂單編號</td>
+                    <td th:text="${order.userId}">顧客ID</td>
+                    <td th:text="${order.userName}">顧客姓名</td>
+                    <td th:text="${order.status}">訂單狀態</td>
+                    <td th:text="${order.totalAmount}">總計</td>
+                    <td th:text="${#dates.format(order.createDate, 'yyyy-MM-dd HH:mm:ss')}">創建日期</td>
+                    <td th:text="${order.payStatus}">支付狀態</td>
+                    <td th:text="${#dates.format(order.payDate, 'yyyy-MM-dd HH:mm:ss')}">支付日期</td>
+                    <td>
+                        <div class="edit-delete-btns">
+                            <button type="button" class="btn details-btn">明細</button>
+                            <button type="button" class="btn edit-btn">編輯</button>
+                            <button type="button" class="btn btn-secondary delete-btn">刪除</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- 新增按鈕 -->
+        <div class="add-order-btn">
+            <button type="button" class="btn btn-primary" onclick="window.location.href='/sellphone/orders/add'">新增訂單</button>
+        </div>
+    </div>
+</div>
+
+<!-- 編輯模態框 -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">編輯訂單</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="editOrderId">訂單編號</label>
+                        <input type="text" class="form-control" id="editOrderId" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserId">顧客ID</label>
+                        <input type="text" class="form-control" id="editUserId">
+                    </div>
+                    <div class="form-group">
+                        <label for="editUserName">顧客姓名</label>
+                        <input type="text" class="form-control" id="editUserName">
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatus">訂單狀態</label>
+                        <input type="text" class="form-control" id="editStatus">
+                    </div>
+                    <div class="form-group">
+                        <label for="editTotalAmount">總計</label>
+                        <input type="text" class="form-control" id="editTotalAmount">
+                    </div>
+                    <div class="form-group">
+                        <label for="editCreateDate">創建日期</label>
+                        <input type="datetime-local" class="form-control" id="editCreateDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="editPayStatus">支付狀態</label>
+                        <input type="text" class="form-control" id="editPayStatus">
+                    </div>
+                    <div class="form-group">
+                        <label for="editPayDate">支付日期</label>
+                        <input type="datetime-local" class="form-control" id="editPayDate">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="saveEditBtn">保存變更</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 刪除確認模態框 -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">確認刪除</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>確定要刪除這個訂單嗎？</p>
+                <input type="hidden" id="deleteOrderId">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">刪除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

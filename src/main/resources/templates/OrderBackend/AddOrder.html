@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新增訂單</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/order/style.css}">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+
+<header>
+    <div class="top-navbar">
+        <div class="top-navbar-container">
+            <a class="special" href="#">管理系統</a>
+            <a th:href="@{/DashBoard/orders}">訂單管理</a>
+            <a th:href="@{/DashBoard/orders/add}">新增訂單</a>
+            <a th:href="@{/DashBoard/orders/revenue}">營收分析</a>
+        </div>
+    </div>
+</header>
+
+<div class="container" style="margin-left: 220px; margin-top: 60px;">
+    <h1>新增訂單</h1>
+    <div class="card form-section">
+        <div class="card-body">
+            <h3 class="form-title">新增訂單</h3>
+            <form id="orderForm" th:action="@{/orders/add}" method="post">
+                <div class="mb-3">
+                    <label for="orderIdInput" class="form-label">訂單編號</label>
+                    <input type="text" class="form-control" id="orderIdInput" name="orderId">
+                </div>
+                <div class="mb-3">
+                    <label for="userIdInput" class="form-label">顧客ID</label>
+                    <input type="text" class="form-control" id="userIdInput" name="userId">
+                </div>
+                <div class="mb-3">
+                    <label for="userNameInput" class="form-label">顧客姓名</label>
+                    <input type="text" class="form-control" id="userNameInput" name="userName">
+                </div>
+                <div class="mb-3">
+                    <label for="statusInput" class="form-label">訂單狀態</label>
+                    <input type="text" class="form-control" id="statusInput" name="status">
+                </div>
+                <div class="mb-3">
+                    <label for="totalAmountInput" class="form-label">總計</label>
+                    <input type="text" class="form-control" id="totalAmountInput" name="totalAmount">
+                </div>
+                <div class="mb-3">
+                    <label for="createDateInput" class="form-label">創建日期</label>
+                    <input type="date" class="form-control" id="createDateInput" name="createDate">
+                </div>
+                <div class="mb-3">
+                    <label for="payStatusInput" class="form-label">支付狀態</label>
+                    <input type="text" class="form-control" id="payStatusInput" name="payStatus">
+                </div>
+                <div class="mb-3">
+                    <label for="payDateInput" class="form-label">支付日期</label>
+                    <input type="date" class="form-control" id="payDateInput" name="payDate">
+                </div>
+                <button type="submit" class="btn btn-primary">保存更改</button>
+                <button type="reset" class="btn btn-warning">清除</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#orderForm').on('submit', function(event) {
+        event.preventDefault();
+
+        const formData = {
+            orderId: $('#orderIdInput').val(),
+            userId: $('#userIdInput').val(),
+            userName: $('#userNameInput').val(),
+            status: $('#statusInput').val(),
+            totalAmount: $('#totalAmountInput').val(),
+            createDate: $('#createDateInput').val(),
+            payStatus: $('#payStatusInput').val(),
+            payDate: $('#payDateInput').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/sellphone/DashBoard/orders/add',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message);
+                    window.location.href = '/sellphone/DashBoard/orders';
+                } else {
+                    alert('新增訂單失敗: ' + response.message);
+                }
+            },
+            error: function(xhr) {
+                alert('新增訂單失敗，請稍後再試。');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

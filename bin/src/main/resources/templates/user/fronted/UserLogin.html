@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Login/Register Interface</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+
+	<script th:src="@{/user/fronted/js/UserRegist.js}"></script>
+	<link rel="stylesheet" th:href="@{/user/fronted/css/UserLogin.css}" />
+	<link rel="stylesheet" th:href="@{/css/FrontedAll.css}" />
+</head>
+
+<body>
+
+	<div th:replace="~{/layout/header.html}"></div>
+	<div class="main-content">
+		<div class="form-container" id="login-container">
+
+			<form id="login-form" method="post" th:action="@{/CheckLogin}">
+				<h2>會員登入</h2>
+				<!-- <div class="line-login" onclick="lineLogin()">
+                <img src="line-logo.png" alt="LINE logo">
+                Log in
+            </div> -->
+
+				<label class="inputHint">帳號或手機號碼</label> <input type="text" name="phoneNumber" placeholder="帳號或手機號碼">
+				<label class="inputHint">密碼</label> <input type="password" name="password" placeholder="密碼">
+				<div class="error-hint" th:text="${error}? ${error}"></div>
+				<lable></lable>
+				<input class="submitBtn active" type="submit" value="登入">
+				<div class="footer">
+					<a th:href="@{/UserRegist}" class="forgot-password">會員註冊</a> <a href="#"
+						class="forgot-password">忘記密碼</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

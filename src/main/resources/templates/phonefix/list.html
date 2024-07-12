@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>手機維修列表</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
+    <style>
+        body {
+            background-color: #fff8e1; /* 淡暖色背景 */
+        }
+        .container {
+            background-color: #fff3e0; /* 容器背景 */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #bf360c; /* 暖色標題 */
+        }
+        .table {
+            background-color: #ffffff;
+        }
+        .table thead th {
+            background-color: #bf360c; /* 暖色表頭 */
+            color: #ffffff;
+        }
+        .table tbody tr:nth-child(odd) {
+            background-color: #ffe0b2; /* 淡暖色奇數行 */
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #ffe0b2; /* 淡暖色偶數行 */
+        }
+        .btn-primary, .btn-warning, .btn-danger {
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #ff7043;
+        }
+        .btn-primary:hover {
+            background-color: #ff5722;
+        }
+        .btn-primary:focus {
+            box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
+        }
+        .btn-warning {
+            background-color: #ffca28;
+        }
+        .btn-warning:hover {
+            background-color: #ffb300;
+        }
+        .btn-warning:focus {
+            box-shadow: 0 0 5px rgba(255, 193, 7, 0.5);
+        }
+        .btn-danger {
+            background-color: #e53935;
+        }
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+        .btn-danger:focus {
+            box-shadow: 0 0 5px rgba(229, 57, 53, 0.5);
+        }
+    </style>
+    <script>
+        function confirmDelete(event) {
+            if (!confirm("確認要刪除這條記錄嗎？")) {
+                event.preventDefault();
+            }
+        }
+    </script>
+</head>
+<body>
+ <div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+    <div class="container mt-5">
+        <h2 class="mb-4">手機維修列表</h2>
+        <div class="mb-3">
+            <a href="#" th:href="@{/DashBoard/phonefixs/create1}" class="btn btn-primary">新增維修記錄</a>
+        </div>
+        <table id="myTable" class="table table-bordered display">
+            <thead>
+                <tr>
+                    <th>維修編號</th>
+                    <th>送修者</th>
+                    <th>送修日期</th>
+                    <th>維修費用</th>
+                    <th>維修部件</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="phoneFix : ${list}">
+                    <td th:text="${phoneFix.fixID}">1</td>
+                    <td th:text="${phoneFix.fixName}">送修者</td>
+                    <td th:text="${phoneFix.fixDate}">送修日期</td>
+                    <td th:text="${phoneFix.fixCost}">維修費用</td>
+                    <td th:text="${phoneFix.fixPort}">維修部件</td>
+                    <td>
+                        <a th:href="@{/DashBoard/phonefixs/update(fixid=${phoneFix.fixID})}" class="btn btn-warning btn-sm">修改</a>
+                        <form th:action="@{/DashBoard/phonefixs/delete/{id}(id=${phoneFix.fixID})}" method="post" style="display:inline;" onsubmit="confirmDelete(event)">
+                            <button type="submit" class="btn btn-danger btn-sm">刪除</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
+</body>
+</html>

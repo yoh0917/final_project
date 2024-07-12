@@ -1,0 +1,90 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.userlistcontent {
+    background-color: #f4f4f4;
+    margin-left: 200px;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.userlistcontainer {
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    border-radius: 15px;
+    margin: auto;
+    padding: 3%;
+    height: 800px;
+}
+
+.userlistcontainer .title{
+	text-align:center;
+	font-size:52px;	
+}
+
+/* .userlistTable{ */
+/* 	width:90%; */
+/* } */
+.userlistTable thead tr th {
+    text-align: center; 
+    font-size: 18px;     
+}
+
+.userlistTable tbody tr:hover {
+    background-color: rgb(207, 205, 205);
+
+}
+
+.userlistTable tbody tr td {
+    text-align: center;
+    font-size: 16px;
+
+}
+
+.hidden{
+	display:none;
+}
+
+/* .userlistTable tbody .control { */
+/*     display: flex; */
+/*     align-items:center; */
+/*     justify-content: space-around; */
+/* } */
+
+.userlistTable button {
+    border-radius: 15px;
+    border: none;
+    width: 40px;
+    height: 35px;
+}
+
+.userlistTable .blockBtn {
+    background-color: red;
+    transition: background-color 0.3s;
+}
+
+.userlistTable .blockBtn:hover {
+    background-color: rgb(177, 4, 4);
+}
+
+.userlistTable .unblockBtn {
+    background-color: #ffc107;
+    transition: background-color 0.3s;
+}
+
+.userlistTable .unblockBtn:hover {
+    background-color: #e0a800;
+}
+
+.userlistTable .deleteBtn {
+    background-color: #28a745;
+    transition: background-color 0.3s;
+}
+
+.userlistTable .deleteBtn:hover {
+    background-color: #218838;
+}

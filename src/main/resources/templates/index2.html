@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<meta charset="UTF-8">
+<title>Home</title>
+</head>
+<style>
+.main-content {
+    margin-top: 125px;
+}
+</style>
+<body>
+	<!--<div th:replace="~{layout/navbar}"></div>-->
+	<div th:replace="~{/layout/header.html}"></div>
+
+	<div class=main-content>
+		<h1>首頁 ok 6666 🎅🎅(●'◡'●)😝</h1>
+
+		<h3 th:text=" ${session.loginUsername} ? '歡迎!! ' + ${session.loginUsername}  "></h3>
+
+		<h3 th:if="${session.loginUsername == null}">目前無使用者登入</h3>
+	
+	</div>
+</body>
+</html>

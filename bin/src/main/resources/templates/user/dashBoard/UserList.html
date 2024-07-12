@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+	<meta charset="UTF-8">
+	<title>會員總覽</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+
+	<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+	<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<!-- 	<link rel="stylesheet" th:href="@{/dashBoardLayout/css/FrontedHeader.css}" /> -->
+	<link rel="stylesheet" th:href="@{/User/dashBoard/css/UserList.css}" />
+	<script th:src="@{/user/dashBoard/js/UserList.js}"></script>
+</head>
+
+<body>
+
+	<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+
+	<div class="userlistcontent">
+		<div class="userlistcontainer">
+			<div class="title">會員總覽</div>
+			<table class="userlistTable">
+				<thead>
+					<tr>
+						<th>會員編號</th>
+						<th>姓名</th>
+						<th>帳號</th>
+						<th>信箱</th>
+						<th>手機號碼</th>
+						<th>建立時間</th>
+						<th>上次登入</th>
+						<th>會員狀態</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<th:block th:if="${userList == null}">
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>沒有資料可以檢視</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</th:block>
+					<th:block th:unless="${userList == null}">
+						<th:block th:each="user : ${userList}">
+							<tr>
+								<td th:text="${user.userId}"></td>
+								<td th:text="${user.userName}"></td>
+								<td th:text="${user.userAccount}"></td>
+								<td th:text="${user.email}"></td>
+								<td th:text="${user.contactNum}"></td>
+								<td th:text="${user.createTime}"></td>
+								<td th:text="${user.prevlogTime}"></td>
+								<td class="status" th:text="${user.statusDescrib}"></td>
+								<td class="control" th:if="${user.statusDescrib == '封鎖'}">
+									<button class="blockBtn hidden" >
+										<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt="" width="25px"
+											height="25px">
+									</button>
+									<button class="unblockBtn">
+										<img th:src="@{/user/dashBoard/img/unblockIcon.png}" alt="" width="20px"
+											height="20px">
+									</button>
+									<button class="deleteBtn">
+										<img th:src="@{/user/dashBoard/img/deleteIcon.png}" alt="" width="25px"
+											height="25px">
+									</button>
+								</td>
+
+								<td class="control" th:unless="${user.statusDescrib == '封鎖'}">
+									<button class="blockBtn">
+										<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt="" width="25px"
+											height="25px">
+									</button>
+									<button class="unblockBtn hidden" >
+										<img th:src="@{/user/dashBoard/img/unblockIcon.png}" alt="" width="20px"
+											height="20px">
+									</button>
+									<button class="deleteBtn">
+										<img th:src="@{/user/dashBoard/img/deleteIcon.png}" alt="" width="25px"
+											height="25px">
+									</button>
+								</td>
+
+							</tr>
+						</th:block>
+					</th:block>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</body>
+
+</html>

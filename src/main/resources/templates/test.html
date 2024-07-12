@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        * {
+            border: 1px solid black;
+            margin: 0;
+
+        }
+
+        .static-element {
+            position: static;
+        }
+
+        .relative-element {
+            position: relative;
+            top: 10px;
+            left: 20px;
+        }
+
+        .absolute-element {
+            position: absolute;
+            /* top: 100px; */
+            /* right: 50px; */
+        }
+
+        .fixed-element {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+        }
+
+        .sticky-element {
+            position: sticky;
+            /* top: 10px; */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <div class="static-element">This is a static element.</div> -->
+    <div class="relative-element">This is a relative element.</div>
+    <div class="absolute-element">This is an absolute element.</div>
+    <!-- <div class="fixed-element">This is a fixed element.</div> -->
+    <div class="sticky-element">This is a sticky element.</div>
+
+</body>
+
+</html>
