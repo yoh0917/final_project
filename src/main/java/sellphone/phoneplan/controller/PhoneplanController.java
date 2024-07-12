@@ -62,7 +62,7 @@ public class PhoneplanController {
 
     @GetMapping("/DashBoard/phoneplans/create")
     public String createForm(Model model) {
-        model.addAttribute("phonePlan", new PhonePlanBean());
+        model.addAttribute("phonePlan", new PhonePlanBean(0, null, null, null, null, null, null, null, null, null, null, null, null, null));
         return "phoneplan/form";
     }
 
