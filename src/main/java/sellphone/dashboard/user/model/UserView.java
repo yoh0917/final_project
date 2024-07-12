@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity @Table(name = "U00001_Users_V")
 //@View(query = "Create View ")
-@Immutable
+//@Immutable
 public class UserView {
 	
 	@Id
