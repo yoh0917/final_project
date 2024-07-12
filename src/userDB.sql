@@ -23,10 +23,10 @@ create table U00002_UserStatus(
 )
 
 insert into U00002_UserStatus( statusId, statusDescrib )
-values (-2, '§R°£'), 
-	   (-1,'«ÊÂê'),
-	   (0,'¥¼ÅçÃÒ'),
-	   (1,'¥¿±`')
+values (-2, 'åˆªé™¤'), 
+	   (-1,'å°é–'),
+	   (0,'æœªé©—è­‰'),
+	   (1,'æ­£å¸¸')
 
 select * from U00002_UserStatus
 
