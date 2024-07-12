@@ -21,6 +21,7 @@ public class PhoneplanController {
     private PhoneplanService phoneplanService;
 
     
+    
     @GetMapping("/DashBoard/phoneplans")
     public String list(@RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "size", defaultValue = "8") int size,
@@ -63,7 +64,7 @@ public class PhoneplanController {
 
     @GetMapping("/DashBoard/phoneplans/create")
     public String createForm(Model model) {
-        model.addAttribute("phonePlan", new PhonePlanBean());
+        model.addAttribute("phonePlan", new PhonePlanBean(0, null, null, null, null, null, null, null, null, null, null, null, null, null));
         return "phoneplan/form";
     }
 
