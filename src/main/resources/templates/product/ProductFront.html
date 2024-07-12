@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Shop Homepage - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+     <link th:href="@{/css/styles.css}" rel="stylesheet" />
+</head>
+<body>
+
+<div th:replace="~{/layout/header.html}"></div>
+
+    <br>
+    <br>
+    <section class="py-2 mt-5">
+        <div class="container px-4 px-lg-5 mt-5">
+    	<h1>商品總攬</h1>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                
+                <div th:each="product : ${frontlistProduct}" class="col mb-5">
+                    <div class="card h-100">
+
+                        <div align="center" class="mt-5">
+                        <th:block th:each="onePhoto : ${product.productPhoto}">
+							<img width="180px" height="160px"
+								th:src="@{/DashBoard/photos/download(photoid=${onePhoto.photoid})}" />
+						</th:block>
+						</div>
+                        <!-- Product details -->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name -->
+                                <h5 class="fw-bolder mt-2" th:text="${product.productName}"></h5>
+                                
+                                <div>                                 
+                                    <span class="mx-auto text-secondary" th:text="'$ '+${product.price}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product actions -->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+<!--     <script src="js/scripts.js"></script> -->
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showAlert() {
+            Swal.fire({
+                title: "已加入購物車!",
+                text: "感謝您的購買!",
+                icon: "success"
+            });
+        }
+    </script>
+</body>
+</html>
