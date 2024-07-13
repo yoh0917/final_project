@@ -20,9 +20,7 @@ public class PhoneplanController {
     @Autowired
     private PhoneplanService phoneplanService;
 
-    
-    
-    @GetMapping("/DashBoard/phoneplans")
+    @GetMapping("/DashBoard/phoneplans/all")
     public String list(@RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "size", defaultValue = "8") int size,
                        @RequestParam(value = "telCompany", required = false, defaultValue = "") String telCompany,
@@ -64,14 +62,14 @@ public class PhoneplanController {
 
     @GetMapping("/DashBoard/phoneplans/create")
     public String createForm(Model model) {
-        model.addAttribute("phonePlan", new PhonePlanBean(0, null, null, null, null, null, null, null, null, null, null, null, null, null));
+        model.addAttribute("phonePlan", new PhonePlanBean());
         return "phoneplan/form";
     }
 
     @PostMapping("/DashBoard/phoneplans/create")
     public String create(@ModelAttribute PhonePlanBean phonePlan) {
         phoneplanService.createPhonePlan(phonePlan);  // 使用 createPhonePlan 方法
-        return "redirect:/DashBoard/phoneplans";
+        return "redirect:/DashBoard/phoneplans/all";
     }
 
     @PostMapping("/DashBoard/phoneplans/showFormForUpdate")
@@ -84,28 +82,18 @@ public class PhoneplanController {
         return "phoneplan/updateForm";
     }
 
-    @PostMapping("/DashBoard/phoneplans/update")
+    @PutMapping("/DashBoard/phoneplans/update")
     public String update(@ModelAttribute("planBean") PhonePlanBean phonePlan) {
         phoneplanService.save(phonePlan);
-        return "redirect:/DashBoard/phoneplans";
+        return "redirect:/DashBoard/phoneplans/all";
     }
+
     @DeleteMapping("/DashBoard/phoneplans/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         phoneplanService.deletePhonePlanById(id);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/DashBoard/phoneplans/bestPlan")
-    public String showBestPlanForm() {
-        return "phoneplan/choose";  // 確保這裡的名稱與你的模板文件名一致
-    }
-
-    @GetMapping("/api/getBestPlan")
-    @ResponseBody
-    public List<PhonePlanBean> getBestPlan(@RequestParam String telCompany,
-                                           @RequestParam String contractType,
-                                           @RequestParam String generation,
-                                           @RequestParam String dataUsage) {
-        return phoneplanService.findBestPlans(telCompany, contractType, generation, dataUsage);
-    }
+   
+    
 }
