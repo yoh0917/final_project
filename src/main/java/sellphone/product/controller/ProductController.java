@@ -91,4 +91,22 @@ public class ProductController {
 		pService.saveProduct(product);
 		return "redirect:/DashBoard/productlist";
 	}
+	
+	//------------------前台----------------------
+	
+	
+	@GetMapping("/front/productlist")
+	public String frontProducts(Model model) {
+		List<Product> products = proRepo.findAll();
+		model.addAttribute("frontlistProduct", products);
+		return "product/ProductFront";
+	}
+	
+	@GetMapping("/front/pricebetween")
+	public String getpriceRange(@RequestParam int minPrice,@RequestParam int maxPrice,Model m) {
+		List<Product> frontlistProduct = proRepo.findByPriceRange(minPrice, minPrice);
+		m.addAttribute("getpriceRange",frontlistProduct);
+		return "product/ProductPriceFront";
+	}
+	
 }

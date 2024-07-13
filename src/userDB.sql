@@ -23,10 +23,10 @@ create table U00002_UserStatus(
 )
 
 insert into U00002_UserStatus( statusId, statusDescrib )
-values (-2, '§R°£'), 
-	   (-1,'«ÊÂê'),
-	   (0,'¥¼ÅçÃÒ'),
-	   (1,'¥¿±`')
+values (-2, 'åˆªé™¤'), 
+	   (-1,'å°é–'),
+	   (0,'æœªé©—è­‰'),
+	   (1,'æ­£å¸¸')
 
 select * from U00002_UserStatus
 
@@ -73,6 +73,7 @@ select * from  U00003_Admin
 
 Create View U00001_Users_V AS
  Select 
+		u.userId,
 		u.userName, 
 		u.userAccount,
 		u.Email,
@@ -80,5 +81,7 @@ Create View U00001_Users_V AS
 		s.statusDescrib,
 		u.createTime,
 		u.prevlogTime
-	from U00001_Users u JOIN U00002_UserStatus s ON u.status == s.statusId
+	from U00001_Users u JOIN U00002_UserStatus s ON u.status = s.statusId
 	Where s.statusId <> -2
+
+select * from U00001_Users_V

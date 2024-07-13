@@ -26,9 +26,45 @@ public class UserPageController {
 
 		return "index";
 	}
-
+//  -------------------------------------- fronted-related Page ----------------------------------------------------
 	@GetMapping("/UserInfo")
 	public String userInfo(Model m, HttpServletRequest req) throws ServletException, IOException {
+
+		HttpSession session = req.getSession(false);
+		System.out.println("Current Session: " + session);
+
+		return "user/fronted/userInfo";
+	}
+	
+	@GetMapping("/UserOrder")
+	public String userOrder(Model m, HttpServletRequest req) throws ServletException, IOException {
+
+		HttpSession session = req.getSession(false);
+		System.out.println("Current Session: " + session);
+
+		return "user/fronted/userInfo";
+	}
+	
+	@GetMapping("/UserPlan")
+	public String userPlan(Model m, HttpServletRequest req) throws ServletException, IOException {
+
+		HttpSession session = req.getSession(false);
+		System.out.println("Current Session: " + session);
+
+		return "user/fronted/userInfo";
+	}
+	
+	@GetMapping("/UserPost")
+	public String userPost(Model m, HttpServletRequest req) throws ServletException, IOException {
+
+		HttpSession session = req.getSession(false);
+		System.out.println("Current Session: " + session);
+
+		return "user/fronted/userInfo";
+	}
+	
+	@GetMapping("/UserFix")
+	public String userFix(Model m, HttpServletRequest req) throws ServletException, IOException {
 
 		HttpSession session = req.getSession(false);
 		System.out.println("Current Session: " + session);
