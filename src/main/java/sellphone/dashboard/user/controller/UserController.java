@@ -3,7 +3,7 @@ package sellphone.dashboard.user.controller;
 import java.io.IOException;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,35 +45,37 @@ public class UserController {
 	@GetMapping("/UserPlanInfo")
 	public String UserPlanInfo(Model m, HttpServletRequest req, HttpServletResponse resp) {
 		
-		return "/fronted/userPlanInfo";
+		return "/user/fronted/userPlanInfo";
 	}
 	
 	@GetMapping("/UserOrderList")
 	public String UserOrderList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 		
-		String userId = (String) req.getAttribute("userId");
-		UserPhonePlanList userPhonePlanList = userPplR.findByUserId(userId);
-		m.addAttribute("planlist",userPhonePlanList);
 		
-		return "/fronted/userOrderList";
+		return "/user/fronted/userOrder";
 	}
 	
 	@GetMapping("/UserPostList")
 	public String UserPostList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 		
-		return "/fronted/userPostList";
+		return "/user/fronted/userPost";
 	}
 	
 	@GetMapping("/UserPlanList")
 	public String UserPlanList(Model m, HttpServletRequest req, HttpServletResponse resp) {
+				
+		String userId = (String) req.getSession().getAttribute("userId");
+		List<UserPhonePlanList> userPhonePlanList = userPplR.findAllByuserId(userId);
+		System.out.println(userPhonePlanList.get(1).getPhonePlanBean().getDataUsage());
+		m.addAttribute("planList",userPhonePlanList);
 		
-		return "/fronted/userPlanList";
+		return "/user/fronted/userPlan";
 	}
 	
 	@GetMapping("/UserFixList")
 	public String UserFixList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 		
-		return "/fronted/userFixList";
+		return "/user/fronted/userFix";
 	}
 
 
