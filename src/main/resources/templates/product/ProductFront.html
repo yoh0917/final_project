@@ -12,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
      <link th:href="@{/css/styles.css}" rel="stylesheet" />
+     <link th:href="@{/layout/css/header.css}" rel="stylesheet">
 </head>
 <body>
 
@@ -30,7 +31,7 @@
                         <div align="center" class="mt-5">
                         <th:block th:each="onePhoto : ${product.productPhoto}">
 							<img width="180px" height="160px"
-								th:src="@{/DashBoard/photos/download(photoid=${onePhoto.photoid})}" />
+								th:src="@{/photos/download(photoid=${onePhoto.photoid})}" />
 						</th:block>
 						</div>
                         <!-- Product details -->
