@@ -75,7 +75,7 @@ public class UserPhonePlanList {
     private String contractType;
 
     @Column(name = "ContractDuration")
-    private String contractDuration;
+     private String contractDuration;
 
     @Column(name = "phoneNumber")
     private String phoneNumber;
