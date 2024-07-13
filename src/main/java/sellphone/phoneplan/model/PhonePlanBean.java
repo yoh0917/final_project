@@ -115,8 +115,7 @@ public class PhonePlanBean implements Serializable {
                 && Objects.equals(telCompany, other.telCompany);
     }
 
-    public PhonePlanBean() {
-	}
+  
     
     public PhonePlanBean(int planID, String planName, String phoneNumber, String telCompany, String contractType,
             String contractDuration, String generation, String dataUsage, String dataTransferRate, String intraNetCall,
