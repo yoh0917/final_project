@@ -19,6 +19,7 @@ public class UserPhonePlanList {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int UserPhonePlanListID;
     
     private String phoneNunber;
@@ -38,6 +39,7 @@ public class UserPhonePlanList {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "planID")
+
 	private  PhonePlanBean phonePlanBean;
 
 	public UserPhonePlanList() {
