@@ -72,10 +72,10 @@ public class UserPhonePlanList {
     private String generation;
 
     @Column(name = "ContractType")
-    private String contractType;
+     private String contractType;
 
     @Column(name = "ContractDuration")
-     private String contractDuration;
+      private String contractDuration;
 
     @Column(name = "phoneNumber")
     private String phoneNumber;
