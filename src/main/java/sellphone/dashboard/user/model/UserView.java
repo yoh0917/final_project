@@ -20,7 +20,7 @@ public class UserView {
     
 	private String userName;
 
-	private String userAccount;
+	private String useraccount;
 
     private String email;
 	
@@ -44,7 +44,7 @@ public class UserView {
 			LocalDateTime createTime, LocalDateTime prevlogTime, String statusDescrib) {
 		this.userId = userId;
 		this.userName = userName;
-		this.userAccount = userAccount;
+		this.useraccount = userAccount;
 		this.email = email;
 		this.contactNum = contactNum;
 		this.createTime = createTime;
@@ -67,11 +67,11 @@ public class UserView {
 	}
 
 	public String getUserAccount() {
-		return userAccount;
+		return useraccount;
 	}
 
 	public void setUserAccount(String userAccount) {
-		this.userAccount = userAccount;
+		this.useraccount = userAccount;
 	}
 
 	public String getEmail() {
