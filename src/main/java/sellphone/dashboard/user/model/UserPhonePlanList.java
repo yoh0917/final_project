@@ -81,7 +81,7 @@ public class UserPhonePlanList {
     private String phoneNumber;
 
     @Column(name = "agreementDate", columnDefinition = "Date")
-    private String agreementDate;
+     private String agreementDate;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
