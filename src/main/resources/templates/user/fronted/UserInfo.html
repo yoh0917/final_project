@@ -18,17 +18,60 @@
 		/* * {
 			border: 1px solid black;
 		} */
+
+		a {
+			cursor: pointer;
+		}
+
+		input {
+			background-color: transparent;
+			height: 20px;
+		}
+
+		input:focus {
+			outline: none;
+
+		}
 	</style>
 	<script>
 		function editEmail() {
 
+			$('#edit_email_link').toggle()
 			$('#show_email').toggle()
 			$('#edit_email').toggle()
-			$('#confirm_box').toggle()
+			$('#edit_email').val($('#show_email').text())
+			$('#edit_email').focus()
+			$('#confirm_email').toggle()
 
 		}
-		$(function () {
 
+		function updateEmail() {
+
+		}
+
+		function editContactNum() {
+
+			$('#edit_contactNum_link').toggle()
+			$('#show_contactNum').toggle()
+			$('#edit_contactNum').toggle()
+			$('#edit_contactNum').val($('#show_contactNum').text())
+			$('#edit_contactNum').focus()
+
+			$('#confirm_contactNum').toggle()
+
+		}
+
+		function updateContactNum() {
+
+		}
+
+		$(function () {
+			$('#edit_email').on('focus', function () {
+				this.select();
+			})
+			$('#edit_contactNum').on('focus', function () {
+				this.select();
+			})
 		})
 	</script>
 
@@ -64,19 +107,19 @@
 							<div class="col-9">
 								<div class="row justify-content-between">
 									<div class="col-8">
-										<label id="showemail" th:text="${user.email}">sss</label>
-										<input id="editemail" type="text" value="" class="com_text"
-											style="display: none;">
+										<label id="show_email" th:text="${user.email}">sss</label>
+										<input id="edit_email" type="text" class="com_text"
+											style="display: none; border: none; ">
 									</div>
 									<div class="col-4 text-end">
-										<a id="edit_email" onclick="editEmail();">
+										<a id="edit_email_link" onclick="editEmail();">
 											<i class="fa-regular fa-pen-to-square"></i>
 										</a>
-										<div id="confirm_box" style="display: none;">
-											<span class="confirm_btn" type="reset"
-												style="white-space: nowrap;">取消</span>
-											<span class="confirm_btn" type="button" style="white-space: nowrap;"
-												onclick="updateNickName();">完成</span>
+										<div id="confirm_email" style="display: none;">
+											<a class="confirm_btn" style="white-space: nowrap;"
+												onclick="editEmail();">取消</a>
+											<a class=" confirm_btn" style="white-space: nowrap;"
+												onclick="updateEmail();">完成</a>
 										</div>
 									</div>
 									<div>
@@ -92,19 +135,19 @@
 							<div class="col-9">
 								<div class="row justify-content-between">
 									<div class="col-8">
-										<label id="showe_mail" th:text="${user.contactNum}">sss</label>
-										<input id="editemail" type="text" value="" class="com_text"
-											style="display: none;">
+										<label id="show_contactNum" th:text="${user.contactNum}">sss</label>
+										<input id="edit_contactNum" type="text" class="com_text"
+											style="display: none; border: none;">
 									</div>
 									<div class="col-4 text-end">
-										<a id="edit_email" onclick="editEmail()">
+										<a id="edit_contactNum_link" onclick="editContactNum()">
 											<i class="fa-regular fa-pen-to-square"></i>
 										</a>
-										<div id="confirm_box" style="display: none;">
-											<span class="confirm_btn" type="reset"
-												style="white-space: nowrap;">取消</span>
-											<span class="confirm_btn" type="button" style="white-space: nowrap;"
-												onclick="updateNickName();">完成</span>
+										<div id="confirm_contactNum" style="display: none;">
+											<a class="confirm_btn" style="white-space: nowrap;"
+												onclick="editContactNum();">取消</a>
+											<a class="confirm_btn" style="white-space: nowrap;"
+												onclick="updateContactNum();">完成</a>
 										</div>
 									</div>
 									<div>
@@ -122,10 +165,7 @@
 		</div>
 	</div>
 
-
 	<!-- 	<div th:replace="~{layout/footer.html}"></div> -->
-
-
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

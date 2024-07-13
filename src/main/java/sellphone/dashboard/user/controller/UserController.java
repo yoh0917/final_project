@@ -71,6 +71,7 @@ public class UserController {
 	public String UserPlanList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 				
 		String userId = (String) req.getSession().getAttribute("userId");
+		System.out.println(userId);
 		List<UserPhonePlanList> userPhonePlanList = userPplR.findAllByuserId(userId);
 		m.addAttribute("planList",userPhonePlanList);
 		
