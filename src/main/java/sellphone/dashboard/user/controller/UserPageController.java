@@ -26,14 +26,50 @@ public class UserPageController {
 
 		return "index";
 	}
-
+//  -------------------------------------- UserInfo-related Page ----------------------------------------------------
 	@GetMapping("/UserInfo")
 	public String userInfo(Model m, HttpServletRequest req) throws ServletException, IOException {
 
 		HttpSession session = req.getSession(false);
 		System.out.println("Current Session: " + session);
 
-		return "user/fronted/userInfo";
+		return "forward:UserInfoList";
+	}
+	
+	@GetMapping("/UserOrder")
+	public String userOrder(Model m, HttpServletRequest req) throws ServletException, IOException {
+
+		HttpSession session = req.getSession(false);
+		System.out.println("Current Session: " + session);
+
+		return "forward:/UserOrderList";
+	}
+	
+	@GetMapping("/UserPlan")
+	public String userPlan(Model m, HttpServletRequest req) throws ServletException, IOException {
+
+		HttpSession session = req.getSession(false);
+		System.out.println("Current Session: " + session);
+
+		return "forward:/UserPlanList";
+	}
+	
+	@GetMapping("/UserPost")
+	public String userPost(Model m, HttpServletRequest req) throws ServletException, IOException {
+
+		HttpSession session = req.getSession(false);
+		System.out.println("Current Session: " + session);
+
+		return "forward:/UserPostList";
+	}
+	
+	@GetMapping("/UserFix")
+	public String userFix(Model m, HttpServletRequest req) throws ServletException, IOException {
+
+		HttpSession session = req.getSession(false);
+		System.out.println("Current Session: " + session);
+
+		return "forward:/UserFixList";
 	}
 //	--------------------------------------  Login-related Page ----------------------------------------------------
 
