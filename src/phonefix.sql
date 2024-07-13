@@ -1,17 +1,21 @@
 -- phonefix
 
 
+truncate table F00001_PhoneFixs
+
+INSERT INTO F00001_PhoneFixs(FixName, FixDate, FixCost, FixPort,userId)
+VALUES
+('leo', '2024/07/20', '39000', 'Processor','2406140002'),
+('leo', '2024/07/25', '55000', 'Microphone','2406140002'),
+('leo', '2024/07/21', '44000', 'Microphone','2406140002'),
+('gary', '2024/07/06', '55000', 'Front Camera','2406140002'),
+('gary', '2024/07/01', '37000', 'USB Port','2406140001'),
+('gary', '2024/07/20', '67000', 'Memory','2406140001'),
+('gary', '2024/07/15', '55000', 'Memory','2406140001'),
+('gary', '2024/07/12', '44000', 'Processor','2406140001')
 
 INSERT INTO F00001_PhoneFixs(FixName, FixDate, FixCost, FixPort)
 VALUES
-('Norma Fisher', '2009/09/11', '39000', 'Processor'),
-('Jorge Sullivan', '2007/07/06', '55000', 'Microphone'),
-('Elizabeth Woods', '2009/09/11', '44000', 'Microphone'),
-('Susan Wagner', '2007/07/06', '55000', 'Front Camera'),
-('Peter Montgomery', '2000/05/16', '37000', 'USB Port'),
-('Theodore Mcgrath', '2013/12/25', '67000', 'Memory'),
-('Stephanie Collins', '2007/07/06', '55000', 'Memory'),
-('Stephanie Sutton', '2013/12/25', '44000', 'Processor'),
 ('Brian Hamilton', '2011/04/04', '44000', 'Microphone'),
 ('Susan Levy', '2000/05/16', '67000', 'USB Port'),
 ('Sean Green', '2009/09/11', '44000', 'Memory'),

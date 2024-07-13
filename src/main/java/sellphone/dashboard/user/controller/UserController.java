@@ -42,23 +42,29 @@ public class UserController {
 	
 //	--------------------------------------  UserInfo controller ----------------------------------------------------
 
-	@GetMapping("/UserPlanInfo")
+	@GetMapping("/UserInfoList")
 	public String UserPlanInfo(Model m, HttpServletRequest req, HttpServletResponse resp) {
 		
-		return "/user/fronted/userPlanInfo";
+		String userId = (String) req.getSession().getAttribute("userId");
+		System.out.println(userId);
+		Users user = uService.findById(userId);
+		System.out.println(user);
+		m.addAttribute("user", user);
+		
+		return "/user/fronted/UserInfo";
 	}
 	
 	@GetMapping("/UserOrderList")
 	public String UserOrderList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 		
 		
-		return "/user/fronted/userOrder";
+		return "/user/fronted/UserOrder";
 	}
 	
 	@GetMapping("/UserPostList")
 	public String UserPostList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 		
-		return "/user/fronted/userPost";
+		return "/user/fronted/UserPost";
 	}
 	
 	@GetMapping("/UserPlanList")
@@ -66,16 +72,15 @@ public class UserController {
 				
 		String userId = (String) req.getSession().getAttribute("userId");
 		List<UserPhonePlanList> userPhonePlanList = userPplR.findAllByuserId(userId);
-		System.out.println(userPhonePlanList.get(1).getPhonePlanBean().getDataUsage());
 		m.addAttribute("planList",userPhonePlanList);
 		
-		return "/user/fronted/userPlan";
+		return "/user/fronted/UserPlan";
 	}
 	
 	@GetMapping("/UserFixList")
 	public String UserFixList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 		
-		return "/user/fronted/userFix";
+		return "/user/fronted/UserFix";
 	}
 
 

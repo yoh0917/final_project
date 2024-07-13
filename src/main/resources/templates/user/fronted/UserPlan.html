@@ -5,10 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login/Register Interface</title>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
 
-<script th:src="@{/user/fronted/js/UserRegist.js}"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -22,7 +19,6 @@
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
 <link th:href="@{/layout/css/header.css}" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/user/fronted/css/UserLogin.css}" />
 <link rel="stylesheet" th:href="@{/css/FrontedAll.css}" />
 </head>
 
@@ -50,8 +46,8 @@
 							<div class="row">
 								<div class="col-3">方案名稱</div>
 								<div class="col-9"
-									th:text="${plan.phonePlanBean.generation}+''+
- 									${plan.phonePlanBean.planName}+''+${plan.phonePlanBean.dataTransferRate}"></div> 
+									th:text="${plan.phonePlanBean.generation}+' '+
+ 									${plan.phonePlanBean.planName}+' '+${plan.phonePlanBean.dataTransferRate}"></div> 
 							</div>
 							<hr>
 							<div class="row">
@@ -87,12 +83,15 @@
 		</div>
 	</div>
 	
-	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	
+<!-- 	<div th:replace="~{layout/footer.html}"></div> -->
+	
+	
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<script
-		src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
-	<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script th:src="@{/user/dashBoard/js/UserList.js}"></script>
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
 
 </body>
 
