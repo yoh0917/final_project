@@ -14,7 +14,7 @@ public class Admin {
 	
 	private String adminName;
 	
-	private String adminAccount; 
+	private String  adminAccount; 
 
 	private String adminPassword; 
 	

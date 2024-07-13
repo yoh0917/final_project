@@ -11,7 +11,7 @@
 <script th:src="@{/phoneplanjs/PhonePlanSearchAll.js}"></script>
 </head>
 <body>
-	<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+	<div th:replace="~{layout/DashBoardSidebar}"></div>
 
 	<div class="mainContent">
 		<div class="title">
@@ -40,7 +40,7 @@
 		<div class="buttonMenu">
 			<a th:href="@{/DashBoard/phoneplans/create}"><button
 					class="insertBtn">新增方案</button></a>
-		  <a th:href="@{/DashBoard/phoneplans/bestPlan}"><button
+		  <a th:href="@{/DashBoard/phoneplans}"><button
 					class="insertBtn">查詢最佳方案</button></a>
 			<div th:text="'總共有 ' + ${totalElements} + ' 筆'"></div>
 		</div>
@@ -54,7 +54,7 @@
 					<tr>
 						<th>方案代碼</th>
 						<th>方案名稱</th>
-						<th>電話號碼</th>
+						<!-- <th>電話號碼</th> -->
 						<th>電信公司</th>
 						<th>合約類別</th>
 						<th>合約期限</th>
@@ -71,7 +71,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!-- 这里的数据将由Ajax加载 -->
 				</tbody>
 			</table>
 		</div>
@@ -79,7 +78,6 @@
 		<!-- 分页导航 -->
 		<div class="pagination">
 			<ul>
-				<!-- 分页按钮将由JavaScript生成 -->
 			</ul>
 		</div>
 
