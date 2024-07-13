@@ -26,14 +26,14 @@ public class UserPageController {
 
 		return "index";
 	}
-//  -------------------------------------- fronted-related Page ----------------------------------------------------
+//  -------------------------------------- UserInfo-related Page ----------------------------------------------------
 	@GetMapping("/UserInfo")
 	public String userInfo(Model m, HttpServletRequest req) throws ServletException, IOException {
 
 		HttpSession session = req.getSession(false);
 		System.out.println("Current Session: " + session);
 
-		return "user/fronted/userInfo";
+		return "forward:UserInfoList";
 	}
 	
 	@GetMapping("/UserOrder")
@@ -42,7 +42,7 @@ public class UserPageController {
 		HttpSession session = req.getSession(false);
 		System.out.println("Current Session: " + session);
 
-		return "user/fronted/userInfo";
+		return "forward:/UserOrderList";
 	}
 	
 	@GetMapping("/UserPlan")
@@ -51,7 +51,7 @@ public class UserPageController {
 		HttpSession session = req.getSession(false);
 		System.out.println("Current Session: " + session);
 
-		return "user/fronted/userInfo";
+		return "forward:/UserPlanList";
 	}
 	
 	@GetMapping("/UserPost")
@@ -60,7 +60,7 @@ public class UserPageController {
 		HttpSession session = req.getSession(false);
 		System.out.println("Current Session: " + session);
 
-		return "user/fronted/userInfo";
+		return "forward:/UserPostList";
 	}
 	
 	@GetMapping("/UserFix")
@@ -69,7 +69,7 @@ public class UserPageController {
 		HttpSession session = req.getSession(false);
 		System.out.println("Current Session: " + session);
 
-		return "user/fronted/userInfo";
+		return "forward:/UserFixList";
 	}
 //	--------------------------------------  Login-related Page ----------------------------------------------------
 

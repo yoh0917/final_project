@@ -18,6 +18,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import sellphone.dashboard.admin.service.AdminService;
+import sellphone.dashboard.user.model.UserPhonePlanList;
+import sellphone.dashboard.user.model.UserPhonePlanListRepository;
 import sellphone.dashboard.user.model.Users;
 import sellphone.dashboard.user.service.UserService;
 import sellphone.dashboard.user.service.UserUtil;
@@ -33,7 +35,50 @@ public class UserController {
 	
 	@Autowired
 	private UserUtil userUtil;
+	
+	@Autowired
+	private UserPhonePlanListRepository userPplR;
 
+	
+//	--------------------------------------  UserInfo controller ----------------------------------------------------
+
+	@GetMapping("/UserPlanInfo")
+	public String UserPlanInfo(Model m, HttpServletRequest req, HttpServletResponse resp) {
+		
+		return "/fronted/userPlanInfo";
+	}
+	
+	@GetMapping("/UserOrderList")
+	public String UserOrderList(Model m, HttpServletRequest req, HttpServletResponse resp) {
+		
+		String userId = (String) req.getAttribute("userId");
+		UserPhonePlanList userPhonePlanList = userPplR.findByUserId(userId);
+		m.addAttribute("planlist",userPhonePlanList);
+		
+		return "/fronted/userOrderList";
+	}
+	
+	@GetMapping("/UserPostList")
+	public String UserPostList(Model m, HttpServletRequest req, HttpServletResponse resp) {
+		
+		return "/fronted/userPostList";
+	}
+	
+	@GetMapping("/UserPlanList")
+	public String UserPlanList(Model m, HttpServletRequest req, HttpServletResponse resp) {
+		
+		return "/fronted/userPlanList";
+	}
+	
+	@GetMapping("/UserFixList")
+	public String UserFixList(Model m, HttpServletRequest req, HttpServletResponse resp) {
+		
+		return "/fronted/userFixList";
+	}
+
+
+//	--------------------------------------  Login-related controller ----------------------------------------------------
+	
 	@PostMapping("/CheckLogin")
 	public String checkLogin(@RequestParam("phoneNumber") String account, @RequestParam("password") String pwd, Model m,
 			HttpServletRequest req, HttpServletResponse resp) {
@@ -48,12 +93,13 @@ public class UserController {
 			return "redirect:/mainPage";
 		}
 
-		
+		// check user exist or not
 		Users user = uService.checkLogin(account, pwd);
 		if (user == null) {
 			return "redirect:UserLoginFailed";
 		}
 
+		// check user status
 		switch (user.getStatus()) {
 		case 1: {
 			session.setAttribute("loginUsername", user.getUserName());
@@ -77,6 +123,8 @@ public class UserController {
 	}
 
 
+//	--------------------------------------  DashBoard-related controller ----------------------------------------------------	
+	
 	@GetMapping("/UserBlockStatus")
 	public void userBlockStatus(@RequestParam("userId") String userId, Model m, HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
