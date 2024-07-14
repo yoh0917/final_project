@@ -22,10 +22,12 @@
         padding-top: 170px;
     }
     .container {
-        margin-left: 200px !important;
-        width: calc(100% - 300px); /* 修改：确保容器填满剩余空间 */
-        padding: 50px; /* 恢复padding */
-        box-sizing: border-box; /* 确保padding不会增加总宽度 */
+    	
+        margin-left: 250px !important;
+        margin-right:50px !important;
+        width: calc(100% - 500px);
+        box-sizing: border-box;
+        padding: 50px 100px; 
         overflow-y: auto; /* 添加：使内容超出时可以滚动 */
     }
     .pagination {
@@ -241,39 +243,47 @@
         </ul>
     </div>
     <script>
-        function filterPostsByTag(button) {
-            var tagName = button.getAttribute('data-tag-name');
-            fetch('/sellphone/post/byTag?tagName=' + tagName)
-                .then(response => response.text())
-                .then(data => {
-                    var parser = new DOMParser();
-                    var doc = parser.parseFromString(data, 'text/html');
-                    var newContent = doc.querySelector('#accordionExample').innerHTML;
-                    document.getElementById('accordionExample').innerHTML = newContent;
-                    console.log('Tag Clicked:', tagName);
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            var headers = document.querySelectorAll(".accordion-header");
-            headers.forEach(function(header) {
-                header.addEventListener("click", function() {
-                    var body = this.nextElementSibling;
-                    var isActive = body.classList.contains("show");
-                    document.querySelectorAll(".accordion-body").forEach(function(b) {
-                        b.classList.remove("show");
-                    });
-                    document.querySelectorAll(".accordion-header").forEach(function(h) {
-                        h.classList.remove("active");
-                    });
-                    if (!isActive) {
-                        body.classList.add("show");
-                        this.classList.add("active");
-                    }
-                });
+        function bindAccordionEvents() {
+    var headers = document.querySelectorAll(".accordion-header");
+    headers.forEach(function(header) {
+        header.addEventListener("click", function() {
+            var body = this.nextElementSibling;
+            var isActive = body.classList.contains("show");
+            document.querySelectorAll(".accordion-body").forEach(function(b) {
+                b.classList.remove("show");
             });
+            document.querySelectorAll(".accordion-header").forEach(function(h) {
+                h.classList.remove("active");
+            });
+            if (!isActive) {
+                body.classList.add("show");
+                this.classList.add("active");
+            }
         });
+    });
+}
+
+function filterPostsByTag(button) {
+    var tagName = button.getAttribute('data-tag-name');
+    fetch('/sellphone/post/byTag?tagName=' + tagName)
+        .then(response => response.text())
+        .then(data => {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(data, 'text/html');
+            var newContent = doc.querySelector('#accordionExample').innerHTML;
+            document.getElementById('accordionExample').innerHTML = newContent;
+            console.log('Tag Clicked:', tagName);
+            
+            // 在更新內容後重新綁定事件監聽器
+            bindAccordionEvents();
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    bindAccordionEvents();
+});
+
     </script>
 </body>
 </html>
