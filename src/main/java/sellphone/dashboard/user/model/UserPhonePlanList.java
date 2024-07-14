@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,26 +32,16 @@ public class UserPhonePlanList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userPhonePlanID")
- // CUSTOMERS 需要 門號新增需要 欄位可能需要LONG 
+    private int userPhonePlanID;
 
-    private Long userPhonePlanID;
-
-    @Column(nullable = false, insertable=false, updatable=false)
+    @Column(name = "userId", nullable = false)
     private String userId;
-    @Column(nullable = false, insertable=false, updatable=false)
-    private int planID;
 
     @Column(name = "username")
     private String userName;
 
     @Column(name = "useraccount")
     private String userAccount;
-    
-    
-    //ALTER TABLE U00004_UserPhonePlanList              ADD planID INT NOT NULL DEFAULT 0;
-
-    @Column(name = "phoneNunber")
-    private String phoneNunber;
 
     @Column(name = "password")
     private String password;
@@ -74,7 +63,7 @@ public class UserPhonePlanList {
 
     @Column(name = "prevlogTime")
     private LocalDateTime prevlogTime;
-// CUSTOMERS 需要 門號新增需要
+
     @Column(name = "telCompany")
     private String telCompany;
 
@@ -89,12 +78,10 @@ public class UserPhonePlanList {
 
     @Column(name = "phoneNumber")
     private String phoneNumber;
- // CUSTOMERS 需要 門號新增需要
-    
+
     @Column(name = "agreementDate", columnDefinition = "Date")
     private String agreementDate;
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "UserPhonePlan",
@@ -107,7 +94,16 @@ public class UserPhonePlanList {
     @JoinColumn(name = "userId", insertable = false, updatable = false)
     private Users user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "phonePlanID")
-    private PhonePlanBean phonePlanBean;
+    public Set<PhonePlanBean> getPhonePlans() {
+        return phonePlans;
+    }
+
+    public void setPhonePlans(Set<PhonePlanBean> phonePlans) {
+        this.phonePlans = phonePlans;
+    }
+
+	public void setPhonePlanBean(PhonePlanBean phonePlanBean) {
+		// TODO Auto-generated method stub
+		
+	}
 }
