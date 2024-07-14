@@ -83,7 +83,7 @@ $(function () {
             .then(res => {
                 Swal.fire({
                     title: '註冊成功',
-                    text: '還沒做驗證功能。',
+                    text: '請前往email收取驗證信。',
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: '確認'
@@ -103,7 +103,21 @@ $(function () {
                     confirmButtonText: '確認'
                 })
             })
+    })
 
+//	auto fill for login page
+    $('#leofill').on('click', function () {
+        $('#input_phone_num').val('leo1234');
+        $('#input_password').val('123456');
+    })
 
+    $('#garyfill').on('click', function () {
+        $('#input_phone_num').val('Gary1234');
+        $('#input_password').val('123456');
+    })
+
+    $('#adminfill').on('click', function () {
+        $('#input_phone_num').val('admin');
+        $('#input_password').val('admin');
     })
 })
