@@ -1,4 +1,4 @@
-package sellphone.controller;
+package sellphone.forum.controller;
 
 import java.util.List;
 
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import sellphone.model.Post;
-import sellphone.model.Tag;
-import sellphone.service.PostService;
-import sellphone.service.TagService;
+import sellphone.forum.model.Post;
+import sellphone.forum.model.Tag;
+import sellphone.forum.service.PostService;
+import sellphone.forum.service.TagService;
 
 @Controller
 public class PostController {
