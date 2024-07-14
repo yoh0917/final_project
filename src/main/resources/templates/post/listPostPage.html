@@ -5,9 +5,11 @@
 <title>列出訊息</title>
 <style>
     body {
-    	position: relative;
+        position: relative;
         display: flex; 
-        padding-top: 100px ;
+        padding-top: 50px;
+        margin: 0; /* 添加，移除默认的body margin */
+        height: 100vh; /* 添加，使页面高度填满屏幕 */
     }
     .sidebar {
         position: fixed;
@@ -20,9 +22,11 @@
         padding-top: 170px;
     }
     .container {
-      	margin-left: 200px; 
-       /*  padding: 20px; */
-        width: calc(100% - 500px) !important;
+        margin-left: 200px !important;
+        width: calc(100% - 300px); /* 修改：确保容器填满剩余空间 */
+        padding: 50px; /* 恢复padding */
+        box-sizing: border-box; /* 确保padding不会增加总宽度 */
+        overflow-y: auto; /* 添加：使内容超出时可以滚动 */
     }
     .pagination {
         display: flex;
@@ -80,8 +84,8 @@
     .edit-btn .btn {
         flex: 1;
         text-align: center;
-        font-size: 1rem; /* 确保字体大小一致 */
-        padding: 0.5rem 1rem; /* 确保内边距一致 */
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
     }
     .search-container {
         display: flex;
