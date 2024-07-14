@@ -66,7 +66,7 @@ public class PhoneplanService {
     public PhonePlanBean addPhonePlanToUser(Long userId, PhonePlanBean phonePlanBean) {
         System.out.println("Looking for user with ID: " + userId);
         UserPhonePlanList user = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        System.out.println("User found: " + user.getUserName());
+        System.out.println("User found: " + user.getUserId());
         
         phonePlanBean.setUsers(user);  
         return phonePlanRepository.save(phonePlanBean);

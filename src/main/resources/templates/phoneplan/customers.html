@@ -8,17 +8,19 @@
 <body>
     <h1>門號申辦</h1>
     <form th:action="@{/DashBoard/customers/create}" th:object="${customer}" method="post">
+        <input type="hidden" th:value="${userId}" name="userId" />
+        
         <label for="username">名稱:</label>
-        <input type="text" th:field="*{userName}" id="username" required />
+        <input type="text" th:field="*{user.userName}" id="username" required />
         <br />
         <label for="email">電子郵件:</label>
-        <input type="email" th:field="*{email}" id="email" required />
+        <input type="email" th:field="*{user.email}" id="email" required />
         <br />
         <label for="birthday">生日:</label>
-        <input type="date" th:field="*{birthday}" id="birthday" required />
+        <input type="date" th:field="*{user.birthday}" id="birthday" required />
         <br />
         <label for="contactNum">聯絡號碼:</label>
-        <input type="text" th:field="*{contactNum}" id="contactNum" required />
+        <input type="text" th:field="*{user.contactNum}" id="contactNum" required />
         <br />
         <label for="telCompany">電信公司:</label>
         <select th:field="*{telCompany}" id="telCompany" required>
@@ -115,16 +117,18 @@
             $('#contractDuration').val(getRandomContractDuration());
             $('#selectedPlan').val($('#selectedPlan option').eq(1).val()); // 默认选择第一个方案（如果存在）
         }
-             var seenOptions = {};
-            $("#selectedPlan option").each(function() {
-                var text = $(this).text();
-                if (seenOptions[text]) {
-                    $(this).remove();
-                } else {
-                    seenOptions[text] = true;
-                }
-            });
-              $(document).ready(function() {
+
+        var seenOptions = {};
+        $("#selectedPlan option").each(function() {
+            var text = $(this).text();
+            if (seenOptions[text]) {
+                $(this).remove();
+            } else {
+                seenOptions[text] = true;
+            }
+        });
+
+        $(document).ready(function() {
             var urlParams = new URLSearchParams(window.location.search);
             var telCompany = urlParams.get('telCompany');
             var contractType = urlParams.get('contractType');
@@ -143,7 +147,7 @@
             if (dataUsage) {
                 $("#dataUsage").val(dataUsage);
             }
-       });
+        });
     </script>
 </body>
 </html>
