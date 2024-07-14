@@ -32,14 +32,22 @@
                 Log in
             </div> -->
 
-				<label class="inputHint">帳號或手機號碼</label> <input type="text" name="phoneNumber" placeholder="帳號或手機號碼">
-				<label class="inputHint">密碼</label> <input type="password" name="password" placeholder="密碼">
+				<label class="inputHint">帳號或手機號碼</label> <input type="text" name="phoneNumber" id="input_phone_num"
+					placeholder="帳號或手機號碼">
+				<label class="inputHint">密碼</label> <input type="password" name="password" id="input_password"
+					placeholder="密碼">
 				<div class="error-hint" th:text="${error}? ${error}"></div>
 				<lable></lable>
 				<input class="submitBtn active" type="submit" value="登入">
 				<div class="footer">
 					<a th:href="@{/UserRegist}" class="forgot-password">會員註冊</a> <a href="#"
 						class="forgot-password">忘記密碼</a>
+				</div>
+
+				<div class="justify-content-around mt-2">
+					<button type="button" class="btn btn-secondary" id="leofill">會員leo</button>
+					<button type="button" class="btn btn-secondary" id="garyfill">會員gary</button>
+					<button type="button" class="btn btn-secondary" id="adminfill">管理員</button>
 				</div>
 			</form>
 		</div>

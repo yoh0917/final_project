@@ -46,6 +46,14 @@ public class UserAjaxController {
 	@Autowired
 	private UserUtil userUtil;
 	
+	@PostMapping("/UserEmailEdit")
+	@ResponseBody
+	public String userEmailEdit(@RequestBody Users user ,Model m, HttpServletRequest req) {
+		String email = user.getEmail();
+		
+		
+		return
+	}
 	
 	@PostMapping("/CheckRegist")
 	@ResponseBody

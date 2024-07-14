@@ -103,7 +103,20 @@ $(function () {
                     confirmButtonText: '確認'
                 })
             })
+    })
 
+    $('#leofill').on('click', function () {
+        $('#input_phone_num').val('leo1234');
+        $('#input_password').val('123456');
+    })
 
+    $('#garyfill').on('click', function () {
+        $('#input_phone_num').val('Gary1234');
+        $('#input_password').val('123456');
+    })
+
+    $('#adminfill').on('click', function () {
+        $('#input_phone_num').val('admin');
+        $('#input_password').val('admin');
     })
 })
