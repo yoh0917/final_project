@@ -7,9 +7,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import sellphone.dashboard.user.model.UserRepository;
 import sellphone.dashboard.user.model.UserView;
 import sellphone.dashboard.user.model.UserViewRepository;
@@ -48,11 +52,22 @@ public class UserAjaxController {
 	
 	@PostMapping("/UserEmailEdit")
 	@ResponseBody
-	public String userEmailEdit(@RequestBody Users user ,Model m, HttpServletRequest req) {
-		String email = user.getEmail();
+	public String userEmailEdit(@RequestBody Map<String, String> map, @SessionAttribute("userId") String userId , Model m) {
+		Users user = uService.findById(userId);
+		user.setEmail(map.get("email"));
+		uService.update(user);
 		
+		return user.getEmail();
+	}
+	
+	@PostMapping("/UserContactNumEdit")
+	@ResponseBody
+	public String userContactNumEdit(@RequestBody Map<String, String> map, @SessionAttribute("userId") String userId , Model m) {
+		Users user = uService.findById(userId);
+		user.setContactNum(map.get("contactNum"));
+		uService.update(user);
 		
-		return
+		return user.getContactNum();
 	}
 	
 	@PostMapping("/CheckRegist")
@@ -136,10 +151,8 @@ public class UserAjaxController {
             email.matches(noSpaceRegex) &&
             email.matches(singleAtRegex)
             ) {
-        	System.out.println("test");
         	return null;
         } else {
-        	System.out.println("tes2");
         	return "請輸入正確email";
         }
        		
