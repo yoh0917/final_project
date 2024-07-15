@@ -47,6 +47,32 @@ public class Product {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private List<Photo> productPhoto = new ArrayList<>();
 
+	
+	
+	public String getProductbrand() {
+		return productbrand;
+	}
+
+
+
+	public void setProductbrand(String productbrand) {
+		this.productbrand = productbrand;
+	}
+
+
+
+	public String getProductstatus() {
+		return productstatus;
+	}
+
+
+
+	public void setProductstatus(String productstatus) {
+		this.productstatus = productstatus;
+	}
+
+
+
 	public Integer getProductid() {
 		return productid;
 	}

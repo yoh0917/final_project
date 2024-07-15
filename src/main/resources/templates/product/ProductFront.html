@@ -168,17 +168,9 @@
             }
 
         }
-
-
-
-
-
-
         function backData() {
             var minPrice = document.getElementById('minPrice').value;
             var maxPrice = document.getElementById('maxPrice').value;
-
-
 
             if (minPrice == '' && maxPrice == '') {
                 axios.get(`/sellphone/front/api/backlist`
@@ -217,8 +209,6 @@
             }
 
         }
-
-
         document.querySelector('#minPrice').addEventListener('keyup', sendPriceData)
         document.querySelector('#maxPrice').addEventListener('keyup', sendPriceData)
         document.querySelector('#minPrice').addEventListener('keyup', backData)
