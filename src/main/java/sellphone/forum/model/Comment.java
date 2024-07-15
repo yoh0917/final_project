@@ -15,33 +15,25 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "F0002_COMMENT")
 public class Comment {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer commentId;
-	
-	@Column(insertable=false, updatable=false)
-	private Integer postId;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "postId", nullable = false)
-	private Post post;
-	
-	@Column(nullable = false, length = 255)
-	private Integer userId;
-	
-	
-	@Column(nullable = false, columnDefinition = "TEXT")
-	private String commentContent;
-	
-	@Column(nullable = false, updatable = false)
-	@org.hibernate.annotations.CreationTimestamp
-	private LocalDateTime commentCreatedTime;
-	
-	
-	@Column(nullable = false)
-	@org.hibernate.annotations.UpdateTimestamp
-	private LocalDateTime commentLastUpdatedTime;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int commentId;
+
+    @Column(name = "commentContent", columnDefinition = "nvarchar(max)", nullable = false)
+    private String commentContent;
+
+    @Column(name = "commentCreatedTime", nullable = false)
+    private LocalDateTime commentCreatedTime;
+
+    @Column(name = "commentLastUpdatedTime", nullable = false)
+    private LocalDateTime commentLastUpdatedTime;
+
+    @Column(name = "postId")
+    private Integer postId;
+
+    @Column(name = "userId", nullable = false)
+    private int userId;
 	
 	public Comment() {
 		
