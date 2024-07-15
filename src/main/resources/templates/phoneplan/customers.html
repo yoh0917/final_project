@@ -8,19 +8,19 @@
 <body>
     <h1>門號申辦</h1>
     <form th:action="@{/DashBoard/customers/create}" th:object="${customer}" method="post">
-        <input type="hidden" th:value="${userId}" name="userId" />
+        <input type="hidden" th:field="*{userId}" name="userId" />
         
         <label for="username">名稱:</label>
-        <input type="text" th:field="*{user.userName}" id="username" required />
+        <input type="text" th:field="*{userName}" id="username" required />
         <br />
         <label for="email">電子郵件:</label>
-        <input type="email" th:field="*{user.email}" id="email" required />
+        <input type="email" th:field="*{email}" id="email" required />
         <br />
         <label for="birthday">生日:</label>
-        <input type="date" th:field="*{user.birthday}" id="birthday" required />
+        <input type="date" th:field="*{birthday}" id="birthday" required />
         <br />
-        <label for="contactNum">聯絡號碼:</label>
-        <input type="text" th:field="*{user.contactNum}" id="contactNum" required />
+        <label for="phoneNumber">聯絡號碼:</label>
+        <input type="text" th:field="*{phoneNumber}" id="phoneNumber" required />
         <br />
         <label for="telCompany">電信公司:</label>
         <select th:field="*{telCompany}" id="telCompany" required>
@@ -82,7 +82,7 @@
             return birthday.toISOString().split('T')[0];
         }
 
-        function getRandomContactNum() {
+        function getRandomPhoneNumber() {
             return '09' + Math.floor(100000000 + Math.random() * 900000000);
         }
 
@@ -110,23 +110,13 @@
             $('#username').val(getRandomName());
             $('#email').val(getRandomEmail());
             $('#birthday').val(getRandomBirthday());
-            $('#contactNum').val(getRandomContactNum());
+            $('#phoneNumber').val(getRandomPhoneNumber());
             $('#telCompany').val(getRandomTelCompany());
             $('#generation').val(getRandomGeneration());
             $('#contractType').val(getRandomContractType());
             $('#contractDuration').val(getRandomContractDuration());
             $('#selectedPlan').val($('#selectedPlan option').eq(1).val()); // 默认选择第一个方案（如果存在）
         }
-
-        var seenOptions = {};
-        $("#selectedPlan option").each(function() {
-            var text = $(this).text();
-            if (seenOptions[text]) {
-                $(this).remove();
-            } else {
-                seenOptions[text] = true;
-            }
-        });
 
         $(document).ready(function() {
             var urlParams = new URLSearchParams(window.location.search);

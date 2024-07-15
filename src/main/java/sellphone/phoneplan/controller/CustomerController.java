@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import sellphone.phoneplan.model.PhonePlanBean;
 import sellphone.phoneplan.service.CustomerService;
 import sellphone.dashboard.user.model.UserPhonePlanList;
-import sellphone.dashboard.user.model.Users;
-import sellphone.dashboard.user.service.UserService;
 import sellphone.phoneplan.service.PhoneplanService;
+import sellphone.dashboard.user.model.Users;
+import sellphone.phoneplan.model.UsersRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -24,39 +25,42 @@ public class CustomerController {
     private PhoneplanService phoneplanService;
 
     @Autowired
-    private UserService userService;
+    private UsersRepository usersRepository;
 
     @GetMapping("/DashBoard/customers/create")
     public String createCustomerForm(Model model) {
         List<PhonePlanBean> plans = phoneplanService.findAllPlans();
         model.addAttribute("plans", plans);
-        UserPhonePlanList userPhonePlanList = new UserPhonePlanList();
-        model.addAttribute("customer", userPhonePlanList);
-        
-        // 假设在这里我们有一个硬编码的 userId（实际应用中应从登录用户或上下文中获取）
-        String userId = "someUserId";
-        model.addAttribute("userId", userId);
-        
-        return "phoneplan/customers";
+        model.addAttribute("customer", new UserPhonePlanList());
+        return "phoneplan/customers"; 
     }
 
     @PostMapping("/DashBoard/customers/create")
-    public String createCustomer(@ModelAttribute UserPhonePlanList customer, @RequestParam("selectedPlan") int selectedPlanId, @RequestParam("userId") String userId) {
+    public String createCustomer(@ModelAttribute UserPhonePlanList customer, @RequestParam("selectedPlan") int selectedPlanId) {
         PhonePlanBean selectedPlan = phoneplanService.findPhonePlanById(selectedPlanId);
-        Users user = userService.findById(userId);
 
+        Users user = usersRepository.findById(customer.getUserId()).orElse(null);
         if (user == null) {
-            // 用户不存在，处理错误
-            return "redirect:/DashBoard/customers/create?error=UserNotFound";
+            // 如果用户不存在，创建用户
+            user = new Users();
+            user.setUserId(customer.getUserId());
+            user.setUserName(customer.getUserName());
+            user.setUserAccount(customer.getUserAccount());
+            user.setPassword(customer.getPassword());
+            user.setEmail(customer.getEmail());
+            user.setContactNum(customer.getContactNum());
+            if (customer.getBirthday() != null) {
+                user.setBirthday(customer.getBirthday().toLocalDate());
+            }
+            user.setCreateTime(LocalDateTime.now()); // 设置创建时间
+            usersRepository.save(user);
         }
 
-        customer.setUser(user); // 设置用户对象
-        customer.setUserId(userId); // 设置用户ID
-        customer.setPhonePlanBean(selectedPlan); // 确保 phonePlanBean 被设置
-
+        // 插入 UserPhonePlanList
+        customer.getPhonePlans().add(selectedPlan);
+        selectedPlan.getUserPhonePlanLists().add(customer);
         customerService.saveCustomer(customer);
-        selectedPlan.addUserPhonePlanList(customer); // 使用 addUserPhonePlanList 方法
-        phoneplanService.createPhonePlan(selectedPlan);
+
         return "redirect:/DashBoard/customers/create";
     }
 }
