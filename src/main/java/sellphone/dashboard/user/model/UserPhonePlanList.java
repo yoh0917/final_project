@@ -22,9 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sellphone.phoneplan.model.PhonePlanBean;
 
-@Setter
-@Getter
-@NoArgsConstructor
+
 @Entity
 @Table(name = "U00004_UserPhonePlanList")
 public class UserPhonePlanList {
@@ -34,76 +32,50 @@ public class UserPhonePlanList {
     @Column(name = "userPhonePlanID")
     private int userPhonePlanID;
 
-    @Column(name = "userId", nullable = false)
-    private String userId;
-
-    @Column(name = "username")
-    private String userName;
-
-    @Column(name = "useraccount")
-    private String userAccount;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "Email")
-    private String email;
-
-    @Column(name = "contactNum")
-    private String contactNum;
-
-    @Column(name = "birthday")
-    private Date birthday;
-
-    @Column(name = "status")
-    private int status;
-
-    @Column(name = "createTime")
-    private LocalDateTime createTime;
-
-    @Column(name = "prevlogTime")
-    private LocalDateTime prevlogTime;
-
-    @Column(name = "telCompany")
-    private String telCompany;
-
-    @Column(name = "generation")
-    private String generation;
-
-    @Column(name = "ContractType")
-    private String contractType;
-
-    @Column(name = "ContractDuration")
-    private String contractDuration;
-
-    @Column(name = "phoneNumber")
-    private String phoneNumber;
-
+    @Column(nullable = false, insertable=false, updatable=false)
+  	private String userId;
+    
+    @Column(nullable = false, insertable=false, updatable=false)
+    private int planID;
+    
+    private String phoneNum;
+    
     @Column(name = "agreementDate", columnDefinition = "Date")
     private String agreementDate;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-        name = "UserPhonePlan",
-        joinColumns = @JoinColumn(name = "userPhonePlanID"),
-        inverseJoinColumns = @JoinColumn(name = "planID")
-    )
-    private Set<PhonePlanBean> phonePlans = new LinkedHashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "planID")
+    private PhonePlanBean phonePlan;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    @JoinColumn(name = "userId")
     private Users user;
 
-    public Set<PhonePlanBean> getPhonePlans() {
-        return phonePlans;
-    }
-
-    public void setPhonePlans(Set<PhonePlanBean> phonePlans) {
-        this.phonePlans = phonePlans;
-    }
-
+    public UserPhonePlanList() {
+	}
+    
+    
 	public void setPhonePlanBean(PhonePlanBean phonePlanBean) {
-		// TODO Auto-generated method stub
 		
 	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+
+
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+	
+	
 }
