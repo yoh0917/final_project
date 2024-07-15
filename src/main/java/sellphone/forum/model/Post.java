@@ -42,7 +42,6 @@ public class Post {
     @Column(nullable = false, updatable = false)
     @org.hibernate.annotations.CreationTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date postCreatedTime;
     
     @Column(nullable = false)
