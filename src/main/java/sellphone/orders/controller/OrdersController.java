@@ -121,8 +121,13 @@ public class OrdersController {
 //    public String revenueAnalysis() {
 //        return "OrderFrontend/Cart";
 //    }
+//
+//    @GetMapping("/cart")
+//    public String revenueAnalysis() {
+//        return "OrderFrontend/Cart";
+//    }
 
-    @GetMapping("/revenue")
+    @GetMapping("/checkout")
     public String revenueAnalysis() {
         return "OrderFrontend/Checkout";
     }
