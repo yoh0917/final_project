@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping("/DashBoard/orders")
@@ -86,11 +87,6 @@ public class OrdersController {
         }
     }
 
-//    @GetMapping("/add")
-//    public String showAddOrderPage(Model model) {
-//        model.addAttribute("order", new Order());
-//        return "OrderBackend/AddOrder";
-//    }
 //
 //    // 處理新增訂單的提交
 //    @PostMapping("/add")
@@ -112,24 +108,50 @@ public class OrdersController {
         return "Order marked as deleted";
     }
 
-//    @GetMapping("/revenue")
-//    public String revenueAnalysis() {
-//        return "OrderBackend/DashboardOrder";
-//    }
-
-//    @GetMapping("/revenue")
-//    public String revenueAnalysis() {
-//        return "OrderFrontend/Cart";
-//    }
-//
-//    @GetMapping("/cart")
-//    public String revenueAnalysis() {
-//        return "OrderFrontend/Cart";
-//    }
-
-    @GetMapping("/checkout")
+    //DashboardOrder
+    @GetMapping("/revenue")
     public String revenueAnalysis() {
-        return "OrderFrontend/Checkout";
+        return "OrderBackend/DashboardOrder";
+    }
+
+//    @GetMapping("/revenue")
+//    public String revenueAnalysis() {
+//        return "OrderFrontend/Cart";
+//    }
+
+    //購物車
+    @GetMapping("/cart1")
+    public String cartPage() {
+        return "OrderFrontend/Cart1";
+    }
+
+    //結帳
+    @GetMapping("/checkout1")
+    public String checkoutPage() {
+        return "OrderFrontend/Checkout1";
+    }
+
+//    @GetMapping("/checkout")
+//    public String revenueAnalysis() {
+//        return "OrderFrontend/Checkout";
+//    }
+
+
+
+    @GetMapping("/testproduct")
+    @ResponseBody
+    public List<Map<String, Object>> getOrderDetails() {
+        return Arrays.asList(
+                Map.of(
+                        "顧客ID", "P00000288",
+                        "總計", 41503,
+                        "商品明細", Arrays.asList(
+                                Map.of("產品ID", 39, "數量", 1, "價格", 40160, "總計", 40160),
+                                Map.of("產品ID", 33, "數量", 1, "價格", 5917, "總計", 5917),
+                                Map.of("產品ID", 26, "數量", 1, "價格", 42881, "總計", 42881)
+                        )
+                )
+        );
     }
 
 }
