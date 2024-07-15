@@ -1,4 +1,4 @@
-package sellphone.model;
+package sellphone.forum.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

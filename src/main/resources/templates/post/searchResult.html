@@ -4,26 +4,23 @@
     <meta charset="UTF-8">
     <title>搜索结果</title>
     <style>
-        body {
-           	position: relative;
+    
+       	body {
+        	position: relative;
         	display: flex; 
-        	padding-top: 100px ;
-        }
+        	padding-top: 50px;
+        	margin: 0; /* 添加，移除默认的body margin */
+        	height: 100vh; /* 添加，使页面高度填满屏幕 */
+    	}
         .container {
-            margin-left: 200px; 
-      		 /*  padding: 20px; */
-        	width: calc(100% - 500px) !important;
-        }
-        .container {
-        	/* padding-top: 200px;
-      		margin-left: 200px; 
-      		padding-top: 200px;
-      		padding: 20px; 
-       		width: calc(100% - 400px) !important; */
-       		 margin-left: 200px; 
-      		 /*  padding: 20px; */
-        	width: calc(100% - 500px) !important;
-   		 }
+        	margin-left: 250px !important;
+        	margin-right:50px !important;
+        	width: calc(100% - 300px); /* 修改：确保容器填满剩餘空间 */
+        	padding: 50px; /* 恢復padding */
+        	box-sizing: border-box; /* 确保padding不會增加總寬度 */
+        	overflow-y: auto; /* 添加：使内容超出時可以滾動 */
+   	 	}
+        
         .header-row {
             display: flex;
             justify-content: space-between;

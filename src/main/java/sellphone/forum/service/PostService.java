@@ -1,4 +1,4 @@
-package sellphone.service;
+package sellphone.forum.service;
 
 import java.util.Collections;
 import java.util.List;
@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sellphone.model.Post;
-import sellphone.model.PostRepository;
-import sellphone.model.TagRepository;
-import sellphone.model.Tag;
+import sellphone.forum.model.Post;
+import sellphone.forum.model.PostRepository;
+import sellphone.forum.model.Tag;
+import sellphone.forum.model.TagRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
