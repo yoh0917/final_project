@@ -20,7 +20,7 @@ public class OrderDetail {
     @Column(name = "PRODUCTID", length = 10)
     private String productId;
 
-    @Column(name = "COUNT")
+    @Column(name = "QUANTITY ")
     private Integer count;
 
     @Column(name = "PRICE")
