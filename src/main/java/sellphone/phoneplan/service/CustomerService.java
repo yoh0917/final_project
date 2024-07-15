@@ -19,8 +19,8 @@ public class CustomerService {
 
     @Transactional
     public void saveCustomer(UserPhonePlanList customer) {
-        Users user = usersRepository.findById(customer.getUserId()).orElseThrow(() -> new IllegalArgumentException("User ID does not exist in the Users table"));
-        customer.setUser(user);
-        userPhonePlanListRepository.save(customer);
+//        Users user = usersRepository.findById(customer.getUserId()).orElseThrow(() -> new IllegalArgumentException("User ID does not exist in the Users table"));
+//        customer.setUser(user);
+//        userPhonePlanListRepository.save(customer);
     }
 }
