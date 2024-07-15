@@ -125,6 +125,7 @@
 						</div>						
 						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
 							<div class="text-center">
+							<a class="btn btn-outline-dark mt-auto" onclick="sendtopay">直接購買</a>
 								<a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a>
 							</div>
 						</div>
@@ -140,17 +141,9 @@
             }
 
         }
-
-
-
-
-
-
         function backData() {
             var minPrice = document.getElementById('minPrice').value;
             var maxPrice = document.getElementById('maxPrice').value;
-
-
 
             if (minPrice == '' && maxPrice == '') {
                 axios.get(`/sellphone/front/api/backlist`
@@ -173,6 +166,7 @@
 						</div>						
 						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
 							<div class="text-center">
+							<a class="btn btn-outline-dark mt-auto" onclick="sendtopay">直接購買</a>
 								<a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a>
 							</div>
 						</div>
@@ -188,8 +182,6 @@
             }
 
         }
-
-
         document.querySelector('#minPrice').addEventListener('keyup', sendPriceData)
         document.querySelector('#maxPrice').addEventListener('keyup', sendPriceData)
         document.querySelector('#minPrice').addEventListener('keyup', backData)
