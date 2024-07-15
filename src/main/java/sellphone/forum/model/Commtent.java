@@ -9,8 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "F0002_COMMENT")
+//@Entity
+//@Table(name = "F0002_COMMENT")
 public class Commtent {
 	
 	@Id

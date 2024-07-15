@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +21,7 @@ import sellphone.dashboard.admin.service.AdminService;
 import sellphone.dashboard.user.model.UserPhonePlanList;
 import sellphone.dashboard.user.model.UserPhonePlanListRepository;
 import sellphone.dashboard.user.model.Users;
+import sellphone.dashboard.user.service.UserMailService;
 import sellphone.dashboard.user.service.UserService;
 import sellphone.dashboard.user.service.UserUtil;
 
@@ -39,9 +40,23 @@ public class UserController {
 	@Autowired
 	private UserPhonePlanListRepository userPplR;
 
+	@Autowired
+	private UserMailService uMailService;
+	
+
+	@GetMapping("/TestEmail")
+	@ResponseBody
+	public String testEmail() {	
+		
+		uMailService.sendSimpleHtml(
+                List.of("eeit183test@gmail.com", "leo312654@gmail.com"),
+                "Simple html",
+                "<html><body><p>你好！</p><p>My name is <b>Vincent</b>.</p></body></html>"
+        );		
+		return "Test sucessfully";
+	}
 	
 //	--------------------------------------  UserInfo controller ----------------------------------------------------
-
 	@GetMapping("/UserInfoList")
 	public String UserPlanInfo(Model m, HttpServletRequest req, HttpServletResponse resp) {
 		
