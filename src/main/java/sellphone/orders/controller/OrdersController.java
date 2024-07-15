@@ -117,9 +117,14 @@ public class OrdersController {
 //        return "OrderBackend/DashboardOrder";
 //    }
 
+//    @GetMapping("/revenue")
+//    public String revenueAnalysis() {
+//        return "OrderFrontend/Cart";
+//    }
+
     @GetMapping("/revenue")
     public String revenueAnalysis() {
-        return "OrderFrontend/Cart";
+        return "OrderFrontend/Checkout";
     }
 
 }
