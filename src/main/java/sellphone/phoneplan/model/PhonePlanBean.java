@@ -14,13 +14,11 @@ import lombok.Setter;
 import sellphone.dashboard.user.model.UserPhonePlanList;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+//@Getter
+//@Setter
+//@NoArgsConstructor
 @Table(name = "F00001_PhonePlans")
-public class PhonePlanBean implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class PhonePlanBean  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,9 +61,9 @@ public class PhonePlanBean implements Serializable {
     @Column(name = "Gift")
     private String gift;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "phonePlans")
-    private Set<UserPhonePlanList> userPhonePlanLists = new LinkedHashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "phonePlan", cascade = CascadeType.ALL )
+	private Set<UserPhonePlanList> userPhonePlanLists = new LinkedHashSet<UserPhonePlanList>();
+    
 
     @Override
     public int hashCode() {
@@ -101,14 +99,16 @@ public class PhonePlanBean implements Serializable {
         this.userPhonePlanLists = userPhonePlanLists;
     }
 
-    public void addUserPhonePlanList(UserPhonePlanList userPhonePlanList) {
-        this.userPhonePlanLists.add(userPhonePlanList);
-        userPhonePlanList.setPhonePlanBean(this);
-    }
-
-    public void setUsers(UserPhonePlanList user) {
-        // TODO Auto-generated method stub
-    }
+    
+    
+//    public void addUserPhonePlanList(UserPhonePlanList userPhonePlanList) {
+//        this.userPhonePlanLists.add(userPhonePlanList);
+//        userPhonePlanList.setPhonePlanBean(this);
+//    }
+//
+//    public void setUsers(UserPhonePlanList user) {
+//        // TODO Auto-generated method stub
+//    }
 
     @Override
     public String toString() {
@@ -118,4 +118,112 @@ public class PhonePlanBean implements Serializable {
                 + intraNetCall + ", interNetCall=" + interNetCall + ", localCall=" + localCall + ", discount="
                 + discount + ", gift=" + gift + ", userPhonePlanLists=" + userPhonePlanLists + "]";
     }
+    public PhonePlanBean() {
+	}
+
+	public int getPlanID() {
+		return planID;
+	}
+
+	public void setPlanID(int planID) {
+		this.planID = planID;
+	}
+
+	public String getPlanName() {
+		return planName;
+	}
+
+	public void setPlanName(String planName) {
+		this.planName = planName;
+	}
+
+	public String getTelCompany() {
+		return telCompany;
+	}
+
+	public void setTelCompany(String telCompany) {
+		this.telCompany = telCompany;
+	}
+
+	public String getContractType() {
+		return contractType;
+	}
+
+	public void setContractType(String contractType) {
+		this.contractType = contractType;
+	}
+
+	public String getContractDuration() {
+		return contractDuration;
+	}
+
+	public void setContractDuration(String contractDuration) {
+		this.contractDuration = contractDuration;
+	}
+
+	public String getGeneration() {
+		return generation;
+	}
+
+	public void setGeneration(String generation) {
+		this.generation = generation;
+	}
+
+	public String getDataUsage() {
+		return dataUsage;
+	}
+
+	public void setDataUsage(String dataUsage) {
+		this.dataUsage = dataUsage;
+	}
+
+	public String getDataTransferRate() {
+		return dataTransferRate;
+	}
+
+	public void setDataTransferRate(String dataTransferRate) {
+		this.dataTransferRate = dataTransferRate;
+	}
+
+	public String getIntraNetCall() {
+		return intraNetCall;
+	}
+
+	public void setIntraNetCall(String intraNetCall) {
+		this.intraNetCall = intraNetCall;
+	}
+
+	public String getInterNetCall() {
+		return interNetCall;
+	}
+
+	public void setInterNetCall(String interNetCall) {
+		this.interNetCall = interNetCall;
+	}
+
+	public String getLocalCall() {
+		return localCall;
+	}
+
+	public void setLocalCall(String localCall) {
+		this.localCall = localCall;
+	}
+
+	public String getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+
+	public String getGift() {
+		return gift;
+	}
+
+	public void setGift(String gift) {
+		this.gift = gift;
+	}
+    
+    
 }
