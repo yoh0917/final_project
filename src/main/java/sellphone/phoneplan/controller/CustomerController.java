@@ -33,8 +33,8 @@ public class CustomerController {
     @PostMapping("/DashBoard/customers/create")
     public String createCustomer(@ModelAttribute UserPhonePlanList customer, @RequestParam("selectedPlan") int selectedPlanId) {
         PhonePlanBean selectedPlan = phoneplanService.findPhonePlanById(selectedPlanId);
-        customer.getPhonePlans().add(selectedPlan);
-        selectedPlan.getUserPhonePlanLists().add(customer);
+//        customer.getPhonePlans().add(selectedPlan);
+//        selectedPlan.getUserPhonePlanLists().add(customer);
         customerService.saveCustomer(customer);
         return "redirect:/DashBoard/customers/create";
     }
