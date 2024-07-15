@@ -19,7 +19,7 @@ CREATE TABLE F00001_PhonePlans
 select *from F00001_PhonePlans 
 
 
-select *from U00001_Users
+select *from U00004_UserPhonePlanList
 
 
 Drop TABLE U00001_Users

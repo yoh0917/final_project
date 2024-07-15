@@ -2,12 +2,11 @@ package sellphone.phoneplan.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import sellphone.dashboard.user.model.UserPhonePlanList;
+import sellphone.dashboard.user.model.Users;
+import sellphone.dashboard.user.model.UserPhonePlanListRepository;
 import sellphone.phoneplan.model.UsersRepository;
-
-import java.util.List;
 
 @Service
 public class CustomerService {
@@ -15,16 +14,13 @@ public class CustomerService {
     @Autowired
     private UsersRepository usersRepository;
 
-    public List<UserPhonePlanList> findAllCustomers() {
-        return usersRepository.findAll();
-    }
-
-    public List<UserPhonePlanList> findAllByUserId(String userId) {
-        return usersRepository.findAllByUserId(userId);
-    }
+    @Autowired
+    private UserPhonePlanListRepository userPhonePlanListRepository;
 
     @Transactional
     public void saveCustomer(UserPhonePlanList customer) {
-        usersRepository.save(customer);
+        Users user = usersRepository.findById(customer.getUserId()).orElseThrow(() -> new IllegalArgumentException("User ID does not exist in the Users table"));
+        customer.setUser(user);
+        userPhonePlanListRepository.save(customer);
     }
 }
