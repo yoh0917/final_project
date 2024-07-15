@@ -1,76 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>產品資訊</title>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
+	<meta charset="UTF-8">
+	<title>產品資訊</title>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
 	<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
 	<div class="container">
 		<h2 class="text-center">產品資訊</h2>
 		<div th:if="${product != null}">
-			<form th:action="@{/DashBoard/updateproduct}" method="post"
-				enctype="multipart/form-data">
+			<form th:action="@{/DashBoard/updateproduct}" method="post" enctype="multipart/form-data">
 				<div class="table-responsive">
 					<table class="table table-bordered">
 						<tr>
 							<th class="bg-light">商品編號</th>
-							<td><input type="text" class="form-control" name="productid"
-								th:value="${product.productid}" readonly></td>
+							<td><input type="text" class="form-control" name="productid" th:value="${product.productid}"
+									readonly></td>
 						</tr>
 						<tr>
 							<th class="bg-light">商品品牌</th>
-							<td><select class="form-select" name="productbrand"
-								th:value="${product.productbrand}" required>
-									<option disabled>選擇品牌</option>
-									<option>Apple</option>
-									<option>Samsung</option>
-							</select></td>
+							<td><select class="form-select" name="productbrand" th:value="${product.productbrand}"
+									required>
+									<option value="">選擇品牌</option>
+									<option value="Apple">Apple</option>
+									<option value="Samsung">Samsung</option>
+								</select></td>
 						</tr>
 						<tr>
 							<th class="bg-light">商品名稱</th>
-							<td><input type="text" class="form-control"
-								name="productName" th:value="${product.productName}"></td>
+							<td><input type="text" class="form-control" name="productName"
+									th:value="${product.productName}"></td>
 						</tr>
 						<tr>
 							<th class="bg-light">商品價格</th>
-							<td><input type="text" class="form-control" name="price"
-								th:value="${product.price}"></td>
+							<td><input type="text" class="form-control" name="price" th:value="${product.price}"></td>
 						</tr>
 						<tr>
 							<th class="bg-light">商品描述</th>
 							<td><textarea class="form-control" name="description"
 									th:text="${product.description}"></textarea></td>
 						</tr>
-
+						<tr>
+							<th>商品狀態</th>
+							<td>
+								<select class="form-select" id="productstatus" name="productstatus"
+								onchange="updateProductName()" required>
+								<option value="">狀態選擇</option>
+								<option value="1">上架</option>
+								<option value="0">下架</option>
+							</select>			
+						</td>
+						</tr>
 						<tr>
 							<th class="bg-light">庫存數量</th>
-							<td><input type="text" class="form-control"
-								name="stockQuantity" th:value="${product.stockQuantity}"></td>
+							<td><input type="text" class="form-control" name="stockQuantity"
+									th:value="${product.stockQuantity}"></td>
 						</tr>
 						<tr>
 							<th class="bg-light">商品圖片</th>
-							<td><th:block th:each="onePhoto : ${product.productPhoto}">
-									<img th:src="@{/photos/download(photoid=${onePhoto.photoid})}"
-										class="img-thumbnail" style="max-width: 200px; height: auto;">
-									<input type="checkbox" checked name="photoid"
-										th:value="${onePhoto.photoid}">
+							<td>
+								<th:block th:each="onePhoto : ${product.productPhoto}">
+									<img th:src="@{/photos/download(photoid=${onePhoto.photoid})}" class="img-thumbnail"
+										style="max-width: 200px; height: auto;">
+									<input type="checkbox" checked name="photoid" th:value="${onePhoto.photoid}">
 								</th:block> <input type="checkbox" checked name="photoid" value="0"
-								style="display: none;"></td>
+									style="display: none;">
+							</td>
 						</tr>
 						<tr>
 							<th class="bg-light">上傳新圖片</th>
-							<td><input type="file" name="file" id="file"
-								class="form-control-file" multiple></td>
+							<td><input type="file" name="file" id="file" class="form-control-file" multiple></td>
 						</tr>
 					</table>
 				</div>
 				<br> <input type="submit" value="更新" class="btn btn-dark ">
-				<input type="button" onclick="returnProduct()" value="返回上一頁"
-					class="btn btn-secondary ">
+				<input type="button" onclick="returnProduct()" value="返回上一頁" class="btn btn-secondary ">
 			</form>
 		</div>
 		<div th:if="${product == null}">
@@ -81,9 +88,9 @@
 		function returnProduct() {
 			window.location.href = '/sellphone/DashBoard/productlist';
 		}
-
-        document.querySelector
+		document.querySelector
 
 	</script>
 </body>
+
 </html>

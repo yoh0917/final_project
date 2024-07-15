@@ -1,123 +1,129 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/">
+
 <head>
-<meta charset="UTF-8">
-<title>商品後台總攬</title>
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-<style>
-body {
-	font-family: Arial, sans-serif;
-}
+	<meta charset="UTF-8">
+	<title>商品後台總攬</title>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
 
-.insert {
-	margin-bottom: 15px;
-}
+		.insert {
+			margin-bottom: 15px;
+		}
 
-.container {
-	margin-left: 200px;
-}
+		.container {
+			margin-left: 200px;
+		}
 
-h1 {
-	color: #333;
-	text-align: center;
-}
+		h1 {
+			color: #333;
+			text-align: center;
+		}
 
-.form-container {
-	display: flex;
-	justify-content: center;
-	gap: 20px;
-}
-.low-stock {
-    color: red;
-}
+		.form-container {
+			display: flex;
+			justify-content: center;
+			gap: 20px;
+		}
 
-.search input[type="text"], .row2 input[type="text"], .row2 textarea {
-	width: 200px;
-	padding: 4px;
-	margin: 5px 0;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	text-align: center;
-}
+		.low-stock {
+			color: red;
+		}
 
-.btn2 {
-	padding: 10px 20px;
-	background-color: #4CAF50;
-	color: white;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	text-align: center;
-}
+		.search input[type="text"],
+		.row2 input[type="text"],
+		.row2 textarea {
+			width: 200px;
+			padding: 4px;
+			margin: 5px 0;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			text-align: center;
+		}
 
-.btn2:hover {
-	background-color: #45a049;
-}
+		.btn2 {
+			padding: 10px 20px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			text-align: center;
+		}
 
-table {
-	margin: 20px auto;
-	border-collapse: collapse;
-	width: 90%;
-}
+		.btn2:hover {
+			background-color: #45a049;
+		}
 
-table, th, td {
-	border: 1px solid #ddd;
-}
+		table {
+			margin: 20px auto;
+			border-collapse: collapse;
+			width: 90%;
+		}
 
-th, td {
-	padding: 12px;
-	text-align: center;
-}
+		table,
+		th,
+		td {
+			border: 1px solid #ddd;
+		}
 
-tr:nth-child(even) {
-	background-color: #f2f2f2;
-}
-.btn-dark {
-        background-color: #333;
-        border-color: #333;
-    }
-input[type="button"] {
-	padding: 5px 10px;
-	background-color: #f44336;
-	color: white;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	text-align: center;
-}
+		th,
+		td {
+			padding: 12px;
+			text-align: center;
+		}
 
-input[type="button"]:hover {
-	background-color: #d32f2f;
-}
+		tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
 
-label {
-	display: inline-block;
-	width: 100px;
-	text-align: right;
-	margin-right: 10px;
-}
-</style>
+		.btn-dark {
+			background-color: #333;
+			border-color: #333;
+		}
+
+		input[type="button"] {
+			padding: 5px 10px;
+			background-color: #f44336;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			text-align: center;
+		}
+
+		input[type="button"]:hover {
+			background-color: #d32f2f;
+		}
+
+		label {
+			display: inline-block;
+			width: 100px;
+			text-align: right;
+			margin-right: 10px;
+		}
+	</style>
 </head>
+
 <body>
 	<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
 
 	<div class="container">
 		<h1 class="mt-2">商品後台總攬</h1>
 		<div class="insert">
-			<input class="btn btn-dark" type="submit" value="產品新增"
-				th:onclick="insertProduct()">
+			<input class="btn btn-dark" type="submit" value="產品新增" th:onclick="insertProduct()">
 		</div>
 		<table id="productTable" class="display">
 			<thead>
 				<tr>
 					<th>商品編號</th>
 					<th>商品品牌</th>
-					<th>商品圖片</th>
 					<th>商品名稱</th>
-					<th>商品價格</th>
-					<th>商品描述</th>
 					<th>商品庫存</th>
+					<th>商品狀態</th>
 					<th>修改</th>
 					<th>刪除</th>
 				</tr>
@@ -125,20 +131,15 @@ label {
 			<tbody>
 				<tr th:each="product : ${listProduct}">
 					<td th:text="${product.productid}"></td>
-					<td th:text="${product.productbrand}"></td>					
-					<td><th:block th:each="onePhoto : ${product.productPhoto}">
-							<img width="100px"
-								th:src="@{/photos/download(photoid=${onePhoto.photoid})}" />
-						</th:block></td>
+					<td th:text="${product.productbrand}"></td>
 					<td th:text="${product.productName}"></td>
-					<td th:text="'$'+${product.price}"></td>
-					<td th:text="${product.description}"></td>
-					<td th:text="${product.stockQuantity}" 
+					<td th:text="${product.stockQuantity}"
 						th:classappend="${product.stockQuantity} < 10 ? 'low-stock' : ''"></td>
+					<td th:text="${product.productstatus == 1 ? '上架' : (product.productstatus == 0 ? '下架' : '')}"></td>
 					<td><i class="fa-solid fa-square-pen" style="cursor: pointer;"
-						th:onclick="'editProduct(' + ${product.productid} + ')'"> </i></td>
+							th:onclick="'editProduct(' + ${product.productid} + ')'"> </i></td>
 					<td><i class="fa-solid fa-trash" style="cursor: pointer;"
-						th:onclick="'deleteProduct(' + ${product.productid} + ')'"> </i></td>
+							th:onclick="'deleteProduct(' + ${product.productid} + ')'"> </i></td>
 
 				</tr>
 			</tbody>
@@ -149,22 +150,23 @@ label {
 	<script type="text/javascript" charset="utf8"
 		src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 	<script>
-    $(document).ready(function () {
-        $('#productTable').DataTable();
-    });
-    function editProduct(productid) {
-        window.location.href = '/sellphone/DashBoard/productfindone?productid=' + productid;
-    }
-    function deleteProduct(productid) {
-        if (confirm('確定要刪除這個商品嗎？')) {
-            window.location.href = '/sellphone/DashBoard/deleteproduct?productid=' + productid;
-        }
-    }
-    function insertProduct() {
-        window.location.href = '/sellphone/DashBoard/product/upload';
-    }
-    
-    
-</script>
+		$(document).ready(function () {
+			$('#productTable').DataTable();
+		});
+		function editProduct(productid) {
+			window.location.href = '/sellphone/DashBoard/productfindone?productid=' + productid;
+		}
+		function deleteProduct(productid) {
+			if (confirm('確定要刪除這個商品嗎？')) {
+				window.location.href = '/sellphone/DashBoard/deleteproduct?productid=' + productid;
+			}
+		}
+		function insertProduct() {
+			window.location.href = '/sellphone/DashBoard/product/upload';
+		}
+
+
+	</script>
 </body>
+
 </html>

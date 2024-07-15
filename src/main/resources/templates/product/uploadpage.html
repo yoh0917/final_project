@@ -29,10 +29,11 @@ img#imagePreview {
 				<form th:action="@{/DashBoard/product/sendphoto}" method="post"
 					enctype="multipart/form-data">
 					<div class="mb-3">
-						<label for="productbrand" class="form-label">商品品牌:</label> <select
+						<label for="productbrand" class="form-label" >商品品牌:</label> 
+						<select
 							class="form-select" id="productbrand" name="productbrand"
-							required onchange="updateProductName()">
-							<option disabled selected>選擇品牌</option>
+							required onchange="updateProductName()" >
+							<option value="">選擇品牌</option>
 							<option>Apple</option>
 							<option>Samsung</option>
 						</select>
