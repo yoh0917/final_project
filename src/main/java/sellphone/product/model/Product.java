@@ -61,13 +61,13 @@ public class Product {
 
 
 
-	public String getProductstatus() {
+	public Integer getProductstatus() {
 		return productstatus;
 	}
 
 
 
-	public void setProductstatus(String productstatus) {
+	public void setProductstatus(Integer productstatus) {
 		this.productstatus = productstatus;
 	}
 
