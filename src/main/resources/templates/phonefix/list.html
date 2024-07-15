@@ -93,7 +93,8 @@
                         <th>送修者</th>
                         <th>送修日期</th>
                         <th>維修費用</th>
-                        <th>維修部件</th>
+                        <th>維修細節</th>
+                        <th>維修狀態</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -103,7 +104,8 @@
                         <td th:text="${phoneFix.fixName}">送修者</td>
                         <td th:text="${phoneFix.fixDate}">送修日期</td>
                         <td th:text="${phoneFix.fixCost}">維修費用</td>
-                        <td th:text="${phoneFix.fixPort}">維修部件</td>
+                        <td th:text="${phoneFix.fixPort}">維修細節</td>
+                        <td th:text="${phoneFix.fixState}">維修狀態</td>
                         <td>
                             <a th:href="@{/DashBoard/phonefixs/update(fixid=${phoneFix.fixID})}" class="btn btn-warning btn-sm" style="background-color: #adb5bd; color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">修改</a>
                             <form th:action="@{/DashBoard/phonefixs/delete/{id}(id=${phoneFix.fixID})}" method="post" style="display:inline;" onsubmit="confirmDelete(event)">
@@ -124,12 +126,13 @@
             $('#myTable').DataTable({
                 responsive: true,
                 columnDefs: [
-                    { width: '5%', targets: 0 }, // 維修編號
-                    { width: '15%', targets: 1 }, // 送修者
-                    { width: '10%', targets: 2 }, // 送修日期
-                    { width: '10%', targets: 3 }, // 維修費用
-                    { width: '30%', targets: 4 }, // 維修部件
-                    { width: '15%', targets: 5 }  // 操作
+                    { width: '9%', targets: 0 }, // 維修編號
+                    { width: '9%', targets: 1 }, // 送修者
+                    { width: '9%', targets: 2 }, // 送修日期
+                    { width: '9%', targets: 3 }, // 維修費用
+                    { width: '45%', targets: 4 }, // 維修部件
+                    { width: '9%', targets: 5 }, // 狀態
+                    { width: '9%', targets: 5 }  // 操作
                 ]
             });
         });

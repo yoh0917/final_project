@@ -33,10 +33,6 @@ public class PhotoController {
 	public ProductRepository pRep;
 	
 	
-	
-	
-	
-	
 	@GetMapping("/DashBoard/product/upload")
 	public String home() {
 		return "product/uploadpage";

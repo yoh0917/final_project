@@ -112,9 +112,24 @@ public class OrdersController {
         return "Order marked as deleted";
     }
 
-    @GetMapping("/revenue")
+//    @GetMapping("/revenue")
+//    public String revenueAnalysis() {
+//        return "OrderBackend/DashboardOrder";
+//    }
+
+//    @GetMapping("/revenue")
+//    public String revenueAnalysis() {
+//        return "OrderFrontend/Cart";
+//    }
+//
+//    @GetMapping("/cart")
+//    public String revenueAnalysis() {
+//        return "OrderFrontend/Cart";
+//    }
+
+    @GetMapping("/checkout")
     public String revenueAnalysis() {
-        return "OrderBackend/DashboardOrder";
+        return "OrderFrontend/Checkout";
     }
 
 }

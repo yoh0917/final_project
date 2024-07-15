@@ -1,6 +1,5 @@
 package sellphone.forum.model;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,13 +35,12 @@ public class Post {
     @Column(nullable = true, length = 255)
     private String title;
     
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "nvarchar(max)")
     private String postContent;
     
     @Column(nullable = false, updatable = false)
     @org.hibernate.annotations.CreationTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date postCreatedTime;
     
     @Column(nullable = false)
@@ -57,8 +55,8 @@ public class Post {
     inverseJoinColumns = @JoinColumn(name = "tagId"))
     private List<Tag> tags = new ArrayList<>();
     
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Comment> comments;
 
     @Lob
     @Column(nullable = true)
@@ -123,13 +121,13 @@ public class Post {
         this.tags = tags;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
+//    public List<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(List<Comment> comments) {
+//        this.comments = comments;
+//    }
 
     public byte[] getImage() {
         return image;
