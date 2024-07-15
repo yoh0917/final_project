@@ -1,4 +1,4 @@
-package sellphone.model;
+package sellphone.forum.model;
 
 
 

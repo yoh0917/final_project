@@ -1,4 +1,4 @@
-package sellphone.controller;
+package sellphone.forum.controller;
 
 import java.util.List;
 
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import sellphone.model.Post;
-import sellphone.model.Tag;
-import sellphone.service.PostService;
-import sellphone.service.TagService;
+import sellphone.forum.model.Post;
+import sellphone.forum.model.Tag;
+import sellphone.forum.service.PostService;
+import sellphone.forum.service.TagService;
 
 @Controller
 public class PostController {
@@ -103,5 +103,16 @@ public class PostController {
         model.addAttribute("posts", posts);
         model.addAttribute("tagName", tagName);
         return "post/searchResult";
+    }
+    @GetMapping("/post/frontPage")
+    public String findByPageFront(@RequestParam(value = "p", defaultValue = "1") Integer pageNum, 
+                             @RequestParam(value = "keyword", required=false) String keyword, Model model) {
+        Page<Post> page = postService.findByPage(pageNum);
+        Post latestPost = postService.findLatestPost();
+        List<Tag> allTags = tagService.findAllTags();  
+        model.addAttribute("latestPost", latestPost);
+        model.addAttribute("page", page);
+        model.addAttribute("allTags", allTags);  
+        return "post/postFrontPage";
     }
 }
