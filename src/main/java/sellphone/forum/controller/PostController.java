@@ -1,5 +1,9 @@
 package sellphone.forum.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import sellphone.forum.model.Post;
 import sellphone.forum.model.Tag;
@@ -33,11 +38,23 @@ public class PostController {
 
     @PostMapping("/post/addPost")
     public String addPost(@RequestParam("title") String title, @RequestParam("content") String content,
-                          @RequestParam("tags") List<String> tags, Model model) {
+                          @RequestParam("tags") List<String> tags, Model model,
+                          @RequestParam("image") MultipartFile image) {
         Post post = new Post();
         post.setTitle(title);
         post.setPostContent(content);
         postService.savePostWithTags(post, tags);
+        
+//        if (!image.isEmpty()) {
+//            try {
+//                byte[] bytes = image.getBytes();
+//                Path path = Paths.get(UPLOAD_DIR + "/" + image.getOriginalFilename());
+//                Files.write(path, bytes);
+//                post.setImage(path.toString());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         Post latestPost = postService.findLatestPost();
         model.addAttribute("latestPost", latestPost);
