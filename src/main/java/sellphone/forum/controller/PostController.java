@@ -104,4 +104,15 @@ public class PostController {
         model.addAttribute("tagName", tagName);
         return "post/searchResult";
     }
+    @GetMapping("/post/frontPage")
+    public String findByPageFront(@RequestParam(value = "p", defaultValue = "1") Integer pageNum, 
+                             @RequestParam(value = "keyword", required=false) String keyword, Model model) {
+        Page<Post> page = postService.findByPage(pageNum);
+        Post latestPost = postService.findLatestPost();
+        List<Tag> allTags = tagService.findAllTags();  
+        model.addAttribute("latestPost", latestPost);
+        model.addAttribute("page", page);
+        model.addAttribute("allTags", allTags);  
+        return "post/postFrontPage";
+    }
 }

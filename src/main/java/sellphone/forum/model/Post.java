@@ -1,11 +1,9 @@
 package sellphone.forum.model;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -26,128 +25,117 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "F0001_POST")
 public class Post {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer postId;
-	
-	@Column(nullable = true)
-	private Integer userId;
-	
-	@Column(nullable = true, length = 255)
-	private String title;
-	
-	@Column(nullable = false, columnDefinition = "TEXT")
-	private String postContent;
-	
-	@Column(nullable = false, updatable = false)
-	@org.hibernate.annotations.CreationTimestamp
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date postCreatedTime;
-	
-	
-	@Column(nullable = false)
-	@org.hibernate.annotations.UpdateTimestamp
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date postLastUpdatedTime;
-	
-	@ManyToMany    
-	@JoinTable(name = "POST_TAG",
-	joinColumns = @JoinColumn(name = "postId"),
-	inverseJoinColumns = @JoinColumn(name = "tagId"))
-	private List<Tag> tags = new ArrayList<>();
-	
-
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer postId;
+    
+    @Column(nullable = true)
+    private Integer userId;
+    
+    @Column(nullable = true, length = 255)
+    private String title;
+    
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String postContent;
+    
+    @Column(nullable = false, updatable = false)
+    @org.hibernate.annotations.CreationTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date postCreatedTime;
+    
+    @Column(nullable = false)
+    @org.hibernate.annotations.UpdateTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date postLastUpdatedTime;
+    
+    @ManyToMany    
+    @JoinTable(name = "POST_TAG",
+    joinColumns = @JoinColumn(name = "postId"),
+    inverseJoinColumns = @JoinColumn(name = "tagId"))
+    private List<Tag> tags = new ArrayList<>();
+    
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
+    @Lob
+    @Column(nullable = true)
+    private byte[] image;
+    
+    public Post() {
+    }
 
-	public Post() {
-		
-	}
+    public Integer getPostId() {
+        return postId;
+    }
 
+    public void setPostId(Integer postId) {
+        this.postId = postId;
+    }
 
-	public Integer getPostId() {
-		return postId;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public void setPostId(Integer postId) {
-		this.postId = postId;
-	}
+    public String getTitle() {
+        return title;
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public Integer getUserId() {
-		return userId;
-	}
+    public String getPostContent() {
+        return postContent;
+    }
 
+    public void setPostContent(String postContent) {
+        this.postContent = postContent;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public Date getPostCreatedTime() {
+        return postCreatedTime;
+    }
 
+    public void setPostCreatedTime(Date postCreatedTime) {
+        this.postCreatedTime = postCreatedTime;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Date getPostLastUpdatedTime() {
+        return postLastUpdatedTime;
+    }
 
+    public void setPostLastUpdatedTime(Date postLastUpdatedTime) {
+        this.postLastUpdatedTime = postLastUpdatedTime;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public List<Tag> getTags() {
+        return tags;
+    }
 
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 
-	public String getPostContent() {
-		return postContent;
-	}
+    public List<Comment> getComments() {
+        return comments;
+    }
 
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
-	public void setPostContent(String postContent) {
-		this.postContent = postContent;
-	}
+    public byte[] getImage() {
+        return image;
+    }
 
-
-	public Date getPostCreatedTime() {
-		return postCreatedTime;
-	}
-
-
-	public void setPostCreatedTime(Date postCreatedTime) {
-		this.postCreatedTime = postCreatedTime;
-	}
-
-
-	public Date getPostLastUpdatedTime() {
-		return postLastUpdatedTime;
-	}
-
-
-	public void setPostLastUpdatedTime(Date postLastUpdatedTime) {
-		this.postLastUpdatedTime = postLastUpdatedTime;
-	}
-
-
-	public List<Tag> getTags() {
-		return tags;
-	}
-
-
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
-	
-	
-
-
-	
-	
-		
-	
-
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 }
-
-
-
-
