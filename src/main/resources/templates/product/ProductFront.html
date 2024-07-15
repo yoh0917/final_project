@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>商品總攬</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
@@ -43,8 +43,8 @@
 
                 <div id="each" th:each="product : ${frontlistProduct}" class="col mb-5">
                     <div class="card h-100">
-                        <div align="center" class="mt-5">
-                            <img width="180px" height="160px"
+                        <div align="center" class="m-5 ">
+                            <img width="200px" height="190px"
                                 th:src="@{/photos/download(photoid=${product.productPhoto[0].photoid})}" />
                         </div>
                         <!-- Product details -->
@@ -61,6 +61,7 @@
                         <!-- Product actions -->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto" onclick="sendtopay">直接購買</a>
                                 <a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a>
                             </div>
                         </div>

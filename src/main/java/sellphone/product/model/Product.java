@@ -36,7 +36,12 @@ public class Product {
 	
 	@Column(name = "STOCKQUANTITY")
 	private String stockQuantity;
-
+	
+	@Column(name="PRODUCTBRAND")
+	private String productbrand;
+	
+	@Column(name = "PRODUCTSTATUS")
+	private String productstatus;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
     private List<Photo> productPhoto = new ArrayList<>();
