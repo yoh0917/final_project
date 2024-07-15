@@ -24,12 +24,16 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer productid;
+	
 	@Column(name = "PRODUCTNAME")
 	private String productName;
+	
 	@Column(name = "PRICE")
-	private String price;
-	@Column(name = "DESCRIPTION")
+	private Integer price;
+	
+	@Column(name = "DESCRIPTION",length = 200)
 	private String description;
+	
 	@Column(name = "STOCKQUANTITY")
 	private String stockQuantity;
 
@@ -61,13 +65,13 @@ public class Product {
 
 
 
-	public String getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 
 
 
-	public void setPrice(String price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 

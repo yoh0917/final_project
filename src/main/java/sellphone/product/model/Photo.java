@@ -1,5 +1,7 @@
 package sellphone.product.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,6 +33,7 @@ public class Photo {
 	@Lob
 	private byte[] photoFile; 
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="productid")
 	private Product product;

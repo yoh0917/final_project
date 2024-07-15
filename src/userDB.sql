@@ -23,10 +23,10 @@ create table U00002_UserStatus(
 )
 
 insert into U00002_UserStatus( statusId, statusDescrib )
-values (-2, '§R°£'), 
-	   (-1,'«ÊÂê'),
-	   (0,'¥¼ÅçÃÒ'),
-	   (1,'¥¿±`')
+values (-2, 'åˆªé™¤'), 
+	   (-1,'å°é–'),
+	   (0,'æœªé©—è­‰'),
+	   (1,'æ­£å¸¸')
 
 select * from U00002_UserStatus
 
@@ -54,18 +54,18 @@ create table U00001_Users(
 	foreign key(status) references U00002_userStatus(statusID) 
 );
 
-insert into U00001_Users(userId, username, useraccount, password, Email, status , contactNum, birthday)
-values('2406141234','Gary','Gary1234' , '123456', 'leo312654@gmail.com',1 ,'0900000000','1984-06-06'),
-	('2406144578', 'leo','leo1234', '123456', 'leo312654@gmail.com',1 ,'0987705857','1984-04-02'),
-	('2406145678', 'Ben','Ben1234', '123456', 'Ben@test.com',1 ,'0987654321','1970-01-05'),
-	('2406144567', 'Ken','Ken2145', '123456', 'Ken@test.com',1 , '0912345678','1997-10-06'),
-	('2406141111', 'David','David4589', '123456', 'David@test.com',1 , '0923456781','1988-08-06'),
-	('2406148971', 'Yaris','Yaris1456', '123456', 'Yaris@test.com',1 , '0934567812','2002-05-04'),
-	('2406147615', 'Susan','Susan2442', '123456', 'Susan@test.com',1 , '0945678123','1990-02-24'),
-	('2406141236', 'Mary1','Mary456', '123456', 'Mary@test.com',1 , '0956781234','1995-12-14'),
-	('2407031245', 'Amber','Amber1456', '123456', 'Amber@test.com',1 , '0967812345','1975-09-15'),
-	('2406143458', 'Josh','Josh1456', '123456', 'Josh@test.com',1 , '0978123456','1993-10-02'),
-	('2407033414', 'admin','admin', '123456', 'admin@test.com',-2 , '0912345671','1993-10-02')
+insert into U00001_Users(userId, userName, useraccount, password, email, status , contactNum, birthday)
+values('2406140001','Gary','Gary1234' , '123456', 'leo312654@gmail.com',1 ,'0900000000','1984-06-06'),
+	('2406140002', 'leo','leo1234', '123456', 'leo312654@gmail.com',1 ,'0987705857','1984-04-02'),
+	('2406140003', 'Ben','Ben1234', '123456', 'Ben@test.com',1 ,'0987654321','1970-01-05'),
+	('2406140004', 'Ken','Ken2145', '123456', 'Ken@test.com',1 , '0912345678','1997-10-06'),
+	('2406140005', 'David','David4589', '123456', 'David@test.com',1 , '0923456781','1988-08-06'),
+	('2406140006', 'Yaris','Yaris1456', '123456', 'Yaris@test.com',1 , '0934567812','2002-05-04'),
+	('2406140007', 'Susan','Susan2442', '123456', 'Susan@test.com',1 , '0945678123','1990-02-24'),
+	('2406140008', 'Mary1','Mary456', '123456', 'Mary@test.com',1 , '0956781234','1995-12-14'),
+	('2407030009', 'Amber','Amber1456', '123456', 'Amber@test.com',1 , '0967812345','1975-09-15'),
+	('2406140010', 'Josh','Josh1456', '123456', 'Josh@test.com',1 , '0978123456','1993-10-02'),
+	('2407030001', 'admin','admin', '123456', 'admin@test.com',-2 , '0912345671','1993-10-02')
 
 select * from U00001_users
 select * from U00002_UserStatus
@@ -73,12 +73,33 @@ select * from  U00003_Admin
 
 Create View U00001_Users_V AS
  Select 
+		u.userId,
 		u.userName, 
-		u.userAccount,
-		u.Email,
+		u.useraccount,
+		u.email,
 		u.contactNum,
 		s.statusDescrib,
 		u.createTime,
 		u.prevlogTime
-	from U00001_Users u JOIN U00002_UserStatus s ON u.status == s.statusId
+	from U00001_Users u JOIN U00002_UserStatus s ON u.status = s.statusId
 	Where s.statusId <> -2
+
+select * from U00001_Users_V
+
+
+
+insert into U00004_UserPhonePlanList(agreementDate, phoneNunber, planID, userId)
+values
+	('2024-07-15','0912345678',2,'2406140002'),
+	('2022-07-21','0923456789',61,'2406140002'),
+	('2023-11-08','0945678912',35,'2406140002'),
+	('2023-09-12','0956789123',23,'2406140001'),
+	('2024-05-10','0978912345',40,'2406140001')
+
+
+
+
+
+select * from U00001_users
+select * from U00002_UserStatus
+select * from  U00003_Admin

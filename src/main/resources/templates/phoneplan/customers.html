@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>門號申辦</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>門號申辦</h1>
+    <form th:action="@{/DashBoard/customers/create}" th:object="${customer}" method="post">
+        <input type="hidden" th:field="*{userId}" name="userId" />
+        
+        <label for="username">名稱:</label>
+        <input type="text" th:field="*{userName}" id="username" required />
+        <br />
+        <label for="email">電子郵件:</label>
+        <input type="email" th:field="*{email}" id="email" required />
+        <br />
+        <label for="birthday">生日:</label>
+        <input type="date" th:field="*{birthday}" id="birthday" required />
+        <br />
+        <label for="phoneNumber">聯絡號碼:</label>
+        <input type="text" th:field="*{phoneNumber}" id="phoneNumber" required />
+        <br />
+        <label for="telCompany">電信公司:</label>
+        <select th:field="*{telCompany}" id="telCompany" required>
+            <option value="" disabled selected>無選擇</option>
+            <option value="中華電信">中華電信</option>
+            <option value="台灣大哥大">台灣大哥大</option>
+            <option value="遠傳電信">遠傳電信</option>
+        </select>
+        <br />
+        <label for="generation">網絡類型:</label>
+        <select th:field="*{generation}" id="generation" required>
+            <option value="" disabled selected>無選擇</option>
+            <option value="4G">4G</option>
+            <option value="5G">5G</option>
+        </select>
+        <br />
+        <label for="contractType">合約類型:</label>
+        <select th:field="*{contractType}" id="contractType" required>
+            <option value="" disabled selected>無選擇</option>
+            <option value="新申辦">新申辦</option>
+            <option value="續約">續約</option>
+            <option value="攜碼">攜碼</option>
+        </select>
+        <br />
+        <label for="contractDuration">合約期限:</label>
+        <select th:field="*{contractDuration}" id="contractDuration" required>
+            <option value="" disabled selected>無選擇</option>
+            <option value="12個月">12個月</option>
+            <option value="24個月">24個月</option>
+            <option value="30個月">30個月</option>
+            <option value="36個月">36個月</option>
+        </select>
+        <br />
+        <label for="selectedPlan">選擇方案:</label>
+        <select name="selectedPlan" id="selectedPlan" required>
+            <option value="" disabled selected>無選擇</option>
+            <option th:each="plan : ${plans}" th:value="${plan.planID}" th:text="${plan.planName}"></option>
+        </select>
+        <br />
+        <button type="button" onclick="fillRandomData()">自動生成</button>
+        <button type="submit">提交</button>
+    </form>
+
+    <script>
+        function getRandomName() {
+            const names = ['Alice', 'Bob', 'Charlie', 'David', 'Eva'];
+            return names[Math.floor(Math.random() * names.length)];
+        }
+
+        function getRandomEmail() {
+            const domains = ['example.com', 'mail.com', 'test.com'];
+            return getRandomName().toLowerCase() + '@' + domains[Math.floor(Math.random() * domains.length)];
+        }
+
+        function getRandomBirthday() {
+            const start = new Date(1970, 0, 1);
+            const end = new Date(2000, 11, 31);
+            const birthday = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+            return birthday.toISOString().split('T')[0];
+        }
+
+        function getRandomPhoneNumber() {
+            return '09' + Math.floor(100000000 + Math.random() * 900000000);
+        }
+
+        function getRandomTelCompany() {
+            const companies = ['中華電信', '台灣大哥大', '遠傳電信'];
+            return companies[Math.floor(Math.random() * companies.length)];
+        }
+
+        function getRandomGeneration() {
+            const generations = ['4G', '5G'];
+            return generations[Math.floor(Math.random() * generations.length)];
+        }
+
+        function getRandomContractType() {
+            const types = ['新申辦', '續約', '攜碼'];
+            return types[Math.floor(Math.random() * types.length)];
+        }
+
+        function getRandomContractDuration() {
+            const durations = ['12個月', '24個月', '30個月', '36個月'];
+            return durations[Math.floor(Math.random() * durations.length)];
+        }
+
+        function fillRandomData() {
+            $('#username').val(getRandomName());
+            $('#email').val(getRandomEmail());
+            $('#birthday').val(getRandomBirthday());
+            $('#phoneNumber').val(getRandomPhoneNumber());
+            $('#telCompany').val(getRandomTelCompany());
+            $('#generation').val(getRandomGeneration());
+            $('#contractType').val(getRandomContractType());
+            $('#contractDuration').val(getRandomContractDuration());
+            $('#selectedPlan').val($('#selectedPlan option').eq(1).val()); // 默认选择第一个方案（如果存在）
+        }
+
+        $(document).ready(function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var telCompany = urlParams.get('telCompany');
+            var contractType = urlParams.get('contractType');
+            var generation = urlParams.get('generation');
+            var dataUsage = urlParams.get('dataUsage');
+
+            if (telCompany) {
+                $("#telCompany").val(telCompany);
+            }
+            if (contractType) {
+                $("#contractType").val(contractType);
+            }
+            if (generation) {
+                $("#generation").val(generation);
+            }
+            if (dataUsage) {
+                $("#dataUsage").val(dataUsage);
+            }
+        });
+    </script>
+</body>
+</html>

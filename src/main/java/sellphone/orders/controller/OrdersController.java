@@ -114,7 +114,7 @@ public class OrdersController {
 
     @GetMapping("/revenue")
     public String revenueAnalysis() {
-        return "OrderBackend/Revenue";
+        return "OrderBackend/DashboardOrder";
     }
 
 }

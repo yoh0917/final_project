@@ -120,7 +120,7 @@ label {
 					<td th:text="${product.productid}"></td>
 					<td><th:block th:each="onePhoto : ${product.productPhoto}">
 							<img width="100px"
-								th:src="@{/DashBoard/photos/download(photoid=${onePhoto.photoid})}" />
+								th:src="@{/photos/download(photoid=${onePhoto.photoid})}" />
 						</th:block></td>
 					<td th:text="${product.productName}"></td>
 					<td th:text="'$'+${product.price}"></td>

@@ -2,7 +2,9 @@ package sellphone;
 import java.util.regex.Pattern;
 
 public class Test {
-
+	
+	
+	
     public static boolean isValidEmail(String email) {
         // Regular expression to validate email format, including no consecutive dots
         String emailRegex = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
