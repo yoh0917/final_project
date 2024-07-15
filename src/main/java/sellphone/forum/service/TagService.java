@@ -1,12 +1,12 @@
-package sellphone.service;
+package sellphone.forum.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sellphone.model.Tag;
-import sellphone.model.TagRepository;
+import sellphone.forum.model.Tag;
+import sellphone.forum.model.TagRepository;
 
 @Service
 public class TagService {

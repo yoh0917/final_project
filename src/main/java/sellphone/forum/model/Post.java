@@ -1,4 +1,4 @@
-package sellphone.model;
+package sellphone.forum.model;
 
 
 import java.time.LocalDateTime;
@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -56,6 +58,10 @@ public class Post {
 	joinColumns = @JoinColumn(name = "postId"),
 	inverseJoinColumns = @JoinColumn(name = "tagId"))
 	private List<Tag> tags = new ArrayList<>();
+	
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 
 
 	public Post() {

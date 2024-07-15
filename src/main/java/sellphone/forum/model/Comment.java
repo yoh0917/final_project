@@ -1,27 +1,35 @@
-package sellphone.model;
+package sellphone.forum.model;
 
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "F0002_COMMENT")
-public class Commtent {
+public class Comment {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer commentId;
 	
-	@Column(nullable = false)
+	@Column(insertable=false, updatable=false)
 	private Integer postId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "postId", nullable = false)
+	private Post post;
 	
 	@Column(nullable = false, length = 255)
 	private Integer userId;
+	
 	
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String commentContent;
@@ -35,10 +43,7 @@ public class Commtent {
 	@org.hibernate.annotations.UpdateTimestamp
 	private LocalDateTime commentLastUpdatedTime;
 	
-	
-
-
-	public Commtent() {
+	public Comment() {
 		
 	}
 
