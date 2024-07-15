@@ -8,6 +8,8 @@
     <style>
         body {
             background-color: #f8f9fa; /* 黑白灰背景 */
+            width: 85%; /
+            
         }
         .container {
             background-color: #e9ecef; /* 容器背景 */
@@ -17,14 +19,13 @@
             width: 30%; /* 調整容器寬度 */
             margin-right: auto;
             margin-left: auto;
-            transform: translateX(10%); /* 往右偏移 */
+            transform: translateX(17%); /* 往右偏移 */
         }
         h2 {
             color: #343a40; /* 深灰色標題 */
         }
         .table {
             background-color: #ffffff;
-              width: 2220%; /* 調整容器寬度 */
         }
         .table thead th {
             background-color: #343a40; /* 深灰色表頭 */
@@ -121,7 +122,15 @@
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable({
-                responsive: true
+                responsive: true,
+                columnDefs: [
+                    { width: '5%', targets: 0 }, // 維修編號
+                    { width: '15%', targets: 1 }, // 送修者
+                    { width: '10%', targets: 2 }, // 送修日期
+                    { width: '10%', targets: 3 }, // 維修費用
+                    { width: '30%', targets: 4 }, // 維修部件
+                    { width: '15%', targets: 5 }  // 操作
+                ]
             });
         });
     </script>
