@@ -40,7 +40,7 @@ public class CustomerController {
     }
 //    @SessionAttribute("userId") String userId
     @PostMapping("/DashBoard/customers/create")
-    public String createCustomer(@ModelAttribute UserPhonePlanList customer, @RequestParam("selectedPlan") int selectedPlanId, @RequestParam("phoneNum") String phoneNum) {
+    public String createCustomer(@RequestParam("selectedPlan") int selectedPlanId, @RequestParam("phoneNum") String phoneNum) {
         
     	PhonePlanBean selectedPlan = phoneplanService.findPhonePlanById(selectedPlanId);
         Users user = usersRepository.findByUserId("2406140003");
