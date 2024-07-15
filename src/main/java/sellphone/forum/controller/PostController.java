@@ -38,8 +38,7 @@ public class PostController {
 
     @PostMapping("/post/addPost")
     public String addPost(@RequestParam("title") String title, @RequestParam("content") String content,
-                          @RequestParam("tags") List<String> tags, Model model,
-                          @RequestParam("image") MultipartFile image) {
+                          @RequestParam("tags") List<String> tags, Model model) {
         Post post = new Post();
         post.setTitle(title);
         post.setPostContent(content);

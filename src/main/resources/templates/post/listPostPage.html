@@ -28,7 +28,7 @@
         width: calc(100% - 500px);
         box-sizing: border-box;
         padding: 50px 100px; 
-        overflow-y: auto; /* 添加：使内容超出时可以滚动 */
+        overflow-y: auto; /* 添加：使内容超出时可以滾動 */
     }
     .pagination {
         display: flex;
@@ -162,7 +162,7 @@
     <div th:replace="~{layout/DashBoardSidebar}"></div>
     <div class="container">
         <div class="header-row">
-            <h1>文章管理</h1>
+            <h1>文章列表</h1>
             <div class="tag-buttons">
                 <button th:each="tag : ${allTags}" th:text="${tag.name}" class="btn btn-outline-secondary"
                         th:attr="data-tag-name=${tag.name}" onclick="filterPostsByTag(this)"></button>
@@ -268,21 +268,40 @@ function filterPostsByTag(button) {
     fetch('/sellphone/post/byTag?tagName=' + tagName)
         .then(response => response.text())
         .then(data => {
+            
+
             var parser = new DOMParser();
             var doc = parser.parseFromString(data, 'text/html');
             var newContent = doc.querySelector('#accordionExample').innerHTML;
-            document.getElementById('accordionExample').innerHTML = newContent;
-            console.log('Tag Clicked:', tagName);
-            
-            // 在更新內容後重新綁定事件監聽器
+            console.log('Parsed Content:', newContent);
+
+            var accordion = document.getElementById('accordionExample');
+            console.log('Accordion Element:', accordion);
+
+            accordion.innerHTML = newContent;
+
+            // 確保正確的樣式 class 被應用
+            var tags = accordion.querySelectorAll('.badge');
+            tags.forEach(function(tag) {
+                if (!tag.classList.contains('bg-secondary')) {
+                    tag.classList.add('bg-secondary');
+                }
+            });
+
+            // 重新綁定事件監聽器
             bindAccordionEvents();
+
+            console.log('Tag Clicked:', tagName);
         })
         .catch(error => console.error('Error:', error));
 }
 
+
 document.addEventListener("DOMContentLoaded", function() {
     bindAccordionEvents();
 });
+
+
 
     </script>
 </body>

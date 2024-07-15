@@ -57,7 +57,7 @@ public class Post {
     private List<Tag> tags = new ArrayList<>();
     
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @Lob
     @Column(nullable = true)
