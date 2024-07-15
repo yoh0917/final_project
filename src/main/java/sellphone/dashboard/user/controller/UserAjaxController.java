@@ -76,36 +76,17 @@ public class UserAjaxController {
 
 		HttpSession session = req.getSession();
 		int status = 0;
-//		String userId = createUserId(requset.getSession().getId().substring(0, 2));
 		String userId = userUtil.createUserId(session.getId());
 		System.out.println(userId);
 		user.setUserId(userId);
-//		user.setUserName(userName);
-//		user.setUserAccount(userAccount);
-//		user.setPassword(password);
-//		user.setContactNum(contactNumber);
-//		user.setEmail(email);
 		user.setStatus(status);
 		user.setCreateTime(LocalDateTime.now());
-
 		uService.insert(user);
-//		try {
-//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//
-//			LocalDate localDate = LocalDate.parse(birthday, formatter);
-//			Date birthDaySqlDate = Date.valueOf(localDate);
-//			user.setBirthday(birthDaySqlDate);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 
-//		try {
-//		} catch (Exception e) {
-//			
-//			return "redirect:/UserRegistFailed";
-//		}
 		return user.getUserName();
 	}	
+	
+	
 	@GetMapping("/checkContactNum")
 	@ResponseBody
 	public String checkContactNum(@RequestParam("param") String contactNum) {
@@ -118,7 +99,7 @@ public class UserAjaxController {
 		if (user != null)
 			return "此手機號碼已經存在";
 		else {
-			return null;			
+			return "";			
 		}
 		
 	}
@@ -130,7 +111,7 @@ public class UserAjaxController {
 		if (user != null)
 			return "此帳號已經存在";
 		else {
-			return null;			
+			return "";			
 		}
 		
 	}
@@ -151,7 +132,7 @@ public class UserAjaxController {
             email.matches(noSpaceRegex) &&
             email.matches(singleAtRegex)
             ) {
-        	return null;
+        	return "";
         } else {
         	return "請輸入正確email";
         }
