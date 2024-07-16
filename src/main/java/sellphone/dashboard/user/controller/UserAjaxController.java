@@ -33,6 +33,7 @@ import sellphone.dashboard.user.model.UserRepository;
 import sellphone.dashboard.user.model.UserView;
 import sellphone.dashboard.user.model.UserViewRepository;
 import sellphone.dashboard.user.model.Users;
+import sellphone.dashboard.user.service.UserMailService;
 import sellphone.dashboard.user.service.UserService;
 import sellphone.dashboard.user.service.UserUtil;
 
@@ -41,6 +42,9 @@ public class UserAjaxController {
 
 	@Autowired
 	private UserService uService;
+	
+	@Autowired
+	private UserMailService userMailService;
 	
 	@Autowired
 	private UserRepository userRepo;
@@ -86,7 +90,9 @@ public class UserAjaxController {
 		user.setStatus(status);
 		user.setCreateTime(LocalDateTime.now());
 		uService.insert(user);
-
+		
+		userMailService.sendConfirmAccountEmail(user);
+		
 		return user.getUserName();
 	}	
 	
