@@ -129,6 +129,14 @@ $(function () {
     // ============== Regist submit ===============
     $('#register-form').on('submit', function (e) {
         e.preventDefault();
+
+        $('.submitBtn').html(
+            '<div class="spinner-border m-1" role="status">' +
+            '<span class="visually-hidden">Loading...</span>' +
+            '</div>'
+        );
+
+
         url = serverContext + '/CheckRegist'
         const data = new FormData(this)
         axios.post(url, {
@@ -161,6 +169,8 @@ $(function () {
                     cancelButtonColor: '#d33',
                     confirmButtonText: '確認'
                 })
+                $('.submitBtn').html('註冊'
+                );
             })
     })
 
