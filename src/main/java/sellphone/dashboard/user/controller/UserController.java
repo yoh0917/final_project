@@ -127,6 +127,7 @@ public class UserController {
 		case 1: {
 			session.setAttribute("loginUsername", user.getUserName());
 			session.setAttribute("userId",user.getUserId());
+			session.setAttribute("user",user);
 			user.setPrevlogTime(LocalDateTime.now());
 			uService.insert(user);
 			return "redirect:/mainPage";
