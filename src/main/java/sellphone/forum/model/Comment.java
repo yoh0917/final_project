@@ -28,9 +28,10 @@ public class Comment {
 
     @Column(name = "commentLastUpdatedTime", nullable = false)
     private LocalDateTime commentLastUpdatedTime;
-
-    @Column(name = "postId")
-    private Integer postId;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postId", nullable = false)
+    private Post post;
 
     @Column(name = "userId", nullable = false)
     private int userId;
@@ -50,15 +51,7 @@ public class Comment {
 	}
 
 
-	public Integer getPostId() {
-		return postId;
-	}
-
-
-	public void setPostId(Integer postId) {
-		this.postId = postId;
-	}
-
+	
 
 	public Integer getUserId() {
 		return userId;
@@ -68,6 +61,14 @@ public class Comment {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+	
+	public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
 
 
 	public String getCommentContent() {
@@ -98,6 +99,8 @@ public class Comment {
 	public void setCommentLastUpdatedTime(LocalDateTime commentLastUpdatedTime) {
 		this.commentLastUpdatedTime = commentLastUpdatedTime;
 	}
+	
+	
 	
 	
 	

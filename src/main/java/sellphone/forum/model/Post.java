@@ -37,7 +37,6 @@ public class Post {
     
     @Column(nullable = true, length = 255)
     private String title;
-    
 
     @Column(nullable = false, columnDefinition = "nvarchar(max)")
     private String postContent;
@@ -60,8 +59,8 @@ public class Post {
     private List<Tag> tags = new ArrayList<>();
     
 
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Comment> comments;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 
     @Lob
     @Column(nullable = true)
@@ -125,13 +124,13 @@ public class Post {
         this.tags = tags;
     }
 
-//    public List<Comment> getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(List<Comment> comments) {
-//        this.comments = comments;
-//    }
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
 
     public byte[] getImage() {
