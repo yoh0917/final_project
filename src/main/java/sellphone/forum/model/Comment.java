@@ -39,6 +39,15 @@ public class Comment {
 	public Comment() {
 		
 	}
+	
+	public Comment(String commentContent, LocalDateTime commentCreatedTime, LocalDateTime commentLastUpdatedTime, Post post, int userId) {
+        this.commentContent = commentContent;
+        this.commentCreatedTime = commentCreatedTime;
+        this.commentLastUpdatedTime = commentLastUpdatedTime;
+        this.post = post;
+        this.userId = userId;
+    }
+
 
 
 	public Integer getCommentId() {
@@ -100,10 +109,5 @@ public class Comment {
 		this.commentLastUpdatedTime = commentLastUpdatedTime;
 	}
 	
-	
-	
-	
-	
-
 }
 

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sellphone.forum.model.CommentRepository;
 import sellphone.forum.model.Post;
 import sellphone.forum.model.PostRepository;
 import sellphone.forum.model.Tag;
@@ -26,6 +27,9 @@ public class PostService {
 
     @Autowired
     private TagRepository tagRepo;
+    
+    @Autowired
+    private CommentRepository commentRepo;
 
     public Post savePost(Post post) {
         return postRepo.save(post);
@@ -69,9 +73,4 @@ public class PostService {
         return tag != null ? tag.getPosts() : Collections.emptyList();
     }
     
-
-//    public Page<Post> findPostsByTag(String tagName, int pageNum) {
-//        Pageable pageable = PageRequest.of(pageNum - 1, 10); // 每页显示10个帖子
-//        return postRepo.findByTagsName(tagName, pageable);
-//    }
 }

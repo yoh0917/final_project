@@ -21,10 +21,6 @@ import sellphone.forum.service.TagService;
 @Controller
 public class PostController {
 
-
-
-
-
     @Autowired
     private PostService postService;
 
