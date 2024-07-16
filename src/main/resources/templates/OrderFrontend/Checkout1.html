@@ -1,183 +1,147 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>結帳頁面</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link th:href="@{/shoppingcart/checkout/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
-    <link th:href="@{/shoppingcart/checkout/css/style.css}" rel="stylesheet" type="text/css" media="all" />
-    <script th:src="@{/shoppingcart/checkout/js/jquery.min.js}"></script>
-    <script th:src="@{/shoppingcart/checkout/js/simpleCart.min.js}"></script>
-    <link th:href="@{/shoppingcart/checkout/css/jquery-ui.css}" rel="stylesheet" type="text/css">
-    <script th:src="@{/shoppingcart/checkout/js/bootstrap-3.1.1.min.js}" type="text/javascript"></script>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
-    <link th:href="@{/shoppingcart/checkout/css/animate.min.css}" rel="stylesheet">
-    <script th:src="@{/shoppingcart/checkout/js/wow.min.js}"></script>
-    <script>
-        new WOW().init();
-    </script>
+    <link th:href="@{/shoppingcart/checkout/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/vendor/choices.js/public/assets/styles/choices.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/css/style.default.css}" rel="stylesheet" id="theme-stylesheet">
+    <link th:href="@{/shoppingcart/checkout/css/custom.css}" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/shoppingcart/checkout/img/favicon.png}">
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/layout/css/header.css}" rel="stylesheet">
 </head>
 <body>
 
 <!-- Header -->
 <div th:replace="~{/layout/header.html}"></div>
 
-<!-- breadcrumbs -->
-<div class="breadcrumbs">
-    <div class="container">
-        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-            <li><a th:href="@{/index}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>首頁</a></li>
-            <li class="active">結帳頁面</li>
-        </ol>
-    </div>
-</div>
-<!-- //breadcrumbs -->
-<!-- checkout -->
-<div class="checkout">
-    <div class="container">
-        <h3 class="animated wow slideInLeft" data-wow-delay=".5s">您的購物車包含: <span>3 件商品</span></h3>
-        <div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
-            <table class="timetable_sub">
-                <thead>
-                <tr>
-                    <th>序號</th>
-                    <th>商品</th>
-                    <th>數量</th>
-                    <th>商品名稱</th>
-                    <th>服務費</th>
-                    <th>價格</th>
-                    <th>移除</th>
-                </tr>
-                </thead>
-                <tr class="rem1">
-                    <td class="invert">1</td>
-                    <td class="invert-image"><a th:href="@{/single}"><img th:src="@{/shoppingcart/cart/images/22.jpg}" alt=" " class="img-responsive" /></a></td>
-                    <td class="invert">
-                        <div class="quantity">
-                            <div class="quantity-select">
-                                <div class="entry value-minus">&nbsp;</div>
-                                <div class="entry value"><span>1</span></div>
-                                <div class="entry value-plus active">&nbsp;</div>
-                            </div>
+<div class="container">
+    <section class="py-5">
+        <h2 class="h5 text-uppercase mb-4">帳單詳細資料</h2>
+        <div class="row">
+            <div class="col-lg-8">
+                <form action="#">
+                    <div class="row gy-3">
+                        <div class="col-lg-6">
+                            <label class="form-label text-sm text-uppercase" for="firstName">名字</label>
+                            <input class="form-control form-control-lg" type="text" id="firstName" placeholder="輸入您的名字">
                         </div>
-                    </td>
-                    <td class="invert">黑色鞋子</td>
-                    <td class="invert">$5.00</td>
-                    <td class="invert">$290.00</td>
-                    <td class="invert">
-                        <div class="rem">
-                            <div class="close1"> </div>
+                        <div class="col-lg-6">
+                            <label class="form-label text-sm text-uppercase" for="lastName">姓氏</label>
+                            <input class="form-control form-control-lg" type="text" id="lastName" placeholder="輸入您的姓氏">
                         </div>
-                        <script>
-                            $(document).ready(function(c) {
-                                $('.close1').on('click', function(c){
-                                    $('.rem1').fadeOut('slow', function(c){
-                                        $('.rem1').remove();
-                                    });
-                                });
-                            });
-                        </script>
-                    </td>
-                </tr>
-                <tr class="rem2">
-                    <td class="invert">2</td>
-                    <td class="invert-image"><a th:href="@{/single}"><img th:src="@{/shoppingcart/cart/images/30.jpg}" alt=" " class="img-responsive" /></a></td>
-                    <td class="invert">
-                        <div class="quantity">
-                            <div class="quantity-select">
-                                <div class="entry value-minus">&nbsp;</div>
-                                <div class="entry value"><span>1</span></div>
-                                <div class="entry value-plus active">&nbsp;</div>
-                            </div>
+                        <div class="col-lg-6">
+                            <label class="form-label text-sm text-uppercase" for="email">電子郵件地址</label>
+                            <input class="form-control form-control-lg" type="email" id="email" placeholder="例如：Jason@example.com">
                         </div>
-                    </td>
-                    <td class="invert">中央桌</td>
-                    <td class="invert">$5.00</td>
-                    <td class="invert">$250.00</td>
-                    <td class="invert">
-                        <div class="rem">
-                            <div class="close2"> </div>
+                        <div class="col-lg-6">
+                            <label class="form-label text-sm text-uppercase" for="phone">電話號碼</label>
+                            <input class="form-control form-control-lg" type="tel" id="phone" placeholder="例如：+02 245354745">
                         </div>
-                        <script>
-                            $(document).ready(function(c) {
-                                $('.close2').on('click', function(c){
-                                    $('.rem2').fadeOut('slow', function(c){
-                                        $('.rem2').remove();
-                                    });
-                                });
-                            });
-                        </script>
-                    </td>
-                </tr>
-                <tr class="rem3">
-                    <td class="invert">3</td>
-                    <td class="invert-image"><a th:href="@{/single}"><img th:src="@{/shoppingcart/cart/images/11.jpg}" alt=" " class="img-responsive" /></a></td>
-                    <td class="invert">
-                        <div class="quantity">
-                            <div class="quantity-select">
-                                <div class="entry value-minus">&nbsp;</div>
-                                <div class="entry value"><span>1</span></div>
-                                <div class="entry value-plus active">&nbsp;</div>
-                            </div>
+                        <div class="col-lg-6">
+                            <label class="form-label text-sm text-uppercase" for="company">公司名稱（可選）</label>
+                            <input class="form-control form-control-lg" type="text" id="company" placeholder="您的公司名稱">
                         </div>
-                    </td>
-                    <td class="invert">石手鐲</td>
-                    <td class="invert">$5.00</td>
-                    <td class="invert">$299.00</td>
-                    <td class="invert">
-                        <div class="rem">
-                            <div class="close3"> </div>
+                        <div class="col-lg-6 form-group">
+                            <label class="form-label text-sm text-uppercase" for="country">國家</label>
+                            <select class="country" id="country" data-customclass="form-control form-control-lg rounded-0">
+                                <option value>選擇您的國家</option>
+                            </select>
                         </div>
-                        <script>
-                            $(document).ready(function(c) {
-                                $('.close3').on('click', function(c){
-                                    $('.rem3').fadeOut('slow', function(c){
-                                        $('.rem3').remove();
-                                    });
-                                });
-                            });
-                        </script>
-                    </td>
-                </tr>
-                <!--quantity-->
-                <script>
-                    $('.value-plus').on('click', function(){
-                        var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)+1;
-                        divUpd.text(newVal);
-                    });
+                        <div class="col-lg-12">
+                            <label class="form-label text-sm text-uppercase" for="address">地址第一行</label>
+                            <input class="form-control form-control-lg" type="text" id="address" placeholder="門牌號碼和街道名稱">
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="form-label text-sm text-uppercase" for="addressalt">地址第二行</label>
+                            <input class="form-control form-control-lg" type="text" id="addressalt" placeholder="公寓、套房、單位等（可選）">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label text-sm text-uppercase" for="city">城市</label>
+                            <input class="form-control form-control-lg" type="text" id="city">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="form-label text-sm text-uppercase" for="state">省/縣</label>
+                            <input class="form-control form-control-lg" type="text" id="state">
+                        </div>
+                    </div>
 
-                    $('.value-minus').on('click', function(){
-                        var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)-1;
-                        if(newVal>=1) divUpd.text(newVal);
-                    });
-                </script>
-                <!--quantity-->
-            </table>
-        </div>
-        <div class="checkout-left">
-            <div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s">
-                <h4>購物籃</h4>
-                <ul>
-                    <li>商品1 <i>-</i> <span>$250.00 </span></li>
-                    <li>商品2 <i>-</i> <span>$290.00 </span></li>
-                    <li>商品3 <i>-</i> <span>$299.00 </span></li>
-                    <li>總服務費 <i>-</i> <span>$15.00</span></li>
-                    <li>總計 <i>-</i> <span>$854.00</span></li>
-                </ul>
+                    <!-- 信用卡付款信息 -->
+                    <h2 class="h5 text-uppercase mt-4">付款信息</h2>
+                    <div class="row gy-3">
+                        <div class="col-lg-12">
+                            <label class="form-label text-sm text-uppercase" for="cardName">持卡人姓名</label>
+                            <input class="form-control form-control-lg" type="text" id="cardName" placeholder="持卡人姓名">
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="form-label text-sm text-uppercase" for="cardNumber">卡號</label>
+                            <input class="form-control form-control-lg" type="text" id="cardNumber" placeholder="0000 0000 0000 0000">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label text-sm text-uppercase" for="expMonth">到期日</label>
+                            <input class="form-control form-control-lg" type="text" id="expMonth" placeholder="MM">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label text-sm text-uppercase" for="expYear">&nbsp;</label>
+                            <input class="form-control form-control-lg" type="text" id="expYear" placeholder="YYYY">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label text-sm text-uppercase" for="cvv">CVC/CVV</label>
+                            <input class="form-control form-control-lg" type="text" id="cvv" placeholder="***">
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <button class="btn btn-primary" type="submit">立即付款</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
-                <a th:href="@{/single}"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>繼續購物</a>
-                <a th:href="@{/checkout1}"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>結帳</a>
+            <!-- 訂單摘要-->
+            <div class="col-lg-4">
+                <div class="card border-0 rounded-0 p-lg-4 bg-light">
+                    <div class="card-body">
+                        <h5 class="text-uppercase mb-4">您的訂單</h5>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex align-items-center justify-content-between"><strong class="small fw-bold">紅色數字智能手錶</strong><span class="text-muted small">$250</span></li>
+                            <li class="border-bottom my-2"></li>
+                            <li class="d-flex align-items-center justify-content-between"><strong class="small fw-bold">灰色耐克跑鞋</strong><span class="text-muted small">$351</span></li>
+                            <li class="border-bottom my-2"></li>
+                            <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small fw-bold">總計</strong><span>$601</span></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="clearfix"> </div>
         </div>
-    </div>
+    </section>
 </div>
-<!-- //checkout -->
 
 <!-- Footer -->
 <div th:replace="~{/layout/footer.html}"></div>
 
+<!-- JavaScript files-->
+<script th:src="@{/shoppingcart/checkout/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/glightbox/js/glightbox.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/swiper/swiper-bundle.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/choices.js/public/assets/scripts/choices.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/js/front.js}"></script>
+<script>
+    function injectSvgSprite(path) {
+        var ajax = new XMLHttpRequest();
+        ajax.open("GET", path, true);
+        ajax.send();
+        ajax.onload = function(e) {
+            var div = document.createElement("div");
+            div.className = 'd-none';
+            div.innerHTML = ajax.responseText;
+            document.body.insertBefore(div, document.body.childNodes[0]);
+        }
+    }
+    injectSvgSprite('icons/orion-svg-sprite.svg');
+</script>
 </body>
 </html>
