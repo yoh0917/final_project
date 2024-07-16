@@ -71,6 +71,8 @@ public class UserPageController {
 
 		return "forward:/UserFixList";
 	}
+
+	
 //	--------------------------------------  Login-related Page ----------------------------------------------------
 
 	@GetMapping("/UserLogin")
@@ -112,6 +114,12 @@ public class UserPageController {
 			throws ServletException, IOException {
 		m.addAttribute("error", "註冊失敗，請依指示填入正確資訊");
 		return "user/fronted/UserRegist";
+	}
+	
+//	--------------------------------------  ForgotPassword-related Page ----------------------------------------------------
+	@GetMapping("/forgotPassword")
+	public String forgetPassword(Model m) {		
+		return "user/fronted/forgotPassword";
 	}
 
 //	--------------------------------------  DashBoard-related Page ----------------------------------------------------
