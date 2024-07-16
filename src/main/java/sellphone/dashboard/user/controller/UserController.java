@@ -138,11 +138,7 @@ public class UserController {
 			return "redirect:/mainPage";
 		}
 		case 0: {
-			session.setAttribute("loginUsername", user.getUserName());
-			session.setAttribute("userId", user.getUserId());
-			user.setPrevlogTime(LocalDateTime.now());
-			uService.insert(user);
-			return "redirect:/mainPage";
+			return "redirect:/UserConfirmFailed";
 		}
 		default: {
 			return "redirect:/UserLoginStatusFailed";
@@ -157,7 +153,7 @@ public class UserController {
 		String output = "";
 		Users user = userRepository.findByEmail(userDTO.getEmail());
 		if (user != null) {
-			output = uMailService.sendEmail(user);
+			output = uMailService.sendResetPasswordEmail(user);
 		}
 		if (output.equals("success")) {
 			return "redirect:/forgotPassword?success";
@@ -165,16 +161,7 @@ public class UserController {
 		return "redirect:/UserLogin";
 		
 	}
-	
-	@GetMapping("/resetPassword/{token}")
-	public String resetPasswordForm(@PathVariable String token, Model model) {
-		UserPasswordToken reset = userPasswordTokenRepository.findByToken(token);
-		if (reset != null && uMailService.hasExipred(reset.getExpiryDateTime())) {
-			model.addAttribute("email", reset.getUser().getEmail());
-			return "/user/fronted/resetPassword";
-		}
-		return "redirect:/forgotPassword?error";
-	}
+
 	
 	@PostMapping("/resetPassword")
 	public String passwordResetProcess(@ModelAttribute UserDTO userDTO) {

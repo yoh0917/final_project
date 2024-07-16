@@ -28,18 +28,46 @@ public class UserMailService {
     @Autowired
     private UserPasswordTokenRepository userPasswordTokenRepository;
     
-	public String sendEmail(Users user) {
+    String endpointUrl = "http://localhost:8081/sellphone";
+    
+	public String sendConfirmAccountEmail(Users user) {
 		try {
-			String resetLink = generateResetToken(user);
+			String resetLink = endpointUrl + "/confirmAccount?userId=" + user.getUserId(); 
 
 			SimpleMailMessage msg = new SimpleMailMessage();
-			msg.setFrom("eeit183test@gmail.com");// input the senders email ID
+			msg.setFrom("eeit183test@gmail.com");
 			System.out.println(user.getEmail());
 			msg.setTo(user.getEmail());
 
-			msg.setSubject("Welcome To My Channel");
-			msg.setText("Hello \n\n" + "Please click on this link to Reset your Password :" + resetLink + ". \n\n"
-					+ "Regards \n" + "ABC");
+			msg.setSubject("Sellphone會員中心 帳戶啟用通知");
+			msg.setText("您好： \n\n" + "請點選以下連結進行帳戶啟用：\n\n" + resetLink + "\n\n" + "sellphone 感謝您的註冊 \n\n"
+					+ "Best Regards, \n " + "Sellphone cooperation");
+			System.out.println("before send");
+			mailSender.send(msg);
+
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
+
+	}
+    
+    
+	public String sendResetPasswordEmail(Users user) {
+		try {
+			
+			String token = generateResetToken(user);
+			String resetLink = endpointUrl + "/resetPassword/" + token; 
+			
+			SimpleMailMessage msg = new SimpleMailMessage();
+			msg.setFrom("eeit183test@gmail.com");
+			System.out.println(user.getEmail());
+			msg.setTo(user.getEmail());
+
+			msg.setSubject("Sellphone會員中心 重設密碼通知");
+			msg.setText("您好 \n\n" + "請點選以下連結進行密碼重設：\n\n" + resetLink + "\n\n" + "*如果您未發送此請求，請立刻檢查您的帳戶狀態 \n\n"
+					+ "Best Regards, \n" + "Sellphone cooperation");
 			System.out.println("before send");
 			mailSender.send(msg);
 
@@ -75,8 +103,7 @@ public class UserMailService {
 
 				
 		if (token != null) {
-			String endpointUrl = "http://localhost:8081/sellphone/resetPassword";
-			return endpointUrl + "/" + token.getToken();
+			return token.getToken();
 		}
 		return "";
 	}
