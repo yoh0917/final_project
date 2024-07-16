@@ -3,6 +3,7 @@ package sellphone.dashboard.user.service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -32,13 +33,14 @@ public class UserMailService {
 			String resetLink = generateResetToken(user);
 
 			SimpleMailMessage msg = new SimpleMailMessage();
-			msg.setFrom("");// input the senders email ID
+			msg.setFrom("eeit183test@gmail.com");// input the senders email ID
+			System.out.println(user.getEmail());
 			msg.setTo(user.getEmail());
 
 			msg.setSubject("Welcome To My Channel");
 			msg.setText("Hello \n\n" + "Please click on this link to Reset your Password :" + resetLink + ". \n\n"
 					+ "Regards \n" + "ABC");
-
+			System.out.println("before send");
 			mailSender.send(msg);
 
 			return "success";
@@ -49,33 +51,51 @@ public class UserMailService {
 
 	}
 
-
-	public String generateResetToken(Users user) {
+	
+	public String generateResetToken(Users user) {		
+		
 		UUID uuid = UUID.randomUUID();
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		LocalDateTime expiryDateTime = currentDateTime.plusMinutes(5);
-		UserPasswordToken resetToken = new UserPasswordToken();
-		resetToken.setUser(user);
-		resetToken.setToken(uuid.toString());
-		resetToken.setExpiryDateTime(expiryDateTime);
-		resetToken.setUser(user);
-		System.out.println("before save");
-		UserPasswordToken token = userPasswordTokenRepository.save(resetToken);
-		System.out.println("after save");
+		
+		UserPasswordToken userToken= checkToken(user);
+		UserPasswordToken token;
+		if( userToken != null) {
+			userToken.setToken(uuid.toString());
+			userToken.setExpiryDateTime(expiryDateTime);
+			token = userPasswordTokenRepository.save(userToken);
+		}else{
+			UserPasswordToken resetToken = new UserPasswordToken();
+			resetToken.setToken(uuid.toString());
+			resetToken.setUserId(user.getUserId());
+			resetToken.setExpiryDateTime(expiryDateTime);
+			resetToken.setUser(user);
+			token = userPasswordTokenRepository.save(resetToken);
+		}
+
+				
 		if (token != null) {
 			String endpointUrl = "http://localhost:8081/sellphone/resetPassword";
-			return endpointUrl + "/" + resetToken.getToken();
+			return endpointUrl + "/" + token.getToken();
 		}
 		return "";
 	}
-
 
 	public boolean hasExipred(LocalDateTime expiryDateTime) {
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		return expiryDateTime.isAfter(currentDateTime);
 	}
     
-    
+    private UserPasswordToken checkToken(Users user) {
+		Optional<UserPasswordToken> optional = userPasswordTokenRepository.findById(user.getUserId());
+
+		if (optional.isPresent()) {
+			return optional.get();
+		} else {
+			return null;
+		}
+	}
+	
 //    public void sendPlainTextWithAttachments(Collection<String> receivers, String subject, String content) {
 //        SimpleMailMessage message = new SimpleMailMessage();
 //        message.setTo(receivers.toArray(new String[0]));

@@ -17,19 +17,15 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "U0005_UserPasswordResetToken")
-public class UserPasswordToken {
-    
-	@Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;    
+public class UserPasswordToken {   
+	
+	@Id @Column(insertable=false, updatable=false)
+	private String userId;
 	
 	private String token;
 	
 	@Column(nullable = false, columnDefinition = "Datetime2(0) default Getdate()")
 	private LocalDateTime expiryDateTime;
-    
-	@Column(insertable=false, updatable=false)
-	private String userId;
 	
 	@OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="userId", referencedColumnName="userId")
@@ -59,6 +55,14 @@ public class UserPasswordToken {
 
 	public void setUser(Users user) {
 		this.user = user;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 	

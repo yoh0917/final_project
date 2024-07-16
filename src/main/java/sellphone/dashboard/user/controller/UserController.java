@@ -125,7 +125,7 @@ public class UserController {
 		// check user exist or not
 		Users user = uService.checkLogin(account, pwd);
 		if (user == null) {
-			return "redirect:UserLoginFailed";
+			return "redirect:/UserLoginFailed";
 		}
 
 		// check user status
@@ -153,19 +153,16 @@ public class UserController {
 	
 //	--------------------------------------  ForgotPassword-related Page ----------------------------------------------------
 	@PostMapping("/forgotPassword")
-//	public String forgetPassword(@ModelAttribute UserDTO userDTO ,Model m) {		
-	public String forgetPassword(@RequestParam("email") String email ,Model m) {		
+	public String forgetPassword(@ModelAttribute UserDTO userDTO ,Model m) {		
 		String output = "";
-//		Users user = userRepository.findByEmail(userDTO.getEmail());
-		Users user = userRepository.findByEmail(email);
-		System.out.println(user.getUserId());
+		Users user = userRepository.findByEmail(userDTO.getEmail());
 		if (user != null) {
 			output = uMailService.sendEmail(user);
 		}
 		if (output.equals("success")) {
-			return "redirect:/user/fronted/forgotPassword?success";
+			return "redirect:/forgotPassword?success";
 		}
-		return "redirect:/user/fronted/Userlogin";
+		return "redirect:/UserLogin";
 		
 	}
 	
@@ -176,17 +173,17 @@ public class UserController {
 			model.addAttribute("email", reset.getUser().getEmail());
 			return "/user/fronted/resetPassword";
 		}
-		return "redirect:/user/fronted/forgotPassword?error";
+		return "redirect:/forgotPassword?error";
 	}
 	
 	@PostMapping("/resetPassword")
-	public String passwordResetProcess(@RequestParam UserDTO userDTO) {
+	public String passwordResetProcess(@ModelAttribute UserDTO userDTO) {
 		Users user = userRepository.findByEmail(userDTO.getEmail());
 		if(user != null) {
 			user.setPassword(userDTO.getPassword());
 			userRepository.save(user);
 		}
-		return "redirect:/user/fronted/UserLogin";
+		return "redirect:/UserLogin";
 	}
 
 }
