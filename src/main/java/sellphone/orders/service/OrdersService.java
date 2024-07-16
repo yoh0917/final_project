@@ -22,6 +22,7 @@ public class OrdersService {
 
 	//查詢所有訂單
 	public List<Order> getAllOrders() {
+
 		return orderRepository.findAll();
 	}
 

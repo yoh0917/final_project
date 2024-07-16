@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>結帳頁面</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link th:href="@{/shoppingcart/checkout/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+  <link th:href="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.css}" rel="stylesheet">
+  <link th:href="@{/shoppingcart/checkout/vendor/choices.js/public/assets/styles/choices.min.css}" rel="stylesheet">
+  <link th:href="@{/shoppingcart/checkout/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+  <link th:href="@{/shoppingcart/checkout/css/style.default.css}" rel="stylesheet" id="theme-stylesheet">
+  <link th:href="@{/shoppingcart/checkout/css/custom.css}" rel="stylesheet">
+  <link rel="shortcut icon" th:href="@{/shoppingcart/checkout/img/favicon.png}">
+</head>
+<body>
+<div class="container">
+  <section class="py-5">
+    <h2 class="h5 text-uppercase mb-4">帳單詳細資料</h2>
+    <div class="row">
+      <div class="col-lg-8">
+        <form action="#">
+          <div class="row gy-3">
+            <div class="col-lg-6">
+              <label class="form-label text-sm text-uppercase" for="firstName">名字</label>
+              <input class="form-control form-control-lg" type="text" id="firstName" placeholder="輸入您的名字">
+            </div>
+            <div class="col-lg-6">
+              <label class="form-label text-sm text-uppercase" for="lastName">姓氏</label>
+              <input class="form-control form-control-lg" type="text" id="lastName" placeholder="輸入您的姓氏">
+            </div>
+            <div class="col-lg-6">
+              <label class="form-label text-sm text-uppercase" for="email">電子郵件地址</label>
+              <input class="form-control form-control-lg" type="email" id="email" placeholder="例如：Jason@example.com">
+            </div>
+            <div class="col-lg-6">
+              <label class="form-label text-sm text-uppercase" for="phone">電話號碼</label>
+              <input class="form-control form-control-lg" type="tel" id="phone" placeholder="例如：+02 245354745">
+            </div>
+            <div class="col-lg-6">
+              <label class="form-label text-sm text-uppercase" for="company">公司名稱（可選）</label>
+              <input class="form-control form-control-lg" type="text" id="company" placeholder="您的公司名稱">
+            </div>
+            <div class="col-lg-6 form-group">
+              <label class="form-label text-sm text-uppercase" for="country">國家</label>
+              <select class="country" id="country" data-customclass="form-control form-control-lg rounded-0">
+                <option value>選擇您的國家</option>
+              </select>
+            </div>
+            <div class="col-lg-12">
+              <label class="form-label text-sm text-uppercase" for="address">地址第一行</label>
+              <input class="form-control form-control-lg" type="text" id="address" placeholder="門牌號碼和街道名稱">
+            </div>
+            <div class="col-lg-12">
+              <label class="form-label text-sm text-uppercase" for="addressalt">地址第二行</label>
+              <input class="form-control form-control-lg" type="text" id="addressalt" placeholder="公寓、套房、單位等（可選）">
+            </div>
+            <div class="col-lg-6">
+              <label class="form-label text-sm text-uppercase" for="city">城市</label>
+              <input class="form-control form-control-lg" type="text" id="city">
+            </div>
+            <div class="col-lg-6">
+              <label class="form-label text-sm text-uppercase" for="state">省/縣</label>
+              <input class="form-control form-control-lg" type="text" id="state">
+            </div>
+          </div>
+
+          <!-- 信用卡付款信息 -->
+          <h2 class="h5 text-uppercase mt-4">付款信息</h2>
+          <div class="row gy-3">
+            <div class="col-lg-12">
+              <label class="form-label text-sm text-uppercase" for="cardName">持卡人姓名</label>
+              <input class="form-control form-control-lg" type="text" id="cardName" placeholder="持卡人姓名">
+            </div>
+            <div class="col-lg-12">
+              <label class="form-label text-sm text-uppercase" for="cardNumber">卡號</label>
+              <input class="form-control form-control-lg" type="text" id="cardNumber" placeholder="0000 0000 0000 0000">
+            </div>
+            <div class="col-lg-4">
+              <label class="form-label text-sm text-uppercase" for="expMonth">到期日</label>
+              <input class="form-control form-control-lg" type="text" id="expMonth" placeholder="MM">
+            </div>
+            <div class="col-lg-4">
+              <label class="form-label text-sm text-uppercase" for="expYear">&nbsp;</label>
+              <input class="form-control form-control-lg" type="text" id="expYear" placeholder="YYYY">
+            </div>
+            <div class="col-lg-4">
+              <label class="form-label text-sm text-uppercase" for="cvv">CVC/CVV</label>
+              <input class="form-control form-control-lg" type="text" id="cvv" placeholder="***">
+            </div>
+            <div class="col-lg-12 form-group">
+              <button class="btn btn-primary" type="submit">立即付款</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- 訂單摘要-->
+      <div class="col-lg-4">
+        <div class="card border-0 rounded-0 p-lg-4 bg-light">
+          <div class="card-body">
+            <h5 class="text-uppercase mb-4">您的訂單</h5>
+            <ul class="list-unstyled mb-0">
+              <li class="d-flex align-items-center justify-content-between"><strong class="small fw-bold">紅色數字智能手錶</strong><span class="text-muted small">$250</span></li>
+              <li class="border-bottom my-2"></li>
+              <li class="d-flex align-items-center justify-content-between"><strong class="small fw-bold">灰色耐克跑鞋</strong><span class="text-muted small">$351</span></li>
+              <li class="border-bottom my-2"></li>
+              <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small fw-bold">總計</strong><span>$601</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- JavaScript files-->
+<script th:src="@{/shoppingcart/checkout/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/glightbox/js/glightbox.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/swiper/swiper-bundle.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/choices.js/public/assets/scripts/choices.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/js/front.js}"></script>
+<script>
+  function injectSvgSprite(path) {
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET", path, true);
+    ajax.send();
+    ajax.onload = function(e) {
+      var div = document.createElement("div");
+      div.className = 'd-none';
+      div.innerHTML = ajax.responseText;
+      document.body.insertBefore(div, document.body.childNodes[0]);
+    }
+  }
+  injectSvgSprite('icons/orion-svg-sprite.svg');
+</script>
+</body>
+</html>

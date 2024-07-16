@@ -135,7 +135,6 @@ $(function () {
                         <tr>
                             <td class="planID">${plan.planID}</td>
                             <td>${plan.planName}</td>
-                            <td>${plan.phoneNumber}</td> <!-- 添加電話號碼欄位 -->
                             <td>${plan.telCompany}</td>
                             <td>${plan.contractType}</td>
                             <td>${plan.contractDuration}</td>

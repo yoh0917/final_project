@@ -2,41 +2,81 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 <head>
 <meta charset="UTF-8">
-<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 <title>新增商品</title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<style>
+body {
+	background-color: #f8f9fa;
+}
+
+img#imagePreview {
+	display: none;
+	margin-top: 10px;
+	max-width: 100%;
+	height: auto;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+</style>
 </head>
 <body>
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6">
-            <h1 class="mt-5 text-center">新增商品</h1>
-            
-            <form th:action="@{/DashBoard/product/sendphoto}" method="post" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="productName" class="form-label">商品名稱:</label>
-                    <input class="form-control" type="text" id="productName" name="productName" placeholder="請输入商品名稱" required>
-                    <label for="price" class="form-label">商品價格:</label>
-                    <input class="form-control" type="text" id="price" name="price" placeholder="請输入商品價格" required>
-                    <label for="description" class="form-label">商品描述:</label>
-                    <input class="form-control" type="text" id="description" name="description" placeholder="請输入商品描述" required>
-                    <label for="stockQuantity" class="form-label">商品庫存:</label>
-                    <input class="form-control" type="text" id="stockQuantity" name="stockQuantity" placeholder="請输入商品庫存" required>
-                </div>
-                <div class="mb-3">
-                    <label for="file" class="form-label">檔案</label>
-                    <input type="file" name="file" id="file" required multiple class="form-control" accept="image/*" onchange="previewImage(event)">
-                    <img id="imagePreview" style="display:none; margin-top:10px; max-width:100%; height:auto;">
-                </div>
-                <button type="submit" class="btn btn-primary">送出</button>
-                <input class="btn btn-primary" type="button" onclick="returnProduct()" value="返回上一頁">
-            </form>
-                       
-        </div>
-    </div>
-</div>
+	<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<h1 class="mt-5 text-center">新增商品</h1>
 
-<script>
+				<form th:action="@{/DashBoard/product/sendphoto}" method="post"
+					enctype="multipart/form-data">
+					<div class="mb-3">
+						<label for="productbrand" class="form-label" >商品品牌:</label> 
+						<select
+							class="form-select" id="productbrand" name="productbrand"
+							required onchange="updateProductName()" >
+							<option value="">選擇品牌</option>
+							<option>Apple</option>
+							<option>Samsung</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="productName" class="form-label">商品名稱:</label> <input
+							class="form-control" type="text" id="productName"
+							name="productName" placeholder="請输入商品名稱" required>
+					</div>
+					<div class="mb-3">
+						<label for="price" class="form-label">商品價格:</label> <input
+							class="form-control" type="text" id="price" name="price"
+							placeholder="請输入商品價格" required>
+					</div>
+					<div class="mb-3">
+						<label for="description" class="form-label">商品描述:</label>
+						<textarea class="form-control" id="description" name="description"
+							placeholder="請输入商品描述" required></textarea>
+					</div>
+
+					<div class="mb-3">
+						<label for="stockQuantity" class="form-label">商品庫存:</label> <input
+							class="form-control" type="text" id="stockQuantity"
+							name="stockQuantity" placeholder="請输入商品庫存" required>
+					</div>
+					<div class="mb-3">
+						<label for="file" class="form-label">檔案</label> <input type="file"
+							name="file" id="file" required multiple class="form-control"
+							accept="image/*" onchange="previewImage(event)"> <img
+							id="imagePreview">
+					</div>
+					<div class="d-flex justify-content-between">
+						<button type="submit" class="btn btn-dark">送出</button>
+						<button type="button" class="btn btn-secondary"
+							onclick="returnProduct()">返回上一頁</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+	<script>
     function returnProduct() {
         window.location.href = '/sellphone/DashBoard/productlist';
     }
@@ -50,6 +90,19 @@
         }
         reader.readAsDataURL(event.target.files[0]);
     }
+
+    function updateProductName() {
+        var brandSelect = document.getElementById('productbrand');
+        var productNameInput = document.getElementById('productName');
+
+        if (brandSelect.value === 'Apple') {
+            productNameInput.value = 'iPhone';
+        } else if(brandSelect.value =='Samsung'){
+            productNameInput.value = 'Samsung'; 
+        }
+    }
+    
+   
 </script>
 
 </body>

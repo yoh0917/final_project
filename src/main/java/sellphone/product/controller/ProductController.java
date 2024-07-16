@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import sellphone.product.model.Photo;
@@ -91,4 +94,38 @@ public class ProductController {
 		pService.saveProduct(product);
 		return "redirect:/DashBoard/productlist";
 	}
+	
+	//------------------前台----------------------
+	
+	
+	@GetMapping("/front/productlist")
+	public String frontProducts(Model model) {
+		List<Product> products = proRepo.findAll();
+		model.addAttribute("frontlistProduct", products);
+		return "product/ProductFront";
+	}
+	
+	
+	@GetMapping("/front/pricebetween")
+	public String getpriceRange(@RequestParam Integer minPrice,@RequestParam Integer maxPrice,Model m) {
+		List<Product> frontRangeProduct = proRepo.findByPriceRange(minPrice, maxPrice);
+		m.addAttribute("frontlistProduct",frontRangeProduct);
+		return "product/ProductFront";
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("/front/api/pricebetween")
+	public List<Product> ajaxPost(@RequestParam Integer minPrice,@RequestParam Integer maxPrice){
+	return proRepo.findByPriceRange(minPrice, maxPrice);
+	}
+	
+	@ResponseBody
+	@GetMapping("/front/api/backlist")
+	public List<Product> ajaxBackList(){
+		return proRepo.findAll();
+	}
+	
+	
 }
+

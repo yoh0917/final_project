@@ -34,13 +34,9 @@ body {
     display: block;
 }
 
-.form-control {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    box-sizing: border-box;
+.btn-group {
+    display: flex;
+    gap: 10px;
 }
 
 .btn {
@@ -56,6 +52,23 @@ body {
 
 .btn:hover {
     background-color: #0056b3;
+}
+
+.btn.active {
+    background-color: #0056b3;
+}
+
+.btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.clearBtn {
+    background-color: #dc3545;
+}
+
+.clearBtn:hover {
+    background-color: #c82333;
 }
 
 #result {

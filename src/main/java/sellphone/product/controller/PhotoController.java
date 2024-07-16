@@ -33,10 +33,6 @@ public class PhotoController {
 	public ProductRepository pRep;
 	
 	
-	
-	
-	
-	
 	@GetMapping("/DashBoard/product/upload")
 	public String home() {
 		return "product/uploadpage";
@@ -63,7 +59,7 @@ public class PhotoController {
 	}
 
 	
-	@GetMapping("/DashBoard/photos/download")
+	@GetMapping("/photos/download")
 	public ResponseEntity<byte[]> downloadPhotos(@RequestParam("photoid") Integer photoid) {
 //		 List<Photo> photos = Prep.findByProductProductid(photoid);
 //	        if (photos.isEmpty()) {

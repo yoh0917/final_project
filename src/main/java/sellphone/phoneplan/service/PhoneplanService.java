@@ -7,11 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import sellphone.dashboard.user.model.UserRepository;
-import sellphone.dashboard.user.model.Users;
 import sellphone.phoneplan.model.PhonePlanBean;
 import sellphone.phoneplan.model.PhonePlanRepository;
-
+import sellphone.phoneplan.model.UsersRepository;
+import sellphone.dashboard.user.model.*;
 
 import java.util.List;
 
@@ -41,7 +40,9 @@ public class PhoneplanService {
     public void createPhonePlan(PhonePlanBean phonePlan) {
         phonePlanRepository.save(phonePlan);
     }
-
+    public List<PhonePlanBean> findAllPlans() {
+        return phonePlanRepository.findAll();
+    }
     public PhonePlanBean findPhonePlanById(int id) {
         return phonePlanRepository.findById(id).orElse(null);
     }
@@ -57,16 +58,18 @@ public class PhoneplanService {
     public List<PhonePlanBean> findBestPlans(String telCompany, String contractType, String generation, String dataUsage) {
         return phonePlanRepository.findByFilters(telCompany, contractType, generation, dataUsage);
     }
+    
     @Autowired
-    private UserRepository usersRepository;
-
+    private UsersRepository usersRepository;
+ 
     @Transactional
-    public PhonePlanBean addPhonePlanToUser(String userId, PhonePlanBean phonePlanBean) {
+    public PhonePlanBean addPhonePlanToUser(Long userId, PhonePlanBean phonePlanBean) {
         System.out.println("Looking for user with ID: " + userId);
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        System.out.println("User found: " + user.getUserName());
+        UserPhonePlanList user = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+//        System.out.println("User found: " + user.getUserName());
         
-//        phonePlanBean.setUsers(user);
+        phonePlanBean.setUsers(user);  
         return phonePlanRepository.save(phonePlanBean);
     }
+    
 }

@@ -7,9 +7,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import sellphone.dashboard.user.model.UserRepository;
 import sellphone.dashboard.user.model.UserView;
 import sellphone.dashboard.user.model.UserViewRepository;
@@ -46,6 +50,25 @@ public class UserAjaxController {
 	@Autowired
 	private UserUtil userUtil;
 	
+	@PostMapping("/UserEmailEdit")
+	@ResponseBody
+	public String userEmailEdit(@RequestBody Map<String, String> map, @SessionAttribute("userId") String userId , Model m) {
+		Users user = uService.findById(userId);
+		user.setEmail(map.get("email"));
+		uService.update(user);
+		
+		return user.getEmail();
+	}
+	
+	@PostMapping("/UserContactNumEdit")
+	@ResponseBody
+	public String userContactNumEdit(@RequestBody Map<String, String> map, @SessionAttribute("userId") String userId , Model m) {
+		Users user = uService.findById(userId);
+		user.setContactNum(map.get("contactNum"));
+		uService.update(user);
+		
+		return user.getContactNum();
+	}
 	
 	@PostMapping("/CheckRegist")
 	@ResponseBody
@@ -53,36 +76,17 @@ public class UserAjaxController {
 
 		HttpSession session = req.getSession();
 		int status = 0;
-//		String userId = createUserId(requset.getSession().getId().substring(0, 2));
 		String userId = userUtil.createUserId(session.getId());
 		System.out.println(userId);
 		user.setUserId(userId);
-//		user.setUserName(userName);
-//		user.setUserAccount(userAccount);
-//		user.setPassword(password);
-//		user.setContactNum(contactNumber);
-//		user.setEmail(email);
 		user.setStatus(status);
 		user.setCreateTime(LocalDateTime.now());
-
 		uService.insert(user);
-//		try {
-//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//
-//			LocalDate localDate = LocalDate.parse(birthday, formatter);
-//			Date birthDaySqlDate = Date.valueOf(localDate);
-//			user.setBirthday(birthDaySqlDate);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 
-//		try {
-//		} catch (Exception e) {
-//			
-//			return "redirect:/UserRegistFailed";
-//		}
 		return user.getUserName();
 	}	
+	
+	
 	@GetMapping("/checkContactNum")
 	@ResponseBody
 	public String checkContactNum(@RequestParam("param") String contactNum) {
@@ -95,7 +99,7 @@ public class UserAjaxController {
 		if (user != null)
 			return "此手機號碼已經存在";
 		else {
-			return null;			
+			return "";			
 		}
 		
 	}
@@ -107,7 +111,7 @@ public class UserAjaxController {
 		if (user != null)
 			return "此帳號已經存在";
 		else {
-			return null;			
+			return "";			
 		}
 		
 	}
@@ -128,10 +132,8 @@ public class UserAjaxController {
             email.matches(noSpaceRegex) &&
             email.matches(singleAtRegex)
             ) {
-        	System.out.println("test");
-        	return null;
+        	return "";
         } else {
-        	System.out.println("tes2");
         	return "請輸入正確email";
         }
        		
