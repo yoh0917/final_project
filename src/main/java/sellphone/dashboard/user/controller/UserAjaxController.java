@@ -137,6 +137,12 @@ public class UserAjaxController {
         // Email must not contain double dots
         String noDoubleDotRegex = "^[^..]*$";
 
+        Users user = userRepo.findByEmail(email);
+        if(user != null) {
+        	return"此email已經存在";
+        }
+        
+        
         if (email != null &&
             email.matches(emailRegex) &&
             email.matches(noSpaceRegex) &&
