@@ -5,6 +5,22 @@ SELECT * FROM p0001_products
 SELECT * FROM O0001_ORDER
 SELECT * FROM O0002_ORDERDETAIL
 
+CREATE TABLE S0001_SHOPPINGCART (
+                                    USERID VARCHAR(50),
+                                    PRODUCTID INT,
+                                    COLOR  VARCHAR(20),
+                                    STORAGE  VARCHAR(20),
+                                    QUANTITY INT,
+                                    PRICE INT
+                                        CONSTRAINT PK_SHOPPINGCART PRIMARY KEY (USERID, PRODUCTID),
+);
+
+INSERT INTO S0001_SHOPPINGCART (USERID, PRODUCTID, COLOR, STORAGE, QUANTITY, PRICE)
+VALUES
+    ('admin', 1, 'ª÷¦â', '1000TB', 1, 50000),
+    ('admin', 2, '»È¦â', '512TB', 1, 40000);
+
+
 /*ALTER TABLE O0002_ORDERDETAIL ALTER COLUMN PRODUCTID INT*/
 
 DECLARE @i INT = 1;
