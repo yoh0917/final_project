@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import sellphone.phonefix.model.PhoneFixBean;
 
@@ -40,22 +41,26 @@ public class Users {
 		
 		private int status;
 		
-		@ManyToOne(fetch = FetchType.LAZY)
-		@JoinColumn(name = "status", insertable=false, updatable=false)
-//		@JsonIgnore
-		private  UserStatus userStatus;
-
 		@Column(nullable = false, columnDefinition = "Datetime2(0) default Getdate()")
 		private LocalDateTime createTime;
 
 		@Column(columnDefinition = "Datetime2(0) ")
 		private LocalDateTime prevlogTime;
 		
+		@ManyToOne(fetch = FetchType.LAZY)
+		@JoinColumn(name = "status", insertable=false, updatable=false)
+//		@JsonIgnore
+		private  UserStatus userStatus;
+		
 		@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL )
 		private Set<UserPhonePlanList> userPhonePlanListID = new LinkedHashSet<UserPhonePlanList>();
 
 		@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL )
 		private Set<PhoneFixBean> phoneFixBean = new LinkedHashSet<PhoneFixBean>();
+		
+		@OneToOne(cascade=CascadeType.ALL)
+	    @JoinColumn(name="userId", referencedColumnName="userId")
+	    private UserPasswordToken userPasswordResetToken;
 
 		public Users() {			
 		}
@@ -158,11 +163,29 @@ public class Users {
 			this.prevlogTime = prevlogTime;
 		}
 
-	
+		public Set<UserPhonePlanList> getUserPhonePlanListID() {
+			return userPhonePlanListID;
+		}
 
-		
-		
-		
-		
+		public void setUserPhonePlanListID(Set<UserPhonePlanList> userPhonePlanListID) {
+			this.userPhonePlanListID = userPhonePlanListID;
+		}
+
+		public Set<PhoneFixBean> getPhoneFixBean() {
+			return phoneFixBean;
+		}
+
+		public void setPhoneFixBean(Set<PhoneFixBean> phoneFixBean) {
+			this.phoneFixBean = phoneFixBean;
+		}
+
+		public UserPasswordToken getUserPasswordResetToken() {
+			return userPasswordResetToken;
+		}
+
+		public void setUserPasswordResetToken(UserPasswordToken userPasswordResetToken) {
+			this.userPasswordResetToken = userPasswordResetToken;
+		}
+	
 	    	 
 	}
