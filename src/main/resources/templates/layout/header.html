@@ -42,6 +42,8 @@
 		<th:block th:unless="${session.loginUsername != null}">
 			<a th:href="@{/UserLogin}">Login</a>
 		</th:block>
-		<a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+		<div th:if="${session.user != null }">
+		<a th:href="@{/cart(userId=${session.user.userName})}"><i class="fa-solid fa-cart-shopping"></i></a>
+		</div>
 	</div>
 </div>

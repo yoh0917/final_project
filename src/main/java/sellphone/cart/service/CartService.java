@@ -12,7 +12,7 @@ public class CartService {
     @Autowired
     private CartRepository cartRepository;
 
-    public List<Cart> getCartsByUserId(String userId) {
+    public List<Cart> getCartByUserId(String userId) {
         return cartRepository.findByUserId(userId);
     }
 }
