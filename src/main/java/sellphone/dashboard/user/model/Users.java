@@ -7,7 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,172 +19,172 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import sellphone.phonefix.model.PhoneFixBean;
 
-@Entity @Table(name = "U00001_Users")
+@Entity
+@Table(name = "U00001_Users")
 public class Users {
- 
-		@Id
-	  	private String userId;
-	    
-		private String userName;
 
-		@Column(name = "useraccount")
-		private String userAccount;
-		
-	    private String password;
-		
-	    private String email;
-		
-		private String contactNum;
+	@Id
+	private String userId;
 
-		private LocalDate birthday;
-		
-		private int status;
-		
-		@Column(nullable = false, columnDefinition = "Datetime2(0) default Getdate()")
-		private LocalDateTime createTime;
+	private String userName;
 
-		@Column(columnDefinition = "Datetime2(0) ")
-		private LocalDateTime prevlogTime;
-		
-		@ManyToOne(fetch = FetchType.LAZY)
-		@JoinColumn(name = "status", insertable=false, updatable=false)
+	@Column(name = "useraccount")
+	private String userAccount;
+
+	private String password;
+
+	private String email;
+
+	private String contactNum;
+
+	private LocalDate birthday;
+
+	private int status;
+
+	@Column(nullable = false, columnDefinition = "Datetime2(0) default Getdate()")
+	private LocalDateTime createTime;
+
+	@Column(columnDefinition = "Datetime2(0) ")
+	private LocalDateTime prevlogTime;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "status", insertable = false, updatable = false)
 //		@JsonIgnore
-		private  UserStatus userStatus;
-		
-		@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL )
-		private Set<UserPhonePlanList> userPhonePlanListID = new LinkedHashSet<UserPhonePlanList>();
+	private UserStatus userStatus;
 
-		@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL )
-		private Set<PhoneFixBean> phoneFixBean = new LinkedHashSet<PhoneFixBean>();
-		
-		@OneToOne(cascade=CascadeType.ALL)
-	    @JoinColumn(name="userId", referencedColumnName="userId")
-	    private UserPasswordToken userPasswordResetToken;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<UserPhonePlanList> userPhonePlanListID = new LinkedHashSet<UserPhonePlanList>();
 
-		public Users() {			
-		}
-		
-		public Users(String userName, String userAccount, String password, String email, String contactNum,
-				LocalDate birthday) {
-			this.userName = userName;
-			this.userAccount = userAccount;
-			this.password = password;
-			this.email = email;
-			this.contactNum = contactNum;
-			this.birthday = birthday;
-		}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	private Set<PhoneFixBean> phoneFixBean = new LinkedHashSet<PhoneFixBean>();
 
-		public String getUserId() {
-			return userId;
-		}
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "userId", referencedColumnName = "userId")
+	private UserPasswordToken userPasswordResetToken;
 
-		public void setUserId(String userId) {
-			this.userId = userId;
-		}
-
-		public String getUserName() {
-			return userName;
-		}
-
-		public void setUserName(String username) {
-			this.userName = username;
-		}
-
-		public String getUserAccount() {
-			return userAccount;
-		}
-
-		public void setUserAccount(String useraccount) {
-			this.userAccount = useraccount;
-		}
-
-		public String getPassword() {
-			return password;
-		}
-
-		public void setPassword(String password) {
-			this.password = password;
-		}
-
-		public String getEmail() {
-			return email;
-		}
-
-		public void setEmail(String email) {
-			this.email = email;
-		}
-
-		public String getContactNum() {
-			return contactNum;
-		}
-
-		public void setContactNum(String contactNum) {
-			this.contactNum = contactNum;
-		}
-
-		public LocalDate getBirthday() {
-			return birthday;
-		}
-
-		public void setBirthday(LocalDate birthday) {
-			this.birthday = birthday;
-		}
-
-		public int getStatus() {
-			return status;
-		}
-
-		public void setStatus(int status) {
-			this.status = status;
-		}
-
-		public UserStatus getUserStatus() {
-			return userStatus;
-		}
-
-		public void setUserStatus(UserStatus userStatus) {
-			this.userStatus = userStatus;
-		}
-
-		public LocalDateTime getCreateTime() {
-			return createTime;
-		}
-
-		public void setCreateTime(LocalDateTime createTime) {
-			this.createTime = createTime;
-		}
-
-		public LocalDateTime getPrevlogTime() {
-			return prevlogTime;
-		}
-
-		public void setPrevlogTime(LocalDateTime prevlogTime) {
-			this.prevlogTime = prevlogTime;
-		}
-
-		public Set<UserPhonePlanList> getUserPhonePlanListID() {
-			return userPhonePlanListID;
-		}
-
-		public void setUserPhonePlanListID(Set<UserPhonePlanList> userPhonePlanListID) {
-			this.userPhonePlanListID = userPhonePlanListID;
-		}
-
-		public Set<PhoneFixBean> getPhoneFixBean() {
-			return phoneFixBean;
-		}
-
-		public void setPhoneFixBean(Set<PhoneFixBean> phoneFixBean) {
-			this.phoneFixBean = phoneFixBean;
-		}
-
-		public UserPasswordToken getUserPasswordResetToken() {
-			return userPasswordResetToken;
-		}
-
-		public void setUserPasswordResetToken(UserPasswordToken userPasswordResetToken) {
-			this.userPasswordResetToken = userPasswordResetToken;
-		}
-	
-	    	 
+	public Users() {
 	}
+
+	public Users(String userName, String userAccount, String password, String email, String contactNum,
+			LocalDate birthday) {
+		this.userName = userName;
+		this.userAccount = userAccount;
+		this.password = password;
+		this.email = email;
+		this.contactNum = contactNum;
+		this.birthday = birthday;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String username) {
+		this.userName = username;
+	}
+
+	public String getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(String useraccount) {
+		this.userAccount = useraccount;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getContactNum() {
+		return contactNum;
+	}
+
+	public void setContactNum(String contactNum) {
+		this.contactNum = contactNum;
+	}
+
+	public LocalDate getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(LocalDate birthday) {
+		this.birthday = birthday;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public UserStatus getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(UserStatus userStatus) {
+		this.userStatus = userStatus;
+	}
+
+	public LocalDateTime getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(LocalDateTime createTime) {
+		this.createTime = createTime;
+	}
+
+	public LocalDateTime getPrevlogTime() {
+		return prevlogTime;
+	}
+
+	public void setPrevlogTime(LocalDateTime prevlogTime) {
+		this.prevlogTime = prevlogTime;
+	}
+
+	public Set<UserPhonePlanList> getUserPhonePlanListID() {
+		return userPhonePlanListID;
+	}
+
+	public void setUserPhonePlanListID(Set<UserPhonePlanList> userPhonePlanListID) {
+		this.userPhonePlanListID = userPhonePlanListID;
+	}
+
+	public Set<PhoneFixBean> getPhoneFixBean() {
+		return phoneFixBean;
+	}
+
+	public void setPhoneFixBean(Set<PhoneFixBean> phoneFixBean) {
+		this.phoneFixBean = phoneFixBean;
+	}
+
+	public UserPasswordToken getUserPasswordResetToken() {
+		return userPasswordResetToken;
+	}
+
+	public void setUserPasswordResetToken(UserPasswordToken userPasswordResetToken) {
+		this.userPasswordResetToken = userPasswordResetToken;
+	}
+
+}
