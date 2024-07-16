@@ -24,7 +24,7 @@ public class CartController {
             return "redirect:/sellphone/login"; // 若session中無user則重定向到登入頁面
         }
 
-        String userId = user.getUserId();
+        String userId = user.getUserName();
         System.out.println("User found in session. UserId: " + userId); // 記錄userId
         List<Cart> carts = cartService.getCartByUserId(userId);
         model.addAttribute("carts", carts);
