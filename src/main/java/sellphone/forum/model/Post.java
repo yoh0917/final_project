@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,8 +22,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import sellphone.dashboard.user.model.Users;
 
 @Entity
 @Table(name = "F0001_POST")
@@ -32,8 +35,13 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer postId;
     
-    @Column(nullable = true)
-    private Integer userId;
+//    @Column(nullable = true)
+//    private Integer userId;
+    
+    //一個回覆屬於一個用戶
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
+    private Users user; 
     
     @Column(nullable = true, length = 255)
     private String title;
@@ -76,19 +84,28 @@ public class Post {
         this.postId = postId;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+//    public Integer getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(Integer userId) {
+//        this.userId = userId;
+//    }
+    
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	public void setTitle(String title) {
         this.title = title;
     }
 

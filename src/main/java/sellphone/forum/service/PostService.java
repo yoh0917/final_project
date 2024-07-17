@@ -56,7 +56,7 @@ public class PostService {
     }
 
     public Page<Post> findByPage(Integer pageNumber) {
-        Pageable pgb = PageRequest.of(pageNumber - 1, 5, Sort.Direction.DESC, "postCreatedTime");
+        Pageable pgb = PageRequest.of(pageNumber - 1, 10, Sort.Direction.DESC, "postCreatedTime");
         return postRepo.findAll(pgb);
     }
 

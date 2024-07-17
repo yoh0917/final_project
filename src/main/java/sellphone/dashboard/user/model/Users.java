@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import sellphone.forum.model.Post;
 import sellphone.phonefix.model.PhoneFixBean;
 
 @Entity
@@ -61,6 +62,9 @@ public class Users {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userId", referencedColumnName = "userId")
 	private UserPasswordToken userPasswordResetToken;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Post> posts = new LinkedHashSet<>();
 
 	public Users() {
 	}
@@ -186,5 +190,13 @@ public class Users {
 	public void setUserPasswordResetToken(UserPasswordToken userPasswordResetToken) {
 		this.userPasswordResetToken = userPasswordResetToken;
 	}
+	
+	public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
 
 }
