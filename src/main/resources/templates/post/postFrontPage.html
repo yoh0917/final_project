@@ -1,289 +1,406 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/">
 <head>
-<meta charset="UTF-8">
-<title>列出訊息</title>
-<style>
-    body {
-        position: relative;
-        display: flex; 
-        padding-top: 50px;
-        margin: 0; /* 添加，移除默认的body margin */
-        height: 100vh; /* 添加，使页面高度填满屏幕 */
-    }
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 200px;
-        height: 100%;
-        background-color: #f8f9fa;
-        z-index: 1000;
-        padding-top: 170px;
-    }
-    .container {
-    	
-        /* margin-left: 250px !important;
-        margin-right:50px !important; */
-        width: calc(100% - 500px);
-        box-sizing: border-box;
-        padding: 100px 100px; 
-        overflow-y: auto; /* 添加：使内容超出时可以滚动 */
-    }
-    .pagination {
-        display: flex;
-        justify-content: center;
-    }
-    .ck-editor__editable_inline {
-        min-height: 200px;
-    }
-    .accordion-item {
-        border: 1px solid #7B7B7B;
-        margin-bottom: 10px;
-        border-radius: 5px;
-    }
-    .accordion-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        background-color: #E0E0E0;
-        color: #000;
-        cursor: pointer;
-        border-bottom: 1px solid #7B7B7B;
-    }
-    .accordion-header.active {
-        background-color: #7B7B7B;
-        color: #fff;
-    }
-    .accordion-body {
-        padding: 10px;
-        display: none;
-        background-color: #f9f9f9;
-    }
-    .accordion-body.show {
-        display: block;
-    }
-    .pagination .page-item .page-link {
-        color: #6c757d;
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-    }
-    .pagination .page-item.active .page-link {
-        color: #fff;
-        background-color: #6c757d;
-        border: 1px solid #6c757d;
-    }
-    .pagination .page-item.disabled .page-link {
-        color: #6c757d;
-        background-color: #e9ecef;
-        border: 1px solid #dee2e6;
-    }
-    .edit-btn {
-        display: flex;
-        gap: 5px;
-    }
-    .edit-btn .btn {
-        flex: 1;
-        text-align: center;
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
-    }
-    .search-container {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        flex-grow: 1;
-        margin-bottom: 20px;
-    }
-    .search-form {
-        display: flex;
-        align-items: center;
-        position: relative;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        padding: 5px;
-    }
-    .search-input {
-        border: none;
-        padding: 8px 40px 8px 10px;
-        border-radius: 4px;
-    }
-    .search-input:focus {
-        outline: none;
-    }
-    .search-button {
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        border: none;
-        background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-        opacity: 0.7;
-    }
-    .search-button:hover {
-        opacity: 1;
-    }
-    .tags-container {
-        margin-left: 10px;
-    }
-    .tags-container span {
-        background-color: #7B7B7B;
-        color: white;
-        border-radius: 5px;
-        padding: 5px 10px;
-        margin-right: 5px;
-    }
-    .tag-buttons {
-        display: flex;
-        gap: 10px;
-        margin-left: 10px;
-    }
-    .tag-buttons .btn {
-        margin: 0.2px;
-    }
-    .header-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-left: auto;
-    }
-</style>
+    <title>列出訊息</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+        crossorigin="anonymous">
+    <style>
+        /* 通用樣式 */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        body {
+            position: relative;
+            display: flex;
+            padding-top: 110px;
+            margin: 0; /* 移除默认的body margin */
+            height: 100vh; /* 使页面高度填满屏幕 */
+            font-family: 'Satoshi', sans-serif;
+            background-color: #ADADAD	;
+        }
+
+        .container {
+            width: calc(100% - 400px);
+            max-width: 800px; /* 设置内容区的最大宽度 */
+            box-sizing: border-box;
+            padding: 20px; /* 内容区内部的padding */
+            overflow-y: auto; /* 使内容超出时可以滚动 */
+            background: white; /* 设置内容区背景色为白色 */
+            margin: 0 auto; /* 使内容区水平居中 */
+        }
+
+        .top-bar {
+            width: 100%;
+            padding: 9px 0;
+            background: black;
+            color: white;
+            text-align: center;
+            font-size: 14px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .top-bar a {
+            color: white;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            position: fixed;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar .logo img {
+            width: 180px;
+            height: auto;
+        }
+
+        .navbar .menu {
+            display: flex;
+            gap: 24px;
+        }
+
+        .navbar .menu a {
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            position: relative;
+            padding: 10px 0;
+            line-height: 1;
+        }
+
+        .navbar .menu a:hover {
+            text-decoration: underline;
+        }
+
+        .navbar .menu-item {
+            position: relative;
+        }
+
+        .navbar .menu-item:hover .submenu {
+            display: block;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ccc;
+            z-index: 1000;
+        }
+
+        .submenu a {
+            display: block;
+            padding: 10px 20px;
+            white-space: nowrap;
+        }
+
+        .submenu a:hover {
+            background: #f0f0f0;
+        }
+
+        .navbar .search-bar {
+            display: flex;
+            align-items: center;
+            background: #F0F0F0;
+            padding: 12px 16px;
+            border-radius: 62px;
+        }
+
+        .navbar .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            color: rgba(0, 0, 0, 0.40);
+            font-size: 15px;
+            width: 100%;
+        }
+
+        .navbar .icons {
+            display: flex;
+            gap: 14px;
+        }
+
+        .sidebar,
+        .right-rectangle {
+            position: fixed;
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background-color: #f8f9fa;
+            z-index: 1000;
+            padding-top: 170px;
+        }
+
+        .sidebar {
+            left: 0;
+        }
+
+        .right-rectangle {
+            right: 0;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+        }
+
+        .ck-editor__editable_inline {
+            min-height: 200px;
+        }
+
+        .accordion-item {
+            border: 1px solid #7B7B7B;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #E0E0E0;
+            color: #000;
+        }
+
+        .accordion-body {
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .pagination .page-item .page-link {
+            color: #6c757d;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        .pagination .page-item.active .page-link {
+            color: #fff;
+            background-color: #6c757d;
+            border: 1px solid #6c757d;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #6c757d;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+        }
+
+        .edit-btn {
+            display: flex;
+            gap: 5px;
+        }
+
+        .edit-btn .btn {
+            flex: 1;
+            text-align: center;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+            position: relative;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 5px;
+        }
+
+        .search-input {
+            border: none;
+            padding: 8px 40px 8px 10px;
+            border-radius: 4px;
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        .search-button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .search-button:hover {
+            opacity: 1;
+        }
+
+        .tags-container {
+            margin-left: 10px;
+        }
+
+        .tags-container span {
+            background-color: #7B7B7B;
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin-right: 5px;
+        }
+
+        .tag-buttons {
+            display: flex;
+            gap: 10px;
+            margin-left: 10px;
+        }
+
+        .tag-buttons .btn {
+            margin: 0.2px;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .post-summary {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
-    <div th:replace="~{layout/header}"></div>
-    <div class="container">
-        <div class="header-row">
-            <h1>文章列表</h1>
-            <div class="tag-buttons">
-                <button th:each="tag : ${allTags}" th:text="${tag.name}" class="btn btn-outline-secondary"
-                        th:attr="data-tag-name=${tag.name}" onclick="filterPostsByTag(this)"></button>
-            </div>
-            <div class="actions">
-                <a class="btn btn-secondary" aria-current="page" th:href="@{/post/add}">新增文章</a>
-                <a class="btn btn-secondary" aria-current="page" th:href="@{/post/page}">返回列表</a>
-            </div>
-        </div><br>
-        <div class="search-container">
-            <form th:action="@{/GetPostByTitle}" method="get" class="input-group">
-                <input type="text" id="title" name="title" placeholder="你想要找什麼呢？" class="form-control search-input">
-                <button type="submit" class="btn btn-outline-secondary search-button"></button>
-            </form>
+<div th:replace="~{layout/header}"></div>
+
+<div class="container">
+    <div class="header-row">
+       <!--  <h1>文章列表</h1> -->
+        <div class="tag-buttons">
+            <button th:each="tag : ${allTags}" th:text="${tag.name}" class="btn btn-outline-secondary"
+                    th:attr="data-tag-name=${tag.name}" onclick="filterPostsByTag(this)"></button>
         </div>
-        <br>
-        <div class="accordion" id="accordionExample">
-            <th:block th:each="oneMsg : ${page.content}">
-                <div class="accordion-item">
-                    <div class="accordion-header" th:attr="data-id=${oneMsg.postId}">
-                        <span th:text="${oneMsg.title}" style="flex: 1;">標題</span>
-                        <div class="tags-container">
-                            <span th:each="tag : ${oneMsg.tags}" th:text="${tag.name}" class="badge bg-secondary"></span>
-                        </div>
-                        <br>
-                        <!-- <div class="edit-btn">
-                            <a th:href="@{/post/edit(id=${oneMsg.postId})}" class="btn btn-outline-dark btn-sm">編輯</a>
-                            <form th:action="@{/post/delete}" method="post" style="display: inline;">
-                                <input name="id" th:value="${oneMsg.postId}" type="hidden" />
-                                <input name="p" th:value="${page.number + 1}" type="hidden">
-                                <input name="_method" value="DELETE" type="hidden">
-                                <input type="submit" value="刪除" onclick="return confirm('確定刪除嗎? ')" class="btn btn-outline-danger">
-                            </form>
-                        </div> -->
-                    </div>
-                    <div class="accordion-body" th:attr="id='collapse' + ${oneMsg.postId}">
-                        <h5 class="card-title"></h5>
-                        <p class="card-text" th:utext="${oneMsg.postContent}"></p>
-                        <hr>
-                        <div class="card-footer">
-                            發布時間: <span th:text="${#dates.format(oneMsg.postCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
-                        </div>
+        <div class="actions">
+            <a class="btn btn-secondary" aria-current="page" th:href="@{/post/add}">新增文章</a>
+            <a class="btn btn-secondary" aria-current="page" th:href="@{/post/page}">返回列表</a>
+        </div>
+    </div><br>
+    <div class="search-container">
+        <form th:action="@{/GetPostByTitle}" method="get" class="input-group">
+            <input type="text" id="title" name="title" placeholder="你想要找什麼呢？" class="form-control search-input">
+            <button type="submit" class="btn btn-outline-secondary search-button"></button>
+        </form>
+    </div>
+    <br>
+    <div class="accordion" id="accordionExample">
+        <th:block th:each="oneMsg : ${page.content}">
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <span th:text="${oneMsg.title}" style="flex: 1;">標題</span>
+                    <div class="tags-container">
+                        <span th:each="tag : ${oneMsg.tags}" th:text="${tag.name}" class="badge bg-secondary"></span>
                     </div>
                 </div>
-            </th:block>
-        </div>
-        <div class="total" th:text="'總共有 ' + ${page.totalElements} + ' 筆'"></div>
-        
-        <ul class="pagination" th:if="${page.totalPages != 0}">
-            <th:block th:switch="${page.number != 0}">
-                <li th:case="${true}" class="page-item">
-                    <a class="page-link" th:href="@{/post/page(p=${page.number})}">上一頁</a>
-                </li>
-                <li th:case="${false}" class="page-item disabled">
-                    <a class="page-link">上一頁</a>
-                </li>
-            </th:block>
-            <!-- 頁碼 -->
-            <th:block th:each="pageNumber : ${#numbers.sequence(1,page.totalPages)}">
-                <th:block th:switch="${page.number + 1 == pageNumber}">
-                    <li th:case="${false}" class="page-item">
-                        <a class="page-link" th:href="@{/post/page(p=${pageNumber})}" th:text="${pageNumber}"></a>
-                    </li>
-                    <li th:case="${true}" class="page-item active">
-                        <span class="page-link" th:text="${pageNumber}"></span>
-                    </li>
-                </th:block>
-            </th:block>
-            <!-- 下一頁 -->
-            <th:block th:switch="${page.number + 1 == page.totalPages}">
-                <li th:case="${false}" class="page-item">
-                    <a class="page-link" th:href="@{/post/page(p=${page.number + 2})}">下一頁</a>
-                </li>
-                <li th:case="${true}" class="page-item disabled">
-                    <a class="page-link">下一頁</a>
-                </li>
-            </th:block>
-        </ul>
+                <div class="accordion-body">
+                	<div class="post-summary" th:utext="${#strings.abbreviate(oneMsg.postContent, 100)}"></div>
+                	<a href="#" class="btn btn-link" onclick="openModal('${oneMsg.title}', '${oneMsg.postContent}')">查看更多</a>
+                   
+                    
+                    <!-- <hr> -->
+                    <!-- <div class="card-footer">
+                        發布時間: <span th:text="${#dates.format(oneMsg.postCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </div> -->
+                </div>
+            </div>
+        </th:block>
     </div>
-    <script>
-        function bindAccordionEvents() {
-    var headers = document.querySelectorAll(".accordion-header");
-    headers.forEach(function(header) {
-        header.addEventListener("click", function() {
-            var body = this.nextElementSibling;
-            var isActive = body.classList.contains("show");
-            document.querySelectorAll(".accordion-body").forEach(function(b) {
-                b.classList.remove("show");
-            });
-            document.querySelectorAll(".accordion-header").forEach(function(h) {
-                h.classList.remove("active");
-            });
-            if (!isActive) {
-                body.classList.add("show");
-                this.classList.add("active");
-            }
-        });
-    });
-}
-
-function filterPostsByTag(button) {
-    var tagName = button.getAttribute('data-tag-name');
-    fetch('/sellphone/post/byTag?tagName=' + tagName)
-        .then(response => response.text())
-        .then(data => {
-            var parser = new DOMParser();
-            var doc = parser.parseFromString(data, 'text/html');
-            var newContent = doc.querySelector('#accordionExample').innerHTML;
-            document.getElementById('accordionExample').innerHTML = newContent;
-            console.log('Tag Clicked:', tagName);
-            
-            // 在更新內容後重新綁定事件監聽器
-            bindAccordionEvents();
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    bindAccordionEvents();
-});
-
-    </script>
+    <div class="total" th:text="'總共有 ' + ${page.totalElements} + ' 筆'"></div>
+    <ul class="pagination" th:if="${page.totalPages != 0}">
+        <th:block th:switch="${page.number != 0}">
+            <li th:case="${true}" class="page-item">
+                <a class="page-link" th:href="@{/post/page(p=${page.number})}">上一頁</a>
+            </li>
+            <li th:case="${false}" class="page-item disabled">
+                <a class="page-link">上一頁</a>
+            </li>
+        </th:block>
+        <th:block th:each="pageNumber : ${#numbers.sequence(1,page.totalPages)}">
+            <th:block th:switch="${page.number + 1 == pageNumber}">
+                <li th:case="${false}" class="page-item">
+                    <a class="page-link" th:href="@{/post/page(p=${pageNumber})}" th:text="${pageNumber}"></a>
+                </li>
+                <li th:case="${true}" class="page-item active">
+                    <span class="page-link" th:text="${pageNumber}"></span>
+                </li>
+            </th:block>
+        </th:block>
+        <th:block th:switch="${page.number + 1 == page.totalPages}">
+            <li th:case="${false}" class="page-item">
+                <a class="page-link" th:href="@{/post/page(p=${page.number + 2})}">下一頁</a>
+            </li>
+            <li th:case="${true}" class="page-item disabled">
+                <a class="page-link">下一頁</a>
+            </li>
+        </th:block>
+    </ul>
+</div>
+<script>
+    function filterPostsByTag(button) {
+        var tagName = button.getAttribute('data-tag-name');
+        fetch('/sellphone/post/byTag?tagName=' + tagName)
+            .then(response => response.text())
+            .then(data => {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(data, 'text/html');
+                var newContent = doc.querySelector('#accordionExample').innerHTML;
+                document.getElementById('accordionExample').innerHTML = newContent;
+                console.log('Tag Clicked:', tagName);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 </body>
 </html>
+

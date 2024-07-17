@@ -2,6 +2,11 @@ package sellphone.forum.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,10 +28,15 @@ public class Comment {
     @Column(name = "commentContent", columnDefinition = "nvarchar(max)", nullable = false)
     private String commentContent;
 
-    @Column(name = "commentCreatedTime", nullable = false)
+    @Column(name = "commentCreatedTime", nullable = false,updatable = false)
+    @org.hibernate.annotations.CreationTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime commentCreatedTime;
 
     @Column(name = "commentLastUpdatedTime", nullable = false)
+    @org.hibernate.annotations.UpdateTimestamp
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime commentLastUpdatedTime;
     
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,7 +44,7 @@ public class Comment {
     private Post post;
 
     @Column(name = "userId", nullable = false)
-    private int userId;
+    private int userId; 
 	
 	public Comment() {
 		

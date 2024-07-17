@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import sellphone.forum.model.Comment;
 import sellphone.forum.model.CommentRepository;
+import sellphone.forum.model.Post;
 
 @Service
 public class CommentService {
@@ -24,13 +25,13 @@ public class CommentService {
         return optional.orElse(null);
     }
 
-//    public List<Comment> findCommentsByPostId(Integer postId) {
-//        return commentRepo.findByPostId(postId);
-//    }
+    public List<Comment> findCommentsByPostId(Post post) {
+        return commentRepo.findByPost(post);
+    }
 
     public void deleteCommentById(Integer commentId) {
         commentRepo.deleteById(commentId);
     }
 
-    // 可以添加其他與評論相關的方法
+    
 }
