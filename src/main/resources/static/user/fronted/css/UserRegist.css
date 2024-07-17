@@ -1,0 +1,135 @@
+/* * { */
+/*     border: 1px solid black; */
+/* } */
+.ad-container {
+	width: 200px;
+	height: 600px;
+}
+
+.form-container {
+	/*     margin-top: 100px; */
+	background-color: white;
+	width: 400px;
+	border-radius: 15px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#register-container {
+	/* 	position:absolute; */
+}
+
+#login-container {
+	position: absolute;
+	top: 18%
+		/* 	height:375px; */
+}
+
+#login-form .submitBtn {
+	margin-top: 15px;
+}
+
+.form-container form {
+	margin: 20px;
+	padding: 20px;
+}
+
+.form-container h2 {
+	margin: 0 0 20px;
+	text-align: center;
+	color: black;
+}
+
+.form-container .inputHint {
+	font-size: 15px;
+	margin-top: 1px;
+	margin-left: 0;
+}
+
+.form-container .ajaxcheck {
+	font-size: 15px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	color: red;
+}
+
+.form-container .error-hint {
+	font-size: 15px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	color: red;
+}
+
+.form-container .require {
+	font-size: 20px;
+	color: #b90b26;
+	margin: 0;
+}
+
+.form-container input {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 7px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.form-container .checkalert {
+	font-size: 6px;
+	color: red;
+}
+
+.form-container .submitBtn {
+	background-color: grey;
+	color: white;
+	width: 100%;
+	margin-top: 1px;
+	padding: 10px;
+	border: none;
+	border-radius: 4px;
+	font-size: 16px;
+}
+
+.form-container .active {
+	background-color: red;
+}
+
+.form-container .active:hover {
+	background-color: rgb(202, 4, 4);
+}
+
+.form-container .line-login {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 20px 0;
+	border: 1px solid #ccc;
+	padding: 10px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.form-container .line-login img {
+	width: 24px;
+	margin-right: 10px;
+}
+
+.form-container .footer {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 10px;
+	color: #888;
+}
+
+.form-container .forgot-password {
+	/*     display: block; */
+	text-align: center;
+	margin-top: 10px;
+	color: #888;
+}
+
+.form-container .terms {
+	font-size: 12px;
+	color: #555;
+	text-align: center;
+	margin-top: 10px;
+}

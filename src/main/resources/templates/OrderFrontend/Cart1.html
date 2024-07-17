@@ -1,5 +1,7 @@
+<!-- Cart1.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 	<title>結帳頁面</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,174 +12,75 @@
 	<script th:src="@{/shoppingcart/cart/js/simpleCart.min.js}"></script>
 	<link th:href="@{/shoppingcart/cart/css/jquery-ui.css}" rel="stylesheet" type="text/css">
 	<script th:src="@{/shoppingcart/cart/js/bootstrap-3.1.1.min.js}" type="text/javascript"></script>
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
-	<link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
+	<link
+		href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic"
+		rel="stylesheet" type="text/css">
+	<link
+		href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic"
+		rel="stylesheet" type="text/css">
 	<link th:href="@{/shoppingcart/cart/css/animate.min.css}" rel="stylesheet">
+	<link th:href="@{/css/styles.css}" rel="stylesheet" />
+<!-- 	<link th:href="@{/layout/css/header.css}" rel="stylesheet"> -->
 	<script th:src="@{/shoppingcart/cart/js/wow.min.js}"></script>
+	<div th:replace="~{/layout/headerStylesheet.html}"></div>
 	<script>
 		new WOW().init();
 	</script>
 </head>
+
 <body>
 
-<!-- Header -->
-<div th:replace="~{/layout/header.html}"></div>
+	<!-- Header -->
+	<div th:replace="~{/layout/header.html}"></div>
 
-<!-- breadcrumbs -->
-<div class="breadcrumbs">
-	<div class="container">
-		<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-			<li><a th:href="@{/index}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>首頁</a></li>
-			<li class="active">結帳頁面</li>
-		</ol>
-	</div>
-</div>
-<!-- //breadcrumbs -->
-<!-- checkout -->
-<div class="checkout">
-	<div class="container">
-		<h3 class="animated wow slideInLeft" data-wow-delay=".5s">您的購物車包含: <span>3 件商品</span></h3>
-		<div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
-			<table class="timetable_sub">
-				<thead>
-				<tr>
-					<th>序號</th>
-					<th>商品</th>
-					<th>數量</th>
-					<th>商品名稱</th>
-					<th>服務費</th>
-					<th>價格</th>
-					<th>移除</th>
-				</tr>
-				</thead>
-				<tr class="rem1">
-					<td class="invert">1</td>
-					<td class="invert-image"><a th:href="@{/single}"><img th:src="@{/shoppingcart/cart/images/22.jpg}" alt=" " class="img-responsive" /></a></td>
-					<td class="invert">
-						<div class="quantity">
-							<div class="quantity-select">
-								<div class="entry value-minus">&nbsp;</div>
-								<div class="entry value"><span>1</span></div>
-								<div class="entry value-plus active">&nbsp;</div>
-							</div>
-						</div>
-					</td>
-					<td class="invert">黑色鞋子</td>
-					<td class="invert">$5.00</td>
-					<td class="invert">$290.00</td>
-					<td class="invert">
-						<div class="rem">
-							<div class="close1"> </div>
-						</div>
-						<script>
-							$(document).ready(function(c) {
-								$('.close1').on('click', function(c){
-									$('.rem1').fadeOut('slow', function(c){
-										$('.rem1').remove();
-									});
-								});
-							});
-						</script>
-					</td>
-				</tr>
-				<tr class="rem2">
-					<td class="invert">2</td>
-					<td class="invert-image"><a th:href="@{/single}"><img th:src="@{/shoppingcart/cart/images/30.jpg}" alt=" " class="img-responsive" /></a></td>
-					<td class="invert">
-						<div class="quantity">
-							<div class="quantity-select">
-								<div class="entry value-minus">&nbsp;</div>
-								<div class="entry value"><span>1</span></div>
-								<div class="entry value-plus active">&nbsp;</div>
-							</div>
-						</div>
-					</td>
-					<td class="invert">中央桌</td>
-					<td class="invert">$5.00</td>
-					<td class="invert">$250.00</td>
-					<td class="invert">
-						<div class="rem">
-							<div class="close2"> </div>
-						</div>
-						<script>
-							$(document).ready(function(c) {
-								$('.close2').on('click', function(c){
-									$('.rem2').fadeOut('slow', function(c){
-										$('.rem2').remove();
-									});
-								});
-							});
-						</script>
-					</td>
-				</tr>
-				<tr class="rem3">
-					<td class="invert">3</td>
-					<td class="invert-image"><a th:href="@{/single}"><img th:src="@{/shoppingcart/cart/images/11.jpg}" alt=" " class="img-responsive" /></a></td>
-					<td class="invert">
-						<div class="quantity">
-							<div class="quantity-select">
-								<div class="entry value-minus">&nbsp;</div>
-								<div class="entry value"><span>1</span></div>
-								<div class="entry value-plus active">&nbsp;</div>
-							</div>
-						</div>
-					</td>
-					<td class="invert">石手鐲</td>
-					<td class="invert">$5.00</td>
-					<td class="invert">$299.00</td>
-					<td class="invert">
-						<div class="rem">
-							<div class="close3"> </div>
-						</div>
-						<script>
-							$(document).ready(function(c) {
-								$('.close3').on('click', function(c){
-									$('.rem3').fadeOut('slow', function(c){
-										$('.rem3').remove();
-									});
-								});
-							});
-						</script>
-					</td>
-				</tr>
-				<!--quantity-->
-				<script>
-					$('.value-plus').on('click', function(){
-						var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)+1;
-						divUpd.text(newVal);
-					});
-
-					$('.value-minus').on('click', function(){
-						var divUpd = $(this).parent().find('.value'), newVal = parseInt(divUpd.text(), 10)-1;
-						if(newVal>=1) divUpd.text(newVal);
-					});
-				</script>
-				<!--quantity-->
-			</table>
-		</div>
-		<div class="checkout-left">
-			<div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s">
-				<h4>購物籃</h4>
-				<ul>
-					<li>商品1 <i>-</i> <span>$250.00 </span></li>
-					<li>商品2 <i>-</i> <span>$290.00 </span></li>
-					<li>商品3 <i>-</i> <span>$299.00 </span></li>
-					<li>總服務費 <i>-</i> <span>$15.00</span></li>
-					<li>總計 <i>-</i> <span>$854.00</span></li>
-				</ul>
-			</div>
-			<div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
-				<a th:href="@{/single}"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>繼續購物</a>
-				<a th:href="@{/DashBoard/orders/checkout1}"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>結帳</a>
-			</div>
-			<div class="clearfix"> </div>
+	<!-- breadcrumbs -->
+	<div class="breadcrumbs">
+		<div class="container">
+			<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+				<li><a th:href="@{/index}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>首頁</a></li>
+				<li class="active">結帳頁面</li>
+			</ol>
 		</div>
 	</div>
-</div>
-<!-- //checkout -->
+	<!-- //breadcrumbs -->
+	<!-- checkout -->
+	<div class="checkout">
+		<div class="container">
+			<h3 class="animated wow slideInLeft" data-wow-delay=".5s">您的購物車包含: <span
+					th:text="${carts.size()} + ' 件商品'"></span></h3>
+			<div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
+				<table class="timetable_sub">
+					<thead>
+						<tr>
+							<th>序號</th>
+							<th>商品</th>
+							<th>數量</th>
+							<th>商品名稱</th>
+							<th>顏色</th>
+							<th>儲存空間</th>
+							<th>價格</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="cart, iterStat : ${carts}">
+							<td th:text="${iterStat.count}"></td>
+							<td><img th:src="@{/shoppingcart/cart/images/22.jpg}" alt=" " class="img-responsive" /></td>
+							<td th:text="${cart.quantity}"></td>
+							<td>商品名稱</td>
+							<td th:text="${cart.color}"></td>
+							<td th:text="${cart.storage}"></td>
+							<td th:text="${cart.price}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- //checkout -->
 
-<!-- Footer -->
-<div th:replace="~{/layout/footer.html}"></div>
+	<!-- Footer -->
+	<div th:replace="~{/layout/footer.html}"></div>
 
 </body>
+
 </html>

@@ -26,12 +26,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
 import sellphone.dashboard.user.model.UserRepository;
 import sellphone.dashboard.user.model.UserView;
 import sellphone.dashboard.user.model.UserViewRepository;
 import sellphone.dashboard.user.model.Users;
+import sellphone.dashboard.user.service.UserMailService;
 import sellphone.dashboard.user.service.UserService;
 import sellphone.dashboard.user.service.UserUtil;
 
@@ -42,6 +44,9 @@ public class UserAjaxController {
 	private UserService uService;
 	
 	@Autowired
+	private UserMailService userMailService;
+	
+	@Autowired
 	private UserRepository userRepo;
 	
 	@Autowired
@@ -49,7 +54,8 @@ public class UserAjaxController {
 	
 	@Autowired
 	private UserUtil userUtil;
-	
+
+//	-------------------------------------- UserInfo-controller ----------------------------------------------------		
 	@PostMapping("/UserEmailEdit")
 	@ResponseBody
 	public String userEmailEdit(@RequestBody Map<String, String> map, @SessionAttribute("userId") String userId , Model m) {
@@ -69,7 +75,9 @@ public class UserAjaxController {
 		
 		return user.getContactNum();
 	}
+
 	
+//	--------------------------------------  Registration-related controller ----------------------------------------------------		
 	@PostMapping("/CheckRegist")
 	@ResponseBody
 	public String checkRegist(@RequestBody Users user,HttpServletRequest req) throws ServletException, IOException {
@@ -82,7 +90,9 @@ public class UserAjaxController {
 		user.setStatus(status);
 		user.setCreateTime(LocalDateTime.now());
 		uService.insert(user);
-
+		
+		userMailService.sendConfirmAccountEmail(user);
+		
 		return user.getUserName();
 	}	
 	
@@ -127,6 +137,12 @@ public class UserAjaxController {
         // Email must not contain double dots
         String noDoubleDotRegex = "^[^..]*$";
 
+        Users user = userRepo.findByEmail(email);
+        if(user != null) {
+        	return"此email已經存在";
+        }
+        
+        
         if (email != null &&
             email.matches(emailRegex) &&
             email.matches(noSpaceRegex) &&
@@ -148,4 +164,33 @@ public class UserAjaxController {
 		
 		return userView;
 	}
+	
+//	--------------------------------------  DashBoard-related controller ----------------------------------------------------	
+	
+	@GetMapping("/UserBlockStatus")
+	public void userBlockStatus(@RequestParam("userId") String userId, Model m, HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		Users user = uService.findById(userId);
+
+		int status = user.getStatus();
+		if (status != -1) {
+			user.setStatus(-1);
+		} else if (status == -1) {
+			user.setStatus(1);
+		}
+
+		uService.update(user);
+		resp.setStatus(HttpServletResponse.SC_OK);
+
+	}
+
+
+	@GetMapping("/UserDelete")
+	public void userDelete(@RequestParam("userId") String userId, Model m, HttpServletRequest req,
+			HttpServletResponse resp) {
+
+		uService.delete(userId);
+		resp.setStatus(HttpServletResponse.SC_OK);
+	}
+
 }
