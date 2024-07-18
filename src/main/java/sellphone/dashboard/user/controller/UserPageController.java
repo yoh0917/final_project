@@ -151,6 +151,8 @@ public class UserPageController {
 	public String userList(Model m) throws ServletException, IOException {
 
 		List<UserView> userList = uVService.findAll();
+		
+		System.out.println(userList);
 		m.addAttribute("userList", userList);
 
 		return "user/dashBoard/UserList";
