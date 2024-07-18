@@ -57,7 +57,7 @@
 				<tbody>
 				<tr th:each="cart, iterStat : ${carts}">
 					<td th:text="${iterStat.count}"></td>
-					<td><img th:src="@{/shoppingcart/cart/images/22.jpg}" alt=" " class="img-responsive" /></td>
+					<td><img th:src="@{'data:image/jpeg;base64,' + ${cart.photoBase64}}" alt=" " class="img-responsive" style="max-width: 150px; max-height: 150px; object-fit: cover;"/></td>
 					<td th:text="${cart.quantity}"></td>
 					<td th:text="${cart.productName}">商品名稱</td>
 					<td th:text="${cart.color}">顏色</td>
@@ -74,8 +74,7 @@
 			<div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s">
 				<h4>總計</h4>
 				<ul>
-					<li th:each="cart : ${carts}" th:text="${cart.productName} + ' - ' + cart.price"></li>
-					<li th:text="'總服務費用 - ' + ${totalServiceCharges}"></li>
+					<li th:each="cart : ${carts}" th:text="${cart.productName} + ' - ' + cart.color + ' - ' + cart.storage + ' - ' + cart.price"></li>
 					<li th:text="'全部的 - ' + ${totalPrice}"></li>
 				</ul>
 			</div>
