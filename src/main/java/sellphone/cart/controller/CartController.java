@@ -5,17 +5,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpSession;
-import sellphone.cart.model.Cart;
 import sellphone.cart.model.CartView;
 import sellphone.cart.service.CartService;
 import sellphone.dashboard.user.model.Users;
+import sellphone.product.model.Photo;
+import sellphone.product.model.PhotoRepository;
 
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CartController {
+
     @Autowired
     private CartService cartService;
+
+    @Autowired
+    private PhotoRepository photoRepository;
 
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
@@ -28,15 +35,25 @@ public class CartController {
         String userId = user.getUserName();
         System.out.println("User found in session. UserId: " + userId); // 記錄userId
         List<CartView> carts = cartService.getCartItems(userId);
-        model.addAttribute("carts", carts);
+
+        for (CartView cart : carts) {
+            Optional<Photo> photo = photoRepository.findByProductid(cart.getProductId());
+            if (photo.isPresent()) {
+                cart.setPhotoBase64(encodePhotoToBase64(photo.get().getPhotoFile()));
+            }
+        }
 
         double totalPrice = carts.stream().mapToDouble(CartView::getPrice).sum();
-        double totalServiceCharges = carts.stream().mapToDouble(cart -> 5.00).sum(); // 假設每項商品的固定服務費為5.00
+        model.addAttribute("carts", carts);
         model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("totalServiceCharges", totalServiceCharges);
 
         return "OrderFrontend/Cart1"; // 返回Cart1.html視圖
     }
+
+    private String encodePhotoToBase64(byte[] photoFile) {
+        return Base64.getEncoder().encodeToString(photoFile);
+    }
+}
 
 
 
@@ -68,4 +85,4 @@ public class CartController {
 //        model.addAttribute("userId", userId); // 將 userId 添加到模型中
 //        return "OrderFrontend/Cart1"; // 確保返回正確的視圖名稱
 //    }
-}
+

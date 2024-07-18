@@ -30,6 +30,6 @@ public class CartView {
     @Column(name = "PRODUCTNAME")
     private String productName;
 
-    @Column(name = "photoFile")
-    private String photoFile; // 確認這個欄位名與資料庫中的一致
+    @Transient
+    private String photoBase64; // Base64圖片欄位
 }
