@@ -2,64 +2,93 @@ $(function () {
 
     const serverContext = 'http://localhost:8081/sellphone'
 
-    function ajaxCheckHint(param, node, url) {
-        console.log("parameter:" + param)
+    // ============== Regit Page ===============
+    // ============== Regist check (contactNum, email, account ===============
+
+    let checkContactNum = false;
+    let checkEmail = false;
+    let checkAccount = false;
+    let checkPassword = false;
+    function registEnable() {
+        if ((checkContactNum &&
+            checkEmail &&
+            checkAccount &&
+            checkPassword) == true
+        ) {
+            $('.submitBtn').prop('disabled', false).addClass('active')
+        } else {
+            $('.submitBtn').prop('disabled', true).removeClass('active')
+        }
+    }
+
+    // ==== contactnum check ====
+    $('#contactnuminput').blur(function () {
+        checkContactNum = false;
+        url = serverContext + "/checkContactNum"
+        param = $(this).val()
         object = { param: param }
-        axios.get(url, {
-            params: object
-        })
+        axios.get(url, { params: object })
             .then(res => {
-                node.next().text(res.data)
+                $(this).next().text(res.data)
+                console.log(res.data.length);
+                if (res.data.length == 0) {
+                    checkContactNum = true;
+                }
+                registEnable()
+                console.log(checkContactNum);
             })
             .catch(err => {
                 console.log(err)
             })
-    }
 
-    let hasInput = false;
-    function passwordCheck(event) {
-        if ($('#passwordinput').val() == '' && $('#passwordcheck').val() == '') {
-            $('#passwordalert').text("密碼不可空白");;
-            console.log("no data");
-            return;
-        }
-
-
-        if ($(event.target).attr('id') == $('#passwordcheck').attr('id')) {
-            console.log("test")
-            hasInput = true;
-        }
-        console.log(hasInput)
-        if (hasInput) {
-            if ($('#passwordinput').val() != $('#passwordcheck').val()) {
-                $('.submitBtn').prop('disabled', true).removeClass('active')
-                $('#passwordalert').text("密碼與確認密碼不正確");
-            } else {
-                $('.submitBtn').prop('disabled', false).addClass('active')
-                $('#passwordalert').text("");
-            }
-        }
-    }
-
-
-    $('#contactnuminput').blur(function () {
-        url = serverContext + "/checkContactNum"
-        param = $(this).val()
-        ajaxCheckHint(param, $(this), url)
     })
 
+    // ==== account check ====
     $('#accountinput').blur(function () {
+        checkAccount = false;
         url = serverContext + "/checkUserAccount"
         param = $(this).val()
-        ajaxCheckHint(param, $(this), url)
+        object = { param: param }
+        axios.get(url, { params: object })
+            .then(res => {
+                $(this).next().text(res.data)
+                console.log(res.data);
+                if (res.data.length == 0) {
+                    checkAccount = true;
+                }
+                registEnable()
+                console.log(checkAccount);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
     })
 
+
+    // ==== email check ====
     $('#emailinput').blur(function () {
-        console.log("tsadeas");
+        checkEmail = false;
         url = serverContext + "/checkEmailValid"
         param = $(this).val();
-        ajaxCheckHint(param, $(this), url);
+        object = { param: param }
+        axios.get(url, { params: object })
+            .then(res => {
+                $(this).next().text(res.data)
+                console.log(res.data);
+                if (res.data.length == 0) {
+                    checkEmail = true;
+                }
+                registEnable()
+                console.log(checkEmail);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
     })
+
+    // ==== password check ====
 
     $('#passwordinput').blur(function (e) {
         passwordCheck(e);
@@ -68,8 +97,44 @@ $(function () {
         passwordCheck(e);
     })
 
+    let hasInput = false;
+    function passwordCheck(event) {
+        checkPassword = false;
+        if ($('#passwordinput').val() == '' && $('#passwordcheck').val() == '') {
+            $('#passwordalert').text("密碼不可空白");;
+            return;
+        }
+
+        if ($(event.target).attr('id') == $('#passwordcheck').attr('id')) {
+            console.log("test")
+            hasInput = true;
+        }
+
+        console.log(hasInput)
+        if (hasInput) {
+            if ($('#passwordinput').val() != $('#passwordcheck').val()) {
+                $('#passwordalert').text("密碼與確認密碼不正確");
+            } else {
+                checkPassword = true;
+                $('#passwordalert').text("");
+            }
+        }
+        console.log(checkPassword);
+        registEnable()
+    }
+
+
+    // ============== Regist submit ===============
     $('#register-form').on('submit', function (e) {
         e.preventDefault();
+
+        $('.submitBtn').html(
+            '<div class="spinner-border m-0.5" role="status">' +
+            '<span class="visually-hidden">Loading...</span>' +
+            '</div>'
+        );
+
+
         url = serverContext + '/CheckRegist'
         const data = new FormData(this)
         axios.post(url, {
@@ -83,7 +148,7 @@ $(function () {
             .then(res => {
                 Swal.fire({
                     title: '註冊成功',
-                    text: '還沒做驗證功能。',
+                    text: '請前往email收取驗證信。',
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: '確認'
@@ -102,8 +167,38 @@ $(function () {
                     cancelButtonColor: '#d33',
                     confirmButtonText: '確認'
                 })
+                $('.submitBtn').html('註冊'
+                );
             })
+    })
+    // ============== auto fill for Regist page ===============
+
+    $('#registfill').on('click', function () {
+        $('#usernameinput').val('eeit183test')
+        $('#birthdayinput').val('01-01-2024')
+        $('#contactnuminput').val('0987705857')
+        $('#emailinput').val('eeit183test@gmail.com')
+        $('#accountinput').val('eeit183test')
+        $('#passwordinput').val('123')
+        $('#passwordcheck').val('123')
+    })
 
 
+
+    // ============== Login Page ===============
+    // ============== auto fill for login page ===============
+    $('#leofill').on('click', function () {
+        $('#input_phone_num').val('leo1234');
+        $('#input_password').val('123456');
+    })
+
+    $('#garyfill').on('click', function () {
+        $('#input_phone_num').val('Gary1234');
+        $('#input_password').val('123456');
+    })
+
+    $('#adminfill').on('click', function () {
+        $('#input_phone_num').val('admin');
+        $('#input_password').val('admin');
     })
 })

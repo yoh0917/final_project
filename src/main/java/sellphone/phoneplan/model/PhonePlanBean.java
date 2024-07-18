@@ -7,26 +7,18 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sellphone.dashboard.user.model.UserPhonePlanList;
 
 @Entity
+//@Getter
+//@Setter
+//@NoArgsConstructor
 @Table(name = "F00001_PhonePlans")
-public class PhonePlanBean implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class PhonePlanBean  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,24 +61,14 @@ public class PhonePlanBean implements Serializable {
     @Column(name = "Gift")
     private String gift;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "phonePlanBean", cascade = CascadeType.ALL )
-	private Set<UserPhonePlanList> userPhonePlanListID = new LinkedHashSet<UserPhonePlanList>();
-
-    @Override
-    public String toString() {
-        return "PhonePlanBean [planID=" + planID + ", planName=" + planName 
-                + ", telCompany=" + telCompany + ", contractType=" + contractType 
-                + ", contractDuration=" + contractDuration + ", generation=" + generation 
-                + ", dataUsage=" + dataUsage + ", dataTransferRate=" + dataTransferRate 
-                + ", intraNetCall=" + intraNetCall + ", interNetCall=" + interNetCall 
-                + ", localCall=" + localCall + ", discount=" + discount 
-                + ", gift=" + gift + "]";
-    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "phonePlan", cascade = CascadeType.ALL )
+	private Set<UserPhonePlanList> userPhonePlanLists = new LinkedHashSet<UserPhonePlanList>();
+    
 
     @Override
     public int hashCode() {
         return Objects.hash(contractDuration, contractType, dataTransferRate, dataUsage, discount, generation, gift,
-                interNetCall, intraNetCall, localCall, planID, planName, telCompany);
+                interNetCall, intraNetCall, localCall, planID, planName, telCompany, userPhonePlanLists);
     }
 
     @Override
@@ -104,34 +86,39 @@ public class PhonePlanBean implements Serializable {
                 && Objects.equals(dataUsage, other.dataUsage) && Objects.equals(discount, other.discount)
                 && Objects.equals(generation, other.generation) && Objects.equals(gift, other.gift)
                 && Objects.equals(interNetCall, other.interNetCall) && Objects.equals(intraNetCall, other.intraNetCall)
-                && Objects.equals(localCall, other.localCall) && planID == other.planID 
-                && Objects.equals(planName, other.planName) && Objects.equals(telCompany, other.telCompany);
+                && Objects.equals(localCall, other.localCall) && planID == other.planID
+                && Objects.equals(planName, other.planName) && Objects.equals(telCompany, other.telCompany)
+                && Objects.equals(userPhonePlanLists, other.userPhonePlanLists);
     }
 
-    public PhonePlanBean() {
-	}
+    public Set<UserPhonePlanList> getUserPhonePlanLists() {
+        return userPhonePlanLists;
+    }
+
+    public void setUserPhonePlanLists(Set<UserPhonePlanList> userPhonePlanLists) {
+        this.userPhonePlanLists = userPhonePlanLists;
+    }
+
     
     
-//    public PhonePlanBean(int planID, String planName, String telCompany, String contractType,
-//            String contractDuration, String generation, String dataUsage, String dataTransferRate, String intraNetCall,
-//            String interNetCall, String localCall, String discount, String gift) {
-//        this.planID = planID;
-//        this.planName = planName;
-//        this.telCompany = telCompany;
-//        this.contractType = contractType;
-//        this.contractDuration = contractDuration;
-//        this.generation = generation;
-//        this.dataUsage = dataUsage;
-//        this.dataTransferRate = dataTransferRate;
-//        this.intraNetCall = intraNetCall;
-//        this.interNetCall = interNetCall;
-//        this.localCall = localCall;
-//        this.discount = discount;
-//        this.gift = gift;
+//    public void addUserPhonePlanList(UserPhonePlanList userPhonePlanList) {
+//        this.userPhonePlanLists.add(userPhonePlanList);
+//        userPhonePlanList.setPhonePlanBean(this);
+//    }
+//
+//    public void setUsers(UserPhonePlanList user) {
+//        // TODO Auto-generated method stub
 //    }
 
-	public void setUsers(UserPhonePlanList user) {
-		
+    @Override
+    public String toString() {
+        return "PhonePlanBean [planID=" + planID + ", planName=" + planName + ", telCompany=" + telCompany
+                + ", contractType=" + contractType + ", contractDuration=" + contractDuration + ", generation="
+                + generation + ", dataUsage=" + dataUsage + ", dataTransferRate=" + dataTransferRate + ", intraNetCall="
+                + intraNetCall + ", interNetCall=" + interNetCall + ", localCall=" + localCall + ", discount="
+                + discount + ", gift=" + gift + ", userPhonePlanLists=" + userPhonePlanLists + "]";
+    }
+    public PhonePlanBean() {
 	}
 
 	public int getPlanID() {
@@ -237,13 +224,6 @@ public class PhonePlanBean implements Serializable {
 	public void setGift(String gift) {
 		this.gift = gift;
 	}
-
-	public Set<UserPhonePlanList> getUserPhonePlanListID() {
-		return userPhonePlanListID;
-	}
-
-	public void setUserPhonePlanListID(Set<UserPhonePlanList> userPhonePlanListID) {
-		this.userPhonePlanListID = userPhonePlanListID;
-	}
-	
+    
+    
 }

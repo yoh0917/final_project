@@ -5,9 +5,11 @@
 <title>列出訊息</title>
 <style>
     body {
-    	position: relative;
+        position: relative;
         display: flex; 
-        padding-top: 100px ;
+        padding-top: 50px;
+        margin: 0; /* 添加，移除默认的body margin */
+        height: 100vh; /* 添加，使页面高度填满屏幕 */
     }
     .sidebar {
         position: fixed;
@@ -20,9 +22,13 @@
         padding-top: 170px;
     }
     .container {
-      	margin-left: 200px; 
-       /*  padding: 20px; */
-        width: calc(100% - 500px) !important;
+    	
+        margin-left: 250px !important;
+        margin-right:50px !important;
+        width: calc(100% - 500px);
+        box-sizing: border-box;
+        padding: 50px 100px; 
+        overflow-y: auto; /* 添加：使内容超出时可以滚动 */
     }
     .pagination {
         display: flex;
@@ -80,8 +86,8 @@
     .edit-btn .btn {
         flex: 1;
         text-align: center;
-        font-size: 1rem; /* 确保字体大小一致 */
-        padding: 0.5rem 1rem; /* 确保内边距一致 */
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
     }
     .search-container {
         display: flex;
@@ -237,39 +243,47 @@
         </ul>
     </div>
     <script>
-        function filterPostsByTag(button) {
-            var tagName = button.getAttribute('data-tag-name');
-            fetch('/sellphone/post/byTag?tagName=' + tagName)
-                .then(response => response.text())
-                .then(data => {
-                    var parser = new DOMParser();
-                    var doc = parser.parseFromString(data, 'text/html');
-                    var newContent = doc.querySelector('#accordionExample').innerHTML;
-                    document.getElementById('accordionExample').innerHTML = newContent;
-                    console.log('Tag Clicked:', tagName);
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            var headers = document.querySelectorAll(".accordion-header");
-            headers.forEach(function(header) {
-                header.addEventListener("click", function() {
-                    var body = this.nextElementSibling;
-                    var isActive = body.classList.contains("show");
-                    document.querySelectorAll(".accordion-body").forEach(function(b) {
-                        b.classList.remove("show");
-                    });
-                    document.querySelectorAll(".accordion-header").forEach(function(h) {
-                        h.classList.remove("active");
-                    });
-                    if (!isActive) {
-                        body.classList.add("show");
-                        this.classList.add("active");
-                    }
-                });
+        function bindAccordionEvents() {
+    var headers = document.querySelectorAll(".accordion-header");
+    headers.forEach(function(header) {
+        header.addEventListener("click", function() {
+            var body = this.nextElementSibling;
+            var isActive = body.classList.contains("show");
+            document.querySelectorAll(".accordion-body").forEach(function(b) {
+                b.classList.remove("show");
             });
+            document.querySelectorAll(".accordion-header").forEach(function(h) {
+                h.classList.remove("active");
+            });
+            if (!isActive) {
+                body.classList.add("show");
+                this.classList.add("active");
+            }
         });
+    });
+}
+
+function filterPostsByTag(button) {
+    var tagName = button.getAttribute('data-tag-name');
+    fetch('/sellphone/post/byTag?tagName=' + tagName)
+        .then(response => response.text())
+        .then(data => {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(data, 'text/html');
+            var newContent = doc.querySelector('#accordionExample').innerHTML;
+            document.getElementById('accordionExample').innerHTML = newContent;
+            console.log('Tag Clicked:', tagName);
+            
+            // 在更新內容後重新綁定事件監聽器
+            bindAccordionEvents();
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    bindAccordionEvents();
+});
+
     </script>
 </body>
 </html>

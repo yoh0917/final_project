@@ -56,6 +56,7 @@
                         <th>維修日期</th>
                         <th>維修費用</th>
                         <th>維修部件</th>
+                        <th>維修狀態</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -77,6 +78,14 @@
                         </td>
                         <td>
                             <input type="text" class="form-control" th:name="fixPort" th:value="${phone.fixPort}"/>
+                        </td>
+                        <td>
+                            <select class="form-control" th:name="fixState" required>
+                                <option th:value="${phone.fixState}" th:text="${phone.fixState}" selected></option>
+                                <option value="未接單">未接單</option>
+                                <option value="維修中">維修中</option>
+                                <option value="已完成">已完成</option>
+                            </select>
                         </td>
                         <td>
                             <button type="submit" class="btn btn-success btn-sm">保存</button>

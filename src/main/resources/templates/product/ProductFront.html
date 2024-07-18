@@ -2,86 +2,102 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Shop Homepage - Start Bootstrap Template</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link th:href="@{/css/styles.css}" rel="stylesheet" />
-    <link th:href="@{/layout/css/header.css}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>商品總攬</title>
+ <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+<!-- Favicon-->
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+<!-- Bootstrap icons-->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+	rel="stylesheet" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link th:href="@{/css/styles.css}" rel="stylesheet" />
+<link th:href="@{/layout/css/header.css}" rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
 
-    <div th:replace="~{/layout/header.html}"></div>
+	<div th:replace="~{/layout/header.html}"></div>
 
-    <br>
-    <br>
-    <section class="py-2 mt-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <h1>商品總攬</h1>
+	<br>
+	<br>
+	<section class="py-2 mt-5">
+		<div class="container px-4 px-lg-5 mt-5">
+			<h1>商品總覽</h1>
 
 
-            <div class="d-flex flex-row-reverse align-items-center ">
-                <input type="number" id="maxPrice" name="maxPrice" class="form-control w-25 h-25" required
-                    placeholder="最高價格">
-                <label for="maxPrice">最高價格 :</label>
-                <input type="number" id="minPrice" name="minPrice" class="form-control w-25 h-25" required
-                    placeholder="最低價格">
-                <label for="minPrice">最低價格 :</label>
-            </div>
+			<div class="d-flex flex-row-reverse align-items-center animate__animated animate__bounceInLeft ">
+				<input type="number" id="maxPrice" name="maxPrice"
+					class="form-control w-25 h-25" required placeholder="最高價格">
+				<label for="maxPrice">最高價格 :</label> <input type="number"
+					id="minPrice" name="minPrice" class="form-control w-25 h-25"
+					required placeholder="最低價格"> <label for="minPrice">最低價格
+					:</label>
+			</div>
 
-            <br>
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center"
-                id="productContainer">
+			<br>
+			<div
+				class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center"
+				id="productContainer">
 
-                <div id="each" th:each="product : ${frontlistProduct}" class="col mb-5">
-                    <div class="card h-100">
-                        <div align="center" class="mt-5">
-                            <img width="180px" height="160px"
-                                th:src="@{/photos/download(photoid=${product.productPhoto[0].photoid})}" />
-                        </div>
-                        <!-- Product details -->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name -->
-                                <h5 class="fw-bolder mt-2" th:text="${product.productName}"></h5>
+				<div id="each" th:each="product : ${frontlistProduct}"
+					class="col mb-5 ">
+					<div class="card h-100 animate__animated animate__fadeInDown">
+						<div align="center" class="m-5 ">
+							<img width="200px" height="190px"
+								th:src="@{/photos/download(photoid=${product.productPhoto[0].photoid})}" />
+						</div>
+						<!-- Product details -->
+						<div class="card-body p-4">
+							<div class="text-center">
+								<!-- Product name -->
+								<h5 class="fw-bolder mt-2" th:text="${product.productName}"></h5>
+								<div>
+									<span class="mx-auto text-secondary"
+										th:text="'$ '+${product.price}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="product-status visually-hidden">
+							<span class="mx-auto text-secondary"
+								th:text="${product.productstatus}"></span>
+						</div>
+						<!-- Product actions -->
+						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+							<div class="text-center">
+								<a class="btn btn-outline-dark mt-auto" onclick="sendtopay">直接購買</a>
+								<a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Footer-->
+	<div th:replace="~{/layout/footer.html}"></div>
 
-                                <div>
-                                    <span class="mx-auto text-secondary" th:text="'$ '+${product.price}"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Product actions -->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center">
-                                <a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Footer-->
-    <div th:replace="~{/layout/footer.html}"></div>
+	<!-- Bootstrap core JS-->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Core theme JS-->
+	<!--     <script src="js/scripts.js"></script> -->
+	<!-- SweetAlert2 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <!--     <script src="js/scripts.js"></script> -->
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <script>
+	<script>
         function showAlert() {
             Swal.fire({
                 title: "已加入購物車!",
@@ -89,6 +105,18 @@
                 icon: "success"
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.product-status').forEach(function(statusElement) {
+        if (statusElement.textContent.trim() == '0') {
+            let card = statusElement.closest('.col');
+            card.parentNode.removeChild(card);
+        }
+    });
+});
+
+
+
 
 
 
@@ -124,6 +152,7 @@
 						</div>						
 						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
 							<div class="text-center">
+							<a class="btn btn-outline-dark mt-auto" onclick="sendtopay">直接購買</a>
 								<a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a>
 							</div>
 						</div>
@@ -139,17 +168,9 @@
             }
 
         }
-
-
-
-
-
-
         function backData() {
             var minPrice = document.getElementById('minPrice').value;
             var maxPrice = document.getElementById('maxPrice').value;
-
-
 
             if (minPrice == '' && maxPrice == '') {
                 axios.get(`/sellphone/front/api/backlist`
@@ -172,6 +193,7 @@
 						</div>						
 						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
 							<div class="text-center">
+							<a class="btn btn-outline-dark mt-auto" onclick="sendtopay">直接購買</a>
 								<a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a>
 							</div>
 						</div>
@@ -187,8 +209,6 @@
             }
 
         }
-
-
         document.querySelector('#minPrice').addEventListener('keyup', sendPriceData)
         document.querySelector('#maxPrice').addEventListener('keyup', sendPriceData)
         document.querySelector('#minPrice').addEventListener('keyup', backData)

@@ -1,5 +1,11 @@
 package sellphone.dashboard.user.model;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -7,81 +13,50 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import sellphone.phoneplan.model.PhonePlanBean;
-
 
 
 @Entity
 @Table(name = "U00004_UserPhonePlanList")
 public class UserPhonePlanList {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userPhonePlanID")
+    private int userPhonePlanID;
 
-    private int UserPhonePlanListID;
-    
-    private String phoneNunber;
-    
-    @Column(columnDefinition = "Date ")
-    private String agreementDate;
-    
     @Column(nullable = false, insertable=false, updatable=false)
   	private String userId;
     
     @Column(nullable = false, insertable=false, updatable=false)
     private int planID;
     
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId")
-	private  Users user;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "planID")
-	private  PhonePlanBean phonePlanBean;
+    private String phoneNum;
+    
+    @Column(name = "agreementDate", columnDefinition = "Date")
+    private String agreementDate;
 
-	public UserPhonePlanList() {
-	}
-	
-	public int getUserPhonePlanListID() {
-		return UserPhonePlanListID;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "planID")
+    private PhonePlanBean phonePlan;
 
-	public void setUserPhonePlanListID(int userPhonePlanListID) {
-		UserPhonePlanListID = userPhonePlanListID;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private Users user;
 
-	public String getPhoneNunber() {
-		return phoneNunber;
+    public UserPhonePlanList() {
 	}
-
-	public void setPhoneNunber(String phoneNunber) {
-		this.phoneNunber = phoneNunber;
-	}
-
-	public String getAgreementDate() {
-		return agreementDate;
-	}
-
-	public void setAgreementDate(String agreementDate) {
-		this.agreementDate = agreementDate;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public int getPlanID() {
-		return planID;
-	}
-
-	public void setPlanID(int planID) {
-		this.planID = planID;
+    
+    
+	public void setPhonePlanBean(PhonePlanBean phonePlanBean) {
+		
 	}
 
 	public Users getUser() {
@@ -92,12 +67,14 @@ public class UserPhonePlanList {
 		this.user = user;
 	}
 
-	public PhonePlanBean getPhonePlanBean() {
-		return phonePlanBean;
+
+	public String getPhoneNum() {
+		return phoneNum;
 	}
 
-	public void setPhonePlanBean(PhonePlanBean phonePlanBean) {
-		this.phonePlanBean = phonePlanBean;
+
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
 	}
 	
 	

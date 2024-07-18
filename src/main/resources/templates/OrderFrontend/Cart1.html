@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>結帳頁面</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="Content-Type" content="text/html; charset=utf-8" />
+	<link th:href="@{/shoppingcart/cart/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+	<link th:href="@{/shoppingcart/cart/css/style.css}" rel="stylesheet" type="text/css" media="all" />
+	<script th:src="@{/shoppingcart/cart/js/jquery.min.js}"></script>
+	<script th:src="@{/shoppingcart/cart/js/simpleCart.min.js}"></script>
+	<link th:href="@{/shoppingcart/cart/css/jquery-ui.css}" rel="stylesheet" type="text/css">
+	<script th:src="@{/shoppingcart/cart/js/bootstrap-3.1.1.min.js}" type="text/javascript"></script>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
+	<link th:href="@{/shoppingcart/cart/css/animate.min.css}" rel="stylesheet">
+	<link th:href="@{/css/styles.css}" rel="stylesheet" />
+	<script th:src="@{/shoppingcart/cart/js/wow.min.js}"></script>
+	<div th:replace="~{/layout/headerStylesheet.html}"></div>
+	<script>
+		new WOW().init();
+	</script>
+</head>
+
+<body>
+<!-- Header -->
+<div th:replace="~{/layout/header.html}"></div>
+
+<!-- breadcrumbs -->
+<div class="breadcrumbs">
+	<div class="container">
+		<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+			<li><a th:href="@{/index}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>首頁</a></li>
+			<li class="active">購物車頁面</li>
+		</ol>
+	</div>
+</div>
+<!-- //breadcrumbs -->
+
+<!-- checkout -->
+<div class="checkout">
+	<div class="container">
+		<h3 class="animated wow slideInLeft" data-wow-delay=".5s">您的購物車包含: <span th:text="${carts.size()} + ' 件商品'"></span></h3>
+		<div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
+			<table class="timetable_sub">
+				<thead>
+				<tr>
+					<th>序號</th>
+					<th>商品</th>
+					<th>數量</th>
+					<th>商品名稱</th>
+					<th>顏色</th>
+					<th>儲存空間</th>
+					<th>價格</th>
+					<th>刪除</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="cart, iterStat : ${carts}">
+					<td th:text="${iterStat.count}"></td>
+					<td><img th:src="@{'data:image/jpeg;base64,' + ${cart.photoBase64}}" alt=" " class="img-responsive" style="max-width: 150px; max-height: 150px; object-fit: cover;"/></td>
+					<td th:text="${cart.quantity}"></td>
+					<td th:text="${cart.productName}">商品名稱</td>
+					<td th:text="${cart.color}">顏色</td>
+					<td th:text="${cart.storage}">儲存空間</td>
+					<td th:text="${cart.price}"></td>
+					<td>
+						<button type="button" th:attr="data-id=${cart.productId}" class="btn btn-danger remove-item">刪除</button>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="checkout-left">
+			<div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s" style="float: right; width: 600px; padding: 20px; background: #f9f9f9; border: 1px solid #e3e3e3;">
+				<h4>總計</h4>
+				<table style="width: 100%;">
+					<tr>
+						<td style="font-weight: bold;">商品總數</td>
+						<td th:text="${carts.size()}" style="text-align: right;"></td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">小計</td>
+						<td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">總計</td>
+						<td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
+					</tr>
+				</table>
+				<div style="margin-top: 20px; display: flex; justify-content: space-between;">
+					<a th:href="@{/front/productlist}" class="btn btn-default" style="background-color: black; color: white; width: 45%;"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> 繼續購物</a>
+					<a th:href="@{/OrderFrontend/Checkout}" class="btn btn-default" style="background-color: black; color: white; width: 45%; text-align: center;">結帳</a>
+				</div>
+			</div>
+		</div>
+		<div class="clearfix"> </div>
+	</div>
+</div>
+<!-- //checkout -->
+
+<!-- Footer -->
+<div th:replace="~{/layout/footer.html}"></div>
+
+<script>
+	$(document).ready(function() {
+		$('.remove-item').on('click', function(){
+			var id = $(this).attr('data-id');
+			// Ajax call to remove item
+		});
+	});
+</script>
+
+</body>
+</html>

@@ -1,12 +1,11 @@
 package sellphone.phoneplan.model;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import sellphone.dashboard.user.model.Users;
 
-import sellphone.dashboard.user.model.UserPhonePlanList;
-
-public interface UsersRepository extends JpaRepository<UserPhonePlanList, Long> {
-    List<UserPhonePlanList> findAllByUserId(String userId);
-
-}  
+@Repository
+public interface UsersRepository extends JpaRepository<Users, String> {
+    Users findByUserId(String userId);
+    boolean existsByUserId(String userId);
+}

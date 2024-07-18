@@ -35,6 +35,9 @@ public class PhoneFixBean implements Serializable {
 
     @Column(name = "FixPort")
     private String fixPort;
+    
+    @Column(name = "FixState")
+    private String fixState;
 
 //    @Column(nullable = false, insertable=false, updatable=false)
 //  	private String userId;
@@ -48,11 +51,12 @@ public class PhoneFixBean implements Serializable {
     }
 
     // Parameterized constructor
-    public PhoneFixBean(String fixName, String fixDate, String fixCost, String fixPort) {
+    public PhoneFixBean(String fixName, String fixDate, String fixCost, String fixPort,String fixState) {
         this.fixName = fixName;
         this.fixDate = fixDate;
         this.fixCost = fixCost;
         this.fixPort = fixPort;
+        this.fixState=fixState;
     }
 
     // Getters and Setters
@@ -60,13 +64,14 @@ public class PhoneFixBean implements Serializable {
         return fixID;
     }
 
-    public PhoneFixBean(int fixID, String fixName, String fixDate, String fixCost, String fixPort) {
+    public PhoneFixBean(int fixID, String fixName, String fixDate, String fixCost, String fixPort,String fixState) {
 		super();
 		this.fixID = fixID;
         this.fixName = fixName;
         this.fixDate = fixDate;
         this.fixCost = fixCost;
         this.fixPort = fixPort;
+        this.fixState=fixState;
 	}
 
 
@@ -107,9 +112,16 @@ public class PhoneFixBean implements Serializable {
 		this.fixPort = fixPort;
 	}
 
+	public String getFixState() {
+		return fixState;
+	}
+
+	public void setFixState(String fixState) {
+		this.fixState = fixState;
+	}
 	@Override
 	public String toString() {
 		return "PhoneFixBean [fixID=" + fixID + ", fixName=" + fixName + ", fixDate=" + fixDate
-				+ ", fixCost=" + fixCost + ", fixPort=" + fixPort +  "]";
+				+ ", fixCost=" + fixCost + ", fixPort=" + fixPort + ", fixState=" + fixState + "]";
 	}
 }

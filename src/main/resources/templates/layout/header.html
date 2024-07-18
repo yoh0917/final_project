@@ -1,6 +1,6 @@
 <div class="top-bar">
 	<div>
-		立即加入會員，可享首次購買產品8折優惠！ <a th:href="@{/UserRegist}">點我註冊會員</a>
+		立即加入會員，可享首次購買產品部分優惠！ <a th:href="@{/UserRegist}">點我註冊會員</a>
 	</div>
 </div>
 
@@ -12,7 +12,7 @@
 
 		<a th:href="@{/front/productlist}">商品總覽</a>
 		<a href="Orders/index.html">門號方案</a>
-		<a href="GetAllComments.html">售後維修</a> 
+		<a href="GetAllComments.html">售後維修</a>
 		<a href="PhonePlanSearchAll.html">討論區</a>
 	</div>
 	<div class="search-bar">
@@ -41,6 +41,8 @@
 		<th:block th:unless="${session.loginUsername != null}">
 			<a th:href="@{/UserLogin}">Login</a>
 		</th:block>
-		<a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+		<div th:if="${session.user != null }">
+			<a th:href="@{/cart(userId=${session.user.userName})}"><i class="fa-solid fa-cart-shopping"></i></a>
+		</div>
 	</div>
 </div>
