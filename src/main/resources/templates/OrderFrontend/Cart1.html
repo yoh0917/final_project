@@ -71,21 +71,29 @@
 			</table>
 		</div>
 		<div class="checkout-left">
-			<div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s">
+			<div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s" style="float: right; width: 600px; padding: 20px; background: #f9f9f9; border: 1px solid #e3e3e3;">
 				<h4>總計</h4>
-				<ul>
-					<li th:each="cart : ${carts}" th:text="${cart.productName} + ' - ' + cart.color + ' - ' + cart.storage + ' - ' + cart.price"></li>
-					<li th:text="'全部的 - ' + ${totalPrice}"></li>
-				</ul>
+				<table style="width: 100%;">
+					<tr>
+						<td style="font-weight: bold;">商品總數</td>
+						<td th:text="${carts.size()}" style="text-align: right;"></td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">小計</td>
+						<td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">總計</td>
+						<td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
+					</tr>
+				</table>
+				<div style="margin-top: 20px; display: flex; justify-content: space-between;">
+					<a th:href="@{/front/productlist}" class="btn btn-default" style="background-color: black; color: white; width: 45%;"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> 繼續購物</a>
+					<a th:href="@{/OrderFrontend/Checkout}" class="btn btn-default" style="background-color: black; color: white; width: 45%; text-align: center;">結帳</a>
+				</div>
 			</div>
-			<div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
-				<a th:href="@{/checkout}"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>結帳</a>
-			</div>
-			<div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
-				<a th:href="@{/shoppingcart}"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>繼續購物</a>
-			</div>
-			<div class="clearfix"> </div>
 		</div>
+		<div class="clearfix"> </div>
 	</div>
 </div>
 <!-- //checkout -->

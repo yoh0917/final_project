@@ -29,6 +29,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
+import sellphone.dashboard.user.DTO.UserDTO;
 import sellphone.dashboard.user.model.UserRepository;
 import sellphone.dashboard.user.model.UserView;
 import sellphone.dashboard.user.model.UserViewRepository;
@@ -54,6 +55,9 @@ public class UserAjaxController {
 	
 	@Autowired
 	private UserUtil userUtil;
+	
+	@Autowired
+	private UserRepository userRepository ;
 
 //	-------------------------------------- UserInfo-controller ----------------------------------------------------		
 	@PostMapping("/UserEmailEdit")
@@ -193,4 +197,15 @@ public class UserAjaxController {
 		resp.setStatus(HttpServletResponse.SC_OK);
 	}
 
+//	--------------------------------------  ForgotPassword-related Page ----------------------------------------------------	
+	@PostMapping("/resetPassword")
+	public void passwordResetProcess(@RequestBody UserDTO userDTO, HttpServletResponse resp) {
+		Users user = userRepository.findByEmail(userDTO.getEmail());
+		if(user != null) {
+			user.setPassword(userDTO.getPassword());
+			userRepository.save(user);
+			resp.setStatus(HttpServletResponse.SC_OK);
+		}
+//		return "redirect:/UserLogin";
+	}
 }
