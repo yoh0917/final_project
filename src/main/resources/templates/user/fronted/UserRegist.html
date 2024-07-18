@@ -17,21 +17,21 @@
 	<div th:replace="~{/layout/header.html}"></div>
 
 	<div class="main-content">
-		<div class="ad-container">
-			asdas<img src="#" alt="">
-		</div>
+<!-- 		<div class="ad-container"> -->
+<!-- 			asdas<img src="#" alt=""> -->
+<!-- 		</div> -->
 
 		<div class="form-container" id="register-container">
 			<form id="register-form" method="post" th:action="@{/CheckRegist}">
 
 				<h2>註冊會員</h2>
 
-				<label class="inputHint"><span class="require">*</span>姓名</label> <input type="text" name="username"
-					placeholder="姓名" required>
+				<label class="inputHint"><span class="require">*</span>姓名</label>
+				<input type="text" id="usernameinput" name="username" placeholder="姓名" required>
 				<div class="ajaxcheck" id="ajaxcheckUserName"></div>
 
 				<label class="inputHint"><span class="require">*</span>出生年月日</label>
-				<input type="date" name="birthday" placeholder="出生年月日: yyyy-mm-dd" required>
+				<input type="date" id="birthdayinput" name="birthday" placeholder="出生年月日: yyyy-mm-dd" required>
 				<div class="ajaxcheck" id="ajaxcheckBirthday"></div>
 
 				<label class="inputHint"><span class="require">*</span>手機號碼</label>
@@ -42,17 +42,24 @@
 				<input type="text" id="emailinput" name="email" placeholder="電子郵件" required>
 				<div class="ajaxcheck" id="ajaxcheckEmail"></div>
 
-				<label class="inputHint"><span class="require">*</span>帳號</label> <input type="text" id="accountinput"
-					name="userAccount" placeholder="帳號">
+				<label class="inputHint"><span class="require">*</span>帳號</label>
+				<input type="text" id="accountinput" name="userAccount" placeholder="帳號">
 				<div class="ajaxcheck" id="ajaxcheckUseraccount"></div>
 
-				<label class=" inputHint"><span class="require">*</span>密碼</label> <input type="password"
-					id="passwordinput" placeholder="密碼" required>
+				<label class=" inputHint"><span class="require">*</span>密碼</label>
+				<input type="password" id="passwordinput" placeholder="密碼" required>
 
 				<label class="inputHint"><span class="require">*</span>確認密碼</label>
-				<input type="password" id="passwordcheck" name="password" placeholder="確認密碼" required> <label
-					class="ajaxcheck" id="passwordalert"></label>
+				<input type="password" id="passwordcheck" name="password" placeholder="確認密碼" required>
+				<label	class="ajaxcheck" id="passwordalert"></label>
 				<button class="submitBtn" type="submit" disabled>註冊</button>
+				<div class="container text-center">
+					<div class="row gx-1 mt-3">
+						<div class="col">
+							<button type="button" class="btn btn-secondary" id="registfill">一鍵輸入eeit183test</button>
+						</div>
+					</div>
+				</div>
 				<div class="terms">
 					註冊即表示同意並已仔細閱讀並明瞭《網站使用條款》、《隱私權政策》、《免責聲明》等所載入內容及各條款，
 					依同意後等條款規定，並願遵守網站相關規範與規則。</div>
