@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login/Register Interface</title>
-<div th:replace="~{/layout/headerStylesheet.html}"></div>
-<link rel="stylesheet" th:href="@{/user/fronted/css/UserLogin.css}" />
-<link rel="stylesheet" th:href="@{/css/FrontedAll.css}" />
-<script th:src="@{/user/fronted/js/UserRegist.js}"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>登入</title>
+	<div th:replace="~{/layout/headerStylesheet.html}"></div>
+	<link rel="stylesheet" th:href="@{/user/fronted/css/UserLogin.css}" />
+	<link rel="stylesheet" th:href="@{/css/FrontedAll.css}" />
+	<script th:src="@{/user/fronted/js/UserRegist.js}"></script>
 </head>
 
 <body>
@@ -24,16 +24,16 @@
                 Log in
             </div> -->
 
-				<label class="inputHint">帳號或手機號碼</label> <input type="text"
-					name="phoneNumber" id="input_phone_num" placeholder="帳號或手機號碼">
-				<label class="inputHint">密碼</label> <input type="password"
-					name="password" id="input_password" placeholder="密碼">
+				<label class="inputHint">帳號或手機號碼</label> <input type="text" name="phoneNumber" id="input_phone_num"
+					placeholder="帳號或手機號碼">
+				<label class="inputHint">密碼</label> <input type="password" name="password" id="input_password"
+					placeholder="密碼">
 				<div class="error-hint" th:text="${error}? ${error}"></div>
 				<lable></lable>
 				<input class="submitBtn active" type="submit" value="登入">
 				<div class="footer">
-					<a th:href="@{/UserRegist}" class="forgot-password">會員註冊</a> <a
-						th:href="@{/forgotPassword}" class="forgot-password">忘記密碼</a>
+					<a th:href="@{/UserRegist}" class="forgot-password">會員註冊</a> <a th:href="@{/forgotPassword}"
+						class="forgot-password">忘記密碼</a>
 				</div>
 				<div class="container text-center">
 					<div class="row gx-1 mt-3">

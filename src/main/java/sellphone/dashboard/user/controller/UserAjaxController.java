@@ -89,7 +89,6 @@ public class UserAjaxController {
 		HttpSession session = req.getSession();
 		int status = 0;
 		String userId = userUtil.createUserId(session.getId());
-		System.out.println(userId);
 		user.setUserId(userId);
 		user.setStatus(status);
 		user.setCreateTime(LocalDateTime.now());
