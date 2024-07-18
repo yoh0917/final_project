@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>商品總攬</title>
+ </head>
+
+<body>
+<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+<div class="container">
+<h2 class="text-center">產品資訊</h2>
+
+<form th:action="@{/product/update}" th:object="${form}" method="post">
+    <fieldset>
+        <input type="submit" id="submitButton" th:value="Save">
+        <input type="reset" id="resetButton" name="reset" th:value="Reset"/>
+        <table>
+            <thead>
+                <tr>
+                    <th> Title</th>
+                    <th> Author</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr><td><input th:field="*{productNew.productId}"></td></tr>
+            <tr><td><input th:field="*{productNew.productName}"></td></tr>
+            <tr><td><input th:field="*{productNew.price}"></td></tr>
+            <tr><td><input th:field="*{productNew.description}"></td></tr>
+            <tr><td><input th:field="*{productNew.productbrand}"></td></tr>
+                <tr th:each="oneModel, itemStat : *{productModel}">
+                    <td><input th:field="*{productModel[__${itemStat.index}__].modelId}" /></td>
+                    <td><input th:field="*{productModel[__${itemStat.index}__].color}" /></td>
+                    <td><input th:field="*{productModel[__${itemStat.index}__].capacity}" /></td>
+                    <td><input th:field="*{productModel[__${itemStat.index}__].status}" /></td>
+                    <td><input th:field="*{productModel[__${itemStat.index}__].stockQuantity}" /></td>
+                    <td><input th:field="*{productModel[__${itemStat.index}__].productPrice}" /></td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </fieldset>
+</form>
+
+</body>
+
+</html>
