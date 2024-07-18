@@ -16,5 +16,6 @@ public interface PhotoRepository extends JpaRepository<Photo, Integer> {
 	@Transactional
 	void deleteByProductid(Integer productid);
 
-	Optional<Photo> findByProductid(Integer productid);
+	@Query("SELECT p FROM Photo p WHERE p.productid = ?1 ORDER BY p.photoid ASC")
+	List<Photo> findFirstPhotoByProductid(Integer productid);
 }

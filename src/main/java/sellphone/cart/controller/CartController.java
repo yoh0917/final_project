@@ -37,9 +37,9 @@ public class CartController {
         List<CartView> carts = cartService.getCartItems(userId);
 
         for (CartView cart : carts) {
-            Optional<Photo> photo = photoRepository.findByProductid(cart.getProductId());
-            if (photo.isPresent()) {
-                cart.setPhotoBase64(encodePhotoToBase64(photo.get().getPhotoFile()));
+            List<Photo> photos = photoRepository.findFirstPhotoByProductid(cart.getProductId());
+            if (!photos.isEmpty()) {
+                cart.setPhotoBase64(encodePhotoToBase64(photos.get(0).getPhotoFile()));
             }
         }
 
