@@ -1,6 +1,10 @@
 <div class="top-bar">
-	<div>
+	<div th:if="${session.user == null }">
 		立即加入會員，可享首次購買產品部分優惠！ <a th:href="@{/UserRegist}">點我註冊會員</a>
+	</div>
+	<div th:unless="${session.user == null }">
+		部分商品促銷中，歡迎參觀！ 
+<!-- 		<a th:href="@{/UserRegist}">點我註冊會員</a> -->
 	</div>
 </div>
 
