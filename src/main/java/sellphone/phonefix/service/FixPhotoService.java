@@ -1,5 +1,5 @@
-package sellphone.phonefix.service;
-
-public class FixPhotoService {
-
-}
+//package sellphone.phonefix.service;
+//
+//public class FixPhotoService {
+//
+//}
