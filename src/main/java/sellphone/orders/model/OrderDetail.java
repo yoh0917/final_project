@@ -8,20 +8,27 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "O0002_ORDERDETAIL")
 public class OrderDetail {
-
-
-    @Column(name = "ORDERID", length = 15)
-    private String orderId;
-
     @Id
-    @Column(name = "DETAILID", length = 10)
+    @Column(name = "DETAILID")
     private String detailId;
 
-    @Column(name = "PRODUCTID", length = 10)
-    private String productId;
+    @Column(name = "ORDERID")
+    private String orderId;
 
-    @Column(name = "QUANTITY ")
-    private Integer count;
+    @Column(name = "PRODUCTID")
+    private int productId;
+
+    @Column(name = "PRODUCTNAME")
+    private String productName;
+
+    @Column(name = "COLOR")
+    private String color;
+
+    @Column(name = "STORAGE")
+    private String storage;
+
+    @Column(name = "QUANTITY")
+    private Integer quantity;
 
     @Column(name = "PRICE")
     private Integer price;

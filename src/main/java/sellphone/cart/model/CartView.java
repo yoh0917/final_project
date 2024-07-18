@@ -25,7 +25,7 @@ public class CartView {
     private int quantity;
 
     @Column(name = "PRICE")
-    private double price;
+    private int price;
 
     @Column(name = "PRODUCTNAME")
     private String productName;

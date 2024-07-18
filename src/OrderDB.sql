@@ -5,6 +5,66 @@ SELECT * FROM p0001_products
 SELECT * FROM O0001_ORDER
 SELECT * FROM O0002_ORDERDETAIL
 
+
+/*
+SELECT * FROM S1001_SHOPPINGCART_V
+
+WITH RankedPhotos AS (
+    SELECT
+        photoid,
+        photoFile,
+        productid,
+        ROW_NUMBER() OVER (PARTITION BY productid ORDER BY photoid) AS rn
+    FROM
+        photo
+)
+SELECT
+    S0001.USERID,
+    S0001.PRODUCTID,
+    S0001.COLOR,
+    S0001.STORAGE,
+    S0001.QUANTITY,
+    S0001.PRICE,
+    P0001.PRODUCTNAME,
+    P.photoFile
+FROM
+    S0001_SHOPPINGCART S0001
+LEFT JOIN p0001_products P0001
+    ON S0001.PRODUCTID = P0001.productid
+LEFT JOIN RankedPhotos P
+    ON S0001.PRODUCTID = P.productid AND P.rn = 1;
+
+CREATE TABLE O0001_ORDER (
+    ORDERID varchar(17) NOT NULL PRIMARY KEY,
+    STATUS varchar(1) NULL,
+    CREATEDATE datetime NULL,
+    TOTALAMOUNT int NULL,
+    PAYDATE datetime NULL,
+    PAYSTATUS varchar(1) NULL,
+    USERID varchar(10) NULL,
+    USERNAME varchar(50) NOT NULL,
+    NAME nvarchar(50) NULL,
+    EMAIL varchar(50) NULL,
+    PHONE varchar(15) NULL,
+    CITY nvarchar(10) NULL,
+    DISTRICT nvarchar(10) NULL,
+    ADDRESS nvarchar(100) NULL,
+    DETAILADDRESS nvarchar(255) NULL
+);
+
+CREATE TABLE O0002_ORDERDETAIL (
+    DETAILID varchar(10) NOT NULL PRIMARY KEY,
+    ORDERID varchar(17) NOT NULL,
+    PRODUCTID varchar(10) NULL,
+    PRODUCTNAME nvarchar(100) NULL,
+    COLOR nvarchar(30) NULL,
+    STORAGE nvarchar(30) NULL,
+    QUANTITY int NULL,
+    PRICE int NULL,
+    TOTAL int NULL,
+
+);
+
 CREATE TABLE S0001_SHOPPINGCART (
                                     USERID VARCHAR(50),
                                     PRODUCTID INT,
@@ -19,9 +79,19 @@ INSERT INTO S0001_SHOPPINGCART (USERID, PRODUCTID, COLOR, STORAGE, QUANTITY, PRI
 VALUES
     ('admin', 1, '金色', '1000TB', 1, 50000),
     ('admin', 2, '銀色', '512TB', 1, 40000);
+*/
 
+/*
+ALTER TABLE O0002_ORDERDETAIL ALTER COLUMN PRODUCTID INT
+-- 更新 O0001_ORDER 表格
+ALTER TABLE O0001_ORDER
+ADD NAME nvarchar(50) NULL;
 
-/*ALTER TABLE O0002_ORDERDETAIL ALTER COLUMN PRODUCTID INT*/
+-- 更新 O0002_ORDERDETAIL 表格
+ALTER TABLE O0002_ORDERDETAIL
+ADD PRODUCTNAME nvarchar(100) NULL;
+*/
+
 
 DECLARE @i INT = 1;
 DECLARE @seq INT = 1; -- 唯一的遞增序列
