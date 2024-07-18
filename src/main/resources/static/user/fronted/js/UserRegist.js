@@ -3,7 +3,7 @@ $(function () {
     const serverContext = 'http://localhost:8081/sellphone'
 
     // ============== Regit Page ===============
-    // ============== Regist check (contactNum, email, account ===============
+    // ============== Regist check: contactNum, email, account ===============
 
     let checkContactNum = false;
     let checkEmail = false;
@@ -129,7 +129,7 @@ $(function () {
         e.preventDefault();
 
         $('.submitBtn').html(
-            '<div class="spinner-border m-0.5" role="status">' +
+            '<div class="spinner-border" role="status" style="width: 1.2rem; height: 1.2rem;">' +
             '<span class="visually-hidden">Loading...</span>' +
             '</div>'
         );
@@ -175,12 +175,15 @@ $(function () {
 
     $('#registfill').on('click', function () {
         $('#usernameinput').val('eeit183test')
-        $('#birthdayinput').val('01-01-2024')
+        $('#birthdayinput').val(new Date('2000-01-01').toISOString().substring(0, 10))
         $('#contactnuminput').val('0987705857')
         $('#emailinput').val('eeit183test@gmail.com')
         $('#accountinput').val('eeit183test')
-        $('#passwordinput').val('123')
-        $('#passwordcheck').val('123')
+        $('#passwordinput').val('123456')
+        $('#passwordcheck').val('123456')
+
+        $('.submitBtn').prop('disabled', false).addClass('active')
+
     })
 
 
@@ -192,8 +195,8 @@ $(function () {
         $('#input_password').val('123456');
     })
 
-    $('#garyfill').on('click', function () {
-        $('#input_phone_num').val('Gary1234');
+    $('#eeit183testfill').on('click', function () {
+        $('#input_phone_num').val('eeit183test');
         $('#input_password').val('123456');
     })
 

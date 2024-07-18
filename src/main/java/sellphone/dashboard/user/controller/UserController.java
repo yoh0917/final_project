@@ -144,7 +144,7 @@ public class UserController {
 		if (output.equals("success")) {
 			return "redirect:/forgotPassword?success";
 		}
-		return "redirect:/UserLogin";
+		return "redirect:/forgotPassword?failed";
 		
 	}
 
