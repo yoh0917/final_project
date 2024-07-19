@@ -4,14 +4,15 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login/Register Interface</title>
+	<title>我的資料</title>
 
 	<div th:replace="~{/layout/headerStylesheet.html}"></div>
-	<script th:src="@{/user/fronted/js/UserInfo.js}"></script>
+
 	<link rel="stylesheet" th:href="@{/css/FrontedAll.css}" />
+	<script th:src="@{/user/fronted/js/UserInfo.js}"></script>
 
 	<style>
-		/* * {
+		/* {
 			border: 1px solid black;
 		} */
 
@@ -26,11 +27,26 @@
 
 		input:focus {
 			outline: none;
-			
+		}
+
+		.confirm_btn:hover {}
+
+		a {
+			cursor: pointer;
+		}
+
+		input {
+			background-color: transparent;
+			height: 20px;
+		}
+
+		input:focus {
+			outline: none;
+
 
 		}
-		
-		.confirm_btn:hover{
+
+		.confirm_btn:hover {
 			font-weight: bold
 		}
 	</style>
@@ -120,7 +136,7 @@
 						<hr>
 					</div>
 				</div>
-		
+
 				<br> <br>
 			</div>
 		</div>
