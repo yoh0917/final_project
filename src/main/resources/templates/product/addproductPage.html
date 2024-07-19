@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<meta charset="UTF-8">
+<title>新增商品</title>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+<style>
+body {
+	background-color: #f8f9fa;
+}
+</style>
+</head>
+<body>
+	<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8">
+				<h1 class="mt-5 text-center">新增商品</h1>
+
+				<form th:action="@{/DashBoard/product/save}" method="post">
+					<div class="mb-3">
+						<label for="productbrand" class="form-label">商品品牌:</label> 
+						<select class="form-select" id="productbrand" name="productbrand" required onchange="updateProductName()">
+							<option value="">選擇品牌</option>
+							<option>Apple</option>
+							<option>Samsung</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="productName" class="form-label">商品名稱:</label> 
+						<input class="form-control" type="text" id="productName" name="productName" placeholder="請输入商品名稱" required>
+					</div>
+					<div class="mb-3">
+						<label for="price" class="form-label">商品價格:</label> 
+						<input class="form-control" type="text" id="price" name="price" placeholder="請输入商品價格" required>
+					</div>
+					<div class="mb-3">
+						<label for="description" class="form-label">商品描述:</label>
+						<textarea class="form-control" id="description" name="description" placeholder="請输入商品描述" required></textarea>
+					</div>
+					
+					<h2 class="mt-5">商品型號</h2>
+					<div id="productModel">
+						<div class="productModel mb-3" id="productModel">
+							<h3>規格 1</h3>
+							<div class="mb-3">
+								<label for="capacity" class="form-label">容量:</label> 
+								<input class="form-control" type="text" id="capacity" name="productModels[0].capacity" placeholder="請输入容量" required>
+							</div>
+							<div class="mb-3">
+								<label for="color" class="form-label">顏色:</label> 
+								<input class="form-control" type="text" id="color" name="productModels[0].color" placeholder="請输入顏色" required>
+							</div>
+							<div class="mb-3">
+								<label for="status" class="form-label">狀態:</label> 
+								<input class="form-control" type="text" id="status" name="productModels[0].status" placeholder="請输入狀態" required>
+							</div>
+							<div class="mb-3">
+								<label for="stockQuantity" class="form-label">庫存:</label> 
+								<input class="form-control" type="text" id="stockQuantity" name="productModels[0].stockQuantity" placeholder="請输入庫存" required>
+							</div>
+							<div class="mb-3">
+								<label for="productPrice" class="form-label">價格:</label> 
+								<input class="form-control" type="text" id="productPrice" name="productModels[0].productPrice" placeholder="請输入價格" required>
+							</div>
+						</div>
+					</div>
+					
+					<div class="d-flex justify-content-between mb-3">
+						<button type="button" class="btn btn-primary" onclick="addProductModel()">新增規格</button>
+					</div>
+					
+					<div class="d-flex justify-content-between">
+						<button type="submit" class="btn btn-dark">送出</button>
+						<button type="button" class="btn btn-secondary" onclick="returnProduct()">返回上一頁</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+	<script>
+	let modelIndex = 1; // 初始規格表單已經有一個，所以索引從1開始
+
+	function returnProduct() {
+		window.location.href = '/sellphone/DashBoard/productlist';
+	}
+
+	function updateProductName() {
+		const brandSelect = document.getElementById('productbrand');
+		const productNameInput = document.getElementById('productName');
+
+		if (brandSelect.value === 'Apple') {
+			productNameInput.value = 'iPhone';
+		} else if(brandSelect.value === 'Samsung'){
+			productNameInput.value = 'Samsung'; 
+		}
+	}
+
+	function addProductModel() {
+		const productModelsDiv = document.getElementById('productModels');
+		const newModelHtml = `
+			<div class="productModel mb-3" id="productModel${modelIndex}">
+				<h3>規格 ${modelIndex + 1}</h3>
+				<div class="mb-3">
+					<label for="capacity${modelIndex}" class="form-label">容量:</label> 
+					<input class="form-control" type="text" id="capacity${modelIndex}" name="productModels[${modelIndex}].capacity" placeholder="請输入容量" required>
+				</div>
+				<div class="mb-3">
+					<label for="color${modelIndex}" class="form-label">顏色:</label> 
+					<input class="form-control" type="text" id="color${modelIndex}" name="productModels[${modelIndex}].color" placeholder="請输入顏色" required>
+				</div>
+				<div class="mb-3">
+					<label for="status${modelIndex}" class="form-label">狀態:</label> 
+					<input class="form-control" type="text" id="status${modelIndex}" name="productModels[${modelIndex}].status" placeholder="請输入狀態" required>
+				</div>
+				<div class="mb-3">
+					<label for="stockQuantity${modelIndex}" class="form-label">庫存:</label> 
+					<input class="form-control" type="text" id="stockQuantity${modelIndex}" name="productModels[${modelIndex}].stockQuantity" placeholder="請输入庫存" required>
+				</div>
+				<div class="mb-3">
+					<label for="productPrice${modelIndex}" class="form-label">價格:</label> 
+					<input class="form-control" type="text" id="productPrice${modelIndex}" name="productModels[${modelIndex}].productPrice" placeholder="請输入價格" required>
+				</div>
+				<button type="button" class="btn btn-danger mb-3" onclick="removeProductModel(${modelIndex})">移除規格</button>
+				<hr>
+			</div>
+		`;
+		productModelsDiv.insertAdjacentHTML('beforeend', newModelHtml);
+		modelIndex++;
+	}
+
+	function removeProductModel(index) {
+		const modelDiv = document.getElementById(`productModel${index}`);
+		modelDiv.remove();
+	}
+	</script>
+</body>
+</html>
