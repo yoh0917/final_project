@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:text="${postTitle}">文章詳情</title>
+    <!-- <title >文章詳情</title> -->
+    <link rel="stylesheet" href="path/to/your/css/file.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Satoshi', sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 130px;
+            background-color: #ADADAD;
+            
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+         .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            position: fixed;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        /* .navbar .navbar-brand {
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+
+        .navbar .menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar .menu a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .navbar .menu a:hover {
+            text-decoration: underline;
+        } */
+        
+        .top-bar {
+            width: 100%;
+            padding: 9px 0;
+            background: black;
+            color: white;
+            text-align: center;
+            font-size: 14px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .top-bar a {
+            color: white;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+        
+        .navbar .logo img {
+            width: 180px;
+            height: auto;
+        }
+
+        .navbar .menu {
+            display: flex;
+            gap: 24px;
+        }
+
+        .navbar .menu a {
+            font-size: 16px;
+            color: black;
+            text-decoration: none;
+            position: relative;
+            padding: 10px 0;
+            line-height: 1;
+        }
+
+        .navbar .menu a:hover {
+            text-decoration: underline;
+        }
+
+        .navbar .menu-item {
+            position: relative;
+        }
+
+        .navbar .menu-item:hover .submenu {
+            display: block;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header-row h1 {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .actions a {
+            margin-left: 10px;
+        }
+
+        .post-content {
+            margin-bottom: 40px;
+        }
+
+        .post-content h2 {
+            margin-bottom: 20px;
+        }
+
+        .post-content p {
+            line-height: 1.6;
+        }
+
+        .comments-section {
+            margin-top: 40px;
+        }
+
+        .comments-section h3 {
+            margin-bottom: 20px;
+        }
+
+        .comment {
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .comment strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .comment-form {
+            margin-top: 20px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .comment-form button {
+            padding: 10px 20px;
+            background: #343a40;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment-form button:hover {
+            background: #495057;
+        }
+    </style>
+</head>
+<body>
+   <div th:replace="~{layout/header}"></div>
+	
+    <div class="container">
+        <div class="header-row">
+        	<!-- <strong th:text="${post.users != null ? post.users.userName : '未知用戶'}">用戶名</strong> -->
+            <h1 th:text="${postTitle}">文章標題</h1>
+            <div class="actions">
+                <a class="btn btn-secondary" th:href="@{/post/frontPage}">回文章列表</a>
+            </div>
+        </div>
+        <hr>
+        <br>
+
+        <div class="post-content">
+            <!-- <h2>文章內容</h2> -->
+            <p th:utext="${postContent}">文章內容顯示在這裡</p>
+        </div>
+        <hr>
+
+        <div class="comments-section">
+            <h3>評論</h3>
+            <div th:each="comment : ${comments}">
+                <div class="comment">
+                   <strong th:text="${comment.users != null ? comment.users.userName : '未知用戶'}">用戶名</strong> 
+                    <span th:text="${comment.commentContent}">評論內容</span>
+                    <span th:text="${comment.commentCreatedTime}">評論時間</span>
+                    <!-- <div class="card-footer">
+                        發布時間: <span th:text="${comment.commentCreatedTime != null ? #dates.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss') : '未知時間'}"></span>
+                    </div> -->
+                </div>
+            </div>
+            
+
+            <div class="comment-form">
+                <h4>新增評論</h4>
+                <form th:action="@{/comment/add}" method="post">
+                    <textarea name="commentContent" placeholder="輸入您的評論"></textarea>
+                    <button type="submit">提交評論</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -131,14 +131,13 @@
 
 <div class="navbar-custom">
     <div class="logo">
-    	<a th:href="@{/}">
-        <img th:src="@{/images/logo.jpeg}" alt="SellPhone Logo">
-    </div>
+		<a th:href="@{/mainPage}"><img th:src="@{/layout/img/logo.jpeg}" alt="SellPhone Logo"></a>
+	</div>
     <div class="menu">
         <a th:href="@{/front/productlist}">商品總覽</a>
         <a th:href="@{/Orders/index}">門號方案</a>
         <a th:href="@{/GetAllComments}">售後維修</a>
-        <a th:href="@{/PhonePlanSearchAll}">討論區</a>
+        <a th:href="@{/post/frontPag}">討論區</a>
     </div>
     <div class="search-bar">
         <input type="text" placeholder="搜尋產品">

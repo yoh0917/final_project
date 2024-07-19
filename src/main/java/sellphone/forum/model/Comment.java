@@ -1,7 +1,6 @@
 package sellphone.forum.model;
 
 import java.time.LocalDateTime;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,8 +13,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import sellphone.dashboard.user.model.Users;
 
 @Entity
 @Table(name = "F0002_COMMENT")
@@ -42,20 +43,29 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postId", nullable = false)
     private Post post;
-
-    @Column(name = "userId", nullable = false)
-    private int userId; 
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+        @JoinColumn(name = "userId", referencedColumnName = "userId"),
+        @JoinColumn(name = "userName", referencedColumnName = "userName")
+    })
+    private Users users;
+//    
+//    @Column(name = "userName", nullable = false)
+//    private String userName;
+    
+    
 	
 	public Comment() {
 		
 	}
 	
-	public Comment(String commentContent, LocalDateTime commentCreatedTime, LocalDateTime commentLastUpdatedTime, Post post, int userId) {
+	public Comment(String commentContent, LocalDateTime commentCreatedTime, LocalDateTime commentLastUpdatedTime, Post post, Users users) {
         this.commentContent = commentContent;
         this.commentCreatedTime = commentCreatedTime;
         this.commentLastUpdatedTime = commentLastUpdatedTime;
         this.post = post;
-        this.userId = userId;
+        this.users = users;
     }
 
 
@@ -72,15 +82,27 @@ public class Comment {
 
 	
 
-	public Integer getUserId() {
-		return userId;
-	}
-
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+//	public Integer getUserId() {
+//		return userId;
+//	}
+//
+//
+//	public void setUserId(Integer userId) {
+//		this.userId = userId;
+//	}
 	
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUser(Users users) {
+		this.users = users;
+	}
+
+	public void setCommentId(int commentId) {
+		this.commentId = commentId;
+	}
+
 	public Post getPost() {
         return post;
     }
@@ -118,6 +140,11 @@ public class Comment {
 	public void setCommentLastUpdatedTime(LocalDateTime commentLastUpdatedTime) {
 		this.commentLastUpdatedTime = commentLastUpdatedTime;
 	}
+
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+	
 	
 }
 

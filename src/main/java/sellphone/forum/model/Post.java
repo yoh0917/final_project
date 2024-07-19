@@ -19,6 +19,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
@@ -40,7 +41,11 @@ public class Post {
     
     //一個回覆屬於一個用戶
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumns({
+        @JoinColumn(name = "userId", referencedColumnName = "userId"),
+        @JoinColumn(name = "userName", referencedColumnName = "userName")
+    })
+//    @JoinColumn(name = "userId", nullable = false)
     private Users user; 
     
     @Column(nullable = true, length = 255)
