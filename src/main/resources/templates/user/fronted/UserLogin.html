@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login/Register Interface</title>
+	<title>登入</title>
 	<div th:replace="~{/layout/headerStylesheet.html}"></div>
 	<link rel="stylesheet" th:href="@{/user/fronted/css/UserLogin.css}" />
 	<link rel="stylesheet" th:href="@{/css/FrontedAll.css}" />
@@ -32,14 +32,21 @@
 				<lable></lable>
 				<input class="submitBtn active" type="submit" value="登入">
 				<div class="footer">
-					<a th:href="@{/UserRegist}" class="forgot-password">會員註冊</a> 
-					<a th:href="@{/forgotPassword}" class="forgot-password">忘記密碼</a>
+					<a th:href="@{/UserRegist}" class="forgot-password">會員註冊</a> <a th:href="@{/forgotPassword}"
+						class="forgot-password">忘記密碼</a>
 				</div>
-
-				<div class="justify-content-around mt-2">
-					<button type="button" class="btn btn-secondary" id="leofill">會員leo</button>
-					<button type="button" class="btn btn-secondary" id="garyfill">會員gary</button>
-					<button type="button" class="btn btn-secondary" id="adminfill">管理員</button>
+				<div class="container text-center">
+					<div class="row gx-1 mt-3">
+						<div class="col">
+							<button type="button" class="btn btn-secondary" id="leofill">會員leo</button>
+						</div>
+						<div class="col">
+							<button type="button" class="btn btn-secondary" id="eeit183testfill">會員eeit</button>
+						</div>
+						<div class="col">
+							<button type="button" class="btn btn-secondary" id="adminfill">管理員</button>
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>

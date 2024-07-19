@@ -12,4 +12,22 @@ import java.io.Serializable;
 public class CartPK implements Serializable {
     private String userId;
     private int productId;
+    
+//    public CartPK() {
+//	}
+    
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public int getProductId() {
+		return productId;
+	}
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+    
+    
 }

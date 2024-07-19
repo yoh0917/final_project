@@ -85,7 +85,6 @@ public class UserAjaxController {
 		HttpSession session = req.getSession();
 		int status = 0;
 		String userId = userUtil.createUserId(session.getId());
-		System.out.println(userId);
 		user.setUserId(userId);
 		user.setStatus(status);
 		user.setCreateTime(LocalDateTime.now());
@@ -154,6 +153,8 @@ public class UserAjaxController {
         }
        		
 	}
+
+	//	--------------------------------------  DashBoard-related controller ----------------------------------------------------	
 	
 	@GetMapping("/findUserViewByUserId")
 	@ResponseBody
@@ -161,11 +162,8 @@ public class UserAjaxController {
 		
 		UserView userView = userViewRepo.findByUserId(userId);
 		
-		
 		return userView;
-	}
-	
-//	--------------------------------------  DashBoard-related controller ----------------------------------------------------	
+	}	
 	
 	@GetMapping("/UserBlockStatus")
 	public void userBlockStatus(@RequestParam("userId") String userId, Model m, HttpServletRequest req,

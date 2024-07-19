@@ -4,16 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -97,15 +94,15 @@ public class ProductController {
 	
 	//------------------前台----------------------
 	
-	
+	//前台總商品頁
 	@GetMapping("/front/productlist")
 	public String frontProducts(Model model) {
-		List<Product> products = proRepo.findAll();
-		model.addAttribute("frontlistProduct", products);
+		List<Product> allbyStauts = proRepo.getAllStatus();
+		model.addAttribute("allbyStauts",allbyStauts);
 		return "product/ProductFront";
 	}
 	
-	
+	//按價格查詢
 	@GetMapping("/front/pricebetween")
 	public String getpriceRange(@RequestParam Integer minPrice,@RequestParam Integer maxPrice,Model m) {
 		List<Product> frontRangeProduct = proRepo.findByPriceRange(minPrice, maxPrice);
@@ -113,19 +110,35 @@ public class ProductController {
 		return "product/ProductFront";
 	}
 	
-	
+	//價格查詢API
 	@ResponseBody
 	@GetMapping("/front/api/pricebetween")
 	public List<Product> ajaxPost(@RequestParam Integer minPrice,@RequestParam Integer maxPrice){
 	return proRepo.findByPriceRange(minPrice, maxPrice);
 	}
 	
+	//回到總頁面API
 	@ResponseBody
 	@GetMapping("/front/api/backlist")
 	public List<Product> ajaxBackList(){
 		return proRepo.findAll();
 	}
 	
+	
+	//前台單一商品
+	@GetMapping("/front/productfindone")
+	public String frontfindOne(@RequestParam("productid") Integer productid, Model m) {
+		Optional<Product> productoptional = proRepo.findById(productid);
+		Product product = productoptional.get();
+		m.addAttribute("product", product);
+		return "product/ProductFrontOne";
+	}
+	
+	//用brand找資料
+	@GetMapping("/front/api/productbrand")
+	public List<Product> frontBrand(@RequestParam("producName")String productName){
+		return proRepo.getAllbrand(productName);
+	}
 	
 }
 

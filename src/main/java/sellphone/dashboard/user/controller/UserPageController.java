@@ -84,7 +84,7 @@ public class UserPageController {
 	}
 	@GetMapping("/UserConfirmFailed")
 	public String userConfirmFailed(Model m) throws ServletException, IOException {
-		m.addAttribute("error", "此帳號尚未進行驗證，請前往Email進行開通帳號");
+		m.addAttribute("error", "此帳號尚未進行驗證，請至Email進行開通帳號");
 		return "user/fronted/UserLogin";
 	}
 	

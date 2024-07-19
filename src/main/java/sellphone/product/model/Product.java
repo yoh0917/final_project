@@ -43,6 +43,10 @@ public class Product {
 
 	@Column(name = "PRODUCTSTATUS")
 	private Integer productstatus;
+	
+	private String color;
+	
+	private String capacity;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private List<Photo> productPhoto = new ArrayList<>();

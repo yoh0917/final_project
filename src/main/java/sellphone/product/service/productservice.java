@@ -1,6 +1,7 @@
 package sellphone.product.service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,4 +41,10 @@ public class productservice {
 	}
 
 	
+	//查詢有上架商品
+	public List<Product> getAllbyStauts(){
+		List<Product> allStatus = prRep.getAllStatus();
+		
+		return allStatus;
+	}
 }
