@@ -18,12 +18,6 @@
 	/* 	position:absolute; */
 }
 
-#login-container {
-	position: absolute;
-	top: 18%
-		/* 	height:375px; */
-}
-
 #login-form .submitBtn {
 	margin-top: 15px;
 }
