@@ -125,6 +125,20 @@ public class ProductController {
 	}
 	
 	
+	//前台單一商品
+	@GetMapping("/front/productfindone")
+	public String frontfindOne(@RequestParam("productid") Integer productid, Model m) {
+		Optional<Product> productoptional = proRepo.findById(productid);
+		Product product = productoptional.get();
+		m.addAttribute("product", product);
+		return "product/ProductFrontOne";
+	}
+	
+	//用brand找資料
+	@GetMapping("/front/api/productbrand")
+	public List<Product> frontBrand(@RequestParam("producName")String productName){
+		return proRepo.getAllbrand(productName);
+	}
 	
 }
 
