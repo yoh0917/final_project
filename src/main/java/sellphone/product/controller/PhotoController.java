@@ -41,10 +41,8 @@ public class PhotoController {
 	
 	@PostMapping("/DashBoard/product/sendphoto")
 	public String addProductHouseSend(@ModelAttribute Product product, @RequestParam("file") MultipartFile[] files)
-			throws IOException {
-		
-		List<Photo> productphoto = new ArrayList<>();
-		
+			throws IOException {		
+		List<Photo> productphoto = new ArrayList<>();		
 		for (MultipartFile oneFile : files) {
 			Photo photo = new Photo();
 			photo.setPhotoFile(oneFile.getBytes());
@@ -54,57 +52,15 @@ public class PhotoController {
 		}
 		product.setProductPhoto(productphoto);
 		pService.saveProduct(product);
-
 		return "redirect:/DashBoard/product/upload";
-	}
-
-	
+	}	
 	@GetMapping("/photos/download")
-	public ResponseEntity<byte[]> downloadPhotos(@RequestParam("photoid") Integer photoid) {
-//		 List<Photo> photos = Prep.findByProductProductid(photoid);
-//	        if (photos.isEmpty()) {
-//	        	Prep.findById(photoid).get();
-//	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//	        }	    
-	      
+	public ResponseEntity<byte[]> downloadPhotos(@RequestParam("photoid") Integer photoid) {	    	      
 			Photo photo = Prep.findById(photoid).get();
-
-	        byte[] photoFile = photo.getPhotoFile();
-		
+	        byte[] photoFile = photo.getPhotoFile();		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.IMAGE_JPEG);
 		                                 // body,   headers , http status code
 		return new ResponseEntity<byte[]>(photoFile, headers, HttpStatus.OK);	
-	}
-	
-//	@GetMapping("/product/productImages")
-//	public ResponseEntity<?> downloadHouseImages(@RequestParam Integer productid) {
-//
-//	    
-//	     Optional<Product> optional = pRep.findById(productid);
-//
-//	    if (optional.isPresent()) {
-//	       Product product = optional.get();
-//	        List<Photo> productPhotos = product.getProductPhoto();
-//
-//	        if (productPhotos.isEmpty()) {
-//	           
-//	            return ResponseEntity.notFound().build();
-//	        }
-//
-//	        
-//	        List<byte[]> photosData = new ArrayList<>();
-//	        for (Photo photo : productPhotos) {
-//	            photosData.add(photo.getPhotoFile());
-//	        }
-//
-//	        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(photosData);
-//	    }
-//
-//
-//	    return ResponseEntity.notFound().build();
-//	}
-
-	
-	
+	}	
 }
