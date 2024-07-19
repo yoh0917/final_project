@@ -35,7 +35,7 @@ public class CartController {
         String userId = user.getUserName();
         System.out.println("User found in session. UserId: " + userId); // 記錄userId
         List<CartView> carts = cartService.getCartItems(userId);
-
+        session.setAttribute("carts",carts);
         for (CartView cart : carts) {
             List<Photo> photos = photoRepository.findFirstPhotoByProductid(cart.getProductId());
             if (!photos.isEmpty()) {

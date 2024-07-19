@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -53,33 +52,48 @@ public class UserController {
 	@Autowired
 	private UserPasswordTokenRepository userPasswordTokenRepository;
 
+//	@GetMapping("/TestEmail")
+//	@ResponseBody
+//	public String testEmail() {	
+//		
+//		uMailService.sendSimpleHtml(
+//                List.of("eeit183test@gmail.com", "leo312654@gmail.com"),
+//                "Simple html",
+//                "<html><body><p>你好！</p><p>My name is <b>Vincent</b>.</p></body></html>"
+//        );		
+//		return "Test sucessfully";
+//	}
+
 //	--------------------------------------  UserInfo controller ----------------------------------------------------
 	@GetMapping("/UserInfoList")
-	public String UserPlanInfo(HttpSession session, Model m) {
+	public String UserPlanInfo(Model m, HttpServletRequest req, HttpServletResponse resp) {
 
-		String userId = (String) session.getAttribute("userId");
+		String userId = (String) req.getSession().getAttribute("userId");
+		System.out.println(userId);
 		Users user = uService.findById(userId);
+		System.out.println(user);
 		m.addAttribute("user", user);
 
 		return "/user/fronted/UserInfo";
 	}
 
 	@GetMapping("/UserOrderList")
-	public String UserOrderList(Model m) {
+	public String UserOrderList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 
 		return "/user/fronted/UserOrder";
 	}
 
 	@GetMapping("/UserPostList")
-	public String UserPostList(Model m) {
+	public String UserPostList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 
 		return "/user/fronted/UserPost";
 	}
 
 	@GetMapping("/UserPlanList")
-	public String UserPlanList(HttpSession session, Model m) {
+	public String UserPlanList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 
-		String userId = (String) session.getAttribute("userId");
+		String userId = (String) req.getSession().getAttribute("userId");
+		System.out.println(userId);
 		List<UserPhonePlanList> userPhonePlanList = userPplR.findAllByuserId(userId);
 		m.addAttribute("planList", userPhonePlanList);
 
@@ -87,7 +101,7 @@ public class UserController {
 	}
 
 	@GetMapping("/UserFixList")
-	public String UserFixList(Model m) {
+	public String UserFixList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 
 		return "/user/fronted/UserFix";
 	}
@@ -96,7 +110,9 @@ public class UserController {
 
 	@PostMapping("/CheckLogin")
 	public String checkLogin(@RequestParam("phoneNumber") String account, @RequestParam("password") String pwd, Model m,
-			HttpSession	session) {
+			HttpServletRequest req, HttpServletResponse resp) {
+
+		HttpSession session = req.getSession();
 
 		// check if admin or not
 		boolean checkAdminLogin = adService.checkAdminLogin(account, pwd);
@@ -149,6 +165,14 @@ public class UserController {
 	}
 
 	
-
+	@PostMapping("/resetPassword")
+	public String passwordResetProcess(@ModelAttribute UserDTO userDTO) {
+		Users user = userRepository.findByEmail(userDTO.getEmail());
+		if(user != null) {
+			user.setPassword(userDTO.getPassword());
+			userRepository.save(user);
+		}
+		return "redirect:/UserLogin";
+	}
 
 }

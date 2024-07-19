@@ -113,9 +113,11 @@ $(function () {
         console.log(hasInput)
         if (hasInput) {
             if ($('#passwordinput').val() != $('#passwordcheck').val()) {
+                // $('.submitBtn').prop('disabled', true).removeClass('active')
                 $('#passwordalert').text("密碼與確認密碼不正確");
             } else {
                 checkPassword = true;
+                // $('.submitBtn').prop('disabled', false).addClass('active')
                 $('#passwordalert').text("");
             }
         }
@@ -129,7 +131,7 @@ $(function () {
         e.preventDefault();
 
         $('.submitBtn').html(
-            '<div class="spinner-border" role="status" style="width: 1.2rem; height: 1.2rem;">' +
+            '<div class="spinner-border m-1" role="status">' +
             '<span class="visually-hidden">Loading...</span>' +
             '</div>'
         );
@@ -171,21 +173,6 @@ $(function () {
                 );
             })
     })
-    // ============== auto fill for Regist page ===============
-
-    $('#registfill').on('click', function () {
-        $('#usernameinput').val('eeit183test')
-        $('#birthdayinput').val(new Date('2000-01-01').toISOString().substring(0, 10))
-        $('#contactnuminput').val('0987705857')
-        $('#emailinput').val('eeit183test@gmail.com')
-        $('#accountinput').val('eeit183test')
-        $('#passwordinput').val('123456')
-        $('#passwordcheck').val('123456')
-
-        $('.submitBtn').prop('disabled', false).addClass('active')
-
-    })
-
 
 
     // ============== Login Page ===============
