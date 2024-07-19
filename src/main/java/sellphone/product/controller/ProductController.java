@@ -94,15 +94,15 @@ public class ProductController {
 	
 	//------------------前台----------------------
 	
-	
+	//前台總商品頁
 	@GetMapping("/front/productlist")
 	public String frontProducts(Model model) {
-		List<Product> products = proRepo.findAll();
-		model.addAttribute("frontlistProduct", products);
+		List<Product> allbyStauts = proRepo.getAllStatus();
+		model.addAttribute("allbyStauts",allbyStauts);
 		return "product/ProductFront";
 	}
 	
-	
+	//按價格查詢
 	@GetMapping("/front/pricebetween")
 	public String getpriceRange(@RequestParam Integer minPrice,@RequestParam Integer maxPrice,Model m) {
 		List<Product> frontRangeProduct = proRepo.findByPriceRange(minPrice, maxPrice);
@@ -110,18 +110,20 @@ public class ProductController {
 		return "product/ProductFront";
 	}
 	
-	
+	//價格查詢API
 	@ResponseBody
 	@GetMapping("/front/api/pricebetween")
 	public List<Product> ajaxPost(@RequestParam Integer minPrice,@RequestParam Integer maxPrice){
 	return proRepo.findByPriceRange(minPrice, maxPrice);
 	}
 	
+	//回到總頁面API
 	@ResponseBody
 	@GetMapping("/front/api/backlist")
 	public List<Product> ajaxBackList(){
 		return proRepo.findAll();
 	}
+	
 	
 	
 }
