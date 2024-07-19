@@ -12,9 +12,10 @@
 	<script th:src="@{/user/fronted/js/UserInfo.js}"></script>
 
 	<style>
-		/* * {
+		/* {
 			border: 1px solid black;
 		} */
+
 		a {
 			cursor: pointer;
 		}
@@ -26,6 +27,23 @@
 
 		input:focus {
 			outline: none;
+		}
+
+		.confirm_btn:hover {}
+
+		a {
+			cursor: pointer;
+		}
+
+		input {
+			background-color: transparent;
+			height: 20px;
+		}
+
+		input:focus {
+			outline: none;
+
+
 		}
 
 		.confirm_btn:hover {
@@ -65,20 +83,25 @@
 							<div class="col-9">
 								<div class="row justify-content-between">
 									<div class="col-8">
-										<label id="show_email" th:text="${user.email}"></label> <input id="edit_email"
-											type="text" class="com_text" style="display: none; border: none;">
+
+										<label id="show_email" th:text="${user.email}"></label>
+										<input id="edit_email" type="text" class="com_text"
+											style="display: none; border: none; ">
 									</div>
 									<div class="col-4 text-end">
-										<a id="edit_email_link" onclick="editEmail();"> <i
-												class="fa-regular fa-pen-to-square"></i>
+										<a id="edit_email_link" onclick="editEmail();">
+											<i class="fa-regular fa-pen-to-square"></i>
 										</a>
 										<div id="confirm_email" style="display: none;">
 											<a class="confirm_btn" style="white-space: nowrap;"
-												onclick="editEmail();">取消</a> <a class=" confirm_btn"
-												style="white-space: nowrap;" onclick="updateEmail();">完成</a>
+												onclick="editEmail();">取消</a>
+											<a class=" confirm_btn" style="white-space: nowrap;"
+												onclick="updateEmail();">完成</a>
 										</div>
 									</div>
-									<div></div>
+									<div>
+
+									</div>
 								</div>
 							</div>
 
@@ -94,16 +117,20 @@
 											style="display: none; border: none;">
 									</div>
 									<div class="col-4 text-end">
-										<a id="edit_contactNum_link" onclick="editContactNum()"> <i
-												class="fa-regular fa-pen-to-square"></i>
+
+										<a id="edit_contactNum_link" onclick="editContactNum()">
+											<i class="fa-regular fa-pen-to-square"></i>
 										</a>
 										<div id="confirm_contactNum" style="display: none;">
 											<a class="confirm_btn" style="white-space: nowrap;"
-												onclick="editContactNum();">取消</a> <a class="confirm_btn"
-												style="white-space: nowrap;" onclick="updateContactNum();">完成</a>
+												onclick="editContactNum();">取消</a>
+											<a class="confirm_btn" style="white-space: nowrap;"
+												onclick="updateContactNum();">完成</a>
 										</div>
 									</div>
-									<div></div>
+									<div>
+
+									</div>
 								</div>
 							</div>
 						</div>
@@ -116,6 +143,12 @@
 			</div>
 		</div>
 	</div>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+
 </body>
 
 </html>

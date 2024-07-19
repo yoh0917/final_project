@@ -113,9 +113,11 @@ $(function () {
         console.log(hasInput)
         if (hasInput) {
             if ($('#passwordinput').val() != $('#passwordcheck').val()) {
+                // $('.submitBtn').prop('disabled', true).removeClass('active')
                 $('#passwordalert').text("密碼與確認密碼不正確");
             } else {
                 checkPassword = true;
+                // $('.submitBtn').prop('disabled', false).addClass('active')
                 $('#passwordalert').text("");
             }
         }
@@ -171,6 +173,7 @@ $(function () {
                 );
             })
     })
+
     // ============== auto fill for Regist page ===============
 
     $('#registfill').on('click', function () {
@@ -185,7 +188,6 @@ $(function () {
         $('.submitBtn').prop('disabled', false).addClass('active')
 
     })
-
 
 
     // ============== Login Page ===============
