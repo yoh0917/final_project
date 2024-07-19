@@ -13,8 +13,8 @@ public class CartPK implements Serializable {
     private String userId;
     private int productId;
     
-    public CartPK() {
-	}
+//    public CartPK() {
+//	}
     
 	public String getUserId() {
 		return userId;
