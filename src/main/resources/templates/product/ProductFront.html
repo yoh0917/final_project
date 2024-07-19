@@ -35,48 +35,61 @@
 		<div class="container px-4 px-lg-5 mt-5">
 			<h1>商品總覽</h1>
 
-
-			<div class="d-flex flex-row-reverse align-items-center animate__animated animate__bounceInLeft ">
-				<input type="number" id="maxPrice" name="maxPrice"
-					class="form-control w-25 h-25" required placeholder="最高價格">
-				<label for="maxPrice">最高價格 :</label> <input type="number"
-					id="minPrice" name="minPrice" class="form-control w-25 h-25"
-					required placeholder="最低價格"> <label for="minPrice">最低價格
-					:</label>
-			</div>
-
-			<br>
-			<div
-				class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center"
-				id="productContainer">
-
-				<div id="each" th:each="product : ${frontlistProduct}"
-					class="col mb-5 ">
-					<div class="card h-100 animate__animated animate__fadeInDown">
-						<div align="center" class="m-5 ">
-							<img width="200px" height="190px"
-								th:src="@{/photos/download(photoid=${product.productPhoto[0].photoid})}" />
-						</div>
-						<!-- Product details -->
-						<div class="card-body p-4">
-							<div class="text-center">
-								<!-- Product name -->
-								<h5 class="fw-bolder mt-2" th:text="${product.productName}"></h5>
-								<div>
-									<span class="mx-auto text-secondary"
-										th:text="'$ '+${product.price}"></span>
-								</div>
+			<div class="row">
+				<!-- Sidebar -->
+				<div class="col-md-3">
+					<div class="card animate__animated animate__bounceInLeft">
+						<div class="card-body">
+							<h5 class="card-title">篩選價格</h5>
+							<div class="form-group">
+								<label for="minPrice">最低價格 :</label>
+								<input type="number" id="minPrice" name="minPrice"
+									class="form-control" required placeholder="最低價格">
+							</div>
+							<div class="form-group mt-2">
+								<label for="maxPrice">最高價格 :</label>
+								<input type="number" id="maxPrice" name="maxPrice"
+									class="form-control" required placeholder="最高價格">
 							</div>
 						</div>
-						<div class="product-status visually-hidden">
-							<span class="mx-auto text-secondary"
-								th:text="${product.productstatus}"></span>
-						</div>
-						<!-- Product actions -->
-						<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-							<div class="text-center">
-								<a class="btn btn-outline-dark mt-auto" onclick="sendtopay">直接購買</a>
-								<a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a>
+					</div>
+				</div>
+
+				<!-- Main content -->
+				<div class="col-md-9">
+					<div
+						class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center"
+						id="productContainer">
+
+						<div id="each" th:each="product : ${allbyStauts}"
+							class="col mb-5 ">
+							<div class="card h-100 animate__animated animate__fadeInDown">
+								<div align="center" class="m-5 ">
+									<img width="200px" height="190px"
+										th:src="@{/photos/download(photoid=${product.productPhoto[0].photoid})}" />
+								</div>
+								<!-- Product details -->
+								<div class="card-body p-4">
+									<div class="text-center">
+										<!-- Product name -->
+										<h5 class="fw-bolder mt-2" th:text="${product.productName}"></h5>
+										<div>
+											<span class="mx-auto text-secondary"
+												th:text="'$ '+${product.price}"></span>
+										</div>
+									</div>
+								</div>
+								<div class="product-status visually-hidden">
+									<span class="mx-auto text-secondary"
+										th:text="${product.productstatus}"></span>
+								</div>
+								<!-- Product actions -->
+								<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+									<div class="text-center">
+										<a class="btn btn-outline-dark mt-auto" onclick="sendtopay">直接購買</a>
+										<a class="btn btn-outline-dark mt-auto" onclick="showAlert()">加入購物車</a>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -84,6 +97,7 @@
 			</div>
 		</div>
 	</section>
+
 	<!-- Footer-->
 	<div th:replace="~{/layout/footer.html}"></div>
 
@@ -106,25 +120,9 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.product-status').forEach(function(statusElement) {
-        if (statusElement.textContent.trim() == '0') {
-            let card = statusElement.closest('.col');
-            card.parentNode.removeChild(card);
-        }
-    });
-});
-
-
-
-
-
-
         function sendPriceData() {
             var minPrice = document.getElementById('minPrice').value;
             var maxPrice = document.getElementById('maxPrice').value;
-
-
 
             if (minPrice && maxPrice) {
                 axios.get(`/sellphone/front/api/pricebetween`, {
