@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpSession;
 import sellphone.cart.model.CartView;
+import sellphone.cart.repository.CartViewRepository;
 import sellphone.cart.service.CartService;
 import sellphone.dashboard.user.model.Users;
 import sellphone.product.model.Photo;
@@ -23,6 +24,9 @@ public class CartController {
 
     @Autowired
     private PhotoRepository photoRepository;
+
+    @Autowired
+    private CartViewRepository cartViewRepository;
 
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
@@ -52,6 +56,14 @@ public class CartController {
 
     private String encodePhotoToBase64(byte[] photoFile) {
         return Base64.getEncoder().encodeToString(photoFile);
+    }
+
+    @GetMapping("/shoppingcart/cart")
+    public String getCart(Model model, HttpSession session) {
+        String userId = (String) session.getAttribute("UserId");
+        List<CartView> carts = cartViewRepository.findByUserId(userId);
+        model.addAttribute("carts", carts);
+        return "Cart1";
     }
 }
 

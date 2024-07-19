@@ -12,6 +12,7 @@ import sellphone.cart.service.CheckoutService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/orders")
@@ -20,30 +21,78 @@ public class CheckoutController {
     @Autowired
     private CheckoutService checkoutService;
 
-    @PostMapping("/save")
-    @ResponseBody
-    public String saveOrder(@RequestBody Order order, @RequestBody List<OrderDetail> orderDetails, HttpSession session) {
-        // 設定訂單的基本資料
-        order.setOrderId(checkoutService.generateOrderId());  // 現在可以調用 generateOrderId()
-        order.setCreateDate(new Date());
-
-        // 保存訂單和訂單明細
-        checkoutService.saveOrder(order, orderDetails);
-        return "訂單已保存";
-    }
-
     @GetMapping("/checkout1")
     public String checkoutPage(Model model, HttpSession session) {
-        List<CartView> carts = (List<CartView>) session.getAttribute("carts");
+        String userId = (String) session.getAttribute("UserId");
+        if (userId == null) {
+            userId = "DefaultUserId"; // 確保有一個默認值，如果session中沒有UserId
+        }
+        List<CartView> carts = checkoutService.getCartByUserId(userId);
         model.addAttribute("carts", carts);
-
-        // 計算總計
-        int totalAmount = carts.stream().mapToInt(cart -> cart.getQuantity() * cart.getPrice()).sum();
-        model.addAttribute("totalAmount", totalAmount);
-
-        model.addAttribute("userId", carts.get(0).getUserId());
+        model.addAttribute("totalAmount", checkoutService.calculateTotalAmount(carts));
         return "OrderFrontend/Checkout1";
     }
+
+    @PostMapping("/checkout1")
+    public String checkout(@RequestBody Map<String, Object> requestData, Model model, HttpSession session) {
+        String userId = (String) session.getAttribute("UserId");
+        if (userId == null) {
+            userId = "DefaultUserId"; // 確保有一個默認值，如果session中沒有UserId
+        }
+        Order order = checkoutService.createOrder(requestData, userId);
+        List<OrderDetail> orderDetails = checkoutService.createOrderDetails(requestData, order.getOrderId());
+        model.addAttribute("order", order);
+        model.addAttribute("orderDetails", orderDetails);
+        return "OrderFrontend/Checkout1";
+    }
+
+    @PostMapping("/save")
+    public String saveOrder(@RequestBody Map<String, Object> requestData, Model model) {
+        try {
+            checkoutService.saveOrder(requestData);
+            model.addAttribute("message", "已成功插入資料庫");
+        } catch (RuntimeException e) {
+            model.addAttribute("message", "插入資料庫失敗: " + e.getMessage());
+        }
+        return "OrderFrontend/Checkout1";
+    }
+
+
+
+//    @PostMapping("/save")
+//    @ResponseBody
+//    public String saveOrder(@RequestBody Order order, @RequestBody List<OrderDetail> orderDetails, HttpSession session) {
+//        // 設定訂單的基本資料
+//        order.setOrderId(checkoutService.generateOrderId());  // 現在可以調用 generateOrderId()
+//        order.setCreateDate(new Date());
+//
+//        // 保存訂單和訂單明細
+//        checkoutService.saveOrder(order, orderDetails);
+//        return "訂單已保存";
+//    }
+//
+//    @GetMapping("/checkout1")
+//    public String checkoutPage(Model model, HttpSession session) {
+//        List<CartView> carts = (List<CartView>) session.getAttribute("carts");
+//        model.addAttribute("carts", carts);
+//
+//        // 計算總計
+//        int totalAmount = carts.stream().mapToInt(cart -> cart.getQuantity() * cart.getPrice()).sum();
+//        model.addAttribute("totalAmount", totalAmount);
+//
+//        model.addAttribute("userId", carts.get(0).getUserId());
+//        return "OrderFrontend/Checkout1";
+//    }
+
+}
+
+
+
+
+
+
+
+
 
 
 //    //查詢所有訂單
@@ -139,4 +188,3 @@ public class CheckoutController {
 //        );
 //    }
 
-}
