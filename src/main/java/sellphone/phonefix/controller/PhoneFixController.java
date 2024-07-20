@@ -74,70 +74,13 @@ public class PhoneFixController {
 		return "phonefix/form";
 	}
 
-//
-//    @ResponseBody
-//    @PostMapping("/DashBoard/phonefixs/create")
-//    @Transactional
-//    public String addHouseSend(
-//            @RequestParam("fixName") String fixName,
-//            @RequestParam("fixDate") String fixDate,
-//            @RequestParam("fixCost") String fixCost,
-//            @RequestParam("fixPort") String fixPort,
-//            @RequestParam("fixState") String fixState,
-//            @RequestParam("file") MultipartFile[] files) throws IOException {
-//
-//        System.out.println("有進入controller");
-//
-//        PhoneFixBean fixbean = new PhoneFixBean();
-//        fixbean.setFixName(fixName);
-//        fixbean.setFixDate(fixDate);
-//        fixbean.setFixCost(fixCost);
-//        fixbean.setFixPort(fixPort);
-//        fixbean.setFixState(fixState);
-//
-//        List<PhoneFixPhotoBean> phoneFixPhotoBeanList = new ArrayList<>();
-//
-//        for (MultipartFile oneFile : files) {
-//            PhoneFixPhotoBean phoneFixPhotoBean = new PhoneFixPhotoBean();
-//            phoneFixPhotoBean.setPhotoFile(oneFile.getBytes());
-//            phoneFixPhotoBean.setFixbean(fixbean);
-//            phoneFixPhotoBeanList.add(phoneFixPhotoBean);
-//        }
-//
-//        fixbean.setFixPhotoBean(phoneFixPhotoBeanList);
-//
-//        rp.save(fixbean);
-//
-//        return "上傳OK!!";
-//    }
+
 	@PostMapping("/DashBoard/phonefixs/delete/{id}")
 	public String delete(@PathVariable("id") int id) {
 		rp.deleteById(id);
 		return "redirect:/DashBoard/phonefixs";
 	}
-
-	// 下面為圖片的controller
-//	@PostMapping("/DashBoard/phonefixs/create")
-//	@Transactional
-//	public String create(
-//			@RequestParam String fixName, 
-//			@RequestParam String fixDate, 
-//			@RequestParam String fixCost,
-//			@RequestParam String fixPort, 
-//			@RequestParam String fixState) {
-//		PhoneFixBean phoneFixBean = new PhoneFixBean();
-//    	System.out.println("這裡是cost " +fixCost);
-//    	System.out.println("這裡是port " +fixPort);
-//  	System.out.println("這裡是name " +fixName);
-//    	System.out.println("----------------------------------------------------------------------------");
-//		phoneFixBean.setFixName(fixName);
-//		phoneFixBean.setFixDate(fixDate);
-//		phoneFixBean.setFixCost(fixCost);
-//		phoneFixBean.setFixPort(fixPort);
-//		phoneFixBean.setFixState(fixState);
-//		rp.save(phoneFixBean);
-//		return "redirect:/DashBoard/phonefixs";
-//	}
+//新加入圖片及資料
 	@Transactional
 	@ResponseBody
 	@PostMapping("/DashBoard/phonefixs/addphoto")
@@ -168,38 +111,36 @@ public class PhoneFixController {
 
 		return "上傳OK!!";
 	}
-//	@PostMapping("/DashBoard/phonefixs/upload")
-//	public String uploadPhoto(@RequestParam("fixID") Integer fixID, @RequestParam("file") MultipartFile file) throws IOException {
-//	    Optional<PhoneFixBean> optionalPhoneFix = rp.findById(fixID);
-//	    if (optionalPhoneFix.isPresent()) {
-//	        PhoneFixBean phoneFixBean = optionalPhoneFix.get();
-//	        PhoneFixPhotoBean photoBean = new PhoneFixPhotoBean();
-//	        photoBean.setPhotoFile(file.getBytes());
-//	        photoBean.setFixbean(phoneFixBean);
-//	        photorp.save(photoBean);
-//	    }
-//	    return "redirect:/DashBoard/phonefixs";
-//	}
+	//拿到fixphotoid
+	@ResponseBody
+	@GetMapping("/phonefixs/fixphotoid")
+	public List<Integer> findfixphoto(@RequestParam Integer fixID) {
+		Optional<PhoneFixBean> optional =rp.findById(fixID);
+		if (optional.isPresent()) {
+			PhoneFixBean phoneFixBean = optional.get();
+			List<PhoneFixPhotoBean> phoneFixPhotoBean = phoneFixBean.getFixPhotoBean();
+			List<Integer> idList = new ArrayList<>();
+			for (PhoneFixPhotoBean onePhoto : phoneFixPhotoBean) {
+				Integer oneId = onePhoto.getId();
+				idList.add(oneId);
+			}
+			return idList;
+		}
+		return null;
 
-//	@PostMapping("/DashBoard/phonefixs/delete/{id}")
-//	public String delete(@PathVariable("id") int id) {
-//		rp.deleteById(id);
-//		return "redirect:/DashBoard/phonefixs";
-//	}
-	// 下面為圖片的controller
-//	@PostMapping("/DashBoard/phonefixs/upload")
-//	public String uploadPhoto(@RequestParam("fixID") Integer fixID, @RequestParam("file") MultipartFile file) throws IOException {
-//	    Optional<PhoneFixBean> optionalPhoneFix = rp.findById(fixID);
-//	    if (optionalPhoneFix.isPresent()) {
-//	        PhoneFixBean phoneFixBean = optionalPhoneFix.get();
-//	        PhoneFixPhotoBean photoBean = new PhoneFixPhotoBean();
-//	        photoBean.setPhotoFile(file.getBytes());
-//	        photoBean.setFixbean(phoneFixBean);
-//	        photorp.save(photoBean);
-//	    }
-//	    return "redirect:/DashBoard/phonefixs";
-//	}
+	}
+	//將圖片丟入此phonefix
+	@GetMapping("/phonefixs/downloadfixphoto")
+	public ResponseEntity<?> downloadfixphoto(@RequestParam Integer id) {
+		System.out.println(id);
+		Optional<PhoneFixPhotoBean> optional = photorp.findById(id);
+		if (optional.isPresent()) {
+			PhoneFixPhotoBean phoneFixPhotoBean  = optional.get();
+			byte[] photoFile = phoneFixPhotoBean.getPhotoFile();
+			return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(photoFile);
+		}
 
-	// http://localhost:8081/DashBoard/phonefixs/addphoto
-
+		return ResponseEntity.notFound().build();
+	}
+	
 }
