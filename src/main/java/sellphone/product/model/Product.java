@@ -47,10 +47,14 @@ public class Product {
 	private String color;
 	
 	private String capacity;
+	
+	private Integer productviewnumber;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private List<Photo> productPhoto = new ArrayList<>();
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product" )
+	private List<ProductScore> productscore = new ArrayList<>();
 	
 	
 	public String getProductbrand() {

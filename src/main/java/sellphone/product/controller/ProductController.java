@@ -10,17 +10,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpSession;
+import sellphone.dashboard.user.model.Users;
 import sellphone.product.model.Photo;
 import sellphone.product.model.PhotoRepository;
 import sellphone.product.model.Product;
 import sellphone.product.model.ProductRepository;
+import sellphone.product.model.ProductScore;
 import sellphone.product.service.productservice;
 
+
+@SessionAttributes
 @Controller
 public class ProductController {
 	@Autowired
@@ -130,14 +137,61 @@ public class ProductController {
 	public String frontfindOne(@RequestParam("productid") Integer productid, Model m) {
 		Optional<Product> productoptional = proRepo.findById(productid);
 		Product product = productoptional.get();
+		List<ProductScore> allScore = pService.findAllScore(productid);
+		
+		m.addAttribute("allScore",allScore);		
 		m.addAttribute("product", product);
 		return "product/ProductFrontOne";
 	}
 	
-	//用brand找資料
-	@GetMapping("/front/api/productbrand")
-	public List<Product> frontBrand(@RequestParam("producName")String productName){
-		return proRepo.getAllbrand(productName);
+	//用brand找商品
+	@GetMapping("/front/productbrand")
+	public String frontBrand(@RequestParam("productbrand")String productbrand,Model m){
+		List<Product> allbrand = proRepo.getAllbrand(productbrand);
+		String brand = allbrand.get(0).getProductbrand();
+		m.addAttribute("brand",brand);
+		m.addAttribute("allbrand",allbrand);
+		
+		return "/product/FrontOnebrand";
+	} 
+	
+	//價格 +品牌
+	@ResponseBody
+	@GetMapping("/front/api/productBrandByprice")
+	public List<Product> getAllBrandByPrice(
+			@RequestParam Integer minPrice,
+			@RequestParam Integer maxPrice,
+			@RequestParam String productbrand){
+	return	proRepo.getAllbrandbyprice(minPrice, maxPrice, productbrand);
+		
+	}	
+	
+	//新增評論功能
+	@ResponseBody
+	@GetMapping("/api/addProductScore")
+	public ProductScore addScore(HttpSession httpSession,
+			@RequestParam String userId,
+			@RequestParam Integer productid,
+			@RequestParam Integer scorenum,
+			@RequestParam String review) {
+		
+	//	String userId = (String) httpSession.getAttribute("userId");
+		Users user = (Users) httpSession.getAttribute("user");
+		 
+		
+		
+		ProductScore findbyUserIdAndProductid = pService.findbyUserIdAndProductid(userId, productid);
+		
+		if(findbyUserIdAndProductid == null) {
+		ProductScore newScore = new ProductScore();
+		newScore.setProductid(productid);
+		newScore.setReview(review);
+		newScore.setScorenum(scorenum);
+		newScore.setUserId(userId);
+		return pService.productScoreSave(newScore);
+		}
+		return null;
+	
 	}
 	
 }

@@ -53,10 +53,24 @@ img#imagePreview {
 						<textarea class="form-control" id="description" name="description"
 							placeholder="請输入商品描述" required></textarea>
 					</div>
-
+					<div class="mb-3">
+						<label for="description" class="form-label">商品顏色:</label>
+						<input class="form-control" id="color" name="color"
+							placeholder="請输入商品顏色" required></input>
+					</div>
+					<div class="mb-3">
+						<label for="description" class="form-label">商品容量:</label>
+						<select class="form-control" id="capacity" name="capacity" required>
+						<option value="">請選擇容量</option>
+						<option value="128GB">128GB</option>
+						<option value="256GB">256GB</option>
+						<option value="512GB">512GB</option>
+						<option value="1TB">1TB</option>
+						</select>
+					</div>
 					<div class="mb-3">
 						<label for="stockQuantity" class="form-label">商品庫存:</label> <input
-							class="form-control" type="text" id="stockQuantity"
+							class="form-control" type="number" min="1" id="stockQuantity"
 							name="stockQuantity" placeholder="請输入商品庫存" required>
 					</div>
 					<div class="mb-3">

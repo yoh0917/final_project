@@ -1,21 +1,21 @@
 package sellphone.cart.service;
 
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import sellphone.cart.model.CartView;
-import sellphone.cart.repository.CartViewRepository;
-import sellphone.orders.model.Order;
-import sellphone.orders.model.OrderDetail;
-import sellphone.orders.repository.OrderDetailRepository;
-import sellphone.orders.repository.OrderRepository;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import sellphone.cart.model.CartView;
+import sellphone.cart.repository.CartViewRepository;
+import sellphone.orders.model.Order;
+import sellphone.orders.model.OrderDetail;
+import sellphone.orders.repository.OrderDetailRepository;
+import sellphone.orders.repository.OrderRepository;
 
 @Service
 public class CheckoutService {

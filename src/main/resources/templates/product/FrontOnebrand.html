@@ -16,7 +16,6 @@
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
     <link th:href="@{/layout/css/header.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
 </head>
 
 <body>
@@ -26,13 +25,14 @@
     <br>
     <section class="py-2 mt-5">
         <div class="container px-4 px-lg-5 mt-5">
-            <h1 class="display-3 text-center text-dark my-4 border-bottom border-dark pb-2">商品總覽</h1>
+            <h1 th:text="${brand}"></h1>
             <div class="row">
                 <!-- Sidebar -->
                 <div class="col-md-3">
                     <div class="animate__animated animate__bounceInLeft">
+                        <br>
                         <div>
-                            <h2>篩選價格</h2>
+                            <h2>篩選價格 : </h2>
                             <div class="form-group">
                                 <label for="minPrice">最低價格 :</label>
                                 <input type="number" id="minPrice" name="minPrice" class="form-control"
@@ -43,8 +43,7 @@
                                 <input type="number" id="maxPrice" name="maxPrice" class="form-control"
                                     placeholder="最高價格">
                             </div>
-                            <br>
-                            <br>
+                            <br> <br>
                             <div>
                                 <a class="btn btn-outline-dark mt-auto" th:onclick="findApple()">Apple</a>
                             </div>
@@ -59,10 +58,10 @@
                 <div class="col-md-9">
                     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center"
                         id="productContainer">
-                        <div id="each" th:each="product : ${allbyStauts}" class="col mb-5 ">
+                        <div id="each" th:each="product : ${allbrand}" class="col mb-5 ">
                             <div class="card h-100 animate__animated animate__fadeInDown">
                                 <div class="m-5 d-flex justify-content-center">
-                                    <img width="200px" height="190px"
+                                    <img width="200px" height="200px"
                                         th:src="@{/photos/download(photoid=${product.productPhoto[0].photoid})}" />
                                 </div>
                                 <!-- Product details -->
@@ -70,9 +69,10 @@
                                     <div class="text-center">
                                         <!-- Product name -->
                                         <h3 class="fw-bolder mt-2" th:text="${product.productbrand}"></h3>
+                                        <input type="hidden" th:value="${product.productbrand}" id="productbrand">
                                         <h4 class="fw-bolder mt-2" th:text="${product.productName}"></h4>
                                         <h4 class="fw-bolder mt-2" th:text="${product.capacity}"></h4>
-                                        
+                                        <h5 class="fw-bolder mt-2" th:text="${product.color}"></h5>
                                         <div>
                                             <span class="mx-auto text-secondary" th:text="'$ '+${product.price}"></span>
                                         </div>
@@ -122,22 +122,21 @@
         function findApple() {
             window.location.href = '/sellphone/front/productbrand?productbrand=Apple';
         }
-
         function findSamsung() {
             window.location.href = '/sellphone/front/productbrand?productbrand=Samsung';
         }
-
-
+        let productBrand = document.getElementById('productbrand').value;
 
         function sendPriceData() {
             var minPrice = document.getElementById('minPrice').value;
             var maxPrice = document.getElementById('maxPrice').value;
-
+            console.log(productBrand);
             if (minPrice && maxPrice) {
-                axios.get(`/sellphone/front/api/pricebetween`, {
+                axios.get(`/sellphone/front/api/productBrandByprice`, {
                     params: {
                         minPrice: minPrice,
-                        maxPrice: maxPrice
+                        maxPrice: maxPrice,
+                        productbrand: productBrand
                     }
                 })
                     .then(function (response) {
@@ -151,10 +150,13 @@
                                         <img width="180px" height="160px" src="/sellphone/photos/download?photoid=${e.productPhoto[0].photoid}" />
                                     </div>                        
                                     <div class="card-body p-4">
-                                        <div class="text-center">                                
-                                            <h5 class="fw-bolder mt-2">${e.productName}</h5>
+                                        <div class="text-center">     
+                                            <h3 class="fw-bolder mt-2" >${e.productbrand}</h3>
+                                            <input type="hidden" value="${e.productbrand}" id="productbrand">
+										    <h4 class="fw-bolder mt-2" >${e.productName}</h4>
+										    <h4 class="fw-bolder mt-2" >${e.capacity}</h4>
+                                            <h5 class="fw-bolder mt-2" >${e.color}</h5>
                                             <div>
-                                                <h5 class="fw-bolder mt-2" >${e.color}</h5>
                                                 <span class="mx-auto text-secondary">$${e.price}</span>
                                             </div>
                                         </div>
@@ -202,9 +204,11 @@
                                 </div>                        
                                 <div class="card-body p-4">
                                     <div class="text-center">                                
-                                        <h5 class="fw-bolder mt-2">${e.productName}</h5>
+                                          <h3 class="fw-bolder mt-2" >${e.productbrand}</h3>
+                                            <input type="hidden" value="${e.productbrand}" id="productbrand">
+										    <h4 class="fw-bolder mt-2" >${e.productName}</h4>
+										    <h4 class="fw-bolder mt-2" >${e.capacity}</h4>
                                         <div>
-                                             <h5 class="fw-bolder mt-2" >${e.color}</h5>
                                             <span class="mx-auto text-secondary">$${e.price}</span>
                                         </div>
                                     </div>
