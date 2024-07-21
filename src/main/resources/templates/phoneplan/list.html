@@ -1,88 +1,102 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>方案總覽</title>
-<link
-	href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-	rel="stylesheet">
-<link th:href="@{/phoneplancss/PhonePlanSearchAll.css}" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script th:src="@{/phoneplanjs/PhonePlanSearchAll.js}"></script>
+    <meta charset="UTF-8">
+    <title>方案總覽</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link th:href="@{/phoneplancss/PhonePlanSearchAll.css}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script th:src="@{/phoneplanjs/PhonePlanSearchAll.js}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/humane-js/3.2.2/themes/bigbox.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/humane-js/3.2.2/humane.min.js"></script>
+
+
 </head>
 <body>
-	<div th:replace="~{layout/DashBoardSidebar}"></div>
+    <div th:replace="~{layout/DashBoardSidebar}"></div>
 
-	<div class="mainContent">
-		<div class="title">
-			<h1>方案管理</h1>
-		</div>
+    <div class="mainContent">
+        <div class="title">
+            <h1>方案管理</h1>
+        </div>
+        <div class="filterForm"></div>
 
-		<div class="filterForm"></div>
+        <div class="companyFilterMenu">
+            <input class="companyFilter twmBtn" type="button" value="中華電信">
+            <input class="companyFilter chmBtn" type="button" value="台灣大哥大">
+            <input class="companyFilter fetBtn" type="button" value="遠傳">
+        </div>
+        <div class="contractFilterMenu">
+            <input class="contractFilter acquisitionBtn" type="button" value="攜碼">
+            <input class="contractFilter numPortabilityBtn" type="button" value="新申辦">
+            <input class="contractFilter retentionBtn" type="button" value="續約">
+        </div>
+        <div class="searchMenu">
+            <div class="buttonMenu">
+                <a th:href="@{/DashBoard/phoneplans/create}"><button class="insertBtn">新增方案</button></a>
+                <a th:href="@{/DashBoard/customers/plans}"><button class="insertBtn">查詢所有申辦方案</button></a>
+                 
 
-		<div class="companyFilterMenu">
-			<input class="companyFilter twmBtn" type="button" value="中華電信"
-				onclick="filterCompany('中華電信')"> <input
-				class="companyFilter chmBtn" type="button" value="台灣大哥大"
-				onclick="filterCompany('台灣大哥大')"> <input
-				class="companyFilter fetBtn" type="button" value="遠傳"
-				onclick="filterCompany('遠傳')">
-		</div>
-		<div class="contractFilterMenu">
-			<input class="contractFilter acquisitionBtn" type="button" value="攜碼"
-				onclick="filterContract('攜碼')"> <input
-				class="contractFilter numPortabilityBtn" type="button" value="新申辦"
-				onclick="filterContract('新申辦')"> <input
-				class="contractFilter retentionBtn" type="button" value="續約"
-				onclick="filterContract('續約')">
-		</div>
-		<div class="searchMenu">
-		<div class="buttonMenu">
-			<a th:href="@{/DashBoard/phoneplans/create}"><button
-					class="insertBtn">新增方案</button></a>
-		  <a th:href="@{/DashBoard/phoneplans}"><button
-					class="insertBtn">查詢最佳方案</button></a>
-			<div th:text="'總共有 ' + ${totalElements} + ' 筆'"></div>
-		</div>
-			<input class="searchID" type="text" placeholder="輸入方案代碼">
-			<button class="refreshBtn" onclick="clearFilters()">清除條件</button>
-		</div>
+          
+    
+    
+                <div th:text="'總共有 ' + ${phonePlans.size()} + ' 筆'"></div>
+            </div>
+            <input class="searchID" type="text" placeholder="輸入方案代碼">
+            <button class="refreshBtn">清除條件</button>
+        </div>
 
-		<div class="tableContainer">
-			<table>
-				<thead>
-					<tr>
-						<th>方案代碼</th>
-						<th>方案名稱</th>
-						<!-- <th>電話號碼</th> -->
-						<th>電信公司</th>
-						<th>合約類別</th>
-						<th>合約期限</th>
-						<th>連線世代</th>
-						<th>流量</th>
-						<th>流量速率</th>
-						<th>網內互打</th>
-						<th>網外互打</th>
-						<th>市話</th>
-						<th>折扣</th>
-						<th>禮物</th>
-						<th>修改</th>
-						<th>刪除</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
+        <div class="tableContainer">
+            <table id="phonePlansTable">
+                <thead>
+                    <tr>
+                        <th>方案代碼</th>
+                        <th>方案名稱</th>
+                        <th>電信公司</th>
+                        <th>合約類別</th>
+                        <th>合約期限</th>
+                        <th>連線世代</th>
+                        <th>流量</th>
+                        <th>流量速率</th>
+                        <th>網內互打</th>
+                        <th>網外互打</th>
+                        <th>市話</th>
+                        <th>折扣</th>
+                        <th>禮物</th>
+                        <th>修改</th>
+                        <th>刪除</th>
+                    </tr>
+                </thead>
+                <tbody th:each="plan : ${phonePlans}">
+                    <tr>
+                        <td class="planID" th:text="${plan.planID}">方案代碼</td>
+                        <td th:text="${plan.planName}">方案名稱</td>
+                        <td class="telCompany" th:text="${plan.telCompany}">電信公司</td>
+                        <td class="contractType" th:text="${plan.contractType}">合約類別</td>
+                        <td th:text="${plan.contractDuration}">合約期限</td>
+                        <td th:text="${plan.generation}">連線世代</td>
+                        <td th:text="${plan.dataUsage}">流量</td>
+                        <td th:text="${plan.dataTransferRate}">流量速率</td>
+                        <td th:text="${plan.intraNetCall}">網內互打</td>
+                        <td th:text="${plan.interNetCall}">網外互打</td>
+                        <td th:text="${plan.localCall}">市話</td>
+                        <td th:text="${plan.discount}">折扣</td>
+                        <td th:text="${plan.gift}">禮物</td>
+                        <td>
+                            <form action="/sellphone/DashBoard/phoneplans/showFormForUpdate" method="post">
+                                <input type="hidden" name="planID" th:value="${plan.planID}">
+                                <button type="submit" class="updateBtn">修改</button>
+                            </form>
+                        </td>
+                        <td>
+                            <button class="deleteBtn" data-planid="${plan.planID}">刪除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-		<!-- 分页导航 -->
-		<div class="pagination">
-			<ul>
-			</ul>
-		</div>
-
-		<div id="result"></div>
-	</div>
-
+        <div id="result"></div>
+    </div>
 </body>
 </html>
