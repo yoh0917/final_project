@@ -17,7 +17,6 @@
     <div class="formContainer">
         <h1>修改方案</h1>
         <form th:action="@{/DashBoard/phoneplans/update}" method="post">
-            <!-- 使用隐藏字段模拟PUT请求 -->
             <input type="hidden" name="_method" value="PUT"/>
             <table>
                 <tr>
@@ -31,10 +30,7 @@
                     <td>方案名稱</td>
                     <td><input type="text" name="planName" th:value="${planBean.planName}" /></td>
                 </tr>
-<!--                 <tr> -->
-<!--                     <td>電話號碼</td> -->
-<!--                     <td><input type="text" name="phoneNumber" th:value="${planBean.phoneNumber}" /></td> -->
-<!--                 </tr> -->
+
                 <tr>
                     <td>電信公司</td>
                     <td><input type="text" name="telCompany" th:value="${planBean.telCompany}" /></td>

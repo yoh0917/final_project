@@ -1,12 +1,13 @@
+/* 全局样式 */
 * {
     box-sizing: border-box;
 }
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: rgb(233, 214, 190);
+    background-color: #f1f1f1; /* 修改背景色为浅灰色 */
     padding: 0;
-    color: #8b8484;
+    color: #333; /* 修改文本颜色为深灰色 */
     box-sizing: border-box;
 }
 
@@ -16,13 +17,14 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: #333;
+    background-color: #333; /* 深灰色背景 */
     font-size: 20px;
     z-index: 100;
     top: 0;
     left: 0;
     right: 0;
     padding: 30px;
+    color: white; /* 白色文本 */
 }
 
 .mainContent {
@@ -50,34 +52,51 @@ header {
 }
 
 .companyFilter, .contractFilter {
-    background-color: red;
+    background-color: #555; /* 中灰色背景 */
     border: none;
     color: white;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 10px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .companyFilter:hover, .contractFilter:hover {
-    cursor: pointer;
-    background-color: rgb(177, 4, 4);
+    background-color: #333; /* 深灰色背景 */
+    transform: translateY(-2px);
 }
 
-.searchID {
-    padding-left: 5px;
+input[type="text"] {
+    padding: 10px;
     border-radius: 10px;
     flex: 1;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #333; /* 深灰色边框 */
+    box-shadow: 0 0 8px rgba(51, 51, 51, 0.6); /* 深灰色阴影 */
 }
 
 .refreshBtn {
-    background-color: #28a745;
+    background-color: #555; /* 中灰色背景 */
     margin: auto;
     margin-right: 10px;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .refreshBtn:hover {
-    background-color: #218838;
+    background-color: #333; /* 深灰色背景 */
+    transform: translateY(-2px);
 }
 
 .hidden {
@@ -95,13 +114,18 @@ button {
     color: white;
     padding: 10px 20px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    text-decoration: none; /* 移除底線 */
+    transition: background-color 0.3s, transform 0.2s;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    transform: translateY(-2px);
 }
 
 .tableContainer {
     display: flex;
-    border: 1px solid rgb(102, 102, 99);
+    border: 1px solid #666; /* 深灰色边框 */
     justify-content: center;
     width: 80%;
     max-height: 490px;
@@ -109,6 +133,9 @@ button {
     z-index: 1;
     margin: auto;
     margin-bottom: 10px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 table {
@@ -128,62 +155,71 @@ thead {
 thead th {
     position: sticky;
     z-index: 2;
-    background-color: rgb(148, 148, 145);
-    border: 1px solid rgb(102, 102, 99);
-    color: white;
+    background-color: #333; /* 深灰色背景 */
+    border: 1px solid #666; /* 深灰色边框 */
+    color: white; /* 白色文本 */
+    padding: 10px;
 }
 
 tbody {
-    background-color: #f1f1f1ce;
+    background-color: #f9f9f9; /* 非常浅的灰色背景 */
     width: 100%;
 }
 
 tr, td {
-    border: 1px solid #dbd6d6;
+    border: 1px solid #ddd; /* 淡灰色边框 */
     text-align: center;
     align-items: center;
+    padding: 10px;
 }
 
 tbody tr:hover {
-    background-color: rgb(223, 223, 223);
+    background-color: #e0e0e0; /* 浅灰色背景 */
 }
 
 .updateBtn {
-    background-color: #ffc107;
+    background-color: #666; /* 深灰色背景 */
     margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .updateBtn:hover {
-    background-color: #e0a800;
+    background-color: #444; /* 更深的灰色背景 */
+    transform: translateY(-2px);
 }
 
 .deleteBtn {
-    background-color: #dc3545;
+    background-color: #333; /* 深灰色背景 */
     margin: auto;
-    text-decoration: none; /* 移除刪除按鈕的底線 */
-    color: white; /* 刪除按鈕的文字顏色 */
-    display: inline-block; /* 使刪除按鈕保持行內塊狀元素 */
-    padding: 10px 20px; /* 刪除按鈕的內邊距 */
-    border: none; /* 移除邊框 */
-    border-radius: 10px; /* 邊框圓角 */
-    cursor: pointer; /* 指針樣式 */
-    transition: background-color 0.3s; /* 背景顏色過渡 */
+    color: white;
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .deleteBtn:hover {
-    background-color: #c82333; /* 刪除按鈕懸停時的背景顏色 */
+    background-color: #111; /* 黑色背景 */
+    transform: translateY(-2px);
 }
 
 .insertBtn, .bestPlanBtn {
-    background-color: #007BFF;
-    transition: background-color 0.3s;
+    background-color: #555; /* 中灰色背景 */
+    transition: background-color 0.3s, transform 0.2s;
     margin: auto;
     margin-right: 10px;
-    text-decoration: none; /* 移除底線 */
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .insertBtn:hover, .bestPlanBtn:hover {
-    background-color: #0056b3;
+    background-color: #333; /* 深灰色背景 */
+    transform: translateY(-2px);
 }
 
 .pagination {
@@ -207,21 +243,22 @@ tbody tr:hover {
     display: block;
     padding: 8px 16px;
     text-decoration: none;
-    color: #333;
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
+    color: white; /* 白色文本 */
+    background-color: #555; /* 中灰色背景 */
+    border: 1px solid #ddd; /* 淡灰色边框 */
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .pagination a:hover {
-    background-color: #ddd;
+    background-color: #333; /* 深灰色背景 */
+    transform: translateY(-2px);
 }
 
 .pagination .active a {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
+    background-color: #333; /* 深灰色背景 */
+    color: white; /* 白色文本 */
+    border-color: #333; /* 深灰色边框 */
 }
 
 .pagination .disabled span {
@@ -232,4 +269,18 @@ tbody tr:hover {
 
 .pagination .disabled a {
     pointer-events: none;
+}
+
+.pagination .prevPage, .pagination .nextPage {
+    background-color: #555; /* 中灰色背景 */
+    color: white; /* 白色文本 */
+    border: 1px solid #ddd; /* 淡灰色边框 */
+    border-radius: 5px;
+    padding: 8px 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.pagination .prevPage:hover, .pagination .nextPage:hover {
+    background-color: #333; /* 深灰色背景 */
+    transform: translateY(-2px);
 }

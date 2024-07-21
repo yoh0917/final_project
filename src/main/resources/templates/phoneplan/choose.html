@@ -1,23 +1,42 @@
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>最佳方案選擇</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link th:href="@{/phoneplancss/BestPlan.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+    <link rel="stylesheet" th:href="@{/phoneplancss/BestPlan.css}" />
 </head>
 <body>
     <div class="container">
-        <div class="title">
-            <h1>選擇最佳方案</h1>
+        <div class="swiper-container">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide" data-company="台灣大哥大">
+                        <img src="../phoneplancss/台灣大哥大.jpg" />
+                    </div>
+                    <div class="swiper-slide" data-company="中華電信">
+                        <img src="../phoneplancss/中華電信.jpg" />
+                    </div>
+                    <div class="swiper-slide" data-company="遠傳">
+                        <img src="../phoneplancss/遠傳.jpg" />
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
         </div>
         <form id="planForm" class="form">
+            <div class="title">
+                <h1>選擇最佳方案</h1>
+            </div>
             <div class="form-group">
                 <label for="telCompany">電信公司:</label>
                 <div id="telCompany" class="btn-group">
-                    <button type="button" class="btn" onclick="selectOption('telCompany', '台灣大哥大')">台灣大哥大</button>
-                    <button type="button" class="btn" onclick="selectOption('telCompany', '中華電信')">中華電信</button>
-                    <button type="button" class="btn" onclick="selectOption('telCompany', '遠傳')">遠傳</button>
+                    <button type="button" class="btn" onclick="updateSwiperImages('台灣大哥大')">台灣大哥大</button>
+                    <button type="button" class="btn" onclick="updateSwiperImages('中華電信')">中華電信</button>
+                    <button type="button" class="btn" onclick="updateSwiperImages('遠傳')">遠傳</button>
                 </div>
             </div>
             <div class="form-group">
@@ -37,14 +56,26 @@
                 <div id="dataUsage" class="btn-group" disabled></div>
             </div>
             <div class="form-group">
+                <label for="exportExcel">匯出Excel:</label>
+                <button type="button" class="btn" onclick="exportSelectedPlans()">匯出Excel</button>
+            </div>
+            <div class="form-group">
                 <button type="button" class="btn" onclick="getBestPlan()">提交</button>
                 <button type="button" class="btn clearBtn" onclick="clearForm()">清除選擇</button>
                 <button type="button" class="btn" onclick="window.location.href='/sellphone/DashBoard/phoneplans/all'">回所有方案</button>
             </div>
             <button type="button" class="btn" onclick="addCustomer()">門號申辦</button>
         </form>
-        <div id="result"></div>
     </div>
+    <div id="result" class="result-container"></div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
     <script th:src="@{/phoneplanjs/BestPlan.js}"></script>
+    <script>
+     
+    </script>
+    
+</body>
+</html>

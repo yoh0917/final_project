@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>方案總覽</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .title {
+            text-align: center;
+            padding: 30px;
+            background-color: #333;
+            color: #fff;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .companyFilterMenu,
+        .contractFilterMenu {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .companyFilterMenu input,
+        .contractFilterMenu input {
+            margin: 0 10px;
+            padding: 15px 25px;
+            border: 2px solid transparent;
+            background-color: #888;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.3s, border 0.3s;
+            font-size: 1.1em;
+        }
+
+        .companyFilterMenu input:hover,
+        .contractFilterMenu input:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        .companyFilterMenu input.active,
+        .contractFilterMenu input.active {
+            background-color: #d32f2f;
+            border: 2px solid #fff;
+        }
+
+        .plan-section {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+
+        .plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .plan-table th,
+        .plan-table td {
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 12px;
+        }
+
+        .plan-table th {
+            background-color: #f7f7f7;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .plan-table caption {
+            caption-side: top;
+            text-align: left;
+            font-size: 1.5em;
+            margin: 10px 0;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .image-container {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #333;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .underline {
+            border-bottom: 2px solid #333;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-weight: 500;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container form,
+        .button-container a {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .button-container button,
+        .button-container input {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-container button:hover,
+        .button-container input:hover {
+            background-color: #555;
+        }
+
+        /* Swiper styles */
+        html,
+        body {
+            position: relative;
+            height: 100%;
+        }
+
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper {
+            width: 50%;
+            height: 50%;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .autoplay-progress {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            z-index: 10;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--swiper-theme-color);
+        }
+
+        .autoplay-progress svg {
+            --progress: 0;
+            position: absolute;
+            left: 0;
+            top: 0px;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            stroke-width: 4px;
+            stroke: var(--swiper-theme-color);
+            fill: none;
+            stroke-dashoffset: calc(125.6px * (1 - var(--progress)));
+            stroke-dasharray: 125.6;
+            transform: rotate(-90deg);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@pnotify/desktop@5.2.0/dist/PNotifyDesktop.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@pnotify/core@5.2.0/dist/PNotify.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@pnotify/desktop@5.2.0/dist/PNotifyDesktop.css" rel="stylesheet">
+    <script>
+        function animateButtonDown(button) {
+            button.style.transform = "translateY(5px)";
+            setTimeout(() => {
+                button.style.transform = "translateY(0)";
+            }, 100);
+        }
+
+        function changeCompany(company) {
+            document.querySelectorAll('.plan-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            const targetSection = document.getElementById(company + '-section');
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            document.querySelectorAll('.companyFilter').forEach(button => {
+                button.classList.remove('active');
+            });
+            const activeButton = document.querySelector(`.companyFilter[value="${company}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+                animateButtonDown(activeButton);
+            }
+
+            const activePlanType = document.querySelector('.contractFilter.active');
+            if (activePlanType) {
+                changePlanType(activePlanType.value, targetSection);
+            }
+        }
+
+        function changePlanType(planType, targetSection) {
+            if (targetSection) {
+                targetSection.querySelectorAll('.plan-table').forEach(table => {
+                    table.classList.add('hidden');
+                });
+                targetSection.querySelectorAll('.' + planType + '-table').forEach(table => {
+                    table.classList.remove('hidden');
+                });
+            }
+
+            document.querySelectorAll('.contractFilter').forEach(button => {
+                button.classList.remove('active');
+            });
+            const activeButton = document.querySelector(`.contractFilter[value="${planType}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+                animateButtonDown(activeButton);
+            }
+
+            // Scroll to the section or the first visible table
+            if (targetSection) {
+                scrollToSection(targetSection);
+            } else {
+                const firstVisibleTable = document.querySelector('.plan-table:not(.hidden)');
+                if (firstVisibleTable) {
+                    scrollToSection(firstVisibleTable);
+                }
+            }
+        }
+
+        function scrollToSection(section) {
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.companyFilter').forEach(button => {
+                button.addEventListener('click', () => {
+                    changeCompany(button.value);
+                });
+            });
+
+            document.querySelectorAll('.contractFilter').forEach(button => {
+                button.addEventListener('click', () => {
+                    const activeCompany = document.querySelector('.companyFilter.active');
+                    if (activeCompany) {
+                        changePlanType(button.value, document.getElementById(activeCompany.value + '-section'));
+                    }
+                });
+            });
+
+            PNotify.notice({
+                title: 'HI',
+                text: '慢慢看慢慢選歐.',
+                modules: new Map([
+                    ...PNotify.defaultModules,
+                    [PNotifyDesktop, {
+                        icon: 'https://hips.hearstapps.com/hmg-prod/images/%E6%88%91%E7%9A%84happy-ending-%E5%AD%AB%E6%B5%A9%E4%BF%8A-%E5%B7%A6-%E7%8F%BE%E5%AF%A6%E4%B8%AD%E9%9B%96%E7%84%B6%E6%9C%AA%E5%A9%9A-%E4%BD%86%E5%92%8C%E5%8A%87%E4%B8%AD%E5%A5%B3%E5%85%92%E7%9B%B8%E8%99%95%E8%9E%8D%E6%B4%BD-%E5%9C%96%E7%89%87%E6%8F%90%E4%BE%9B-hami-video-jpeg-659e786c3e594.jpg?crop=1xw:1xh;center,top&resize=980:*'
+                    }]
+                ])
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="title">
+        <h2>方案參考表</h2>
+    </div>
+    <div class="companyFilterMenu">
+        <h3>請選擇電信公司</h3>
+        <input class="companyFilter" type="button" value="中華電信">
+        <input class="companyFilter" type="button" value="台灣大哥大">
+        <input class="companyFilter" type="button" value="遠傳">
+    </div>
+    <br>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+<img th:src="@{/phoneplancss/1.png}" alt="1">
+
+            </div>
+            <div class="swiper-slide">
+            <img th:src="@{/phoneplancss/7.png}" alt="7">
+            </div>
+            <div class="swiper-slide">
+            <img th:src="@{/phoneplancss/8.png}" alt="8">
+            </div>
+            <div class="swiper-slide"><img th:src="@{/phoneplancss/9.png}" alt="2">
+            </div>
+            <div class="swiper-slide"><img th:src="@{/phoneplancss/10.png}" alt="3">
+            </div>
+            <div class="swiper-slide"><img th:src="@{/phoneplancss/11.png}" alt="4">
+            </div>
+            <div class="swiper-slide"><img th:src="@{/phoneplancss/12.png}" alt="5">
+            </div>
+            <div class="swiper-slide"><img th:src="@{/phoneplancss/13.png}" alt="6">
+            
+            </div>
+            
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+        <div class="autoplay-progress">
+            <svg viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="20"></circle>
+            </svg>
+            <span></span>
+        </div>
+    </div>
+    <div class="contractFilterMenu">
+        <h3>合約類型</h3>
+        <input class="contractFilter" type="button" value="攜碼">
+        <input class="contractFilter" type="button" value="新申辦">
+        <input class="contractFilter" type="button" value="續約">
+    </div>
+
+    <div class="container">
+        <!-- Swiper -->
+
+
+        <!-- Chunghwa Telecom Section -->
+        <div id="中華電信-section" class="plan-section hidden">
+            <div class="image-container underline">
+                <img src="data:image/png;base64,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"
+                    alt="中華電信">
+            </div>
+            <!-- Chunghwa Telecom Section -->
+            <table class="plan-table 攜碼-table hidden">
+                <caption>4G 攜碼方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>攜碼折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>699(30)</td>
+                    <td>$5,000</td>
+                    <td>$4,800</td>
+                    <td>吃到飽</td>
+                    <td>網路不限速吃到飽 | 網內前10分鐘免費 | 網內45分鐘 | 網外40分鐘 | 市話15分鐘</td>
+                </tr>
+                <tr>
+                    <td>199(36)</td>
+                    <td>$1,500</td>
+                    <td>$1,500</td>
+                    <td>1GB</td>
+                    <td>網內20分鐘 | 網外20分鐘</td>
+                </tr>
+                <tr>
+                    <td>299(36)</td>
+                    <td>$2,500</td>
+                    <td>$2,500</td>
+                    <td>2GB</td>
+                    <td>網內20分鐘 | 網外20分鐘 | 市話20分鐘</td>
+                </tr>
+                <tr>
+                    <td>398(24)</td>
+                    <td>$1,500</td>
+                    <td>$1,200</td>
+                    <td>6GB</td>
+                    <td>網內免費 | 網外20分鐘 | 市話10分鐘</td>
+                </tr>
+                <tr>
+                    <td>398(30)</td>
+                    <td>$2,500</td>
+                    <td>$1,200</td>
+                    <td>6GB</td>
+                    <td>網內免費 | 網外20分鐘 | 市話10分鐘</td>
+                </tr>
+                <!-- 更多4G方案 -->
+            </table>
+            <table class="plan-table 攜碼-table hidden">
+                <caption>5G 攜碼方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>攜碼折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>熱點分享量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>599(24)</td>
+                    <td>$4,800</td>
+                    <td>$3,600</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率12Mbps) | 網內前5分鐘免費 | 網外30分鐘 | 市話40分鐘</td>
+                </tr>
+                <tr>
+                    <td>599(30)</td>
+                    <td>$5,000</td>
+                    <td>$4,600</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率12Mbps) | 網內前5分鐘免費 | 網外30分鐘 | 市話40分鐘</td>
+                </tr>
+                <tr>
+                    <td>799(24)</td>
+                    <td>$7,200</td>
+                    <td>$5,600</td>
+                    <td>36GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率21Mbps) | 網內前10分鐘免費 | 網外45分鐘 | 市話60分鐘</td>
+                </tr>
+                <tr>
+                    <td>999(30)</td>
+                    <td>$10,000</td>
+                    <td>$9,700</td>
+                    <td>60GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外60分鐘 | 市話75分鐘</td>
+                </tr>
+                <tr>
+                    <td>1399(30)</td>
+                    <td>$16,000</td>
+                    <td>$14,400</td>
+                    <td>吃到飽</td>
+                    <td>50GB</td>
+                    <td>網內免費 | 網外110分鐘 | 市話140分鐘</td>
+                </tr>
+                <tr>
+                    <td>1599(30)</td>
+                    <td>$18,000</td>
+                    <td>$16,300</td>
+                    <td>吃到飽</td>
+                    <td>70GB</td>
+                    <td>網內免費 | 網外150分鐘 | 市話190分鐘</td>
+                </tr>
+                <!-- 更多5G方案 -->
+            </table>
+            <table class="plan-table 新申辦-table hidden">
+                <caption>4G 新申辦方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>新申辦折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>699(30)</td>
+                    <td>$3,500</td>
+                    <td>$4,800</td>
+                    <td>吃到飽</td>
+                    <td>網路不限速吃到飽 | 網內前10分鐘免費 | 網內45分鐘 | 網外40分鐘 | 市話15分鐘</td>
+                </tr>
+                <tr>
+                    <td>199(36)</td>
+                    <td>$500</td>
+                    <td>$1,500</td>
+                    <td>1GB</td>
+                    <td>網內20分鐘 | 網外20分鐘</td>
+                </tr>
+                <tr>
+                    <td>299(36)</td>
+                    <td>$1,500</td>
+                    <td>$2,500</td>
+                    <td>2GB</td>
+                    <td>網內20分鐘 | 網外20分鐘 | 市話20分鐘</td>
+                </tr>
+                <tr>
+                    <td>398(30)</td>
+                    <td>$1,500</td>
+                    <td>$1,200</td>
+                    <td>6GB</td>
+                    <td>網內免費 | 網外20分鐘 | 市話10分鐘</td>
+                </tr>
+                <!-- 更多4G方案 -->
+            </table>
+            <table class="plan-table 新申辦-table hidden">
+                <caption>5G 新申辦方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>新申辦折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>熱點分享量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>599(24)</td>
+                    <td>$4,800</td>
+                    <td>$3,600</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外30分鐘 | 市話40分鐘</td>
+                </tr>
+                <tr>
+                    <td>599(30)</td>
+                    <td>$4,000</td>
+                    <td>$4,600</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外30分鐘 | 市話40分鐘</td>
+                </tr>
+                <tr>
+                    <td>799(30)</td>
+                    <td>$6,000</td>
+                    <td>$6,900</td>
+                    <td>36GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率21Mbps) | 網內前10分鐘免費 | 網外45分鐘 | 市話60分鐘</td>
+                </tr>
+                <tr>
+                    <td>999(30)</td>
+                    <td>$8,000</td>
+                    <td>$9,700</td>
+                    <td>60GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外60分鐘 | 市話75分鐘</td>
+                </tr>
+                <tr>
+                    <td>1399(30)</td>
+                    <td>$13,000</td>
+                    <td>$14,400</td>
+                    <td>吃到飽</td>
+                    <td>50GB</td>
+                    <td>網內免費 | 網外110分鐘 | 市話140分鐘</td>
+                </tr>
+                <!-- 更多5G方案 -->
+            </table>
+            <table class="plan-table 續約-table hidden">
+                <caption>4G 續約方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>續約折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>699(30)</td>
+                    <td>$1,000</td>
+                    <td>$0</td>
+                    <td>吃到飽</td>
+                    <td>網路不限速吃到飽 | 網內每通前10分鐘免費 | 網內45分鐘 | 網外40分鐘 | 市話15分鐘</td>
+                </tr>
+                <!-- 更多4G方案 -->
+            </table>
+            <table class="plan-table 續約-table hidden">
+                <caption>5G 續約方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>續約折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>熱點分享量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>599(24)</td>
+                    <td>$1,000</td>
+                    <td>$4,500</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外30分鐘 | 市話40分鐘</td>
+                </tr>
+                <tr>
+                    <td>599(30)</td>
+                    <td>$2,000</td>
+                    <td>$6,000</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外30分鐘 | 市話40分鐘</td>
+                </tr>
+                <tr>
+                    <td>799(30)</td>
+                    <td>$3,000</td>
+                    <td>$6,990</td>
+                    <td>36GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率21Mbps) | 網內前10分鐘免費 | 網外45分鐘 | 市話60分鐘</td>
+                </tr>
+                <tr>
+                    <td>999(30)</td>
+                    <td>$5,500</td>
+                    <td>$8,100</td>
+                    <td>60GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外60分鐘 | 市話75分鐘</td>
+                </tr>
+                <tr>
+                    <td>1199(30)</td>
+                    <td>$7,000</td>
+                    <td>$9,600</td>
+                    <td>100GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外80分鐘 | 市話100分鐘</td>
+                </tr>
+                <tr>
+                    <td>1399(30)</td>
+                    <td>$9,000</td>
+                    <td>$14,600</td>
+                    <td>吃到飽</td>
+                    <td>50GB</td>
+                    <td>網內免費 | 網外110分鐘 | 市話140分鐘</td>
+                </tr>
+                <!-- 更多5G方案 -->
+            </table>
+        </div>
+
+        <!-- Taiwan Mobile Section -->
+        <div id="台灣大哥大-section" class="plan-section hidden">
+            <div class="image-container underline">
+                <img src="https://www.taiwanmobile.com/mobile/img/index/og_meta_image.jpg" alt="台灣大哥大">
+            </div>
+            <table class="plan-table 攜碼-table hidden">
+                <caption>4G 攜碼方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>攜碼折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>388(30)</td>
+                    <td>$3,000</td>
+                    <td>$0</td>
+                    <td>6GB</td>
+                    <td>網內免費 | 網外20分鐘</td>
+                </tr>
+                <tr>
+                    <td>588(30)</td>
+                    <td>$800</td>
+                    <td>吃到飽</td>
+                    <td>6GB</td>
+                    <td>網路不限速吃到飽 | 網內免費 | 網外40分鐘 | 市話60分鐘</td>
+                </tr>
+                <tr>
+                    <td>688(30)</td>
+                    <td>$5,000</td>
+                    <td>$0</td>
+                    <td>吃到飽</td>
+                    <td>網路不限速吃到飽 | 網內免費 | 網外155分鐘 | 市話100分鐘</td>
+                </tr>
+                <tr>
+                    <td>699(30)</td>
+                    <td>$5,000</td>
+                    <td>$0</td>
+                    <td>吃到飽</td>
+                    <td>網路不限速吃到飽 | 網內免費 | 網外200分鐘</td>
+                </tr>
+                <!-- 更多4G方案 -->
+            </table>
+            <table class="plan-table 攜碼-table hidden">
+                <caption>5G 攜碼方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>攜碼折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>熱點分享量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>599(24)</td>
+                    <td>$4,800</td>
+                    <td>$3,600</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外60分鐘</td>
+                </tr>
+                <tr>
+                    <td>599(30)</td>
+                    <td>$5,000</td>
+                    <td>$0</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外60分鐘</td>
+                </tr>
+                <tr>
+                    <td>799(30)</td>
+                    <td>$9,000</td>
+                    <td>$0</td>
+                    <td>36GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率21Mbps) | 網內免費 | 網外90分鐘</td>
+                </tr>
+                <tr>
+                    <td>999(30)</td>
+                    <td>$12,000</td>
+                    <td>$0</td>
+                    <td>60GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外120分鐘</td>
+                </tr>
+                <tr>
+                    <td>1399(30)</td>
+                    <td>$17,000</td>
+                    <td>$9,793</td>
+                    <td>吃到飽</td>
+                    <td>50GB</td>
+                    <td>網內免費 | 網外220分鐘</td>
+                </tr>
+                <!-- 更多5G方案 -->
+            </table>
+            <table class="plan-table 新申辦-table hidden">
+                <caption>4G 新申辦方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>新申辦折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>388(30)</td>
+                    <td>$3,000</td>
+                    <td>$0</td>
+                    <td>6GB</td>
+                    <td>學生身份限定 | 網內免費 | 網外30分鐘</td>
+                </tr>
+                <tr>
+                    <td>398(24)</td>
+                    <td>$2,500</td>
+                    <td>$1,200</td>
+                    <td>6GB</td>
+                    <td>網內免費 | 網外20分鐘</td>
+                </tr>
+                <tr>
+                    <td>588(30)</td>
+                    <td>$500</td>
+                    <td>$0</td>
+                    <td>吃到飽</td>
+                    <td>學生身分限定 | 網路不限速吃到飽 | 網內免費 | 網外40分鐘 | 市話60分鐘</td>
+                </tr>
+                <tr>
+                    <td>688(30)</td>
+                    <td>$4,000</td>
+                    <td>$4,816</td>
+                    <td>吃到飽</td>
+                    <td>學生身分限定 | 網路不限速吃到飽 | 網內免費 | 網外155分鐘 | 市話100分鐘</td>
+                </tr>
+                <!-- 更多4G方案 -->
+            </table>
+            <table class="plan-table 新申辦-table hidden">
+                <caption>5G 新申辦方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>新申辦折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>熱點分享量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>599(30)</td>
+                    <td>$4,500</td>
+                    <td>$4,193</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率12Mbps) | 網內免費 | 網外60分鐘</td>
+                </tr>
+                <tr>
+                    <td>799(30)</td>
+                    <td>$6,000</td>
+                    <td>$5,593</td>
+                    <td>36GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率21Mbps) | 網內免費 | 網外90分鐘</td>
+                </tr>
+                <tr>
+                    <td>999(30)</td>
+                    <td>$9,000</td>
+                    <td>$6,993</td>
+                    <td>60GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外120分鐘</td>
+                </tr>
+                <tr>
+                    <td>1199(30)</td>
+                    <td>$11,000</td>
+                    <td>$8,393</td>
+                    <td>100GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外160分鐘</td>
+                </tr>
+                <tr>
+                    <td>1399(30)</td>
+                    <td>$14,000</td>
+                    <td>$9,793</td>
+                    <td>吃到飽</td>
+                    <td>50GB</td>
+                    <td>網內免費 | 網外220分鐘</td>
+                </tr>
+                <!-- 更多5G方案 -->
+            </table>
+            <table class="plan-table 續約-table hidden">
+                <caption>4G 續約方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>續約折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>388(30)</td>
+                    <td>$2,500</td>
+                    <td>$2,793</td>
+                    <td>6GB</td>
+                    <td>學生身份限定 | 網內免費 | 網外30分鐘</td>
+                </tr>
+                <!-- 更多4G方案 -->
+            </table>
+            <table class="plan-table 續約-table hidden">
+                <caption>5G 續約方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>續約折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>熱點分享量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>599(30)</td>
+                    <td>$3,500</td>
+                    <td>$4,193</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率12Mbps) | 網內免費 | 網外60分鐘</td>
+                </tr>
+                <!-- 更多5G方案 -->
+            </table>
+        </div>
+
+        <!-- Far Eastone Section -->
+        <div id="遠傳-section" class="plan-section hidden">
+            <div class="image-container underline">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxbkJ7kN-6kz0EkZw76U3uQxjsP8r7eycr7w&s"
+                    alt="遠傳">
+            </div>
+            <table class="plan-table 攜碼-table hidden">
+                <caption>4G 攜碼方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>攜碼折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>299(24)</td>
+                    <td>$0</td>
+                    <td>$0</td>
+                    <td>2.3GB</td>
+                    <td>傳輸到量降速 | 網內前3分鐘免費 | 網外20分鐘</td>
+                </tr>
+                <tr>
+                    <td>388(30)</td>
+                    <td>$3,000</td>
+                    <td>$0</td>
+                    <td>5GB</td>
+                    <td>網內前3分鐘免費 | 網內30分鐘 | 網外30分鐘 | 市話40分鐘</td>
+                </tr>
+                <tr>
+                    <td>399(30)</td>
+                    <td>$4,000</td>
+                    <td>$0</td>
+                    <td>6GB</td>
+                    <td>網內免費 | 網外20分鐘</td>
+                </tr>
+                <tr>
+                    <td>588(30)</td>
+                    <td>$800</td>
+                    <td>$0</td>
+                    <td>吃到飽</td>
+                    <td>網路不限速吃到飽 | 網內免費 | 網外80分鐘 | 市話160分鐘</td>
+                </tr>
+                <tr>
+                    <td>699(30)</td>
+                    <td>$5,000</td>
+                    <td>$0</td>
+                    <td>吃到飽</td>
+                    <td>網路不限速吃到飽 | 網內免費 | 網外200分鐘</td>
+                </tr>
+                <!-- 更多4G方案 -->
+            </table>
+            <table class="plan-table 攜碼-table hidden">
+                <caption>5G 攜碼方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>攜碼折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>熱點分享量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>599(24)</td>
+                    <td>$4,800</td>
+                    <td>$0</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外60分鐘</td>
+                </tr>
+                <tr>
+                    <td>599(30)</td>
+                    <td>$5,000</td>
+                    <td>$0</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外60分鐘</td>
+                </tr>
+                <tr>
+                    <td>799(30)</td>
+                    <td>$9,000</td>
+                    <td>$0</td>
+                    <td>36GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率21Mbps) | 網內免費 | 網外90分鐘</td>
+                </tr>
+                <tr>
+                    <td>999(30)</td>
+                    <td>$12,000</td>
+                    <td>$0</td>
+                    <td>60GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外120分鐘</td>
+                </tr>
+                <tr>
+                    <td>1199(30)</td>
+                    <td>$12,500</td>
+                    <td>$12,000</td>
+                    <td>100GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外160分鐘</td>
+                </tr>
+                <tr>
+                    <td>1399(30)</td>
+                    <td>$17,000</td>
+                    <td>$16,000</td>
+                    <td>吃到飽</td>
+                    <td>50GB</td>
+                    <td>網內免費 | 網外220分鐘</td>
+                </tr>
+                <!-- 更多5G方案 -->
+            </table>
+            <table class="plan-table 新申辦-table hidden">
+                <caption>4G 新申辦方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>新申辦折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>299(24)</td>
+                    <td>$0</td>
+                    <td>$0</td>
+                    <td>2.3GB</td>
+                    <td>傳輸到量降速 | 網內前3分鐘免費 | 網外20分鐘</td>
+                </tr>
+                <tr>
+                    <td>399(30)</td>
+                    <td>$3,000</td>
+                    <td>$0</td>
+                    <td>6GB</td>
+                    <td>傳輸到量降速 | 網內前3分鐘免費 | 網外20分鐘</td>
+                </tr>
+                <tr>
+                    <td>388(30)</td>
+                    <td>$3,000</td>
+                    <td>$0</td>
+                    <td>5GB</td>
+                    <td>限學生身分辦理 | 網內前3分鐘免費 | 網內30分鐘 | 網外30分鐘 | 市話40分鐘</td>
+                </tr>
+                <tr>
+                    <td>588(30)</td>
+                    <td>$800</td>
+                    <td>$0</td>
+                    <td>吃到飽</td>
+                    <td>限學生身分辦理 | 網路不限速吃到飽 | 網內前5分鐘免費 | 網內40分鐘 | 網外40分鐘 | 市話60分鐘</td>
+                </tr>
+                <tr>
+                    <td>688(30)</td>
+                    <td>$4,000</td>
+                    <td>$0</td>
+                    <td>吃到飽</td>
+                    <td>網路不限速吃到飽 | 網內免費 | 網外80分鐘 | 市話160分鐘</td>
+                </tr>
+                <tr>
+                    <td>699(30)</td>
+                    <td>$4,000</td>
+                    <td>$0</td>
+                    <td>吃到飽</td>
+                    <td>網路不限速吃到飽 | 網內免費 | 網外200分鐘</td>
+                </tr>
+                <!-- 更多4G方案 -->
+            </table>
+            <table class="plan-table 新申辦-table hidden">
+                <caption>5G 新申辦方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>新申辦折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>熱點分享量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>599(24)</td>
+                    <td>$4,800</td>
+                    <td>$0</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外60分鐘</td>
+                </tr>
+                <tr>
+                    <td>599(30)</td>
+                    <td>$4,500</td>
+                    <td>$0</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸量降速 | 網內前5分鐘免費 | 網外60分鐘</td>
+                </tr>
+                <tr>
+                    <td>799(30)</td>
+                    <td>$6,000</td>
+                    <td>$0</td>
+                    <td>36GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率21Mbps) | 網內免費 | 網外90分鐘</td>
+                </tr>
+                <tr>
+                    <td>999(30)</td>
+                    <td>$9,000</td>
+                    <td>$0</td>
+                    <td>60GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外120分鐘</td>
+                </tr>
+                <tr>
+                    <td>1199(30)</td>
+                    <td>$12,500</td>
+                    <td>$12,000</td>
+                    <td>100GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率50Mbps) | 網內免費 | 網外160分鐘</td>
+                </tr>
+                <tr>
+                    <td>1399(30)</td>
+                    <td>$17,000</td>
+                    <td>$16,000</td>
+                    <td>吃到飽</td>
+                    <td>50GB</td>
+                    <td>網內免費 | 網外220分鐘</td>
+                </tr>
+                <!-- 更多5G方案 -->
+            </table>
+            <table class="plan-table 續約-table hidden">
+                <caption>4G 續約方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>續約折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>299(24)</td>
+                    <td>$0</td>
+                    <td>$0</td>
+                    <td>2.3GB</td>
+                    <td>傳輸到量降速 | 網內前3分鐘免費 | 網外20分鐘</td>
+                </tr>
+                <!-- 更多4G方案 -->
+            </table>
+            <table class="plan-table 續約-table hidden">
+                <caption>5G 續約方案</caption>
+                <tr>
+                    <th>方案</th>
+                    <th>續約折扣</th>
+                    <th>預繳</th>
+                    <th>傳輸量</th>
+                    <th>熱點分享量</th>
+                    <th>方案內容</th>
+                </tr>
+                <tr>
+                    <td>599(30)</td>
+                    <td>$3,000</td>
+                    <td>$0</td>
+                    <td>24GB</td>
+                    <td>與傳輸量併計</td>
+                    <td>傳輸到量降速(最高下載速率12Mbps) | 網內免費 | 網外60分鐘</td>
+                </tr>
+                <!-- 更多5G方案 -->
+            </table>
+        </div>
+    </div>
+    <div class="button-container">
+        <form action="/sellphone/mainPage" method="get">
+            <input type="submit" value="回首頁">
+        </form>
+        <a th:href="@{/DashBoard/phoneplans}">
+            <button class="insertBtn">查詢最佳方案</button>
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        const progressCircle = document.querySelector(".autoplay-progress svg");
+        const progressContent = document.querySelector(".autoplay-progress span");
+        var swiper = new Swiper(".mySwiper", {
+            spaceBetween: 30,
+            centeredSlides: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev"
+            },
+            on: {
+                autoplayTimeLeft(s, time, progress) {
+                    progressCircle.style.setProperty("--progress", 1 - progress);
+                    progressContent.textContent = `${Math.ceil(time / 1000)}s`;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
