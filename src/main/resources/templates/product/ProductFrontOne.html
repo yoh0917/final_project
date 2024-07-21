@@ -31,6 +31,24 @@
 	padding: 20px;
 	border-radius: 5px;
 }
+
+.star-rating {
+    display: flex;
+    direction: row;
+}
+
+.star {
+    font-size: 2rem;
+    color: gray;
+    cursor: pointer;
+}
+
+.star.hover,
+.star.selected {
+    color: gold;
+}
+
+
 </style>
 </head>
 
@@ -100,7 +118,7 @@
 			<h2>評論區</h2>
 			<div class="row gx-4 gx-lg-5 align-items-center">
 				<!-- 評論列表 -->
-				<div class="col-md-12">
+				<div class="col-md-3">
 					<div th:each="comment : ${allScore}">
 						<div class="card mb-3">
 							<div class="card-body">
@@ -116,11 +134,27 @@
 				</div>
 				<!-- 評論表單 -->
 				<div class="col-md-12 mt-4">
-					<div class="mb-3">
-						<label for="userName" class="form-label">分數</label> <input
-							type="number" class="form-control" id="scorenum" name="scorenum"
-							min="1" max="5" required />
-					</div>
+<!-- 					<div class="mb-3"> -->
+<!-- 						<label for="userName" class="form-label">分數</label> <input -->
+<!-- 							type="number" class="form-control" id="scorenum" name="scorenum" -->
+<!-- 							min="1" max="5" required /> -->
+<!-- 					</div> -->
+<div class="mb-3">
+    <label for="userName" class="form-label">選擇分數</label>
+    <div class="star-rating" id="star-rating">
+        <span data-value="1" class="star">&#9733;</span>
+        <span data-value="2" class="star">&#9733;</span>
+        <span data-value="3" class="star">&#9733;</span>
+        <span data-value="4" class="star">&#9733;</span>
+        <span data-value="5" class="star">&#9733;</span>
+    </div>
+    <input type="number" class="form-control" id="scorenum" name="scorenum" min="1" max="5" required hidden />
+</div>
+
+
+
+
+
 					<div class="mb-3">
 						<label for="content" class="form-label">評論</label>
 						<textarea class="form-control" id="review" name="review" rows="3"
@@ -175,6 +209,41 @@
                 })
 
         })
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const stars = document.querySelectorAll('.star-rating .star');
+    const scoreInput = document.getElementById('scorenum');
+
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => {
+            const value = star.getAttribute('data-value');
+            highlightStars(value, 'hover');
+        });
+
+        star.addEventListener('mouseout', () => {
+            const selectedValue = scoreInput.value;
+            highlightStars(selectedValue, 'selected');
+        });
+
+        star.addEventListener('click', () => {
+            const value = star.getAttribute('data-value');
+            scoreInput.value = value;
+            highlightStars(value, 'selected');
+        });
+    });
+
+    function highlightStars(value, className) {
+        stars.forEach(star => {
+            star.classList.remove('hover');
+            star.classList.remove('selected');
+            if (star.getAttribute('data-value') <= value) {
+                star.classList.add(className);
+            }
+        });
+    }
+});
+
 
 
 
