@@ -4,32 +4,32 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
 <title>商品詳細資料</title>
 <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- Bootstrap icons-->
 <link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
-	rel="stylesheet" />
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+    rel="stylesheet" />
 <!-- Core theme CSS (includes Bootstrap)-->
 <link th:href="@{/css/styles.css}" rel="stylesheet" />
 <link th:href="@{/layout/css/header.css}" rel="stylesheet">
 <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
 .carousel-item img {
-	max-width: 100%;
-	height: 600px;
+    max-width: 100%;
+    height: 600px;
 }
 
 .carousel-inner {
-	padding: 20px;
-	border-radius: 5px;
+    padding: 20px;
+    border-radius: 5px;
 }
 
 .star-rating {
@@ -43,140 +43,140 @@
     cursor: pointer;
 }
 
-.star.hover,
-.star.selected {
+.star.hover, .star.selected {
     color: gold;
 }
 
+.filled {
+    color: gold;
+}
 
 </style>
 </head>
 
 <body>
 
-	<div th:replace="~{/layout/header.html}"></div>
+    <div th:replace="~{/layout/header.html}"></div>
 
-	<br>
-	<br>
-	<section class="py-2 mt-5">
-		<div class="container px-4 px-lg-5 mt-5">
-			<h1>商品詳細資料</h1>
-			<div class="row gx-4 gx-lg-5 align-items-center">
-				<div class="col-md-6">
-					<div class="carousel slide" id="productCarousel"
-						data-bs-ride="carousel">
-						<div class="carousel-inner">
-							<th:block th:each="onePhoto, iterStat : ${product.productPhoto}">
-								<div class="carousel-item"
-									th:classappend="${iterStat.index == 0 ? 'active' : ''}">
-									<img th:src="@{/photos/download(photoid=${onePhoto.photoid})}"
-										class="d-block w-100 img-thumbnail">
-								</div>
-							</th:block>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<h1 class="display-5 fw-bolder" th:text="${product.productbrand}"></h1>
-					<h1 class="display-5 fw-bolder" th:text="${product.productName}"></h1>
-					<h1 class="display-5 fw-bolder" th:text="${product.capacity}"></h1>
-					<h1 class="display-5 fw-bolder" th:text="${product.color}"></h1>
-					<input type="hidden" id="productid" th:value="${product.productid}">
-					<input type="hidden" id="userid"
-						th:value="${session.userId}?${session.userId}">
-					<div class="fs-5 mb-5">
-						<span class="fa-solid fa-money-bill-1"
-							th:text="' $ '+${product.price}"></span>
-					</div>
-					<div class="fs-5 mb-5">
+    <br>
+    <br>
+    <section class="py-2 mt-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h1>商品詳細資料</h1>
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6">
+                    <div class="carousel slide" id="productCarousel"
+                        data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <th:block th:each="onePhoto, iterStat : ${product.productPhoto}">
+                                <div class="carousel-item"
+                                    th:classappend="${iterStat.index == 0 ? 'active' : ''}">
+                                    <img th:src="@{/photos/download(photoid=${onePhoto.photoid})}"
+                                        class="d-block w-100 img-thumbnail">
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h1 class="display-5 fw-bolder" th:text="${product.productbrand}"></h1>
+                    <h1 class="display-5 fw-bolder" th:text="${product.productName}"></h1>
+                    <h1 class="display-5 fw-bolder" th:text="${product.capacity}"></h1>
+                    <h1 class="display-5 fw-bolder" th:text="${product.color}"></h1>
+                    <input type="hidden" id="productid" th:value="${product.productid}">
+                    <input type="hidden" id="userid"
+                        th:value="${session.userId}?${session.userId}"> <input
+                        type="hidden" id="loginUsername"
+                        th:value="${session.loginUsername}?${session.loginUsername}">
+                    <div class="fs-5 mb-5">
+                        <span class="fa-solid fa-money-bill-1"
+                            th:text="' $ '+${product.price}"></span>
+                    </div>
+                    <div class="fs-5 mb-5">
 
-						<br> <br>
-						<div class="d-flex">
-							<input class="form-control text-center me-3" id="inputQuantity"
-								type="number" value="1" min="1" max="1" style="max-width: 5rem" />
-							<button class="btn btn-outline-dark flex-shrink-0" type="button"
-								onclick="sendtopay()">
-								<i class="bi-cart-fill me-1"></i> 直接購買
-							</button>
-							<button class="btn btn-outline-dark flex-shrink-0 ms-2"
-								type="button" onclick="showAlert()">
-								<i class="bi-cart-plus-fill me-1"></i> 加入購物車
-							</button>
-						</div>
-					</div>
-					<p class="lead" th:text="${product.description}"></p>
+                        <br> <br>
+                        <div class="d-flex">
+                            <input class="form-control text-center me-3" id="inputQuantity"
+                                type="number" value="1" min="1" max="1" style="max-width: 5rem" />
+                            <button class="btn btn-outline-dark flex-shrink-0" type="button"
+                                onclick="sendtopay()">
+                                <i class="bi-cart-fill me-1"></i> 直接購買
+                            </button>
+                            <button class="btn btn-outline-dark flex-shrink-0 ms-2"
+                                type="button" onclick="showAlert()">
+                                <i class="bi-cart-plus-fill me-1"></i> 加入購物車
+                            </button>
+                        </div>
+                    </div>
+                    <p class="lead" th:text="${product.description}"></p>
 
-				</div>
-			</div>
-		</div>
-		<br> <br> <br>
-	</section>
+                </div>
+            </div>
+        </div>
+        <br> <br> <br>
+    </section>
 
-	<!-- 評論區 -->
-	<section class="py-2 mt-5">
-		<div class="container px-4 px-lg-5 mt-5">
-			<h2>評論區</h2>
-			<div class="row gx-4 gx-lg-5 align-items-center">
-				<!-- 評論列表 -->
-				<div class="col-md-3">
-					<div th:each="comment : ${allScore}">
-						<div class="card mb-3">
-							<div class="card-body">
-								<span th:text="${session.loginUsername}"></span>
-									<h5 class="card-title" th:text="${comment.scorenum}">Score
-										Number</h5>
-									<p class="card-text" th:text="${comment.review}">Review
-										Text</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- 評論表單 -->
-				<div class="col-md-12 mt-4">
-<!-- 					<div class="mb-3"> -->
-<!-- 						<label for="userName" class="form-label">分數</label> <input -->
-<!-- 							type="number" class="form-control" id="scorenum" name="scorenum" -->
-<!-- 							min="1" max="5" required /> -->
-<!-- 					</div> -->
-<div class="mb-3">
-    <label for="userName" class="form-label">選擇分數</label>
-    <div class="star-rating" id="star-rating">
-        <span data-value="1" class="star">&#9733;</span>
-        <span data-value="2" class="star">&#9733;</span>
-        <span data-value="3" class="star">&#9733;</span>
-        <span data-value="4" class="star">&#9733;</span>
-        <span data-value="5" class="star">&#9733;</span>
+    <!-- 評論區 -->
+    <!-- 評論區 -->
+<section class="py-2 mt-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2>評論區</h2>
+        <div class="row gx-4 gx-lg-5">
+            <!-- 評論列表 -->
+            <div class="col-md-6">
+                <div th:each="comment : ${allScore}">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h2 th:text="'用戶名稱 :'+${comment.userName}"></h2>
+                            <p>評分:</p>
+                            <div class="star-rating">
+                                <span th:each="i : ${#numbers.sequence(1,5)}"
+                                      th:classappend="${i <= comment.scorenum ? 'filled' : ''}">&#9733;</span>
+                            </div>
+                            <p class="card-text" th:text="${comment.review}">Review Text</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 評論表單 -->
+            <div class="col-md-6">
+             <div th:if="${session.userId}">
+                <div class="mb-3">
+                    <label for="userName" class="form-label">選擇分數</label>
+                    <div class="star-rating" id="star-rating">
+                        <span data-value="1" class="star">&#9733;</span>
+                        <span data-value="2" class="star">&#9733;</span>
+                        <span data-value="3" class="star">&#9733;</span>
+                        <span data-value="4" class="star">&#9733;</span>
+                        <span data-value="5" class="star">&#9733;</span>
+                    </div>
+                    <input type="number" class="form-control" id="scorenum" name="scorenum" min="1" max="5" required hidden />
+                </div>
+
+                <div class="mb-3">
+                    <label for="content" class="form-label">評論</label>
+                    <textarea class="form-control" id="review" name="review" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" id="subBTN">提交評論</button>
+            </div>
+            <div th:if="${session.userId == null}">
+                    <p>請登入以提交評論。</p>
+                </div>
+        </div>
     </div>
-    <input type="number" class="form-control" id="scorenum" name="scorenum" min="1" max="5" required hidden />
-</div>
+</section>
 
+    <!-- Footer-->
+    <div th:replace="~{/layout/footer.html}"></div>
 
+    <!-- Bootstrap core JS-->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-
-
-					<div class="mb-3">
-						<label for="content" class="form-label">評論</label>
-						<textarea class="form-control" id="review" name="review" rows="3"
-							required></textarea>
-					</div>
-					<button type="submit" class="btn btn-primary" id="subBTN">提交評論</button>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- Footer-->
-	<div th:replace="~{/layout/footer.html}"></div>
-
-	<!-- Bootstrap core JS-->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-	<!-- SweetAlert2 -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-	<script>
+    <script>
         function showAlert() {
             Swal.fire({
                 title: "已加入購物車!",
@@ -185,23 +185,21 @@
             });
         }
 
-
-
         document.querySelector('#subBTN').addEventListener('click', function () {
             let productid = document.querySelector('#productid').value;
-            let userid = document.querySelector('#userid').value;
+            let userName = document.querySelector('#loginUsername').value;
             let scorenum = document.querySelector('#scorenum').value;
             let review = document.querySelector('#review').value;
             console.log(review);
             console.log(scorenum);
-
+            console.log(userName);
             axios.get('/sellphone/api/addProductScore', {
 
                 params: {
                     productid: productid,
                     scorenum: scorenum,
                     review: review,
-                    userId: userid
+                    userName: userName
                 }
             })
                 .then(res => {
@@ -210,53 +208,41 @@
 
         })
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const stars = document.querySelectorAll('.star-rating .star');
+            const scoreInput = document.getElementById('scorenum');
 
-document.addEventListener('DOMContentLoaded', () => {
-    const stars = document.querySelectorAll('.star-rating .star');
-    const scoreInput = document.getElementById('scorenum');
+            stars.forEach(star => {
+                star.addEventListener('mouseover', () => {
+                    const value = star.getAttribute('data-value');
+                    highlightStars(value, 'hover');
+                });
 
-    stars.forEach(star => {
-        star.addEventListener('mouseover', () => {
-            const value = star.getAttribute('data-value');
-            highlightStars(value, 'hover');
-        });
+                star.addEventListener('mouseout', () => {
+                    const selectedValue = scoreInput.value;
+                    highlightStars(selectedValue, 'selected');
+                });
 
-        star.addEventListener('mouseout', () => {
-            const selectedValue = scoreInput.value;
-            highlightStars(selectedValue, 'selected');
-        });
+                star.addEventListener('click', () => {
+                    const value = star.getAttribute('data-value');
+                    scoreInput.value = value;
+                    highlightStars(value, 'selected');
+                });
+            });
 
-        star.addEventListener('click', () => {
-            const value = star.getAttribute('data-value');
-            scoreInput.value = value;
-            highlightStars(value, 'selected');
-        });
-    });
-
-    function highlightStars(value, className) {
-        stars.forEach(star => {
-            star.classList.remove('hover');
-            star.classList.remove('selected');
-            if (star.getAttribute('data-value') <= value) {
-                star.classList.add(className);
+            function highlightStars(value, className) {
+                stars.forEach(star => {
+                    star.classList.remove('hover');
+                    star.classList.remove('selected');
+                    if (star.getAttribute('data-value') <= value) {
+                        star.classList.add(className);
+                    }
+                });
             }
         });
-    }
-});
 
-
-
-
-
-
-
-
-
-
-        function sendtopay() {
-            // 在這裡添加您的購買邏輯
-        }
     </script>
+
 </body>
 
 </html>

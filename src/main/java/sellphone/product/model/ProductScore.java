@@ -25,7 +25,7 @@ public class ProductScore {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer scoreId;
 	
-	private String userId;
+	private String userName;
 
 	private Integer productid;
 	
