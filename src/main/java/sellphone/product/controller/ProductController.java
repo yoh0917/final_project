@@ -1,6 +1,7 @@
 package sellphone.product.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -134,11 +135,15 @@ public class ProductController {
 	
 	//前台單一商品
 	@GetMapping("/front/productfindone")
-	public String frontfindOne(@RequestParam("productid") Integer productid, Model m) {
+	public String frontfindOne(HttpSession httpSession ,@RequestParam("productid") Integer productid, Model m) {
 		Optional<Product> productoptional = proRepo.findById(productid);
 		Product product = productoptional.get();
-		List<ProductScore> allScore = pService.findAllScore(productid);
+		List<ProductScore> allScore = pService.findTop4Score(productid);
 		
+		String userName = (String) httpSession.getAttribute("loginUsername");		
+		ProductScore findbyUserNameAndProductid = pService.findbyUserIdAndProductid(userName, productid);
+		System.out.println(findbyUserNameAndProductid);
+		m.addAttribute("findbyUserNameAndProductid",findbyUserNameAndProductid);
 		m.addAttribute("allScore",allScore);		
 		m.addAttribute("product", product);
 		return "product/ProductFrontOne";
@@ -182,6 +187,7 @@ public class ProductController {
 		newScore.setReview(review);
 		newScore.setScorenum(scorenum);
 		newScore.setUserName(userName);
+		newScore.setLocalDateTime(LocalDateTime.now());
 		return pService.productScoreSave(newScore);
 		
 		}
