@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>結帳頁面</title>
+	<title>購物車頁面</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="Content-Type" content="text/html; charset=utf-8" />
 	<link th:href="@{/shoppingcart/cart/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
@@ -19,6 +19,29 @@
 	<script>
 		new WOW().init();
 	</script>
+	<style>
+		.checkout-right, .checkout-right-basket {
+			font-size: 16px; /* 使字型大小一致 */
+		}
+		.checkout-right-basket {
+			border: 1px solid #e3e3e3;
+			padding: 20px;
+			background: #f9f9f9;
+		}
+		.checkout-right-basket h4 {
+			margin-bottom: 20px;
+		}
+		.checkout-right-basket table {
+			width: 100%;
+		}
+		.checkout-right-basket table td {
+			padding: 5px 0;
+		}
+		.checkout-right-basket .btn {
+			margin-bottom: 10px;
+			width: 100%;
+		}
+	</style>
 </head>
 
 <body>
@@ -38,62 +61,69 @@
 
 <!-- checkout -->
 <div class="checkout">
-	<div class="container">
-		<h3 class="animated wow slideInLeft" data-wow-delay=".5s">您的購物車包含: <span th:text="${carts.size()} + ' 件商品'"></span></h3>
-		<div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
-			<table class="timetable_sub">
-				<thead>
-				<tr>
-					<th>序號</th>
-					<th>商品</th>
-					<th>數量</th>
-					<th>商品名稱</th>
-					<th>顏色</th>
-					<th>儲存空間</th>
-					<th>價格</th>
-					<th>刪除</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr th:each="cart, iterStat : ${carts}">
-					<td th:text="${iterStat.count}"></td>
-					<td><img th:src="@{'data:image/jpeg;base64,' + ${cart.photoBase64}}" alt=" " class="img-responsive" style="max-width: 150px; max-height: 150px; object-fit: cover;"/></td>
-					<td th:text="${cart.quantity}"></td>
-					<td th:text="${cart.productName}">商品名稱</td>
-					<td th:text="${cart.color}">顏色</td>
-					<td th:text="${cart.storage}">儲存空間</td>
-					<td th:text="${cart.price}"></td>
-					<td>
-						<button type="button" th:attr="data-id=${cart.productId}" class="btn btn-danger remove-item">刪除</button>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="checkout-left">
-			<div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s" style="float: right; width: 600px; padding: 20px; background: #f9f9f9; border: 1px solid #e3e3e3;">
-				<h4>總計</h4>
-				<table style="width: 100%;">
+	<div class="container" style="display: flex; justify-content: space-between;">
+		<div class="checkout-left" style="width: 70%;">
+			<h3 class="animated wow slideInLeft" data-wow-delay=".5s">您的購物車包含: <span th:text="${carts.size()} + ' 件商品'"></span></h3>
+			<div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
+				<table class="timetable_sub">
+					<thead>
 					<tr>
-						<td style="font-weight: bold;">商品總數</td>
-						<td th:text="${carts.size()}" style="text-align: right;"></td>
+						<!-- 隱藏序號欄位 -->
+						<th style="display: none;">序號</th>
+						<th style="width: 20%;">商品</th>
+						<th style="width: 15%;">數量</th>
+						<th style="width: 30%;">商品名稱</th>
+						<th style="width: 15%;">顏色</th>
+						<!-- 隱藏儲存空間欄位 -->
+						<th style="display: none;">儲存空間</th>
+						<th style="width: 15%;">價格</th>
+						<th style="width: 5%;">刪除</th>
 					</tr>
-					<tr>
-						<td style="font-weight: bold;">小計</td>
-						<td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
+					</thead>
+					<tbody>
+					<tr th:each="cart, iterStat : ${carts}">
+						<!-- 隱藏序號欄位 -->
+						<td style="display: none;" th:text="${iterStat.count}"></td>
+						<td><img th:src="@{'data:image/jpeg;base64,' + ${cart.photoBase64}}" alt=" " class="img-responsive" style="max-width: 100px; max-height: 100px; object-fit: cover;"/></td>
+						<td>
+							<button type="button" class="btn btn-outline-secondary quantity-decrease" data-id="${cart.productId}" data-user="${cart.userId}">-</button>
+							<span class="quantity" th:text="${cart.quantity}"></span>
+							<button type="button" class="btn btn-outline-secondary quantity-increase" data-id="${cart.productId}" data-user="${cart.userId}">+</button>
+						</td>
+						<td th:text="${cart.productName}">商品名稱</td>
+						<td th:text="${cart.color}">顏色</td>
+						<!-- 隱藏儲存空間欄位 -->
+						<td style="display: none;" th:text="${cart.storage}">儲存空間</td>
+						<td class="price" th:text="'$' + ${cart.price * cart.quantity}"></td>
+						<td>
+							<button type="button" th:attr="data-id=${cart.productId}" class="btn btn-danger remove-item">刪除</button>
+						</td>
 					</tr>
-					<tr>
-						<td style="font-weight: bold;">總計</td>
-						<td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
-					</tr>
+					</tbody>
 				</table>
-				<div style="margin-top: 20px; display: flex; justify-content: space-between;">
-					<a th:href="@{/front/productlist}" class="btn btn-default" style="background-color: black; color: white; width: 45%;"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> 繼續購物</a>
-					<a th:href="@{/orders/checkout1}" class="btn btn-default" style="background-color: black; color: white; width: 45%; text-align: center;">結帳</a>
-				</div>
 			</div>
 		</div>
-		<div class="clearfix"> </div>
+		<div class="checkout-right-basket animated wow slideInLeft" data-wow-delay=".5s" style="width: 25%; margin-top: 20px;">
+			<h4>訂單資訊</h4>
+			<table>
+				<tr>
+					<td style="font-weight: bold;">商品總數</td>
+					<td id="total-items" th:text="${carts.size()}" style="text-align: right;"></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">小計</td>
+					<td id="subtotal" th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">總計</td>
+					<td id="total" th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
+				</tr>
+			</table>
+			<div style="margin-top: 20px;">
+				<a th:href="@{/front/productlist}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">繼續購物</a>
+				<a th:href="@{/orders/checkout1}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">結帳</a>
+			</div>
+		</div>
 	</div>
 </div>
 <!-- //checkout -->
@@ -103,9 +133,39 @@
 
 <script>
 	$(document).ready(function() {
-		$('.remove-item').on('click', function(){
+		function updateQuantity(productId, userId, delta) {
+			$.post('/cart/update', { productId: productId, userId: userId, delta: delta }, function(response) {
+				if(response === "數量更新成功") {
+					$.get('/cart/summary', { userId: userId }, function(summary) {
+						$('#total-items').text(summary.totalItems);
+						$('#subtotal').text('$' + summary.totalPrice);
+						$('#total').text('$' + summary.totalPrice);
+					});
+				} else {
+					alert('更新數量失敗');
+				}
+			});
+		}
+
+		$('.quantity-increase').on('click', function() {
+			var id = $(this).data('id');
+			var userId = $(this).data('user');
+			updateQuantity(id, userId, 1);
+		});
+
+		$('.quantity-decrease').on('click', function() {
+			var id = $(this).data('id');
+			var userId = $(this).data('user');
+			updateQuantity(id, userId, -1);
+		});
+
+		$('.remove-item').on('click', function() {
 			var id = $(this).attr('data-id');
-			// Ajax call to remove item
+			var userId = $(this).data('user');
+			$.post('/cart/remove', { productId: id, userId: userId }, function(response) {
+				alert(response);
+				location.reload();
+			});
 		});
 	});
 </script>

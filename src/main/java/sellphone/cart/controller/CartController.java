@@ -5,6 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import sellphone.cart.model.CartPK;
 import sellphone.cart.model.CartView;
 import sellphone.cart.repository.CartViewRepository;
 import sellphone.cart.service.CartService;
@@ -64,6 +68,39 @@ public class CartController {
         List<CartView> carts = cartViewRepository.findByUserId(userId);
         model.addAttribute("carts", carts);
         return "Cart1";
+    }
+
+    @PostMapping("/cart/update")
+    @ResponseBody
+    public String updateQuantity(@RequestParam("productId") int productId, @RequestParam("userId") String userId, @RequestParam("delta") int delta) {
+        boolean success = cartService.updateQuantity(productId, userId, delta);
+        return success ? "數量更新成功" : "數量更新失敗";
+    }
+
+    @GetMapping("/cart/summary")
+    @ResponseBody
+    public Summary getCartSummary(@RequestParam("userId") String userId) {
+        int totalItems = cartService.getTotalItems(userId);
+        int totalPrice = cartService.getTotalPrice(userId);
+        return new Summary(totalItems, totalPrice);
+    }
+
+    public static class Summary {
+        private int totalItems;
+        private int totalPrice;
+
+        public Summary(int totalItems, int totalPrice) {
+            this.totalItems = totalItems;
+            this.totalPrice = totalPrice;
+        }
+
+        public int getTotalItems() {
+            return totalItems;
+        }
+
+        public int getTotalPrice() {
+            return totalPrice;
+        }
     }
 }
 
