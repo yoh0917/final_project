@@ -8,4 +8,5 @@ import sellphone.dashboard.user.model.Users;
 public interface UsersRepository extends JpaRepository<Users, String> {
     Users findByUserId(String userId);
     boolean existsByUserId(String userId);
+    
 }

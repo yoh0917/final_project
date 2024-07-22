@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title}">查看已選方案</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .planContainer {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        form {
+            display: inline;
+        }
+
+        .language-switcher {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .language-switcher a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .language-switcher a:hover {
+            text-decoration: underline;
+        }
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="planContainer">
+        <h1 th:text="#{title}">查看已選方案</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th th:text="#{planName}">方案名稱</th>
+                    <th th:text="#{telCompany}">電信公司</th>
+                    <th th:text="#{generation}">網絡類型</th>
+                    <th th:text="#{contractType}">合約類型</th>
+                    <th th:text="#{contractDuration}">合約期限</th>
+                    <th th:text="#{phoneNum}">聯絡號碼</th>
+                    <th th:text="#{agreementDate}">協議日期</th>
+                    <th th:text="#{action}">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="plan : ${plans}">
+                    <td th:text="${plan.phonePlan.planName}"></td>
+                    <td th:text="${plan.phonePlan.telCompany}"></td>
+                    <td th:text="${plan.phonePlan.generation}"></td>
+                    <td th:text="${plan.phonePlan.contractType}"></td>
+                    <td th:text="${plan.phonePlan.contractDuration}"></td>
+                    <td th:text="${plan.phoneNum}"></td>
+                    <td th:text="${plan.agreementDate}"></td>
+                    <td>
+                        <form th:action="@{/DashBoard/customers/update}" method="post">
+                            <input type="hidden" name="userPhonePlanID" th:value="${plan.userPhonePlanID}" />
+                            <button type="submit" th:text="#{modifyPlan}">修改方案</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="language-switcher">
+            <a href="?lang=en">English</a> | <a href="?lang=zh">中文</a>
+        </div>
+        <div class="back-button">
+            <form action="/sellphone/mainPage" method="get">
+                <input type="hidden" name="lang" th:value="${#locale.language}" />
+                <button type="submit" th:text="#{backToHome}">回首頁</button>
+            </form>
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -22,7 +22,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sellphone.phoneplan.model.PhonePlanBean;
 
-
+@Getter
+@Setter
 @Entity
 @Table(name = "U00004_UserPhonePlanList")
 public class UserPhonePlanList {
@@ -76,6 +77,9 @@ public class UserPhonePlanList {
 	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;
 	}
+
+
+	
 	
 	
 }
