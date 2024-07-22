@@ -69,5 +69,8 @@ public class productservice {
 		return scoreRepo.findByProductId(productid);
 	}
 	
-	
+	//只找4個最新評論
+	public List<ProductScore> findTop4Score(Integer productid){
+		return scoreRepo.findTop4ByProductId(productid);
+	}
 }

@@ -117,32 +117,31 @@
     </section>
 
     <!-- 評論區 -->
-    <!-- 評論區 -->
 <section class="py-2 mt-5">
     <div class="container px-4 px-lg-5 mt-5">
-        <h2>評論區</h2>
+        <h2 style="font-size: 3rem">評論區</h2>
         <div class="row gx-4 gx-lg-5">
             <!-- 評論列表 -->
             <div class="col-md-6">
                 <div th:each="comment : ${allScore}">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h2 th:text="'用戶名稱 :'+${comment.userName}"></h2>
+                            <h2 th:text="'用戶暱稱 : '+${comment.userName}"></h2>
                             <p>評分:</p>
                             <div class="star-rating">
                                 <span th:each="i : ${#numbers.sequence(1,5)}"
                                       th:classappend="${i <= comment.scorenum ? 'filled' : ''}">&#9733;</span>
                             </div>
-                            <p class="card-text" th:text="${comment.review}">Review Text</p>
+                            <p class="card-text" th:text="'評論 : '+${comment.review}">Review Text</p>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- 評論表單 -->
             <div class="col-md-6">
-             <div th:if="${session.userId}">
+             <div th:if="${session.userId}?${findbyUserNameAndProductid ==null} ">
                 <div class="mb-3">
-                    <label for="userName" class="form-label">選擇分數</label>
+                    <label for="userName" class="form-label" style="font-size: 3rem;">選擇分數</label>
                     <div class="star-rating" id="star-rating">
                         <span data-value="1" class="star">&#9733;</span>
                         <span data-value="2" class="star">&#9733;</span>
@@ -154,13 +153,14 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="content" class="form-label">評論</label>
+                    <label style="font-size: 2rem;" for="content" class="form-label">評論 : </label>
                     <textarea class="form-control" id="review" name="review" rows="3" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary" id="subBTN">提交評論</button>
             </div>
             <div th:if="${session.userId == null}">
-                    <p>請登入以提交評論。</p>
+                    <h1 class="text-danger">請登入以提交評論。</h1>
+                </div>
                 </div>
         </div>
     </div>
@@ -203,10 +203,18 @@
                 }
             })
                 .then(res => {
+                document.querySelector('#scorenum').value ='';
+                document.querySelector('#review').value ='';
+                location.reload();
                     console.log(res);
                 })
+                .catch(err =>{
+                document.querySelector('#scorenum').value ='';
+                document.querySelector('#review').value ='';
+                console.err(err);
+                });
 
-        })
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             const stars = document.querySelectorAll('.star-rating .star');
