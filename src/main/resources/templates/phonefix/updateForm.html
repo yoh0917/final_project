@@ -13,6 +13,7 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 1200px; /* 加大寬度 */
         }
         h2 {
             color: #333333; /* 深灰色標題 */
@@ -42,6 +43,22 @@
         .btn-success:focus {
             box-shadow: 0 0 5px rgba(85, 85, 85, 0.5); /* 深灰色陰影 */
         }
+        .img-thumbnail {
+            max-width: 120px;
+            max-height: 120px;
+        }
+        .fix-cost-column {
+            width: 120px; /* 縮小維修金額的表格寬度 */
+        }
+         .fix-name-column {
+            width: 150px; /* 縮小送修者的表格寬度 */
+        }
+         .fix-state-column {
+            width: 120px; /* 縮小維修狀態的表格寬度 */
+        }
+         .fix-date-column {
+            width: 110px; /* 縮小維修狀態的表格寬度 */
+        }
     </style>
 </head>
 <body>
@@ -52,11 +69,12 @@
                 <thead>
                     <tr>
                         <th>維修ID</th>
-                        <th>送修者</th>
-                        <th>維修日期</th>
-                        <th>維修費用</th>
-                        <th>維修部件</th>
-                        <th>維修狀態</th>
+                        <th class="fix-name-column">送修者</th>
+                        <th class="fix-date-column">送修日期</th>
+                        <th class="fix-cost-column">維修費用</th>
+                        <th>維修細節</th>
+                        <th class="fix-state-column">維修狀態</th>
+                        <th>手機損壞程度</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -86,6 +104,11 @@
                                 <option value="維修中">維修中</option>
                                 <option value="已完成">已完成</option>
                             </select>
+                        </td>
+                        <td>
+                            <div th:each="photoId : ${phone.fixPhotoBean}">
+                                <img th:src="@{/phonefixs/downloadfixphoto(id=${photoId.id})}" alt="fix photo" class="img-thumbnail" />
+                            </div>
                         </td>
                         <td>
                             <button type="submit" class="btn btn-success btn-sm">保存</button>
