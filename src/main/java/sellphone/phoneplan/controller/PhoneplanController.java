@@ -12,10 +12,10 @@ import sellphone.phoneplan.model.PhonePlanBean;
 import sellphone.phoneplan.service.ExportService;
 import sellphone.phoneplan.service.PhoneplanService;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.io.IOException;
 
 @Controller
 public class PhoneplanController {
@@ -55,7 +55,7 @@ public class PhoneplanController {
         return "phoneplan/updateForm";
     }
 
-    @PutMapping("/DashBoard/phoneplans/update")
+    @PostMapping("/DashBoard/phoneplans/update")
     public String update(@ModelAttribute("planBean") PhonePlanBean phonePlan) {
         phoneplanService.save(phonePlan);
         return "redirect:/DashBoard/phoneplans/all";
@@ -91,6 +91,4 @@ public class PhoneplanController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(bytes);
     }
-    
-    
 }

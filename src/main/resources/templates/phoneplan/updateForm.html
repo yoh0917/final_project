@@ -1,79 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>修改方案</title>
-    <link rel="stylesheet" th:href="@{/phoneplancss/PhonePlanInsert.css}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script>
-        function discardForm() {
-            window.history.back();
-        }
-    </script>
+<meta charset="UTF-8">
+<title>修改方案</title>
+<link rel="stylesheet" th:href="@{/phoneplancss/PhonePlanInsert.css}">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script>
+    function discardForm() {
+        window.history.back();
+    }
+</script>
 </head>
-
 <body>
     <div class="formContainer">
         <h1>修改方案</h1>
-        <form th:action="@{/DashBoard/phoneplans/update}" method="post">
-            <input type="hidden" name="_method" value="PUT"/>
+        <form th:action="@{/DashBoard/phoneplans/update}" th:method="put" th:object="${planBean}">
+            <input th:field="*{planID}" type="hidden" />
             <table>
                 <tr>
                     <td>方案代碼</td>
                     <td>
-                        <input type="text" name="planID" th:disabled="true" th:value="${planBean.planID}" />
-                        <input type="hidden" name="planID" th:value="${planBean.planID}" />
+                        <input type="text" name="planID" th:disabled="true" th:value="*{planID}" />
                     </td>
                 </tr>
                 <tr>
                     <td>方案名稱</td>
-                    <td><input type="text" name="planName" th:value="${planBean.planName}" /></td>
+                    <td><input type="text" name="planName" th:field="*{planName}" /></td>
                 </tr>
-
                 <tr>
                     <td>電信公司</td>
-                    <td><input type="text" name="telCompany" th:value="${planBean.telCompany}" /></td>
+                    <td><input type="text" name="telCompany" th:field="*{telCompany}" /></td>
                 </tr>
                 <tr>
                     <td>合約類別</td>
-                    <td><input type="text" name="contractType" th:value="${planBean.contractType}" /></td>
+                    <td><input type="text" name="contractType" th:field="*{contractType}" /></td>
                 </tr>
                 <tr>
                     <td>合約期限</td>
-                    <td><input type="text" name="contractDuration" th:value="${planBean.contractDuration}" /></td>
+                    <td><input type="text" name="contractDuration" th:field="*{contractDuration}" /></td>
                 </tr>
                 <tr>
                     <td>連線世代</td>
-                    <td><input type="text" name="generation" th:value="${planBean.generation}" /></td>
+                    <td><input type="text" name="generation" th:field="*{generation}" /></td>
                 </tr>
                 <tr>
                     <td>流量</td>
-                    <td><input type="text" name="dataUsage" th:value="${planBean.dataUsage}" /></td>
+                    <td><input type="text" name="dataUsage" th:field="*{dataUsage}" /></td>
                 </tr>
                 <tr>
                     <td>流量速率</td>
-                    <td><input type="text" name="dataTransferRate" th:value="${planBean.dataTransferRate}" /></td>
+                    <td><input type="text" name="dataTransferRate" th:field="*{dataTransferRate}" /></td>
                 </tr>
                 <tr>
                     <td>網內互打</td>
-                    <td><input type="text" name="intraNetCall" th:value="${planBean.intraNetCall}" /></td>
+                    <td><input type="text" name="intraNetCall" th:field="*{intraNetCall}" /></td>
                 </tr>
                 <tr>
                     <td>網外互打</td>
-                    <td><input type="text" name="interNetCall" th:value="${planBean.interNetCall}" /></td>
+                    <td><input type="text" name="interNetCall" th:field="*{interNetCall}" /></td>
                 </tr>
                 <tr>
                     <td>市話</td>
-                    <td><input type="text" name="localCall" th:value="${planBean.localCall}" /></td>
+                    <td><input type="text" name="localCall" th:field="*{localCall}" /></td>
                 </tr>
                 <tr>
                     <td>折扣</td>
-                    <td><input type="text" name="discount" th:value="${planBean.discount}" /></td>
+                    <td><input type="text" name="discount" th:field="*{discount}" /></td>
                 </tr>
                 <tr>
                     <td>禮物</td>
-                    <td><input type="text" name="gift" th:value="${planBean.gift}" /></td>
+                    <td><input type="text" name="gift" th:field="*{gift}" /></td>
                 </tr>
             </table>
             <div class="btnmenu">

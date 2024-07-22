@@ -69,28 +69,22 @@ $(document).ready(function () {
         loadPlans(currentTelCompany, currentContractType, currentPlanID);
     }
 
-    function updatePlan(planID) {
-        planID = Number(planID).toString();
+ function updatePlan(planID) {
+    planID = Number(planID).toString();
 
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/sellphone/DashBoard/phoneplans/update';
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/sellphone/DashBoard/phoneplans/showFormForUpdate';
 
-        const methodField = document.createElement('input');
-        methodField.type = 'hidden';
-        methodField.name = '_method';
-        methodField.value = 'PUT';
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "planID";
+    input.value = planID;
 
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = "planID";
-        input.value = planID;
-
-        form.appendChild(methodField);
-        form.appendChild(input);
-        document.body.appendChild(form);
-        form.submit();
-    }
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+}
     function deletePlan(planID) {
         if (confirm("你確定要刪除該列嗎？")) {
             const url = `/sellphone/DashBoard/phoneplans/delete/${planID}`;
@@ -252,16 +246,7 @@ $(document).ready(function () {
             });
         }
     });
-//       humane.theme = 'bigbox';
-//
-//        // 檢查 localStorage 中是否有已顯示過歡迎消息的標記
-//        if (!localStorage.getItem('welcomeMessageShown')) {
-//            // 如果沒有顯示過，顯示歡迎消息
-//            humane.log("歡迎回來");
-//
-//            // 將顯示過的標記設置到 localStorage 中
-//            localStorage.setItem('welcomeMessageShown', 'true');
-//        }
+
  humane.theme = 'bigbox';
 
         if (!sessionStorage.getItem('welcomeMessageShown')) {
