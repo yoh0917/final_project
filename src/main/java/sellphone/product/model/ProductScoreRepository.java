@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductScoreRepository extends JpaRepository<ProductScore, Integer> {
 
-	ProductScore findByUserIdAndProductid(String userId, Integer productid);
+	ProductScore findByUserNameAndProductid(String userName, Integer productid);
 			 
 	 @Query("SELECT ps FROM ProductScore ps WHERE ps.productid = :productId")
 	    List<ProductScore> findByProductId(Integer productId);

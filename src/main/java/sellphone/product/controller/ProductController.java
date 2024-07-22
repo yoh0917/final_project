@@ -170,25 +170,20 @@ public class ProductController {
 	@ResponseBody
 	@GetMapping("/api/addProductScore")
 	public ProductScore addScore(HttpSession httpSession,
-			@RequestParam String userId,
+			@RequestParam String userName,
 			@RequestParam Integer productid,
 			@RequestParam Integer scorenum,
 			@RequestParam String review) {
+		ProductScore findbyUserNameAndProductid = pService.findbyUserIdAndProductid(userName, productid);
 		
-	//	String userId = (String) httpSession.getAttribute("userId");
-		Users user = (Users) httpSession.getAttribute("user");
-		 
-		
-		
-		ProductScore findbyUserIdAndProductid = pService.findbyUserIdAndProductid(userId, productid);
-		
-		if(findbyUserIdAndProductid == null) {
+		if(findbyUserNameAndProductid == null) {
 		ProductScore newScore = new ProductScore();
 		newScore.setProductid(productid);
 		newScore.setReview(review);
 		newScore.setScorenum(scorenum);
-		newScore.setUserId(userId);
+		newScore.setUserName(userName);
 		return pService.productScoreSave(newScore);
+		
 		}
 		return null;
 	
