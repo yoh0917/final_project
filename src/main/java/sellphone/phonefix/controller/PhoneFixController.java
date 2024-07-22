@@ -109,7 +109,7 @@ public class PhoneFixController {
 
 		rp.save(fixbean);
 
-		return "上傳OK!!";
+		return "訂單新增成功!!";
 	}
 	//拿到fixphotoid
 	@ResponseBody
