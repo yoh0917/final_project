@@ -1,14 +1,17 @@
 package sellphone.cart.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.ResponseBody;
-import sellphone.cart.model.CartPK;
+import sellphone.cart.model.CartSummary;
 import sellphone.cart.model.CartView;
 import sellphone.cart.repository.CartViewRepository;
 import sellphone.cart.service.CartService;
@@ -18,7 +21,8 @@ import sellphone.product.model.PhotoRepository;
 
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+
 
 @Controller
 public class CartController {
@@ -43,7 +47,7 @@ public class CartController {
         String userId = user.getUserName();
         System.out.println("User found in session. UserId: " + userId); // 記錄userId
         List<CartView> carts = cartService.getCartItems(userId);
-        session.setAttribute("carts",carts);
+        session.setAttribute("carts", carts);
         for (CartView cart : carts) {
             List<Photo> photos = photoRepository.findFirstPhotoByProductid(cart.getProductId());
             if (!photos.isEmpty()) {
@@ -51,9 +55,18 @@ public class CartController {
             }
         }
 
-        double totalPrice = carts.stream().mapToDouble(CartView::getPrice).sum();
+//        int totalPrice = (int) carts.stream().mapToDouble(CartView::getPrice).sum();
+//        model.addAttribute("carts", carts);
+//        model.addAttribute("totalPrice", totalPrice);
+        int totalItems = carts.stream().mapToInt(CartView::getQuantity).sum();
+        double subtotal = carts.stream().mapToDouble(cart -> cart.getPrice() * cart.getQuantity()).sum();
+        double total = subtotal;
+
         model.addAttribute("carts", carts);
-        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("subtotal", subtotal);
+        model.addAttribute("total", total);
+        model.addAttribute("userId", userId);
 
         return "OrderFrontend/Cart1"; // 返回Cart1.html視圖
     }
@@ -62,48 +75,48 @@ public class CartController {
         return Base64.getEncoder().encodeToString(photoFile);
     }
 
-    @GetMapping("/shoppingcart/cart")
-    public String getCart(Model model, HttpSession session) {
-        String userId = (String) session.getAttribute("UserId");
-        List<CartView> carts = cartViewRepository.findByUserId(userId);
-        model.addAttribute("carts", carts);
-        return "Cart1";
-    }
+//    @GetMapping("/shoppingcart/cart")
+//    public String getCart(Model model, HttpSession session) {
+//        String userId = (String) session.getAttribute("UserId");
+//        List<CartView> carts = cartViewRepository.findByUserId(userId);
+//        model.addAttribute("carts", carts);
+//        return "OrderFrontend/Cart1";
+//    }
 
     @PostMapping("/cart/update")
     @ResponseBody
-    public String updateQuantity(@RequestParam("productId") int productId, @RequestParam("userId") String userId, @RequestParam("delta") int delta) {
-        boolean success = cartService.updateQuantity(productId, userId, delta);
-        return success ? "數量更新成功" : "數量更新失敗";
-    }
-
-    @GetMapping("/cart/summary")
-    @ResponseBody
-    public Summary getCartSummary(@RequestParam("userId") String userId) {
-        int totalItems = cartService.getTotalItems(userId);
-        int totalPrice = cartService.getTotalPrice(userId);
-        return new Summary(totalItems, totalPrice);
-    }
-
-    public static class Summary {
-        private int totalItems;
-        private int totalPrice;
-
-        public Summary(int totalItems, int totalPrice) {
-            this.totalItems = totalItems;
-            this.totalPrice = totalPrice;
-        }
-
-        public int getTotalItems() {
-            return totalItems;
-        }
-
-        public int getTotalPrice() {
-            return totalPrice;
+    public String updateQuantity(@RequestParam("productId") int productId,
+                                 @RequestParam("userId") String userId,
+                                 @RequestParam("delta") int delta) {
+        try {
+            cartService.updateQuantity(productId, userId, delta);
+            return "數量更新成功";
+        } catch (Exception e) {
+            return "更新失敗";
         }
     }
+
+    @PostMapping("/remove")
+    public ResponseEntity<String> removeItem(@RequestParam int productId, @RequestParam String userId) {
+        try {
+            cartService.removeItem(productId, userId);
+            return ResponseEntity.ok("刪除成功");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("刪除失敗");
+        }
+    }
+
+//    @PostMapping("/checkout")
+//    public ResponseEntity<String> checkout(@RequestParam String userId) {
+//        try {
+//            cartService.checkout(userId);
+//            return ResponseEntity.ok("結帳成功");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("結帳失敗");
+//        }
+//    }
+
 }
-
 
 
 //    @GetMapping("/cart")
