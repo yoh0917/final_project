@@ -94,7 +94,8 @@ public class CartController {
         }
     }
 
-    @GetMapping("/cart/summary")@ResponseBody
+    @GetMapping("/cart/summary")
+    @ResponseBody
     public CartSummary getCartSummary(@RequestParam String userId) {
         return cartService.getCartSummary(userId);
     }
@@ -109,15 +110,6 @@ public class CartController {
         }
     }
 
-//    @PostMapping("/checkout")
-//    public ResponseEntity<String> checkout(@RequestParam String userId) {
-//        try {
-//            cartService.checkout(userId);
-//            return ResponseEntity.ok("結帳成功");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("結帳失敗");
-//        }
-//    }
 
 }
 

@@ -120,7 +120,7 @@
 			</table>
 			<div style="margin-top: 20px;">
 				<a th:href="@{/front/productlist}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">繼續購物</a>
-				<button class="btn btn-default" style="background-color: black; color: white; text-align: center;" onclick="checkout()">結帳</button>
+				<a th:href="@{/orders/checkout1}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">結帳</a>
 			</div>
 		</div>
 	</div>
@@ -207,27 +207,6 @@
 				}
 			});
 		});
-
-		function checkout() {
-			const userId = '[[${session.user.userName}]]';
-			fetch('/sellphone/cart/checkout', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				body: `userId=${userId}`
-			})
-					.then(response => response.text())
-					.then(data => {
-						if (data === "結帳成功") {
-							alert('結帳成功');
-							window.location.href = '/order/confirmation';
-						} else {
-							alert('結帳失敗');
-						}
-					})
-					.catch(error => console.error('Error:', error));
-		}
 	});
 </script>
 
