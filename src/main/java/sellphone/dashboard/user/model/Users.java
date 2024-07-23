@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -65,8 +66,19 @@ public class Users {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Post> posts = new LinkedHashSet<>();
+	
+	@ManyToMany(mappedBy = "likedUsers")
+    private Set<Post> likedPosts = new LinkedHashSet<>();
 
 	public Users() {
+	}
+
+	public Set<Post> getLikedPosts() {
+		return likedPosts;
+	}
+
+	public void setLikedPosts(Set<Post> likedPosts) {
+		this.likedPosts = likedPosts;
 	}
 
 	public Users(String userName, String userAccount, String password, String email, String contactNum,

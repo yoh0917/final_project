@@ -109,6 +109,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            
         }
         .actions {
             display: flex;
@@ -144,7 +145,7 @@
                 <th:block th:each="oneMsg : ${page.content}">
                     <tr>
                         <td th:text="${oneMsg.postId}">貼文編號</td>
-                        <td th:text="${oneMsg.user.userId}">使用者編號</td>
+                        <td th:text="${oneMsg.user != null ? oneMsg.user.userId : '未知用戶'}">使用者編號</td>
                         <td th:text="${oneMsg.title}">標題</td>
                         <td>
                             <div class="tags-container">

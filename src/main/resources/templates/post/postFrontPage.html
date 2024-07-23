@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!--  --><!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/">
 <head>
 <meta charset="UTF-8">
@@ -14,7 +14,7 @@
 	integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 	crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<!-- <style>
+<style>
 	
     body {
         position: relative;
@@ -168,7 +168,7 @@
         gap: 10px;
         margin-left: auto;
     }
-</style> -->
+</style>
 <style>
         /* 通用樣式 */
         * {
@@ -542,6 +542,8 @@
             <th:block th:each="oneMsg : ${page.content}">
                 <div class="accordion-item">
                     <div class="accordion-header" th:attr="data-id=${oneMsg.postId}">
+                    	<!-- <strong class="userName" th:text="${oneMsg.post.user != null ? oneMsg.post.user.userName : '未知用戶'}">用戶名</strong>
+        <strong class="userId" th:text="${oneMsg.post.user != null ? oneMsg.post.user.userId : '未知id'}">用戶id</strong> -->
                         <span th:text="${oneMsg.title}" style="flex: 1;">標題</span>
                         <div class="tags-container">
                             <span th:each="tag : ${oneMsg.tags}" th:text="${tag.name}" class="badge bg-secondary"></span>
@@ -1118,7 +1120,7 @@
                 <div id="postContent"></div>
                 <hr>
                 <h5>Comments</h5>
-                <div id="postComment"></div>
+                <div id="CommentContent "></div>
             </div>
         </div>
     </div>
@@ -1158,4 +1160,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-</script> -->
+</script>  -->

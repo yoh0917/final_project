@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -40,12 +42,12 @@ public class Post {
 //    private Integer userId;
     
     //一個回覆屬於一個用戶
+//    @JoinColumn(name = "userId", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(name = "userId", referencedColumnName = "userId"),
         @JoinColumn(name = "userName", referencedColumnName = "userName")
     })
-//    @JoinColumn(name = "userId", nullable = false)
     private Users user; 
     
     @Column(nullable = true, length = 255)
@@ -65,7 +67,7 @@ public class Post {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date postLastUpdatedTime;
     
-    @ManyToMany    
+    @ManyToMany(cascade = CascadeType.ALL)   
     @JoinTable(name = "POST_TAG",
     joinColumns = @JoinColumn(name = "postId"),
     inverseJoinColumns = @JoinColumn(name = "tagId"))
@@ -79,25 +81,44 @@ public class Post {
     @Column(nullable = true)
     private byte[] image;
     
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int likeCount = 0;
+    
+    //哪些用戶點讚了這篇文章
+    @ManyToMany
+    @JoinTable(
+        name = "post_likes",
+        joinColumns = @JoinColumn(name = "postId"),
+        inverseJoinColumns = @JoinColumn(name = "userId")
+    )
+    private Set<Users> likedUsers = new HashSet<>();
+    
    
 
-    public Integer getPostId() {
+    public Set<Users> getLikedUsers() {
+		return likedUsers;
+	}
+
+	public void setLikedUsers(Set<Users> likedUsers) {
+		this.likedUsers = likedUsers;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public Integer getPostId() {
         return postId;
     }
 
     public void setPostId(Integer postId) {
         this.postId = postId;
     }
-
-//    public Integer getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(Integer userId) {
-//        this.userId = userId;
-//    }
     
-
     public String getTitle() {
         return title;
     }

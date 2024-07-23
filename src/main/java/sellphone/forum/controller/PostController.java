@@ -17,16 +17,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpSession;
+import sellphone.dashboard.user.model.Users;
 import sellphone.forum.model.Comment;
 import sellphone.forum.model.Post;
 import sellphone.forum.model.Tag;
 import sellphone.forum.service.CommentService;
 import sellphone.forum.service.PostService;
 import sellphone.forum.service.TagService;
+
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 
 @Controller
 public class PostController {
@@ -148,39 +154,42 @@ public class PostController {
         return ResponseEntity.ok(comments);
     }
     
-//    @GetMapping("/post/details/{id}")
-//    @ResponseBody
-//    public ResponseEntity<Map<String, Object>> getPostDetails(@PathVariable Integer postId , Model model) {
-//        Post post = postService.findPostById(postId);
-//        List<Comment> comments = commentService.findCommentsByPostId(post);
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("title", post.getTitle());
-//        response.put("content", post.getContent());
-//        response.put("comments", comments.stream().map(comment -> {
-//            Map<String, String> commentData = new HashMap<>();
-//            commentData.put("author", comment.getAuthor());
-//            commentData.put("content", comment.getContent());
-//            return commentData;
-//        }).collect(Collectors.toList()));
-//        return ResponseEntity.ok(response);
-//    }
-    
     @GetMapping("/post/{id}")
-    public String getPostDetails(@PathVariable("id")Integer postId, Model model) {
+    public String getPostDetails(@PathVariable("id")Integer postId, Model model,HttpSession session) {
         Post post = postService.findPostById(postId);
+        Users user = post.getUser();
         List<Comment> comments = commentService.findCommentsByPostId(post);
+        String currentUserId = (String) session.getAttribute("userId");
+        boolean hasLiked = false;
+        if (currentUserId != null) {
+            hasLiked = postService.hasUserLikedPost(postId, currentUserId);
+        }
+        model.addAttribute("post", post);  // 傳遞整個post對象
         model.addAttribute("postTitle", post.getTitle());
         model.addAttribute("postContent", post.getPostContent());
-        model.addAttribute("userId", post.getUser());
+        model.addAttribute("userId", user.getUserId());
+        model.addAttribute("userName", user.getUserName());
         model.addAttribute("postTime", post.getPostCreatedTime());
         model.addAttribute("postId", post.getPostId());
         model.addAttribute("postName", post.getPostId());
         model.addAttribute("comments", comments); // 添加评论数据到模型中
+        model.addAttribute("currentUserId", currentUserId);
+        model.addAttribute("hasLiked", hasLiked);  // 添加 hasLiked 到模型中
         return "post/frontPageDetail";
     }
- 
-    
-    
-    
-   
+    @PostMapping("/post/like/toggle")
+    @ResponseBody
+    public Map<String, Object> togglePostLike(@RequestParam("postId") Integer postId, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            throw new RuntimeException("User is not logged in");
+        }
+        boolean hasLiked = postService.toggleLike(postId, userId);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("hasLiked", hasLiked);
+        response.put("likeCount", postService.findPostById(postId).getLikeCount());
+        return response;
+    }
+
 }

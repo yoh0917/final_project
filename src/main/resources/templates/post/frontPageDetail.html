@@ -2,10 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title th:text="${postTitle}">文章詳情</title>
-    <!-- <title >文章詳情</title> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="path/to/your/css/file.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
+    
+   <style>
         * {
             margin: 0;
             padding: 0;
@@ -17,7 +20,6 @@
             background-color: #f8f9fa;
             padding-top: 130px;
             background-color: #ADADAD;
-            
         }
 
         .container {
@@ -27,9 +29,11 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            padding-bottom: 120px; /* 給留言表單留出空間 */
         }
 
-         .navbar {
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -42,26 +46,6 @@
             z-index: 1000;
         }
 
-        /* .navbar .navbar-brand {
-            color: white;
-            font-size: 1.5rem;
-            text-decoration: none;
-        }
-
-        .navbar .menu {
-            display: flex;
-            gap: 20px;
-        }
-
-        .navbar .menu a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .navbar .menu a:hover {
-            text-decoration: underline;
-        } */
-        
         .top-bar {
             width: 100%;
             padding: 9px 0;
@@ -80,7 +64,7 @@
             font-weight: 500;
             text-decoration: underline;
         }
-        
+
         .navbar .logo img {
             width: 180px;
             height: auto;
@@ -114,9 +98,33 @@
 
         .header-row {
             display: flex;
+            border-radius: 5px;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+        }
+
+        .header-row2 {
+            display: flex;
+            color: #8E8E8E;
+            border-radius: 5px;
+            align-items: center;
+        }
+
+        .postCreatedTime {
+            color: #8E8E8E;
+        }
+
+        .tags-container {
+            margin-right: 20px;
+        }
+
+        .space-right {
+            margin-right: 10px;
+        }
+
+        .userName {
+            margin-right: 10px;
         }
 
         .header-row h1 {
@@ -154,14 +162,34 @@
             border-radius: 5px;
             margin-bottom: 10px;
         }
-
-        .comment strong {
-            display: block;
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 5px;
+        }
+        
+        .comment-header strong {
+            margin-right: 10px; /* 调整右边距 */
         }
 
         .comment-form {
             margin-top: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-form form {
+            display: flex;
+            gap: 10px;
+            height:50px;
         }
 
         .comment-form textarea {
@@ -184,50 +212,249 @@
         .comment-form button:hover {
             background: #495057;
         }
+        
+        .comment-form .btn-icon {
+            background: none;
+            border: none;
+            color: #343a40;
+            font-size: 1.5em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .comment-form .btn-icon:hover {
+            color: #495057;
+        }
+        /* 自定义样式 */
+        .dropdown-menu-end {
+            left: auto;
+            right: 0;
+        }
+
+        .dropdown-menu-left {
+            right: auto;
+            left: 0;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        .fa-pen-to-square {
+            cursor: pointer;
+        }
+
+        .comment-options {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .comment-time {
+    margin-left: 10px; /* 調整右邊距 */
+    color: #8E8E8E; /* 設置顏色，使其與用戶名區分開來 */
+}
+
+        .comment-options .dropdown-menu {
+            right: 0;
+            left: auto;
+            transform: translateX(-100%);
+        }
+
+        .comment-options .dropdown-menu::before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            right: -10px;
+            width: 10px;
+            height: 10px;
+            background: white;
+            transform: rotate(45deg);
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .like-container {
+            display: flex;
+            align-items: center;
+            margin-left: auto; 
+        }
+
+        .like-container button.btn-icon {
+            background: none;
+            border: none;
+            color: #343a40;
+            font-size: 1.5em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .like-container button.btn-icon:hover {
+            color: #495057;
+        }
     </style>
 </head>
 <body>
-   <div th:replace="~{layout/header}"></div>
-	
-    <div class="container">
-        <div class="header-row">
-        	<!-- <strong th:text="${post.users != null ? post.users.userName : '未知用戶'}">用戶名</strong> -->
-            <h1 th:text="${postTitle}">文章標題</h1>
-            <div class="actions">
-                <a class="btn btn-secondary" th:href="@{/post/frontPage}">回文章列表</a>
-            </div>
-        </div>
-        <hr>
-        <br>
+<div th:replace="~{layout/header}"></div>
 
-        <div class="post-content">
-            <!-- <h2>文章內容</h2> -->
-            <p th:utext="${postContent}">文章內容顯示在這裡</p>
+<div class="container">
+    <div class="header-row2">
+        <div class="tags-container">
+            <span th:each="tag : ${post.tags}" th:text="${tag.name}" class="badge bg-secondary"></span>
         </div>
-        <hr>
+        <strong class="userName" th:text="${post.user != null ? post.user.userName : '未知用戶'}">用戶名</strong>
+        <strong class="userId" th:text="${post.user != null ? post.user.userId : '未知id'}">用戶id</strong>
+    </div>
+    <br>
+    <div class="header-row">
+        <h1 th:text="${postTitle}">文章標題</h1>
+        <div class="actions">
+            <a class="btn btn-outline-dark" th:href="@{/post/frontPage}">回列表</a>
+        </div>
+    </div>
+    <hr>
 
-        <div class="comments-section">
-            <h3>評論</h3>
-            <div th:each="comment : ${comments}">
-                <div class="comment">
-                   <strong th:text="${comment.users != null ? comment.users.userName : '未知用戶'}">用戶名</strong> 
-                    <span th:text="${comment.commentContent}">評論內容</span>
-                    <span th:text="${comment.commentCreatedTime}">評論時間</span>
-                    <!-- <div class="card-footer">
-                        發布時間: <span th:text="${comment.commentCreatedTime != null ? #dates.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss') : '未知時間'}"></span>
-                    </div> -->
+    <div class="postCreatedTime">
+        <span th:text="${#dates.format(post.postCreatedTime, 'yyyy-MM-dd HH:mm:ss')}">發布時間</span>
+    </div>
+
+    <div class="post-content">
+        <p th:utext="${postContent}">文章內容顯示在這裡</p>
+    </div>
+    <!-- 點讚動作 -->
+    <div class="like-container">
+        <button id="likeButton" class="btn-icon" data-post-id="${post.postId}" th:classappend="${hasLiked ? 'liked' : ''}" th:onclick="'toggleLike(' + ${post.postId} + ')'">
+            <!-- <i class="fa fa-thumbs-up"></i> --><i class="fa-regular fa-heart"></i>
+            <span id="likeCount" th:text="${post.likeCount}">0</span>
+        </button>
+    </div>
+    <hr>
+<!-- 留言編輯刪除動作 -->
+    <!-- 留言編輯刪除動作 -->
+    <div class="comments-section">
+        <h3>留言</h3>
+        <div th:each="comment : ${comments}">
+            <div class="comment">
+                <div class="comment-header">
+                    <strong th:text="${comment.users != null ? (comment.users.userName + (comment.users.userId == post.user.userId ? ' （樓主)' : '')) : '未知用戶'}">用戶名</strong>
+                	<span class="comment-time" th:text="${#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}">評論時間</span> 
+                    <div class="dropdown" th:if="${comment.users != null and currentUserId == comment.users.userId}">
+                        <i class="fa-solid fa-pen-to-square" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li>
+                                <a class="dropdown-item" href="#" th:attr="onclick='editComment(\'' + ${comment.commentId} + '\', \'' + ${comment.commentContent} + '\', \'' + ${post.postId} + '\')'">
+                                    <i class="fa-solid fa-pen-to-square"></i> 編輯留言
+                                </a>
+                            </li>
+                            <li>
+                                <form th:action="@{/comment/delete}" method="post" style="display:inline;" onsubmit="return confirmDelete()">
+                                    <input type="hidden" name="commentId" th:value="${comment.commentId}" />
+                                    <input type="hidden" name="postId" th:value="${post.postId}" />
+                                    <button class="dropdown-item" type="submit">
+                                        <i class="fa-solid fa-trash"></i> 刪除
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
+                <span th:text="${comment.commentContent}">評論內容</span> <br>
+                <span class="comment-time" th:text="${#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}">評論時間</span>
             </div>
-            
-
-            <div class="comment-form">
-                <h4>新增評論</h4>
-                <form th:action="@{/comment/add}" method="post">
-                    <textarea name="commentContent" placeholder="輸入您的評論"></textarea>
-                    <button type="submit">提交評論</button>
+        </div>
+    </div>
+</div>
+   
+    <div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCommentModalLabel">編輯留言</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/comment/edit}" method="post">
+                    <input type="hidden" id="editCommentId" name="commentId">
+                    <input type="hidden" id="editPostId" name="postId">
+                    <div class="mb-3">
+                        <label for="editCommentContent" class="form-label">留言內容</label>
+                        <textarea class="form-control" id="editCommentContent" name="commentContent"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">送出</button>
                 </form>
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="comment-form">
+    <form th:action="@{/comment/add}" method="post">
+        <input type="hidden" name="postId" th:value="${post.postId}">
+        <input type="hidden" name="userId" th:value="${session.userId}">
+        <input type="hidden" name="userName" th:value="${session.userName}">
+        <textarea name="commentContent" placeholder="留言..."></textarea>
+        <button type="submit" class="btn-icon">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </form>
+</div>
+
+<script>
+function editComment(commentId, commentContent, postId) {
+    console.log("Editing comment with ID:", commentId);
+    console.log("Comment content:", commentContent);
+    console.log("Post ID:", postId);
+
+    document.getElementById('editCommentId').value = commentId;
+    document.getElementById('editCommentContent').value = commentContent;
+    document.getElementById('editPostId').value = postId;
+
+    var editCommentModal = new bootstrap.Modal(document.getElementById('editCommentModal'), {
+        keyboard: false
+    });
+
+    editCommentModal.show();
+}
+
+function confirmDelete() {
+    return confirm("确定要刪除這則留言嗎？");
+}
+
+$(document).ready(function() {
+    $('#likeButton').click(function(event) {
+        event.preventDefault(); // 阻止默认的按钮提交动作
+        var postId = $(this).data('post-id');
+        console.log('Like button clicked, postId:', postId);
+        toggleLike(postId);
+    });
+});
+
+function toggleLike(postId) {
+    console.log('Sending like toggle request for postId:', postId);
+    $.ajax({
+        url: '/sellphone/post/like/toggle',
+        type: 'POST',
+        data: {
+            postId: postId
+        },
+        success: function(response) {
+            $('#likeCount').text(response.likeCount);
+            $('#likeButton').toggleClass('liked', response.hasLiked);
+            if(response.hasLiked) {
+                $('#likeIcon').removeClass('fa-regular fa-heart').addClass('fa-solid fa-heart');
+            } else {
+                $('#likeIcon').removeClass('fa-solid fa-heart').addClass('fa-regular fa-heart');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+            console.error('狀態:', status);
+            console.error('回應:', xhr.responseText);
+        }
+    });
+}
+
+
+</script>
 </body>
 </html>

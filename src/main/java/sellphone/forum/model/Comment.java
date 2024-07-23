@@ -50,12 +50,23 @@ public class Comment {
         @JoinColumn(name = "userName", referencedColumnName = "userName")
     })
     private Users users;
+    
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int likeCount = 0;
 //    
 //    @Column(name = "userName", nullable = false)
 //    private String userName;
     
     
 	
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
 	public Comment() {
 		
 	}
@@ -110,6 +121,7 @@ public class Comment {
     public void setPost(Post post) {
         this.post = post;
     }
+    
 
 
 	public String getCommentContent() {
