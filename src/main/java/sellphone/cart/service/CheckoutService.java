@@ -16,13 +16,9 @@ import sellphone.orders.model.Order;
 import sellphone.orders.model.OrderDetail;
 import sellphone.orders.repository.OrderDetailRepository;
 import sellphone.orders.repository.OrderRepository;
-import sellphone.cart.repository.CartRepository;
 
 @Service
 public class CheckoutService {
-
-	@Autowired
-	private CartRepository cartRepository;
 
 	@Autowired
 	private CartViewRepository cartViewRepository;
@@ -34,15 +30,6 @@ public class CheckoutService {
 	private OrderDetailRepository orderDetailRepository;
 
 	private AtomicInteger sequence = new AtomicInteger();
-
-
-	public List<CartView> getCartByUserId(String userId) {
-		return cartViewRepository.findByUserId(userId);
-	}
-
-	public int calculateTotalAmount(List<CartView> carts) {
-		return carts.stream().mapToInt(cart -> cart.getPrice() * cart.getQuantity()).sum();
-	}
 
 	public String generateOrderId() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -95,47 +82,47 @@ public class CheckoutService {
 			Map<String, Object> orderData = (Map<String, Object>) requestData.get("order");
 			List<Map<String, Object>> orderDetailsData = (List<Map<String, Object>>) requestData.get("orderDetails");
 
-			String userId = (String) requestData.get("userId");
-			List<CartView> carts = getCartByUserId(userId);
-
 			// 創建訂單
 			Order order = new Order();
-			order.setOrderId(generateOrderId());
-			order.setUserId(userId);
-			order.setStatus("N");
-			order.setCreateDate(new Date());
-			order.setTotalAmount(calculateTotalAmount(carts));
-			order.setPayStatus("N");
-			order.setUserName((String) requestData.get("userName"));
-			order.setEmail((String) requestData.get("email"));
-			order.setPhone((String) requestData.get("phone"));
-			order.setCity((String) requestData.get("city"));
-			order.setDistrict((String) requestData.get("district"));
-			order.setAddress((String) requestData.get("address"));
-			order.setDetailAddress((String) requestData.get("detailAddress"));
+			order.setOrderId((String) orderData.get("orderId"));
+			order.setUserId((String) orderData.get("userId"));
+			order.setStatus((String) orderData.get("status"));
+			order.setCreateDate(new Date((Long) orderData.get("createDate")));
+			order.setTotalAmount((Integer) orderData.get("totalAmount"));
+			order.setPayStatus((String) orderData.get("payStatus"));
+			order.setUserName((String) orderData.get("userName"));
+			order.setEmail((String) orderData.get("email"));
+			order.setPhone((String) orderData.get("phone"));
+			order.setCity((String) orderData.get("city"));
+			order.setDistrict((String) orderData.get("district"));
+			order.setAddress((String) orderData.get("address"));
+			order.setDetailAddress((String) orderData.get("detailAddress"));
 			orderRepository.save(order);
 
 			// 創建訂單明細
-			List<OrderDetail> orderDetails = carts.stream().map(cart -> {
+			for (Map<String, Object> detailData : orderDetailsData) {
 				OrderDetail detail = new OrderDetail();
-				detail.setDetailId(order.getOrderId().replaceFirst("S", "D"));
-				detail.setOrderId(order.getOrderId());
-				detail.setProductId(cart.getProductId());
-				detail.setProductName(cart.getProductName());
-				detail.setColor(cart.getColor());
-				detail.setStorage(cart.getStorage());
-				detail.setQuantity(cart.getQuantity());
-				detail.setPrice(cart.getPrice());
-				detail.setTotal(cart.getPrice() * cart.getQuantity());
-				return detail;
-			}).collect(Collectors.toList());
-
-			orderDetailRepository.saveAll(orderDetails);
+				detail.setDetailId((String) detailData.get("detailId"));
+				detail.setOrderId((String) detailData.get("orderId"));
+				detail.setProductId((Integer) detailData.get("productId"));
+				detail.setProductName((String) detailData.get("productName"));
+				detail.setQuantity((Integer) detailData.get("quantity"));
+				detail.setPrice((Integer) detailData.get("price"));
+				detail.setTotal((Integer) detailData.get("total"));
+				orderDetailRepository.save(detail);
+			}
 		} catch (Exception e) {
 			throw new RuntimeException("插入資料庫時發生錯誤: " + e.getMessage(), e);
 		}
 	}
 
+	public List<CartView> getCartByUserId(String userId) {
+		return cartViewRepository.findByUserId(userId);
+	}
+
+	public int calculateTotalAmount(List<CartView> carts) {
+		return carts.stream().collect(Collectors.summingInt(cart -> cart.getPrice() * cart.getQuantity()));
+	}
 
 
 //	@Transactional

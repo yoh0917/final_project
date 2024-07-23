@@ -1,74 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>結帳頁面</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="Content-Type" content="text/html; charset=utf-8" />
-    <link th:href="@{/shoppingcart/cart/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
-    <link th:href="@{/shoppingcart/cart/css/style.css}" rel="stylesheet" type="text/css" media="all" />
-    <script th:src="@{/shoppingcart/cart/js/jquery.min.js}"></script>
-    <script th:src="@{/shoppingcart/cart/js/simpleCart.min.js}"></script>
-    <link th:href="@{/shoppingcart/cart/css/jquery-ui.css}" rel="stylesheet" type="text/css">
-    <script th:src="@{/shoppingcart/cart/js/bootstrap-3.1.1.min.js}" type="text/javascript"></script>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
-    <link th:href="@{/shoppingcart/cart/css/animate.min.css}" rel="stylesheet">
-    <link th:href="@{/css/styles.css}" rel="stylesheet" />
-    <script th:src="@{/shoppingcart/cart/js/wow.min.js}"></script>
-    <div th:replace="~{/layout/headerStylesheet.html}"></div>
-    <script>
-        new WOW().init();
-    </script>
-    <style>
-        .checkout-right, .checkout-right-basket {
-            font-size: 16px;
-        }
-        .checkout-right-basket {
-            border: 1px solid #e3e3e3;
-            padding: 20px;
-            background: #f9f9f9;
-        }
-        .checkout-right-basket h4 {
-            margin-bottom: 20px;
-        }
-        .checkout-right-basket table {
-            width: 100%;
-        }
-        .checkout-right-basket table td {
-            padding: 5px 0;
-        }
-        .checkout-right-basket .btn {
-            margin-bottom: 10px;
-            width: 100%;
-        }
-        .container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-    </style>
+    <link th:href="@{/shoppingcart/checkout/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/vendor/choices.js/public/assets/styles/choices.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/css/style.default.css}" rel="stylesheet" id="theme-stylesheet">
+    <link th:href="@{/shoppingcart/checkout/css/custom.css}" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/shoppingcart/checkout/img/favicon.png}">
 </head>
-
 <body>
-<!-- Header -->
-<div class="header" th:replace="~{/layout/header.html}"></div>
-
-<!-- breadcrumbs -->
-<div class="breadcrumbs">
-    <div class="container">
-        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-            <li><a th:href="@{/index}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
-            <li class="active">Checkout Page</li>
-        </ol>
-    </div>
-</div>
-
-<!-- checkout -->
-<div class="container" style="margin-top: 20px; display: flex; justify-content: space-between;">
-    <section class="py-5" style="width: 70%;">
+<div class="container">
+    <section class="py-5">
         <h2 class="h5 text-uppercase mb-4">帳單詳細資料</h2>
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-8">
                 <form id="checkoutForm">
                     <div class="row gy-3">
                         <div class="col-lg-6">
@@ -115,7 +65,7 @@
                             <input class="form-control form-control-lg" type="text" id="expMonth" placeholder="MM">
                         </div>
                         <div class="col-lg-4">
-                            <label class="form-label text-sm text-uppercase" for="expYear">到期年份</label>
+                            <label class="form-label text-sm text-uppercase" for="expYear">&nbsp;</label>
                             <input class="form-control form-control-lg" type="text" id="expYear" placeholder="YYYY">
                         </div>
                         <div class="col-lg-4">
@@ -134,36 +84,29 @@
                     <span th:text="${errorMessage}"></span>
                 </div>
             </div>
+            <div class="col-lg-4">
+                <div class="card border-0 rounded-0 p-lg-4 bg-light">
+                    <div class="card-body">
+                        <h5 class="text-uppercase mb-4">您的訂單</h5>
+                        <ul class="list-unstyled mb-0" id="orderSummary">
+                            <li th:each="cart : ${carts}" class="d-flex align-items-center justify-content-between order-item" th:data-product-id="${cart.productId}">
+                                <strong class="small fw-bold product-name" th:text="${cart.productName}"></strong>
+                                <span class="text-muted small product-price" th:text="${cart.price}"></span>
+                                <span class="text-muted small product-quantity" th:text="${cart.quantity}"></span>
+                                <span class="text-muted small product-total" th:text="${cart.price * cart.quantity}"></span>
+                            </li>
+                            <li class="border-bottom my-2"></li>
+                            <li class="d-flex align-items-center justify-content-between">
+                                <strong class="text-uppercase small fw-bold">總計</strong>
+                                <span id="totalAmount" th:text="${totalAmount}"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-
-    <!-- 訂單資訊 -->
-    <div class="checkout-right-basket animated wow slideInLeft" data-wow-delay=".5s" style="width: 25%; margin-top: 20px;">
-        <h4>訂單資訊</h4>
-        <table>
-            <tr>
-                <td style="font-weight: bold;">商品總數</td>
-                <td th:text="${carts.size()}" style="text-align: right;"></td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">小計</td>
-                <td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
-            </tr>
-            <tr>
-                <td style="font-weight: bold;">總計</td>
-                <td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
-            </tr>
-        </table>
-        <div style="margin-top: 20px;">
-            <a th:href="@{/front/productlist}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">繼續購物</a>
-            <a th:href="@{/orders/checkout1}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">結帳</a>
-        </div>
-    </div>
 </div>
-
-<!-- Footer -->
-<div th:replace="~{/layout/footer.html}"></div>
-
 <script th:src="@{/shoppingcart/checkout/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/vendor/glightbox/js/glightbox.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.js}"></script>
@@ -172,46 +115,49 @@
 <script th:src="@{/shoppingcart/checkout/js/front.js}"></script>
 <script>
     function submitOrder() {
-        var userId = document.querySelector(".order-item .product-userId").value;
         var order = {
             orderId: generateOrderId(),
-            userId: userId,
+            status: "N",
+            createDate: new Date().getTime(),
+            totalAmount: parseFloat(document.getElementById("totalAmount").innerText),
+            payStatus: "N",
             userName: document.getElementById("firstName").value,
             email: document.getElementById("email").value,
             phone: document.getElementById("phone").value,
             city: document.getElementById("city").value,
             district: document.getElementById("state").value,
             address: document.getElementById("address").value,
-            detailAddress: document.getElementById("addressalt").value,
-            totalAmount: parseFloat(document.getElementById("totalAmount").innerText.replace('$', '')),
-            orderDetails: []
+            detailAddress: document.getElementById("addressalt").value
         };
 
+        var orderDetails = [];
         document.querySelectorAll(".order-item").forEach((item, index) => {
-            order.orderDetails.push({
+            orderDetails.push({
+                detailId: (index + 1).toString(),
+                orderId: order.orderId,
                 productId: parseInt(item.dataset.productId),
                 productName: item.querySelector(".product-name").innerText,
-                color: item.querySelector(".product-color") ? item.querySelector(".product-color").innerText : 'N/A',
-                storage: item.querySelector(".product-storage") ? item.querySelector(".product-storage").innerText : 'N/A',
                 quantity: parseInt(item.querySelector(".product-quantity").innerText),
-                price: parseFloat(item.querySelector(".product-price").innerText.replace('$', '')),
-                total: parseFloat(item.querySelector(".product-total").innerText.replace('$', ''))
+                price: parseFloat(item.querySelector(".product-price").innerText),
+                total: parseFloat(item.querySelector(".product-price").innerText) * parseInt(item.querySelector(".product-quantity").innerText)
             });
         });
 
-        $.ajax({
-            url: '/sellphone/orders/save',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(order),
-            success: function(response) {
-                alert(response);
-                window.location.href = "/checkout/completion";
+        fetch('/sellphone/orders/save', { // 確保這裡的URL正確
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
             },
-            error: function(error) {
-                alert('提交訂單失敗: ' + error.responseText);
-            }
-        });
+            body: JSON.stringify({ order: order, orderDetails: orderDetails })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.text();
+            })
+            .then(data => alert("已成功插入資料庫"))
+            .catch(error => alert('插入資料庫失敗: ' + error.message));
     }
 
     function generateOrderId() {
