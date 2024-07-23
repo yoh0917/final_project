@@ -25,6 +25,11 @@ public class CartService {
     @Autowired
     private ProductRepository productRepository; // Assuming you have a ProductRepository to fetch product details
 
+    //加入購物車
+    public Cart addProductToCart(Cart cart) {
+        return cartRepository.save(cart);
+    }
+
     public List<CartView> getCartItems(String userId) {
         return cartViewRepository.findByUserId(userId);
     }

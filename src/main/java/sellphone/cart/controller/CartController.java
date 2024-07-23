@@ -5,12 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.web.bind.annotation.ResponseBody;
+import sellphone.cart.model.Cart;
 import sellphone.cart.model.CartSummary;
 import sellphone.cart.model.CartView;
 import sellphone.cart.repository.CartViewRepository;
@@ -35,6 +33,12 @@ public class CartController {
 
     @Autowired
     private CartViewRepository cartViewRepository;
+
+    //加入購物車
+    @PostMapping("/addcart")
+    public Cart addProductToCart(@RequestBody Cart cart) {
+        return cartService.addProductToCart(cart);
+    }
 
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
