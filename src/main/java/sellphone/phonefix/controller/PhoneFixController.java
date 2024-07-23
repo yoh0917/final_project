@@ -165,7 +165,7 @@ public class PhoneFixController {
 	
 	//前台主頁面新增
 	@GetMapping("/phonefixs/userlist")
-	public String userList() {
+	public String userlist() {
 	    return "phonefix/userlist"; // 这里的 "userlist" 是指你的模板文件名，如 userlist.html
 	}
 	
