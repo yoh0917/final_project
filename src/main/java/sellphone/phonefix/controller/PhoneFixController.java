@@ -21,12 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
-import sellphone.dashboard.user.model.Users;
 import sellphone.phonefix.model.PhoneFixBean;
 import sellphone.phonefix.model.PhoneFixPhotoBean;
 import sellphone.phonefix.model.PhoneFixPhotoRepository;
 import sellphone.phonefix.model.PhoneFixRepository;
 import sellphone.phoneplan.model.UsersRepository;
+import sellphone.user.model.Users;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

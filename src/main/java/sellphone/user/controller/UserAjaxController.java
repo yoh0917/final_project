@@ -1,4 +1,4 @@
-package sellphone.dashboard.user.controller;
+package sellphone.user.controller;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -29,13 +29,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
-import sellphone.dashboard.user.model.UserRepository;
-import sellphone.dashboard.user.model.UserView;
-import sellphone.dashboard.user.model.UserViewRepository;
-import sellphone.dashboard.user.model.Users;
-import sellphone.dashboard.user.service.UserMailService;
-import sellphone.dashboard.user.service.UserService;
-import sellphone.dashboard.user.service.UserUtil;
+import sellphone.user.model.UserRepository;
+import sellphone.user.model.UserView;
+import sellphone.user.model.UserViewRepository;
+import sellphone.user.model.Users;
+import sellphone.user.service.UserMailService;
+import sellphone.user.service.UserService;
+import sellphone.user.service.UserUtil;
 
 @Controller
 public class UserAjaxController {

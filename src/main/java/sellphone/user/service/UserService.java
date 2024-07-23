@@ -1,4 +1,4 @@
-package sellphone.dashboard.user.service;
+package sellphone.user.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,9 +8,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sellphone.dashboard.user.model.UserRepository;
-import sellphone.dashboard.user.model.UserViewRepository;
-import sellphone.dashboard.user.model.Users;
+import sellphone.user.model.UserRepository;
+import sellphone.user.model.UserViewRepository;
+import sellphone.user.model.Users;
 
 @Service
 public class UserService {

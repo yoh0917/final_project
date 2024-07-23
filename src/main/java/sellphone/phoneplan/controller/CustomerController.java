@@ -6,10 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import sellphone.phoneplan.model.PhonePlanBean;
-import sellphone.dashboard.user.model.UserPhonePlanList;
-import sellphone.dashboard.user.model.UserPhonePlanListRepository;
 import sellphone.phoneplan.service.CustomerService;
-import sellphone.dashboard.user.model.Users;
+import sellphone.user.model.UserPhonePlanList;
+import sellphone.user.model.UserPhonePlanListRepository;
+import sellphone.user.model.Users;
 import sellphone.phoneplan.model.UsersRepository;
 
 import java.time.LocalDateTime;

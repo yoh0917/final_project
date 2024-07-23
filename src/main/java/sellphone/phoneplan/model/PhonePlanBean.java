@@ -12,7 +12,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sellphone.dashboard.user.model.UserPhonePlanList;
+import sellphone.user.model.UserPhonePlanList;
 
 @Entity
 @Getter

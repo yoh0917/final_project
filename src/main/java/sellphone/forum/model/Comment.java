@@ -16,7 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import sellphone.dashboard.user.model.Users;
+import sellphone.user.model.Users;
 
 @Entity
 @Table(name = "F0002_COMMENT")

@@ -1,4 +1,4 @@
-package sellphone.dashboard.user.controller;
+package sellphone.user.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,14 +15,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import sellphone.dashboard.user.model.UserPasswordToken;
-import sellphone.dashboard.user.model.UserPasswordTokenRepository;
-import sellphone.dashboard.user.model.UserRepository;
-import sellphone.dashboard.user.model.UserView;
-import sellphone.dashboard.user.model.Users;
-import sellphone.dashboard.user.service.UserMailService;
-import sellphone.dashboard.user.service.UserService;
-import sellphone.dashboard.user.service.UserViewService;
+import sellphone.user.model.UserPasswordToken;
+import sellphone.user.model.UserPasswordTokenRepository;
+import sellphone.user.model.UserRepository;
+import sellphone.user.model.UserView;
+import sellphone.user.model.Users;
+import sellphone.user.service.UserMailService;
+import sellphone.user.service.UserService;
+import sellphone.user.service.UserViewService;
 
 @Controller
 public class UserPageController {

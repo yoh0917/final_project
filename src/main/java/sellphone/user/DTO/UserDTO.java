@@ -1,4 +1,4 @@
-package sellphone.dashboard.user.DTO;
+package sellphone.user.DTO;
 
 public class UserDTO {
 

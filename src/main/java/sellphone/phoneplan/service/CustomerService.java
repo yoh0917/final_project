@@ -5,10 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sellphone.dashboard.user.model.UserPhonePlanList;
-import sellphone.dashboard.user.model.UserPhonePlanListRepository;
+
 import sellphone.phoneplan.model.PhonePlanBean;
 import sellphone.phoneplan.model.PhonePlanRepository;
+import sellphone.user.model.UserPhonePlanList;
+import sellphone.user.model.UserPhonePlanListRepository;
 
 @Service
 public class CustomerService {

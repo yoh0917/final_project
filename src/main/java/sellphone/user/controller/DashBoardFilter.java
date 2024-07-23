@@ -1,4 +1,4 @@
-package sellphone.dashboard.user.controller;
+package sellphone.user.controller;
 
 import java.io.IOException;
 

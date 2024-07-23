@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import jakarta.servlet.Filter;
-import sellphone.dashboard.user.controller.DashBoardFilter;
+import sellphone.user.controller.DashBoardFilter;
 
 @Configuration
 public class FilterConfig {

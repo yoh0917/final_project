@@ -2,7 +2,8 @@ package sellphone.phoneplan.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import sellphone.dashboard.user.model.Users;
+
+import sellphone.user.model.Users;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, String> {
