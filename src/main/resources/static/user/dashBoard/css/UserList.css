@@ -26,17 +26,23 @@
 	font-size:52px;	
 }
 
-/* .userlistTable{ */
-/* 	width:90%; */
-/* } */
+.userlistTable{
+	border: 1px solid #ddd;
+}
 .userlistTable thead tr th {
     text-align: center; 
-    font-size: 18px;     
+    font-size: 18px;
+    
 }
+
+.userlistTable tbody tr {
+    border: 1px solid #ddd; 
+	background-color: #f1f1f1;
+}
+
 
 .userlistTable tbody tr:hover {
     background-color: rgb(207, 205, 205);
-
 }
 
 .userlistTable tbody tr td {
