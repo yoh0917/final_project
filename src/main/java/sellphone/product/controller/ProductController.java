@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
-import sellphone.dashboard.user.model.Users;
 import sellphone.product.model.Photo;
 import sellphone.product.model.PhotoRepository;
 import sellphone.product.model.Product;
 import sellphone.product.model.ProductRepository;
 import sellphone.product.model.ProductScore;
 import sellphone.product.service.productservice;
+import sellphone.user.model.Users;
 
 
 @SessionAttributes

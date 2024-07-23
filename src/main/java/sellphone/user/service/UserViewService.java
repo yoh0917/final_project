@@ -1,12 +1,12 @@
-package sellphone.dashboard.user.service;
+package sellphone.user.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sellphone.dashboard.user.model.UserView;
-import sellphone.dashboard.user.model.UserViewRepository;
+import sellphone.user.model.UserView;
+import sellphone.user.model.UserViewRepository;
 
 
 @Service

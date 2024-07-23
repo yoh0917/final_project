@@ -1,4 +1,4 @@
-package sellphone.dashboard.user.service;
+package sellphone.user.service;
 
 import java.util.Calendar;
 

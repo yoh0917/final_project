@@ -1,4 +1,4 @@
-package sellphone.dashboard.user.model;
+package sellphone.user.model;
 
 import java.sql.Date;
 import java.time.LocalDateTime;

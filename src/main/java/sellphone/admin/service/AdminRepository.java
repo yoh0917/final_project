@@ -1,4 +1,4 @@
-package sellphone.dashboard.admin.service;
+package sellphone.admin.service;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

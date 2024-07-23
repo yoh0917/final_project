@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sellphone.dashboard.user.model.Users;
+import sellphone.user.model.Users;
 @Getter
 @Setter
 @NoArgsConstructor

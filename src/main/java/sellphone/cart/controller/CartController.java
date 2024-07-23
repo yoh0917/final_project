@@ -13,9 +13,9 @@ import sellphone.cart.model.CartSummary;
 import sellphone.cart.model.CartView;
 import sellphone.cart.repository.CartViewRepository;
 import sellphone.cart.service.CartService;
-import sellphone.dashboard.user.model.Users;
 import sellphone.product.model.Photo;
 import sellphone.product.model.PhotoRepository;
+import sellphone.user.model.Users;
 
 import java.util.Base64;
 import java.util.List;

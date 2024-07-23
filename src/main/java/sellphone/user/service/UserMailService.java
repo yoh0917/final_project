@@ -1,4 +1,4 @@
-package sellphone.dashboard.user.service;
+package sellphone.user.service;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import sellphone.dashboard.user.model.UserPasswordToken;
-import sellphone.dashboard.user.model.UserPasswordTokenRepository;
-import sellphone.dashboard.user.model.Users;
+import sellphone.user.model.UserPasswordToken;
+import sellphone.user.model.UserPasswordTokenRepository;
+import sellphone.user.model.Users;
 
 @Service
 public class UserMailService {
