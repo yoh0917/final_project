@@ -21,7 +21,57 @@ body, html {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
 	height: 100%;
+}
+
+.order-list {
+	width: 80%;
+	margin-top: 20px;
+	padding: 20px;
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-list h1 {
+	text-align: center;
+}
+
+.order-list table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+.order-list table, th, td {
+	border: 1px solid #ddd;
+}
+
+.order-list th, td {
+	padding: 8px;
+	text-align: left;
+}
+
+.order-list th {
+	background-color: #f2f2f2;
+}
+
+.order-list tr:nth-child(even) {
+	background-color: #f9f9f9;
+}
+
+.order-list .btn {
+	display: inline-block;
+	padding: 10px 20px;
+	margin: 20px 0;
+	background-color: #007bff;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 4px;
+}
+
+.order-list .btn:hover {
+	background-color: #0056b3;
 }
 </style>
 </head>
@@ -30,13 +80,35 @@ body, html {
 
 	<div class="container">
 		<div class="text-center">
+			<h3 th:text="${session.userId} ? '我的維修訂單 ' : '目前無使用者登入'"></h3>
+			<a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">維修表單申請</a>
+		</div>
 
-			<h3
-				th:text=" ${session.userId} ? '歡迎!! ' + ${session.userId}  "></h3>
-
-			<h3 th:if="${session.userId == null}">目前無使用者登入</h3>
-			   <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">新增表單</a>
-			
+		<div class="order-list" th:if="${session.userId}">
+			<h1>用戶訂單列表</h1>
+			<a href="#" class="btn">返回首頁</a>
+			<table>
+				<thead>
+					<tr>
+						<th>訂單ID</th>
+						<th>訂單名稱</th>
+						<th>訂單日期</th>
+						<th>訂單成本</th>
+						<th>訂單端口</th>
+						<th>訂單狀態</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="order : ${list}">
+						<td th:text="${order.fixID}"></td>
+						<td th:text="${order.fixName}"></td>
+						<td th:text="${order.fixDate}"></td>
+						<td th:text="${order.fixCost}"></td>
+						<td th:text="${order.fixPort}"></td>
+						<td th:text="${order.fixState}"></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 
