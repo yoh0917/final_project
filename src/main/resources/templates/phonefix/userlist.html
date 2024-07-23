@@ -32,10 +32,10 @@ body, html {
 		<div class="text-center">
 
 			<h3
-				th:text=" ${session.userId} ? '歡迎!! ' + ${session.userId}  "></h3>
+				th:text=" ${session.userId} ? '我的維修訂單 '   "></h3>
 
 			<h3 th:if="${session.userId == null}">目前無使用者登入</h3>
-			   <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">新增表單</a>
+			   <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">維修表單申請</a>
 			
 		</div>
 	</div>

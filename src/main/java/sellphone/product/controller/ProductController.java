@@ -188,6 +188,24 @@ public class ProductController {
 		newScore.setScorenum(scorenum);
 		newScore.setUserName(userName);
 		newScore.setLocalDateTime(LocalDateTime.now());
+		
+		Product product = pService.findbyid(productid);
+		Double totalSocreNum = product.getTotalSocreNum();  //原本總分
+		Integer totalScore = product.getTotalScore();		//原本總數
+		Integer newtotalScore =totalScore + 1;			//新總數			
+		Double newtotalnum = totalSocreNum + scorenum;	//新總分
+		Double newavgScore = (double) (newtotalnum / newtotalScore); //算出新平均分數
+		Double round1 = (double)Math.round(newavgScore*10)/10.0;
+		
+		System.out.println("scorenum:"+scorenum);
+		System.out.println("total:"+totalSocreNum);
+		System.out.println(newavgScore);
+		
+		product.setTotalSocreNum(newtotalnum);
+		product.setTotalScore(newtotalScore);
+		product.setAvgScore(round1);
+		pService.saveProduct(product);
+		
 		return pService.productScoreSave(newScore);
 		
 		}

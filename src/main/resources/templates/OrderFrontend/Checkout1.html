@@ -21,7 +21,7 @@
     </script>
     <style>
         .checkout-right, .checkout-right-basket {
-            font-size: 16px; /* 使字型大小一致 */
+            font-size: 16px;
         }
         .checkout-right-basket {
             border: 1px solid #e3e3e3;
@@ -41,24 +41,29 @@
             margin-bottom: 10px;
             width: 100%;
         }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
 <body>
 <!-- Header -->
-<div th:replace="~{/layout/header.html}"></div>
+<div class="header" th:replace="~{/layout/header.html}"></div>
 
 <!-- breadcrumbs -->
 <div class="breadcrumbs">
     <div class="container">
         <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-            <li><a th:href="@{/index}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>首頁</a></li>
-            <li class="active">結帳頁面</li>
+            <li><a th:href="@{/index}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+            <li class="active">Checkout Page</li>
         </ol>
     </div>
 </div>
-<!-- //breadcrumbs -->
 
+<!-- checkout -->
 <div class="container" style="margin-top: 20px; display: flex; justify-content: space-between;">
     <section class="py-5" style="width: 70%;">
         <h2 class="h5 text-uppercase mb-4">帳單詳細資料</h2>

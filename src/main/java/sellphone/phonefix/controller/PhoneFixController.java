@@ -164,36 +164,43 @@ public class PhoneFixController {
 	}
 	
 	//前台主頁面新增
-    @GetMapping("/phonefixs/userlist")
-    public String userList() {
-//    	HttpSession session = request.getSession();
-//    	 
-//        if (user != null) {
-//            session.setAttribute("userId", user.getUserId());
-//            session.setAttribute("userName", user.getUserName());
-//        } else {
-//            // 處理用戶未找到的情況
-//            return "redirect:/login"; // 假設有一個登錄頁面
-        return "phonefix/userlist"; // 这里的 "userlist" 是指你的模板文件名，如 userlist.html
-    }
+	@GetMapping("/phonefixs/userlist")
+	public String userlist() {
+	    return "phonefix/userlist"; // 这里的 "userlist" 是指你的模板文件名，如 userlist.html
+	}
 	
 //前台導向新增表單的頁面
 	@GetMapping("/phonefixs/frontform1")
-	public String frontform1() {
-		return "phonefix/frontform";
+	public String frontform1(HttpServletRequest request,Model model) {
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("userId");
+		Users wanted = new Users();
+		Optional<Users> users = userRepository.findById(userId);
+		wanted = users.get();
+		model.addAttribute("GGA", wanted);
+		return "phonefix/userform";
 	}
 	//前台新增表單
 	@Transactional
 	@ResponseBody
 	@PostMapping("/phonefixs/frontform")
-	public String frontform(@RequestParam String fixName, @RequestParam String fixDate, @RequestParam String fixCost,
-			@RequestParam String fixPort, @RequestParam String fixState, @RequestParam("file") MultipartFile[] files,HttpServletRequest request)
+	public String frontform(
+			@RequestParam String userId, 
+			@RequestParam String fixName, 
+			@RequestParam String fixDate,
+			@RequestParam String fixCost,
+			@RequestParam String fixPort,
+			@RequestParam String fixState,
+			@RequestParam("file") MultipartFile[] files,
+			HttpServletRequest request,Model model)
 			throws IOException {
 		HttpSession session = request.getSession();
-		String userId = (String) session.getAttribute("userId");
+		System.out.println("-----------------------------------------------------------");
+		String useId = (String) session.getAttribute("userId");
 		//Users user = (String) session.getAttribute("userId");
-		Users users = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+		Users users = userRepository.findById(useId).orElseThrow(() -> new RuntimeException("User not found"));
 //		users.setUserId(userId);
+		model.addAttribute("user",users);
 		PhoneFixBean fixbean = new PhoneFixBean();
 		fixbean.setUser(users);
 		fixbean.setFixName(users.getUserName());

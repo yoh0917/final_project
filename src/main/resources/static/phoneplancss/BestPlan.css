@@ -41,14 +41,8 @@ body {
     color: #000;
 }
 
-.btn-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.btn {
+/* 更具體的按鈕樣式 */
+.container .form .btn-group .btn {
     padding: 10px 20px;
     font-size: 16px;
     background-color: #333;
@@ -56,36 +50,70 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 10px;
+    margin: 5px; /* 加入按鈕之間的間距 */
     transition: background-color 0.3s, transform 0.3s;
 }
 
-.btn:hover {
+.container .form .btn-group .btn:hover {
     background-color: #555;
     transform: scale(1.05);
 }
 
-.btn:active {
+.container .form .btn-group .btn:active {
     background-color: #111;
 }
 
-.btn:disabled {
+.container .form .btn-group .btn:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
-.clearBtn {
+.container .form .btn-group .clearBtn {
     background-color: #333;
 }
 
-.clearBtn:hover {
+.container .form .btn-group .clearBtn:hover {
     background-color: #555;
     transform: scale(1.05);
 }
 
-.btn.active {
+.container .form .btn-group .btn.active {
     background-color: #dc3545 !important;
     color: #fff;
+}
+
+/* /* 匯出Excel和門號申辦按鈕 */ */
+/* .form .btn-group .exportBtn, */
+/* .form .btn-group .applyBtn { */
+/*     padding: 10px 20px; */
+/*     font-size: 16px; */
+/*     background-color: #333; */
+/*     color: #fff; */
+/*     border: none; */
+/*     border-radius: 4px; */
+/*     cursor: pointer; */
+/*     margin: 5px; */
+/*     transition: background-color 0.3s, transform 0.3s; */
+/* } */
+
+.form .btn-group .exportBtn:hover,
+.form .btn-group .applyBtn:hover {
+    background-color: #555;
+    transform: scale(1.05);
+}
+
+.form .btn-group .exportBtn.active,
+.form .btn-group .applyBtn.active {
+    background-color: #dc3545 !important;
+    color: #fff;
+}
+
+/* 修正Excel按鈕和白底超出問題 */
+.form .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
 }
 
 #result {

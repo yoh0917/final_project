@@ -10,9 +10,5 @@ import java.util.List;
 
 @Repository
 public interface CartRepository extends JpaRepository<Cart, CartPK> {
-    @Query("SELECT SUM(c.quantity) FROM Cart c WHERE c.userId = :userId")
-    int sumQuantityByUserId(String userId);
-
-    @Query("SELECT SUM(c.quantity * c.price) FROM Cart c WHERE c.userId = :userId")
-    int sumTotalPriceByUserId(String userId);
+    List<Cart> findByUserId(String userId);
 }

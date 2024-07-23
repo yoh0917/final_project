@@ -1,47 +1,156 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>售後維修</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link th:href="@{/layout/css/header.css}" rel="stylesheet">
+<meta charset="UTF-8">
+<title>維修表單申請</title>
+<link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+body {
+    background-color: #ffffff; /* 白色背景 */
+}
+
+.container {
+    background-color: #f5f5f5; /* 淺灰色容器背景 */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #000000; /* 黑色標題 */
+}
+
+.form-group label {
+    color: #000000; /* 黑色標籤顏色 */
+}
+
+.form-control {
+    border-color: #000000; /* 黑色輸入框邊框顏色 */
+}
+
+.form-control:focus {
+    border-color: #000000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.btn-primary {
+    background-color: #000000;
+    border-color: #000000;
+    color: #ffffff; /* 白色文字 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+    background-color: #333333; /* 深灰色 */
+    border-color: #333333;
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #ffffff; /* 白色文字 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-right: 10px; /* 右側間距 */
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* 深灰色 */
+    border-color: #5a6268;
+}
+
+.btn-secondary:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.custom-file-input {
+    border-color: #000000; /* 黑色邊框顏色 */
+}
+
+.custom-file-input:focus {
+    border-color: #000000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.custom-file-label {
+    color: #000000; /* 黑色文字顏色 */
+}
+</style>
 </head>
-
 <body>
-    <div th:replace="~{/layout/header.html}"></div>
-
-    <!-- 新增的內容開始 -->
-    <div class="container mt-3">
-        <button id="navigateButton" class="btn btn-primary">前往 frontform 頁面</button>
-        <div id="welcomeMessage" class="mt-3"></div>
+    <div class="container mt-5">
+        <h2 class="mb-4">新增手機維修記錄</h2>
+        <form id="fixform" th:action="@{/phonefixs/frontform}" method="post" enctype="multipart/form-data">
+            <!-- 隱藏的用戶ID欄位 -->
+            <input type="hidden" id="userId" name="userId" th:value="${GGA.userId}">
+            <div class="form-group">
+                <label for="fixName">送修者</label> 
+                <input type="text" class="form-control" id="fixName" name="fixName" th:value="${GGA.userName}" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="fixDate">送修日期</label> 
+                <input type="date" class="form-control" id="fixDate" name="fixDate" required>
+            </div>
+            <div class="form-group">
+                <label for="fixCost">維修費用</label> 
+                <input type="text" class="form-control" id="fixCost" name="fixCost" value="待估價" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="fixPort">維修細節</label> 
+                <input type="text" class="form-control" id="fixPort" name="fixPort" placeholder="請輸入維修細節" required>
+            </div>
+            <div class="form-group">
+                <label for="fixState">維修狀態</label> 
+                <input type="text" class="form-control" id="fixState" name="fixState" value="待處理" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="fixPhoto">手機當前照片上傳</label> 
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="fixPhoto" name="file" required multiple>
+                    <label class="custom-file-label" for="fixPhoto">選擇照片...</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">新訂單提交</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back()">返回訂單頁面</button>
+        </form>
+        <div id="upload_result"></div>
     </div>
-    <!-- 新增的內容結束 -->
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+    <script th:src="@{/js/axios.min.js}"></script>
     <script>
-        // 按鈕點擊事件
-        document.getElementById('navigateButton').addEventListener('click', function() {
-            window.location.href = 'frontform';
+        document.getElementById('fixform').addEventListener('submit', function(e){
+           console.log("---------------------------------------------------------");
+            e.preventDefault();
+            
+            const fixForm = document.getElementById('fixform');
+            const formdataObject = new FormData(fixForm);
+
+            axios.post('http://localhost:8081/sellphone/phonefixs/frontform', formdataObject)
+                .then(res => {
+                    console.log(res)
+                    var resultBlock = document.getElementById('upload_result');
+                    fixForm.reset();
+                    resultBlock.innerHTML = res.data
+                })
+                .catch(err => {
+                    console.error(err); 
+                    var resultBlock = document.getElementById('upload_result');
+                    resultBlock.innerHTML = '訂單新增失敗'
+                });
         });
 
-        // 使用 axios 獲取用戶名
-        axios.get('/getUserName') // 假設後端接口為 /getUserName
-            .then(function(response) {
-                var userName = response.data.userName;
-                document.getElementById('welcomeMessage').innerText = '歡迎 ' + userName + ' 登入';
-            })
-            .catch(function(error) {
-                console.error('Error fetching userName:', error);
-            });
+        // 顯示選中的文件名
+        document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+            var fileName = Array.from(e.target.files).map(file => file.name).join(', ');
+            var nextSibling = e.target.nextElementSibling;
+            nextSibling.innerText = fileName;
+        });
     </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
 </html>
