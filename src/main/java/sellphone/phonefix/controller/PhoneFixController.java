@@ -18,21 +18,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import sellphone.dashboard.user.model.Users;
 import sellphone.phonefix.model.PhoneFixBean;
 import sellphone.phonefix.model.PhoneFixPhotoBean;
 import sellphone.phonefix.model.PhoneFixPhotoRepository;
 import sellphone.phonefix.model.PhoneFixRepository;
+import sellphone.phoneplan.model.UsersRepository;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+
 @Controller
 public class PhoneFixController {
+	@Autowired
+	private UsersRepository userRepository;
 	@Autowired
 	private PhoneFixRepository rp;
 	@Autowired
 	private PhoneFixPhotoRepository photorp;
 
+//後臺主頁秀出整體資料
 	@GetMapping("/DashBoard/phonefixs")
 	public String getMethodName(Model model) {
 		List<PhoneFixBean> list = rp.findAll();
@@ -40,6 +49,8 @@ public class PhoneFixController {
 		return "phonefix/list";
 	}
 
+	
+//後臺取得對應之修改資料
 	@GetMapping("/DashBoard/phonefixs/update")
 	public String selectone(@RequestParam Integer fixid, Model model) {
 		Optional<PhoneFixBean> phonfix = rp.findById(fixid);
@@ -48,6 +59,8 @@ public class PhoneFixController {
 		return "phonefix/updateForm";
 	}
 
+	
+//後臺儲存修改資料
 	@PostMapping("/DashBoard/phonefixs/save")
 	@Transactional
 	public String save(@RequestParam Integer fixID, @RequestParam String fixName, @RequestParam String fixDate,
@@ -80,7 +93,9 @@ public class PhoneFixController {
 		rp.deleteById(id);
 		return "redirect:/DashBoard/phonefixs";
 	}
-//新加入圖片及資料
+	
+	
+//後臺新增資料
 	@Transactional
 	@ResponseBody
 	@PostMapping("/DashBoard/phonefixs/addphoto")
@@ -111,6 +126,9 @@ public class PhoneFixController {
 
 		return "訂單新增成功!!";
 	}
+	
+	
+	
 	//拿到fixphotoid
 	@ResponseBody
 	@GetMapping("/phonefixs/fixphotoid")
@@ -129,6 +147,8 @@ public class PhoneFixController {
 		return null;
 
 	}
+	
+	
 	//將圖片丟入此phonefix
 	@GetMapping("/phonefixs/downloadfixphoto")
 	public ResponseEntity<?> downloadfixphoto(@RequestParam Integer id) {
@@ -143,4 +163,73 @@ public class PhoneFixController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	//前台主頁面新增
+    @GetMapping("/phonefixs/userlist")
+    public String userList() {
+//    	HttpSession session = request.getSession();
+//    	 
+//        if (user != null) {
+//            session.setAttribute("userId", user.getUserId());
+//            session.setAttribute("userName", user.getUserName());
+//        } else {
+//            // 處理用戶未找到的情況
+//            return "redirect:/login"; // 假設有一個登錄頁面
+        return "phonefix/userlist"; // 这里的 "userlist" 是指你的模板文件名，如 userlist.html
+    }
+	
+//前台導向新增表單的頁面
+	@GetMapping("/phonefixs/frontform1")
+	public String frontform1() {
+		return "phonefix/frontform";
+	}
+	//前台新增表單
+	@Transactional
+	@ResponseBody
+	@PostMapping("/phonefixs/frontform")
+	public String frontform(@RequestParam String fixName, @RequestParam String fixDate, @RequestParam String fixCost,
+			@RequestParam String fixPort, @RequestParam String fixState, @RequestParam("file") MultipartFile[] files,HttpServletRequest request)
+			throws IOException {
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("userId");
+		//Users user = (String) session.getAttribute("userId");
+		Users users = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+//		users.setUserId(userId);
+		PhoneFixBean fixbean = new PhoneFixBean();
+		fixbean.setUser(users);
+		fixbean.setFixName(users.getUserName());
+		fixbean.setFixDate(fixDate);
+		fixbean.setFixCost(fixCost);
+		fixbean.setFixPort(fixPort);
+		fixbean.setFixState(fixState);
+        rp.save(fixbean);
+		List<PhoneFixPhotoBean> phoneFixPhotoBeanList = new ArrayList<>();
+
+		for (MultipartFile oneFile : files) {
+			PhoneFixPhotoBean phoneFixPhotoBean = new PhoneFixPhotoBean();
+			phoneFixPhotoBean.setPhotoFile(oneFile.getBytes());
+			phoneFixPhotoBean.setFixbean(fixbean); // 多個照片set到一個houseid
+
+			phoneFixPhotoBeanList.add(phoneFixPhotoBean);
+		}
+
+		fixbean.setFixPhotoBean(phoneFixPhotoBeanList); // 1個houseid set 到多個照片
+
+		rp.save(fixbean);
+
+		return "訂單新增成功!!";
+	}
+//	@PostMapping("/ticketmart/api/goods")
+//	public String addCart(@RequestParam("id") Integer id, HttpServletRequest request) {
+//		HttpSession session = request.getSession();
+//		Integer memberId = (Integer) session.getAttribute("memberid");
+//		System.out.println("這裡是ticketmart/api/goods:  BBBB" + memberId );
+//		Optional<Ticket> ticketOp = ticketRepository.findById(id);
+//		if (ticketOp.isPresent()) {
+//			Ticket ticket = ticketOp.get();
+//			cartService.addcart(memberId, id);
+//			return "redirect:/ticketmart/cart";
+//		} else {
+//			return "redirect:/Ticketproduct/mallPage1";
+//		}
+//	}
 }
