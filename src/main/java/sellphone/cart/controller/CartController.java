@@ -5,12 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.web.bind.annotation.ResponseBody;
+import sellphone.cart.model.Cart;
 import sellphone.cart.model.CartSummary;
 import sellphone.cart.model.CartView;
 import sellphone.cart.repository.CartViewRepository;
@@ -35,6 +33,12 @@ public class CartController {
 
     @Autowired
     private CartViewRepository cartViewRepository;
+
+    //加入購物車
+    @PostMapping("/addcart")
+    public Cart addProductToCart(@RequestBody Cart cart) {
+        return cartService.addProductToCart(cart);
+    }
 
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
@@ -85,18 +89,22 @@ public class CartController {
 
     @PostMapping("/cart/update")
     @ResponseBody
-    public String updateQuantity(@RequestParam("productId") int productId,
-                                 @RequestParam("userId") String userId,
-                                 @RequestParam("delta") int delta) {
+    public String updateCartQuantity(@RequestParam int productId, @RequestParam String userId, @RequestParam int delta) {
         try {
             cartService.updateQuantity(productId, userId, delta);
             return "數量更新成功";
         } catch (Exception e) {
-            return "更新失敗";
+            return "更新數量失敗";
         }
     }
 
-    @PostMapping("/remove")
+    @GetMapping("/cart/summary")
+    @ResponseBody
+    public CartSummary getCartSummary(@RequestParam String userId) {
+        return cartService.getCartSummary(userId);
+    }
+
+    @PostMapping("/cart/remove")
     public ResponseEntity<String> removeItem(@RequestParam int productId, @RequestParam String userId) {
         try {
             cartService.removeItem(productId, userId);
@@ -106,15 +114,6 @@ public class CartController {
         }
     }
 
-//    @PostMapping("/checkout")
-//    public ResponseEntity<String> checkout(@RequestParam String userId) {
-//        try {
-//            cartService.checkout(userId);
-//            return ResponseEntity.ok("結帳成功");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("結帳失敗");
-//        }
-//    }
 
 }
 

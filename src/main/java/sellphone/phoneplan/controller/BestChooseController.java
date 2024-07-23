@@ -28,7 +28,7 @@ public class BestChooseController {
     }
    //測試 
     
-    @GetMapping("/DashBoard/phoneplans/look")
+    @GetMapping("/phoneplans/look")
     
     public String showBest() {
         return "phoneplan/phoneplaninformation"; 

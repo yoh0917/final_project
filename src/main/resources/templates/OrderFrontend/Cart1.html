@@ -89,13 +89,13 @@
 						<td th:text="${cart.color}">顏色</td>
 						<td style="display: none;" th:text="${cart.storage}">儲存空間</td>
 						<td>
-							<button type="button" class="btn btn-outline-secondary quantity-decrease" data-id="[[${cart.productId}]]" data-user="[[${cart.userId}]]">-</button>
+							<button type="button" class="btn btn-outline-secondary quantity-decrease" th:data-id="${cart.productId}" th:data-user="${session.user.userName}">-</button>
 							<span class="quantity" th:text="${cart.quantity}"></span>
-							<button type="button" class="btn btn-outline-secondary quantity-increase" data-id="[[${cart.productId}]]" data-user="[[${cart.userId}]]">+</button>
+							<button type="button" class="btn btn-outline-secondary quantity-increase" th:data-id="${cart.productId}" th:data-user="${session.user.userName}">+</button>
 						</td>
 						<td class="price" th:text="'$' + ${cart.price}"></td>
 						<td>
-							<button type="button" data-id="[[${cart.productId}]]" data-user="[[${cart.userId}]]" class="btn btn-danger remove-item">刪除</button>
+							<button type="button" data-id="[[${cart.productId}]]" data-user="[[${session.user.userName}]]" class="btn btn-danger remove-item">刪除</button>
 						</td>
 					</tr>
 					</tbody>
@@ -120,7 +120,7 @@
 			</table>
 			<div style="margin-top: 20px;">
 				<a th:href="@{/front/productlist}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">繼續購物</a>
-				<button class="btn btn-default" style="background-color: black; color: white; text-align: center;" onclick="checkout()">結帳</button>
+				<a th:href="@{/orders/checkout1}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">結帳</a>
 			</div>
 		</div>
 	</div>
@@ -133,34 +133,43 @@
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 		function updateQuantity(productId, userId, delta) {
-			const xhr = new XMLHttpRequest();
-			xhr.open('POST', '/cart/update');
-			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			xhr.onload = function() {
-				if (xhr.status === 200 && xhr.responseText === "數量更新成功") {
-					const summaryXhr = new XMLHttpRequest();
-					summaryXhr.open('GET', '/cart/summary?userId=' + userId);
-					summaryXhr.onload = function() {
-						if (summaryXhr.status === 200) {
-							const summary = JSON.parse(summaryXhr.responseText);
-							document.getElementById('total-items').innerText = summary.totalItems;
-							document.getElementById('subtotal').innerText = '$' + summary.totalPrice;
-							document.getElementById('total').innerText = '$' + summary.totalPrice;
-							const quantityElem = document.querySelector('button[data-id="' + productId + '"]').parentElement.querySelector('.quantity');
-							quantityElem.innerText = parseInt(quantityElem.innerText, 10) + delta;
+			fetch('/sellphone/cart/update', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				body: `productId=${productId}&userId=${userId}&delta=${delta}`
+			})
+					.then(response => {
+						if (response.ok) {
+							return response.text();
+						} else {
+							throw new Error('Network response was not ok');
 						}
-					};
-					summaryXhr.send();
-				} else {
-					alert('更新數量失敗');
-				}
-			};
-			xhr.send('productId=' + productId + '&userId=' + userId + '&delta=' + delta);
+					})
+					.then(data => {
+						if (data === "數量更新成功") {
+							fetch(`/sellphone/cart/summary?userId=${userId}`)
+									.then(response => response.json())
+									.then(summary => {
+										document.getElementById('total-items').innerText = summary.totalItems;
+										document.getElementById('subtotal').innerText = '$' + summary.totalPrice;
+										document.getElementById('total').innerText = '$' + summary.totalPrice;
+										const quantityElem = document.querySelector(`.quantity[data-id="${productId}"]`);
+										if (quantityElem) {
+											quantityElem.innerText = parseInt(quantityElem.innerText, 10) + delta;
+										}
+									});
+						} else {
+							alert('更新數量失敗');
+						}
+					})
+					.catch(error => console.error('Error:', error));
 		}
 
 		document.querySelectorAll('.quantity-increase').forEach(function(button) {
 			button.addEventListener('click', function() {
-				const id = this.getAttribute('data-id');
+				const id = parseInt(this.getAttribute('data-id'));
 				const userId = this.getAttribute('data-user');
 				updateQuantity(id, userId, 1);
 			});
@@ -168,7 +177,7 @@
 
 		document.querySelectorAll('.quantity-decrease').forEach(function(button) {
 			button.addEventListener('click', function() {
-				const id = this.getAttribute('data-id');
+				const id = parseInt(this.getAttribute('data-id'));
 				const userId = this.getAttribute('data-user');
 				updateQuantity(id, userId, -1);
 			});
@@ -176,39 +185,28 @@
 
 		document.querySelectorAll('.remove-item').forEach(function(button) {
 			button.addEventListener('click', function() {
-				const id = this.getAttribute('data-id');
+				const id = parseInt(this.getAttribute('data-id'));
 				const userId = this.getAttribute('data-user');
 				if (confirm('您確定要刪除這個商品嗎？')) {
-					const xhr = new XMLHttpRequest();
-					xhr.open('POST', '/cart/remove');
-					xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-					xhr.onload = function() {
-						if (xhr.status === 200 && xhr.responseText === "刪除成功") {
-							window.location.reload();
-						} else {
-							alert('刪除失敗');
-						}
-					};
-					xhr.send('productId=' + id + '&userId=' + userId);
+					fetch('/sellphone/cart/remove', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						},
+						body: `productId=${id}&userId=${userId}`
+					})
+							.then(response => response.text())
+							.then(data => {
+								if (data === "刪除成功") {
+									window.location.reload();
+								} else {
+									alert('刪除失敗');
+								}
+							})
+							.catch(error => console.error('Error:', error));
 				}
 			});
 		});
-
-		function checkout() {
-			const userId = '[[${session.user.userName}]]';
-			const xhr = new XMLHttpRequest();
-			xhr.open('POST', '/cart/checkout');
-			xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-			xhr.onload = function() {
-				if (xhr.status === 200 && xhr.responseText === "結帳成功") {
-					alert('結帳成功');
-					window.location.href = '/order/confirmation';
-				} else {
-					alert('結帳失敗');
-				}
-			};
-			xhr.send('userId=' + userId);
-		}
 	});
 </script>
 

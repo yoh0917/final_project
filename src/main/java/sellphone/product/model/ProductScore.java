@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,7 +44,7 @@ public class ProductScore {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") // 若要在 thymeleaf 強制使用本格式，需雙層大括號
 	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime localDateTime;
-	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "productid",insertable=false, updatable=false)
 	private Product product;

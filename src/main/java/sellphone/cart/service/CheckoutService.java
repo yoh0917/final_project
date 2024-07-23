@@ -22,6 +22,9 @@ import sellphone.cart.repository.CartRepository;
 public class CheckoutService {
 
 	@Autowired
+	private CartRepository cartRepository;
+
+	@Autowired
 	private CartViewRepository cartViewRepository;
 
 	@Autowired
@@ -30,10 +33,16 @@ public class CheckoutService {
 	@Autowired
 	private OrderDetailRepository orderDetailRepository;
 
-	@Autowired
-	private CartRepository cartRepository;
-
 	private AtomicInteger sequence = new AtomicInteger();
+
+
+	public List<CartView> getCartByUserId(String userId) {
+		return cartViewRepository.findByUserId(userId);
+	}
+
+	public int calculateTotalAmount(List<CartView> carts) {
+		return carts.stream().mapToInt(cart -> cart.getPrice() * cart.getQuantity()).sum();
+	}
 
 	public String generateOrderId() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -127,13 +136,6 @@ public class CheckoutService {
 		}
 	}
 
-	public List<CartView> getCartByUserId(String userId) {
-		return cartViewRepository.findByUserId(userId);
-	}
-
-	public int calculateTotalAmount(List<CartView> carts) {
-		return carts.stream().mapToInt(cart -> cart.getPrice() * cart.getQuantity()).sum();
-	}
 
 
 //	@Transactional
