@@ -85,18 +85,21 @@ public class CartController {
 
     @PostMapping("/cart/update")
     @ResponseBody
-    public String updateQuantity(@RequestParam("productId") int productId,
-                                 @RequestParam("userId") String userId,
-                                 @RequestParam("delta") int delta) {
+    public String updateCartQuantity(@RequestParam int productId, @RequestParam String userId, @RequestParam int delta) {
         try {
             cartService.updateQuantity(productId, userId, delta);
             return "數量更新成功";
         } catch (Exception e) {
-            return "更新失敗";
+            return "更新數量失敗";
         }
     }
 
-    @PostMapping("/remove")
+    @GetMapping("/cart/summary")@ResponseBody
+    public CartSummary getCartSummary(@RequestParam String userId) {
+        return cartService.getCartSummary(userId);
+    }
+
+    @PostMapping("/cart/remove")
     public ResponseEntity<String> removeItem(@RequestParam int productId, @RequestParam String userId) {
         try {
             cartService.removeItem(productId, userId);

@@ -10,8 +10,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartPK implements Serializable {
+	private int productId;
     private String userId;
-    private int productId;
+
     
 //    public CartPK() {
 //	}

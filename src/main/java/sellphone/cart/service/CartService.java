@@ -11,10 +11,7 @@ import sellphone.cart.repository.CartViewRepository;
 import sellphone.cart.repository.CartRepository;
 import sellphone.product.model.ProductRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CartService {
@@ -33,36 +30,27 @@ public class CartService {
     }
 
     public void updateQuantity(int productId, String userId, int delta) {
-        Cart cart = cartRepository.findById(new CartPK(userId, productId)).orElse(null);
-        if (cart != null) {
-            int newQuantity = cart.getQuantity() + delta;
-            if (newQuantity > 0) {
-                cart.setQuantity(newQuantity);
-                cartRepository.save(cart);
-            } else {
-                cartRepository.delete(cart);
-            }
-        }
-    }
-
-    @Transactional
-    public String removeItem(int productId, String userId) {
-        Optional<Cart> optionalCart = cartRepository.findById(new CartPK(userId, productId));
-        if (optionalCart.isPresent()) {
-            cartRepository.delete(optionalCart.get());
-            return "商品已移除";
-        } else {
-            // Handle case where cart item is not found
-            return "商品未找到";
-        }
+        Cart cart = cartRepository.findById(new CartPK(productId, userId))
+                .orElseThrow(() -> new NoSuchElementException("Cart not found"));
+        cart.setQuantity(cart.getQuantity() + delta);
+        cartRepository.save(cart);
     }
 
     public CartSummary getCartSummary(String userId) {
-        List<CartView> cartItems = getCartItems(userId);
-        int totalItems = cartItems.stream().mapToInt(CartView::getQuantity).sum();
-        int totalPrice = cartItems.stream().mapToInt(cart -> cart.getPrice() * cart.getQuantity()).sum();
+        List<Cart> carts = cartRepository.findByUserId(userId);
+        System.out.println(carts);
+        int totalItems = carts.stream().mapToInt(Cart::getQuantity).sum();
+        System.out.println(totalItems);
+        int totalPrice = carts.stream().mapToInt(cart -> cart.getQuantity() * cart.getPrice()).sum();
+        System.out.println(totalItems);
         return new CartSummary(totalItems, totalPrice);
     }
+
+    public void removeItem(int productId, String userId) {
+        CartPK cartPK = new CartPK(productId, userId);
+        cartRepository.deleteById(cartPK);
+    }
+
 //    @Autowired
 //    private CartRepository cartRepository;
 //
