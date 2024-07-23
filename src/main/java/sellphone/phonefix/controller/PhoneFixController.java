@@ -21,12 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import sellphone.user.model.UserRepository;
+import sellphone.user.model.Users;
 import sellphone.phonefix.model.PhoneFixBean;
 import sellphone.phonefix.model.PhoneFixPhotoBean;
 import sellphone.phonefix.model.PhoneFixPhotoRepository;
 import sellphone.phonefix.model.PhoneFixRepository;
 import sellphone.phoneplan.model.UsersRepository;
-import sellphone.user.model.Users;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -165,10 +166,15 @@ public class PhoneFixController {
 	
 	//前台主頁面新增
 	@GetMapping("/phonefixs/userlist")
-	public String userlist() {
+	public String userlist(HttpServletRequest request,Model model) {
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("userId");
+		List<PhoneFixBean> list = rp.findListById(userId);
+		model.addAttribute("list", list);
 	    return "phonefix/userlist"; // 这里的 "userlist" 是指你的模板文件名，如 userlist.html
 	}
 	
+
 //前台導向新增表單的頁面
 	@GetMapping("/phonefixs/frontform1")
 	public String frontform1(HttpServletRequest request,Model model) {
