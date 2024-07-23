@@ -52,17 +52,12 @@ public class UserController {
 	@Autowired
 	private UserPasswordTokenRepository userPasswordTokenRepository;
 
-//	@GetMapping("/TestEmail")
-//	@ResponseBody
-//	public String testEmail() {	
-//		
-//		uMailService.sendSimpleHtml(
-//                List.of("eeit183test@gmail.com", "leo312654@gmail.com"),
-//                "Simple html",
-//                "<html><body><p>你好！</p><p>My name is <b>Vincent</b>.</p></body></html>"
-//        );		
-//		return "Test sucessfully";
-//	}
+	@GetMapping("/Test")
+	@ResponseBody
+	public String testEmail() {	
+		System.out.println("test");
+		return "";
+	}
 
 //	--------------------------------------  UserInfo controller ----------------------------------------------------
 	@GetMapping("/UserInfoList")
