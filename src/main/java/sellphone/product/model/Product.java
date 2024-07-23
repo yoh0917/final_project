@@ -48,7 +48,13 @@ public class Product {
 	
 	private String capacity;
 	
-	private Integer productviewnumber;
+	private Double totalSocreNum;		//總分
+	
+	private Integer productviewnumber;  //觀看次數
+	
+	private Integer totalScore;		//總評論次數
+	
+	private Double avgScore;  //平均分數
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private List<Photo> productPhoto = new ArrayList<>();
