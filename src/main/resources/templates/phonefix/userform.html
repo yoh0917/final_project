@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+    <meta charset="UTF-8">
+    <title>售後維修</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link th:href="@{/layout/css/header.css}" rel="stylesheet">
+</head>
+
+<body>
+    <div th:replace="~{/layout/header.html}"></div>
+
+    <!-- 新增的內容開始 -->
+    <div class="container mt-3">
+        <button id="navigateButton" class="btn btn-primary">前往 frontform 頁面</button>
+        <div id="welcomeMessage" class="mt-3"></div>
+    </div>
+    <!-- 新增的內容結束 -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <script>
+        // 按鈕點擊事件
+        document.getElementById('navigateButton').addEventListener('click', function() {
+            window.location.href = 'frontform';
+        });
+
+        // 使用 axios 獲取用戶名
+        axios.get('/getUserName') // 假設後端接口為 /getUserName
+            .then(function(response) {
+                var userName = response.data.userName;
+                document.getElementById('welcomeMessage').innerText = '歡迎 ' + userName + ' 登入';
+            })
+            .catch(function(error) {
+                console.error('Error fetching userName:', error);
+            });
+    </script>
+</body>
+
+</html>
