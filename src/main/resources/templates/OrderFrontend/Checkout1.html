@@ -12,8 +12,27 @@
     <link th:href="@{/shoppingcart/checkout/css/style.default.css}" rel="stylesheet" id="theme-stylesheet">
     <link th:href="@{/shoppingcart/checkout/css/custom.css}" rel="stylesheet">
     <link rel="shortcut icon" th:href="@{/shoppingcart/checkout/img/favicon.png}">
+    <link th:href="@{/shoppingcart/cart/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+    <link th:href="@{/shoppingcart/cart/css/style.css}" rel="stylesheet" type="text/css" media="all" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
+    <link th:href="@{/shoppingcart/cart/css/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <script th:src="@{/shoppingcart/cart/js/wow.min.js}"></script>
+    <div th:replace="~{/layout/headerStylesheet.html}"></div>
+    <script>
+        new WOW().init();
+    </script>
+    <style>
+        body {
+            padding-top: 100px; /* 確保內容不被header遮住 */
+        }
+    </style>
 </head>
 <body>
+<!-- Header -->
+<div class="header" th:replace="~{/layout/header.html}"></div>
+
 <div class="container">
     <section class="py-5">
         <h2 class="h5 text-uppercase mb-4">帳單詳細資料</h2>
@@ -107,6 +126,10 @@
         </div>
     </section>
 </div>
+
+<!-- Footer -->
+<div th:replace="~{/layout/footer.html}"></div>
+
 <script th:src="@{/shoppingcart/checkout/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/vendor/glightbox/js/glightbox.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.js}"></script>
