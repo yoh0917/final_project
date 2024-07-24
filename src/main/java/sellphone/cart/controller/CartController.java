@@ -35,11 +35,27 @@ public class CartController {
     private CartViewRepository cartViewRepository;
 
     //加入購物車
-    @PostMapping("/addcart")
-    public Cart addProductToCart(@RequestBody Cart cart) {
+    @ResponseBody
+    @GetMapping("/addcart")
+    public Cart addProductToCart(
+    		@RequestParam String userId,
+    		@RequestParam int productId,
+    		@RequestParam String color,
+    		@RequestParam String storage,
+    		@RequestParam int quantity,
+    		@RequestParam int price   		
+    		) {  	
+    	Cart cart = new Cart();
+    	cart.setProductId(productId);
+    	cart.setUserId(userId);
+    	cart.setPrice(price);
+    	cart.setColor(color);
+    	cart.setStorage(storage);
+    	cart.setQuantity(quantity);
         return cartService.addProductToCart(cart);
     }
-
+    
+    
     @GetMapping("/cart")
     public String showCart(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
