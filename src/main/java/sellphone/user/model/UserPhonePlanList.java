@@ -77,7 +77,17 @@ public class UserPhonePlanList {
 	public void setPhoneNum(String phoneNum) {
 		this.phoneNum = phoneNum;
 	}
+// qr code 使用//
+    private String qrCodePath;
 
+	 public String getQrCodePath() {
+	        return qrCodePath;
+	    }
+
+	    public void setQrCodePath(String qrCodePath) {
+	        this.qrCodePath = qrCodePath;
+	    }
+	 // qr code 使用//
 
 	
 	
