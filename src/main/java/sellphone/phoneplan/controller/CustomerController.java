@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import sellphone.phoneplan.model.PhonePlanBean;
+import sellphone.phoneplan.model.SmsService;
 import sellphone.phoneplan.service.CustomerService;
 import sellphone.user.model.UserPhonePlanList;
 import sellphone.user.model.UserPhonePlanListRepository;
@@ -33,6 +34,9 @@ public class CustomerController {
 
     @Autowired
     private UserPhonePlanListRepository userPPPLR;
+
+    @Autowired
+    private SmsService smsService;
 
     @GetMapping("/DashBoard/customers/create")
     public String createCustomerForm(Model model) {
@@ -60,6 +64,11 @@ public class CustomerController {
         userPPL.setQrCodePath("/qr-codes/" + userPPL.getPlanID() + ".png");
 
         customerService.saveCustomer(userPPL);
+
+        // 發送簡訊
+        String message = String.format("您已成功申辦方案:\n方案名稱: %s\n電信公司: %s\n合約類型: %s\n詳情請查看: %s", 
+                                       selectedPlan.getPlanName(), selectedPlan.getTelCompany(), selectedPlan.getContractType(), qrCodeText);
+        smsService.sendSMS(phoneNum, message);
 
         return "redirect:/DashBoard/customers/plans";
     }
