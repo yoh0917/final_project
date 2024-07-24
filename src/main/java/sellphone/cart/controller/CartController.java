@@ -36,7 +36,7 @@ public class CartController {
 
     //加入購物車
     @ResponseBody
-    @GetMapping("/addcart")
+    @GetMapping("/addproductcart")
     public Cart addProductToCart(
     		@RequestParam String userId,
     		@RequestParam int productId,
@@ -53,6 +53,26 @@ public class CartController {
     	cart.setStorage(storage);
     	cart.setQuantity(quantity);
         return cartService.addProductToCart(cart);
+    }
+
+    //直接購買
+    @GetMapping("/addtocart")
+    public String addToCart(
+            @RequestParam String userId,
+            @RequestParam int productId,
+            @RequestParam String color,
+            @RequestParam String storage,
+            @RequestParam int quantity,
+            @RequestParam int price
+    ) {
+        Cart cart = new Cart();
+        cart.setProductId(productId);
+        cart.setUserId(userId);
+        cart.setPrice(price);
+        cart.setColor(color);
+        cart.setStorage(storage);
+        cart.setQuantity(quantity);
+        return "redirect:OrderFrontend/Cart1";
     }
     
     

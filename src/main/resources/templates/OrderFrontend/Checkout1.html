@@ -153,33 +153,26 @@
             detailAddress: document.getElementById("addressalt").value
         };
 
-        var orderDetails = [];
-        document.querySelectorAll(".order-item").forEach((item, index) => {
-            orderDetails.push({
-                detailId: (index + 1).toString(),
-                orderId: order.orderId,
-                productId: parseInt(item.dataset.productId),
-                productName: item.querySelector(".product-name").innerText,
-                quantity: parseInt(item.querySelector(".product-quantity").innerText),
-                price: parseFloat(item.querySelector(".product-price").innerText),
-                total: parseFloat(item.querySelector(".product-price").innerText) * parseInt(item.querySelector(".product-quantity").innerText)
-            });
-        });
-
-        fetch('/sellphone/orders/save', { // 確保這裡的URL正確
+        fetch('/sellphone/orders/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ order: order, orderDetails: orderDetails })
+            body: JSON.stringify({ order: order })
         })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
                 }
-                return response.text();
+                return response.json();
             })
-            .then(data => alert("已成功插入資料庫"))
+            .then(data => {
+                if (data.success) {
+                    alert("已成功插入資料庫");
+                } else {
+                    alert("插入資料庫失敗: " + data.message);
+                }
+            })
             .catch(error => alert('插入資料庫失敗: ' + error.message));
     }
 
@@ -197,3 +190,4 @@
 </script>
 </body>
 </html>
+<!---->

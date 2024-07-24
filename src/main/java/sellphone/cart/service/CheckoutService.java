@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import sellphone.cart.model.CartView;
 import sellphone.cart.repository.CartViewRepository;
 import sellphone.orders.model.Order;
@@ -21,20 +22,52 @@ import sellphone.orders.repository.OrderRepository;
 public class CheckoutService {
 
 	@Autowired
-	private CartViewRepository cartViewRepository;
-
-	@Autowired
 	private OrderRepository orderRepository;
 
 	@Autowired
 	private OrderDetailRepository orderDetailRepository;
 
-	private AtomicInteger sequence = new AtomicInteger();
+	@Autowired
+	private CartViewRepository cartViewRepository;
+
+	private static final AtomicInteger sequence = new AtomicInteger(0);
+
+	@Transactional
+	public void saveOrderAndDetails(Order order) {
+		// Generate order ID
+		order.setOrderId(generateOrderId());
+
+		// Save order to O0001_ORDER
+		orderRepository.save(order);
+
+		// Fetch shopping cart details for the user from S1001_SHOPPINGCART_V
+		List<CartView> cartItems = cartViewRepository.findByUserId(order.getUserId());
+
+		// Create order details and save to O0002_ORDERDETAIL
+		int detailIdCounter = 1;
+		for (CartView cart : cartItems) {
+			OrderDetail orderDetail = new OrderDetail();
+			orderDetail.setDetailId(generateDetailId(detailIdCounter++));
+			orderDetail.setOrderId(order.getOrderId());
+			orderDetail.setProductId(cart.getProductId());
+			orderDetail.setColor(cart.getColor());
+			orderDetail.setStorage(cart.getStorage());
+			orderDetail.setQuantity(cart.getQuantity());
+			orderDetail.setPrice(cart.getPrice());
+			orderDetailRepository.save(orderDetail);
+		}
+	}
 
 	public String generateOrderId() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		String dateStr = sdf.format(new Date());
 		return "S" + dateStr + String.format("%03d", sequence.incrementAndGet());
+	}
+
+	private String generateDetailId(int counter) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String dateStr = sdf.format(new Date());
+		return "D" + dateStr + String.format("%03d", counter);
 	}
 
 	public Order createOrder(Map<String, Object> requestData, String userId) {
