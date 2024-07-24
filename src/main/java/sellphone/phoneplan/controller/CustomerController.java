@@ -54,7 +54,6 @@ public class CustomerController {
         userPPL.setPhoneNum(phoneNum);
         userPPL.setAgreementDate(LocalDateTime.now().toString());
 
-        // 生成 QR 碼並設置 QR 碼路徑
         String qrCodeText = "http://localhost:8081/sellphone/planDetail?plan=" + selectedPlan.getPlanName() + "&phoneNum=" + phoneNum;
         String filePath = "./src/main/resources/static/qr-codes/" + userPPL.getPlanID() + ".png";
         generateQRCode(qrCodeText, filePath);
@@ -105,7 +104,6 @@ public class CustomerController {
         UserPhonePlanList userPPL = userPPPLR.findById(userPhonePlanID).orElse(null);
 
         if (userPPL != null) {
-            // 找到新的 phone plan
             List<PhonePlanBean> newPhonePlanList = customerService.findPhonePlansByName(planName);
             if (newPhonePlanList.isEmpty()) {
                 model.addAttribute("error", "找不到");
@@ -124,7 +122,6 @@ public class CustomerController {
         return "redirect:/DashBoard/customers/plans";
     }
 
-    // 生成 QR 碼方法
     private void generateQRCode(String text, String filePath) throws Exception {
         File directory = new File("./src/main/resources/static/qr-codes");
         if (!directory.exists()) {
@@ -138,10 +135,9 @@ public class CustomerController {
 
     @GetMapping("/planDetail")
     public String showPlanDetail(@RequestParam("plan") String planName, @RequestParam("phoneNum") String phoneNum, Model model) {
-        // 查詢並顯示計劃詳情
         PhonePlanBean plan = customerService.findPhonePlansByName(planName).stream().findFirst().orElse(null);
         if (plan == null) {
-            return "error"; // 或者返回一個錯誤頁面
+            return "error"; 
         }
         model.addAttribute("plan", plan);
         model.addAttribute("phoneNum", phoneNum);
