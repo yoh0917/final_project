@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>商品詳細資料</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+	<!-- Favicon-->
+	<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+	<!-- Bootstrap icons-->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+	<!-- Core theme CSS (includes Bootstrap)-->
+	<link th:href="@{/css/styles.css}" rel="stylesheet" />
+	<link th:href="@{/layout/css/header.css}" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+	<style>
+		.carousel-item img {
+			max-width: 100%;
+			height: 600px;
+		}
+
+		.carousel-inner {
+			padding: 20px;
+			border-radius: 5px;
+		}
+
+		.star-rating {
+			display: flex;
+			direction: row;
+		}
+
+		.star {
+			font-size: 2rem;
+			color: gray;
+			cursor: pointer;
+		}
+
+		.star.hover,
+		.star.selected {
+			color: gold;
+		}
+
+		.filled {
+			color: gold;
+		}
+
+		.star2 {
+			position: relative;
+			font-size: 1.5rem;
+			display: inline-block;
+		}
+
+		.star-full {
+			color: #FFD700;
+			/* 金色 */
+		}
+
+		.star-half::before {
+			content: '\2605';
+			/* 空星 */
+			color: #FFD700;
+			/* 金色 */
+			position: absolute;
+			width: 50%;
+			overflow: hidden;
+		}
+
+		.star-empty {
+			color: #ddd;
+			/* 灰色 */
+		}
+	</style>
+</head>
+
+<body>
+
+	<div th:replace="~{/layout/header.html}"></div>
+	<section class="py-5 mt-5">
+		<br> <br>
+		<div class="container">
+			<h2 class="display-4 mb-5">所有評論</h2>
+
+			<div class="row">
+				<th:block th:each="comment : ${allScore}">
+					<div class="col-lg-6 mb-4">
+						<div class="card shadow-sm">
+							<div class="card-body">
+								<h5 class="card-title" th:text="'用戶暱稱: ' + ${comment.userName}"></h5>
+								<p class="card-text">評分:</p>
+								<div class="star-rating mb-3">
+									<span th:each="i : ${#numbers.sequence(1,5)}"
+										th:classappend="${i <= comment.scorenum ? 'text-warning' : 'text-muted'}"
+										style="font-size: 1.5rem;">&#9733;</span>
+								</div>
+								<p class="card-text" th:text="'評論: ' + ${comment.review}"></p>
+							</div>
+						</div>
+					</div>
+				</th:block>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer-->
+	<div th:replace="~{/layout/footer.html}"></div>
+
+	<!-- Bootstrap core JS-->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- SweetAlert2 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+	<script>
+
+
+
+
+	</script>
+
+</body>
+
+</html>

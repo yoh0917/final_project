@@ -149,6 +149,19 @@ public class ProductController {
 		return "product/ProductFrontOne";
 	}
 	
+	
+	//找全部評論
+	@GetMapping("/front/allScore")
+	public String showAllScore(@RequestParam Integer productid,Model m) {
+		List<ProductScore> allScore = pService.findAllScore(productid);
+		m.addAttribute("allScore",allScore);
+		
+		return "product/AllScore";
+	}
+	
+	
+	
+	
 	//用brand找商品
 	@GetMapping("/front/productbrand")
 	public String frontBrand(@RequestParam("productbrand")String productbrand,Model m){
