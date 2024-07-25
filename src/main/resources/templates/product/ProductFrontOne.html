@@ -58,7 +58,7 @@
 			/* 金色 */
 		}
 
-		.star-half::before {
+		.star-half:before {
 			content: '\2605';
 			/* 空星 */
 			color: #FFD700;
@@ -72,6 +72,10 @@
 			color: #ddd;
 			/* 灰色 */
 		}
+		.star-half {
+    position: relative;
+    color: #ddd; /* 灰色，為了覆蓋黑色的外框 */
+}
 	</style>
 </head>
 
@@ -111,8 +115,6 @@
 							<span th:if="${i > product.avgScore && i - 1 >= product.avgScore}"
 								class="star-empty">&#9734;</span> <!-- 空星 -->
 						</span>
-
-
 					</div>
 					<input type="hidden" id="productid" th:value="${product.productid}">
 					<input type="hidden" id="userid" th:value="${session.userId}?${session.userId}"> <input
@@ -122,18 +124,18 @@
 						<span id="price" th:text="${product.price}"></span>
 					</div>
 					<div class="fs-5 mb-5">
-
 						<br> <br>
 						<div class="d-flex">
 							<input class="form-control text-center me-3" id="inputQuantity" type="number" value="1"
 								min="1" max="5" style="max-width: 5rem" />
-							<button class="btn btn-outline-dark flex-shrink-0" type="button" onclick="sendtopay()">
-								<i class="bi-cart-fill me-1"></i> 直接購買
-							</button>
-							<button class="btn btn-outline-dark flex-shrink-0 ms-2" type="button" id="sendtopay"
-								onclick="showAlert()">
+							<button th:if="${session.loginUsername}" class="btn btn-outline-dark flex-shrink-0 ms-2"
+								type="button" id="sendtopay" onclick="showAlert()">
 								<i class="bi-cart-plus-fill me-1"></i> 加入購物車
 							</button>
+							<a href="http://localhost:8081/sellphone/UserLogin" th:if="${session.loginUsername ==null}"
+								class="btn btn-outline-dark flex-shrink-0 ms-2">
+								<i class="bi-cart-plus-fill me-1"></i> 加入購物車
+							</a>
 						</div>
 					</div>
 					<p class="lead" th:text="${product.description}"></p>
@@ -147,11 +149,16 @@
 	<br>
 	<section class="py-5 mt-5">
 		<div class="container">
-			<h2 class="display-4 mb-5">評論區</h2>
+
+			<h2 class="display-4 mb-5 ">最新評論</h2>
 			<div class="row">
 				<!-- 評論列表 -->
 				<div class="col-lg-6">
-					<h3 class="mb-4">用戶評論</h3>
+					<div class="d-flex align-items-center">
+						<h3 class="mb-4 d-inline-block">用戶評論</h3>
+						<a class="btn btn-outline-dark ms-auto"
+							th:href="@{/front/allScore(productid=${product.productid})}">更多評論</a>
+					</div>
 					<div th:each="comment : ${allScore}" class="card mb-4 shadow-sm">
 						<div class="card-body">
 							<h5 class="card-title" th:text="'用戶暱稱: ' + ${comment.userName}"></h5>
