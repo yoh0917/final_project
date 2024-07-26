@@ -127,7 +127,7 @@ h2 {
 				<thead>
 					<tr>
 						<th>維修編號</th>
-						<th>送修者</th>
+						<th>客戶姓名</th>
 						<th>送修日期</th>
 						<th>維修費用</th>
 						<th>維修細節</th>
@@ -203,7 +203,7 @@ h2 {
 						<div class="form-group">
 							<label for="fixPhoto">手機照片上傳</label>
 							<div class="custom-file">
-								<input type="file" class="custom-file-input" id="fixPhoto" name="file" required>
+								<input type="file" class="custom-file-input" id="fixPhoto" name="file" accept="image/jpeg,image/png,image/webp" required>
 								<label class="custom-file-label" for="fixPhoto">選擇照片...</label>
 							</div>
 						</div>
@@ -224,11 +224,11 @@ h2 {
 
 			const fixForm = document.getElementById('fixform');
 
-			// 验证 fixCost 为正值
-			const fixCost = document.getElementById('fixCost').value;
-			if (fixCost <= 0) {
-				alert('維修費用必須為正值');
-				return;
+			// fixCost 金額限制
+			   const fixCost = document.getElementById('fixCost').value;
+            if (fixCost <= 0 || fixCost > 1000000) {
+                alert('維修費用必須為正值且不超過 1,000,000');
+                return;
 			}
 
 			const formdataObject = new FormData(fixForm);
