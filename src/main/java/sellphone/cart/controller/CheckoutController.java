@@ -35,7 +35,7 @@ public class CheckoutController {
         List<CartView> carts = checkoutService.getCartByUserId(userId);
 //        List<CartView> carts = checkoutService.getCartByUserId(userId);
         model.addAttribute("carts", carts);
-//        model.addAttribute("totalAmount", checkoutService.calculateTotalAmount(carts));
+        model.addAttribute("totalAmount", checkoutService.calculateTotalAmount(carts));
         return "OrderFrontend/Checkout1";
     }
 

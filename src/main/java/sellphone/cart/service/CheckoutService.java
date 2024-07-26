@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ import sellphone.orders.model.Order;
 import sellphone.orders.model.OrderDetail;
 import sellphone.orders.repository.OrderDetailRepository;
 import sellphone.orders.repository.OrderRepository;
+
+import ecpay.payment.integration.AllInOne;
+import ecpay.payment.integration.domain.AioCheckOutALL;
+import ecpay.payment.integration.exception.EcpayException;
 
 @Service
 public class CheckoutService {
@@ -117,6 +122,20 @@ public class CheckoutService {
 		return "D" + orderId.substring(1, 14) + randomInt;
 	}
 
+//	private final AllInOne allInOne = new AllInOne("");
+//
+//	private String ecpayCheckout(String orderId, String userId) {
+//		AllInOne allInOne = new AllInOne("");
+//		// 定義 SimpleDateFormat 來格式化 Date
+//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//		Date createTime = orders.getCreateTime();
+//		// 將 Date 格式化為指定格式的字符串
+//		String formattedDate = simpleDateFormat.format(createTime);
+//		System.out.println(formattedDate);
+//
+//		return "AAA";
+//	}
+
 
 
 //	public Order createOrder(Map<String, Object> requestData, String userId) {
@@ -202,7 +221,7 @@ public class CheckoutService {
 		return cartViewRepository.findByUserId(userId);
 	}
 
-//	public int calculateTotalAmount(List<CartView> carts) {
-//		return carts.stream().collect(Collectors.summingInt(cart -> cart.getPrice() * cart.getQuantity()));
-//	}
+	public int calculateTotalAmount(List<CartView> carts) {
+		return carts.stream().collect(Collectors.summingInt(cart -> cart.getPrice() * cart.getQuantity()));
+	}
 }
