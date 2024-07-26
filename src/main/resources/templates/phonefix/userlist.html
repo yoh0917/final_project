@@ -20,7 +20,7 @@
             justify-content: center;
             flex-direction: column;
             height: 100%;
-            margin-top: 150px; /*控制CONTROLLER的位子 */
+            margin-top: 0px; /*控制CONTROLLER的位子 */
         }
 
         .order-list {
@@ -80,29 +80,33 @@
             max-width: 100px;
             max-height: 100px;
         }
+                .user-message {
+            margin-top: 150px; /* 控制 <h3> 的向下移動 */
+            text-align: center; /* 使 <h3> 內容居中 */
+        }
     </style>
 </head>
 
 <body>
     <div th:replace="~{/layout/header.html}"></div>
-
+ <h3 class="user-message" th:text="${session.userId} ? '歡迎申請訂單' : '請先註冊或以客戶端進入'"></h3>
     <div class="container">
         <div class="order-list" th:if="${session.userId}">
-            <h1>用戶訂單列表</h1>
-            <div class="text-center">
                 <h3 th:text="${session.userId} ? '我的維修訂單 ' : '目前無使用者登入'"></h3>
+                
                 <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">維修表單申請</a>
+            <div class="text-center">
             </div>
             <table>
                 <thead>
                     <tr>
                         <th>維修編號</th>
-                        <th>送修者</th>
+                        <th>客戶姓名</th>
                         <th>送修日期</th>
                         <th>維修費用</th>
                         <th>維修細節</th>
                         <th>維修狀態</th>
-                        <th>手機損壞程度</th>
+                        <th>手機狀態預覽</th>
                     </tr>
                 </thead>
                 <tbody>

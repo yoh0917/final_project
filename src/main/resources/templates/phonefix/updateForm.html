@@ -92,7 +92,7 @@
                             <input type="hidden" th:name="fixDate" th:value="${phone.fixDate}"/>
                         </td>
                         <td>
-                            <input type="number" class="form-control" th:name="fixCost" th:value="${phone.fixCost}"/>
+                            <input type="number" class="form-control" th:name="fixCost" th:value="${phone.fixCost}" min="0" max="100000"/>
                         </td>
                         <td>
                             <input type="text" class="form-control" th:name="fixPort" th:value="${phone.fixPort}"/>
