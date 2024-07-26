@@ -231,18 +231,5 @@ public class PhoneFixController {
 
 		return "訂單新增成功!!";
 	}
-//	@PostMapping("/ticketmart/api/goods")
-//	public String addCart(@RequestParam("id") Integer id, HttpServletRequest request) {
-//		HttpSession session = request.getSession();
-//		Integer memberId = (Integer) session.getAttribute("memberid");
-//		System.out.println("這裡是ticketmart/api/goods:  BBBB" + memberId );
-//		Optional<Ticket> ticketOp = ticketRepository.findById(id);
-//		if (ticketOp.isPresent()) {
-//			Ticket ticket = ticketOp.get();
-//			cartService.addcart(memberId, id);
-//			return "redirect:/ticketmart/cart";
-//		} else {
-//			return "redirect:/Ticketproduct/mallPage1";
-//		}
-//	}
+
 }
