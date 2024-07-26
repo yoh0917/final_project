@@ -78,18 +78,18 @@ public class CheckoutService {
 	}
 
 //	private final AllInOne allInOne = new AllInOne("");
-//
-//	private String ecpayCheckout(String orderId, String userId) {
-//		AllInOne allInOne = new AllInOne("");
-//		// 定義 SimpleDateFormat 來格式化 Date
+
+	private String ecpayCheckout(String orderId, String userId) {
+		AllInOne allInOne = new AllInOne("");
+		// 定義 SimpleDateFormat 來格式化 Date
 //		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 //		Date createTime = orders.getCreateTime();
 //		// 將 Date 格式化為指定格式的字符串
 //		String formattedDate = simpleDateFormat.format(createTime);
 //		System.out.println(formattedDate);
-//
-//		return "AAA";
-//	}
+
+		return "AAA";
+	}
 
 
 }
