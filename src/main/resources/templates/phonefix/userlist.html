@@ -20,6 +20,7 @@
             justify-content: center;
             flex-direction: column;
             height: 100%;
+            margin-top: 150px; /*控制CONTROLLER的位子 */
         }
 
         .order-list {
@@ -28,6 +29,7 @@
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
         .order-list h1 {
@@ -85,18 +87,12 @@
     <div th:replace="~{/layout/header.html}"></div>
 
     <div class="container">
-        <div class="text-center">
-            <h3 th:text="${session.userId} ? '我的維修訂單 ' : '目前無使用者登入'"></h3>
-            <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">維修表單申請</a>
-        </div>
-
         <div class="order-list" th:if="${session.userId}">
             <h1>用戶訂單列表</h1>
-             <div class="container">
-        <div class="text-center">
-            <h3 th:text="${session.userId} ? '我的維修訂單 ' : '目前無使用者登入'"></h3>
-            <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">維修表單申請</a>
-        </div>
+            <div class="text-center">
+                <h3 th:text="${session.userId} ? '我的維修訂單 ' : '目前無使用者登入'"></h3>
+                <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">維修表單申請</a>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -128,7 +124,6 @@
             </table>
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
