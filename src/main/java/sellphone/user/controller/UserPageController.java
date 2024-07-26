@@ -39,10 +39,12 @@ public class UserPageController {
 	@Autowired
 	private UserPasswordTokenRepository userPasswordTokenRepository;
 
-	@GetMapping("/mainPage")
-	public String mainPage(Model m) {
-		return "index";
-	}
+	
+	//yy改進入路徑
+//	@GetMapping("/mainPage")
+//	public String mainPage(Model m) {
+//		return "index";
+//	}
 //  -------------------------------------- UserInfo-related Page ----------------------------------------------------
 	@GetMapping("/UserInfo")
 	public String userInfo(Model m, HttpServletRequest req) throws ServletException, IOException {

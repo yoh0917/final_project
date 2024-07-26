@@ -226,5 +226,14 @@ public class ProductController {
 	
 	}
 	
+	//for index
+	@GetMapping("/mainPage")
+	public String findNewTop4Product(Model m){
+		List<Product> newTop4Product = pService.findNewTop4Product();
+		m.addAttribute("newTop4Product",newTop4Product);
+		return "index";
+	}
+	
+	
 }
 

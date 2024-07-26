@@ -73,4 +73,10 @@ public class productservice {
 	public List<ProductScore> findTop4Score(Integer productid){
 		return scoreRepo.findTop4ByProductId(productid);
 	}
+	//只找4個最新商品(有上架的)
+	public List<Product> findNewTop4Product(){
+		return prRep.findNewTop4ByProductId();
+	}
+	
+	
 }

@@ -25,27 +25,31 @@
 </head>
 <style>
 .star-half {
-    position: relative;
-    color: #ddd; /* 灰色，為了覆蓋黑色的外框 */
+	position: relative;
+	color: #ddd; /* 灰色，為了覆蓋黑色的外框 */
 }
+
 .star2 {
-        position: relative;
-        font-size: 1.5rem;
-        display: inline-block;
-    }
-    .star-full {
-        color: #FFD700; /* 金色 */
-    }
-    .star-half::before {
-        content: '\2605'; /* 空星 */
-        color: #FFD700; /* 金色 */
-        position: absolute;
-        width: 50%;
-        overflow: hidden;
-    }
-    .star-empty {
-        color: #ddd; /* 灰色 */
-    }
+	position: relative;
+	font-size: 1.5rem;
+	display: inline-block;
+}
+
+.star-full {
+	color: #FFD700; /* 金色 */
+}
+
+.star-half::before {
+	content: '\2605'; /* 空星 */
+	color: #FFD700; /* 金色 */
+	position: absolute;
+	width: 50%;
+	overflow: hidden;
+}
+
+.star-empty {
+	color: #ddd; /* 灰色 */
+}
 </style>
 <body>
 	<div th:replace="~{/layout/header.html}"></div>
@@ -102,13 +106,16 @@
 										<!-- Product name -->
 										<h3 class="fw-bolder mt-2" th:text="${product.productbrand}"></h3>
 										<h4 class="fw-bolder mt-2" th:text="${product.productName}"></h4>
-										<h4 class="fw-bolder mt-2" th:text="${product.capacity}"></h4>										
+										<h4 class="fw-bolder mt-2" th:text="${product.capacity}"></h4>
 										<div class="star-rating mb-3">
 											<span th:each="i : ${#numbers.sequence(1,5)}" class="star2">
-    <span th:if="${i <= product.avgScore}" class="star-full">&#9733;</span> <!-- 滿星 -->
-    <span th:if="${i > product.avgScore && i - 1 < product.avgScore}" class="star-half">&#9734;</span> <!-- 半星 -->
-    <span th:if="${i > product.avgScore && i - 1 >= product.avgScore}" class="star-empty">&#9734;</span> <!-- 空星 -->
-</span>
+												<span th:if="${i <= product.avgScore}" class="star-full">&#9733;</span>
+												<!-- 滿星 --> <span
+												th:if="${i > product.avgScore && i - 1 < product.avgScore}"
+												class="star-half">&#9734;</span> <!-- 半星 --> <span
+												th:if="${i > product.avgScore && i - 1 >= product.avgScore}"
+												class="star-empty">&#9734;</span> <!-- 空星 -->
+											</span>
 										</div>
 										<div>
 											<span class="mx-auto text-secondary"
