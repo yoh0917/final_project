@@ -57,6 +57,7 @@ public class CheckoutService {
 			orderDetail.setDetailId(generateDetailId(orderId));
 			orderDetail.setOrderId(orderId);
 			orderDetail.setProductId(item.getProductId());
+			orderDetail.setProductName(item.getProductName());
 			orderDetail.setColor(item.getColor());
 			orderDetail.setStorage(item.getStorage());
 			orderDetail.setQuantity(item.getQuantity());
@@ -78,18 +79,37 @@ public class CheckoutService {
 	}
 
 //	private final AllInOne allInOne = new AllInOne("");
-
-	private String ecpayCheckout(String orderId, String userId) {
-		AllInOne allInOne = new AllInOne("");
-		// 定義 SimpleDateFormat 來格式化 Date
-//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//		Date createTime = orders.getCreateTime();
-//		// 將 Date 格式化為指定格式的字符串
-//		String formattedDate = simpleDateFormat.format(createTime);
-//		System.out.println(formattedDate);
-
-		return "AAA";
-	}
+//
+//	private String ecpayCheckout(String orderId, String userId) {
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/ddn HH:mm:ss");
+//		String dateStr = sdf.format(new Date());
+//
+//		Orders order = new Orders();
+//
+//		AioCheckOutALL obj = new AioCheckOutALL();
+////		System.out.println(orders.getOrderId().toString());
+//		obj.setMerchantTradeNo(orders.getOrderId().toString());//綠界傳訂單編號
+//		obj.setMerchantTradeDate(dateStr);//交易時間
+//		obj.setTotalAmount((orders.getTotalCost() + ""));//抓總金額
+//		obj.setTradeDesc("test Description");
+//		obj.setItemName("TestItem");
+//		// 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
+//
+//		// 交易結果
+//		obj.setReturnURL(url + "/comPETnion/backendReturn");
+//
+//		// 付款完成跳轉結果
+//		obj.setClientBackURL(url + "/comPETnion/frontendReturn?orderId=" + orders.getOrderId().toString());
+//		obj.setNeedExtraPaidInfo("N");
+//		// 商店轉跳網址 (Optional)
+//		try {
+//			String form = all.aioCheckOut(obj, null);
+//			return form;
+//		} catch (EcpayException e) {
+//			System.err.println("ECPay Exception: " + e.getMessage());
+//			throw e;
+//		}
+//	}
 
 
 }

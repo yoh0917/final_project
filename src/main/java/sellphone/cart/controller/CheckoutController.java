@@ -18,6 +18,8 @@ public class CheckoutController {
     @Autowired
     private CheckoutService checkoutService;
 
+
+
     @GetMapping("/checkout1")
     public String checkoutPage(Model model, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
