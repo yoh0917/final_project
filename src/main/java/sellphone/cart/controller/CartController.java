@@ -115,14 +115,6 @@ public class CartController {
         return Base64.getEncoder().encodeToString(photoFile);
     }
 
-//    @GetMapping("/shoppingcart/cart")
-//    public String getCart(Model model, HttpSession session) {
-//        String userId = (String) session.getAttribute("UserId");
-//        List<CartView> carts = cartViewRepository.findByUserId(userId);
-//        model.addAttribute("carts", carts);
-//        return "OrderFrontend/Cart1";
-//    }
-
     @PostMapping("/cart/update")
     @ResponseBody
     public String updateCartQuantity(@RequestParam int productId, @RequestParam String userId, @RequestParam int delta) {
@@ -149,37 +141,5 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("刪除失敗");
         }
     }
-
-
 }
-
-
-//    @GetMapping("/cart")
-//    public String showCart(Model model, HttpSession session) {
-//        Users user = (Users) session.getAttribute("user");
-//        if (user == null) {
-//            System.out.println("User not found in session. Redirecting to login.");
-//            return "redirect:/sellphone/login"; // 若session中無user則重定向到登入頁面
-//        }
-//
-//        String userId = user.getUserName();
-//        System.out.println("User found in session. UserId: " + userId); // 記錄userId
-//        List<Cart> carts = cartService.getCartByUserId(userId);
-//        model.addAttribute("carts", carts);
-//
-//        return "OrderFrontend/Cart1"; // 返回Cart1.html視圖
-//    }
-
-//    @GetMapping("/cart")
-//    public String getCart(HttpSession session, Model model) {
-//        // 從 session 中獲取 userId
-//        String userId = (String) session.getAttribute("userId");
-//
-//
-//
-//        List<Cart> carts = cartService.getCartsByUserId(userId);
-//        model.addAttribute("carts", carts);
-//        model.addAttribute("userId", userId); // 將 userId 添加到模型中
-//        return "OrderFrontend/Cart1"; // 確保返回正確的視圖名稱
-//    }
 
