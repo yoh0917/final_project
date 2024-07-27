@@ -1,4 +1,4 @@
- $(document).ready(function() {
+     $(document).ready(function() {
             var swiper = new Swiper(".mySwiper", {
                 effect: "coverflow",
                 grabCursor: true,
@@ -261,4 +261,51 @@
             $("#generation").prop('disabled', true).empty();
             $("#dataUsage").prop('disabled', true).empty();
             $("#telCompany .btn").removeClass("active").css("background-color", "#333");
+        }
+
+        function toggleChatWindow() {
+            var chatWindow = document.querySelector('.chat-window');
+            if (chatWindow.style.display === 'none' || chatWindow.style.display === '') {
+                chatWindow.style.display = 'block';
+            } else {
+                chatWindow.style.display = 'none';
+            }
+        }
+
+        function sendQuestion() {
+            var question = document.getElementById('chatInput').value;
+            var fileField = document.getElementById('chatFile');
+            var formData = new FormData();
+
+            if (fileField.files.length > 0) {
+                formData.append('file', fileField.files[0]);
+            } else {
+                formData.append('file', new Blob(), 'empty.txt');
+            }
+
+            formData.append('question', question);
+
+            fetch('/sellphone/gemini-pro-vision', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                var chatBody = document.getElementById('chatBody');
+                var questionElement = document.createElement('div');
+                questionElement.className = 'chat-message';
+                questionElement.textContent = '我: ' + question;
+                chatBody.appendChild(questionElement);
+
+                var answerElement = document.createElement('div');
+                answerElement.className = 'chat-message';
+                answerElement.textContent = '客服: ' + result;
+                chatBody.appendChild(answerElement);
+
+                document.getElementById('chatInput').value = ''; // 清空输入框
+                document.getElementById('chatFile').value = ''; // 清空文件输入框
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
