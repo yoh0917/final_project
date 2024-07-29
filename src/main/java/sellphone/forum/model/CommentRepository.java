@@ -10,13 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	List<Comment> findByPost(Post post);
 	
-	@Transactional
-    @Modifying
-    @Query("UPDATE Comment c SET c.likeCount = c.likeCount + 1 WHERE c.commentId = :commentId")
-    void incrementLikeCount(Integer commentId);
+	 @Modifying
+	    @Query("update Comment c set c.likeCount = c.likeCount + 1 where c.commentId = ?1")
+	    void incrementLikeCount(Integer commentId);
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE Comment c SET c.likeCount = c.likeCount - 1 WHERE c.commentId = :commentId")
-    void decrementLikeCount(Integer commentId);
-}
+	    @Modifying
+	    @Query("update Comment c set c.likeCount = c.likeCount - 1 where c.commentId = ?1")
+	    void decrementLikeCount(Integer commentId);
+	}	

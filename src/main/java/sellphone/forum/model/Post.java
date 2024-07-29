@@ -38,9 +38,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer postId;
     
-//    @Column(nullable = true)
-//    private Integer userId;
-    
     //一個回覆屬於一個用戶
 //    @JoinColumn(name = "userId", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -67,7 +64,7 @@ public class Post {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date postLastUpdatedTime;
     
-    @ManyToMany(cascade = CascadeType.ALL)   
+    @ManyToMany
     @JoinTable(name = "POST_TAG",
     joinColumns = @JoinColumn(name = "postId"),
     inverseJoinColumns = @JoinColumn(name = "tagId"))
@@ -87,14 +84,12 @@ public class Post {
     //哪些用戶點讚了這篇文章
     @ManyToMany
     @JoinTable(
-        name = "post_likes",
+        name = "postLikes",
         joinColumns = @JoinColumn(name = "postId"),
         inverseJoinColumns = @JoinColumn(name = "userId")
     )
     private Set<Users> likedUsers = new HashSet<>();
-    
-   
-
+ 
     public Set<Users> getLikedUsers() {
 		return likedUsers;
 	}

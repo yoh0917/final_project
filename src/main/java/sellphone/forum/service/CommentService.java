@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sellphone.dashboard.user.model.UserRepository;
+import sellphone.dashboard.user.model.Users;
 import sellphone.forum.model.Comment;
 import sellphone.forum.model.CommentRepository;
 import sellphone.forum.model.Post;
@@ -16,6 +18,9 @@ public class CommentService {
 
     @Autowired
     private CommentRepository commentRepo;
+    
+    @Autowired
+    private UserRepository userRepo;
 
     public Comment saveComment(Comment comment) {
         return commentRepo.save(comment);
@@ -35,14 +40,21 @@ public class CommentService {
     }
     
     @Transactional
-    public void incrementLikeCount(Integer commentId) {
-        commentRepo.incrementLikeCount(commentId);
-    }
+    public boolean toggleLike(Integer commentId, String userId) {
+        Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        Users user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
-    @Transactional
-    public void decrementLikeCount(Integer commentId) {
-        commentRepo.decrementLikeCount(commentId);
+        if (comment.getLikedUsers().contains(user)) {
+            comment.getLikedUsers().remove(user);
+            comment.setLikeCount(comment.getLikeCount() - 1);
+            commentRepo.save(comment);
+            return false;
+        } else {
+            comment.getLikedUsers().add(user);
+            comment.setLikeCount(comment.getLikeCount() + 1);
+            commentRepo.save(comment);
+            return true;
+        }
     }
-
     
 }

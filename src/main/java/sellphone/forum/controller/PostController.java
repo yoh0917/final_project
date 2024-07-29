@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
 import sellphone.dashboard.user.model.Users;
+import sellphone.dashboard.user.service.UserService;
 import sellphone.forum.model.Comment;
 import sellphone.forum.model.Post;
 import sellphone.forum.model.Tag;
@@ -45,36 +46,39 @@ public class PostController {
     
     @Autowired
     private CommentService commentService;
+    
+    @Autowired
+	private UserService userService;
 
     @GetMapping("/post/add")
-    public String addposts(Model model) {
+    public String addposts(Model model, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        String userName = (String) session.getAttribute("userName");
         Post latestPost = postService.findLatestPost();
         model.addAttribute("latestPost", latestPost);
+        model.addAttribute("userId", userId);
+        model.addAttribute("userName", userName);
         return "post/addPostPage";
     }
 
     @PostMapping("/post/addPost")
-    public String addPost(@RequestParam("title") String title, @RequestParam("content") String content,
-                          @RequestParam("tags") List<String> tags, Model model) {
+    public String addPost(@RequestParam("title") String title, 
+                          @RequestParam("content") String content,
+                          @RequestParam("tags") List<String> tags, 
+                          @RequestParam("userId") String userId,
+                          @RequestParam("userName") String userName,
+                          Model model) {
         Post post = new Post();
         post.setTitle(title);
         post.setPostContent(content);
-        postService.savePostWithTags(post, tags);
         
-//        if (!image.isEmpty()) {
-//            try {
-//                byte[] bytes = image.getBytes();
-//                Path path = Paths.get(UPLOAD_DIR + "/" + image.getOriginalFilename());
-//                Files.write(path, bytes);
-//                post.setImage(path.toString());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        Users user = userService.findById(userId);
+        post.setUser(user);
+
+        postService.savePostWithTags(post, tags);
 
         Post latestPost = postService.findLatestPost();
         model.addAttribute("latestPost", latestPost);
-
         return "redirect:/post/add";
     }
 
@@ -88,7 +92,21 @@ public class PostController {
         model.addAttribute("page", page);
         model.addAttribute("allTags", allTags);  
         return "post/listPostPage";
+        //return "post/postFrontPage";
+        
     }
+//    @GetMapping("/post/page")
+//    public String findByFrontPage(@RequestParam(value = "p", defaultValue = "1") Integer pageNum, 
+//                             @RequestParam(value = "keyword", required=false) String keyword, Model model) {
+//        Page<Post> page = postService.findByPage(pageNum);
+//        Post latestPost = postService.findLatestPost();
+//        List<Tag> allTags = tagService.findAllTags();  
+//        model.addAttribute("latestPost", latestPost);
+//        model.addAttribute("page", page);
+//        model.addAttribute("allTags", allTags);  
+//        return "post/postFrontPage";
+//        
+//    }
 
     @GetMapping("/post/edit")
     public String editPost(@RequestParam Integer id, @RequestParam(value = "p", defaultValue = "1") Integer pageNum, Model model) {
@@ -100,9 +118,14 @@ public class PostController {
         return "post/editPostPage";
     }
 
+//    @PostMapping("/post/editPost")
+//    public String editPostContent(@ModelAttribute Post post, @RequestParam("pageNum") Integer pageNum) {
+//        postService.savePost(post);
+//        return "redirect:/post/page?p=" + pageNum;
+//    }
     @PostMapping("/post/editPost")
     public String editPostContent(@ModelAttribute Post post, @RequestParam("pageNum") Integer pageNum) {
-        postService.savePost(post);
+        postService.updatePost(post);
         return "redirect:/post/page?p=" + pageNum;
     }
 
@@ -165,6 +188,7 @@ public class PostController {
             hasLiked = postService.hasUserLikedPost(postId, currentUserId);
         }
         model.addAttribute("post", post);  // 傳遞整個post對象
+        model.addAttribute("comments", comments);  // 傳遞整個comment對象
         model.addAttribute("postTitle", post.getTitle());
         model.addAttribute("postContent", post.getPostContent());
         model.addAttribute("userId", user.getUserId());
@@ -172,7 +196,6 @@ public class PostController {
         model.addAttribute("postTime", post.getPostCreatedTime());
         model.addAttribute("postId", post.getPostId());
         model.addAttribute("postName", post.getPostId());
-        model.addAttribute("comments", comments); // 添加评论数据到模型中
         model.addAttribute("currentUserId", currentUserId);
         model.addAttribute("hasLiked", hasLiked);  // 添加 hasLiked 到模型中
         return "post/frontPageDetail";
