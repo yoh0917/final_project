@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
+import sellphone.orders.model.OrderDetail;
+import sellphone.orders.repository.OrderDetailRepository;
 import sellphone.product.model.Photo;
 import sellphone.product.model.PhotoRepository;
 import sellphone.product.model.Product;
@@ -141,7 +143,7 @@ public class ProductController {
 		List<ProductScore> allScore = pService.findTop4Score(productid);
 		
 		String userName = (String) httpSession.getAttribute("loginUsername");		
-		ProductScore findbyUserNameAndProductid = pService.findbyUserIdAndProductid(userName, productid);
+		ProductScore findbyUserNameAndProductid = pService.findbyUserNameAndProductid(userName, productid);
 		System.out.println(findbyUserNameAndProductid);
 		m.addAttribute("findbyUserNameAndProductid",findbyUserNameAndProductid);
 		m.addAttribute("allScore",allScore);		
@@ -191,8 +193,9 @@ public class ProductController {
 			@RequestParam String userName,
 			@RequestParam Integer productid,
 			@RequestParam Integer scorenum,
-			@RequestParam String review) {
-		ProductScore findbyUserNameAndProductid = pService.findbyUserIdAndProductid(userName, productid);
+			@RequestParam String review,
+			@RequestParam String userId) {
+		ProductScore findbyUserNameAndProductid = pService.findbyUserNameAndProductid(userName, productid);
 		
 		if(findbyUserNameAndProductid == null) {
 		ProductScore newScore = new ProductScore();
@@ -200,6 +203,8 @@ public class ProductController {
 		newScore.setReview(review);
 		newScore.setScorenum(scorenum);
 		newScore.setUserName(userName);
+		newScore.setUserId(userId);
+		
 		newScore.setLocalDateTime(LocalDateTime.now());
 		
 		Product product = pService.findbyid(productid);
@@ -226,10 +231,28 @@ public class ProductController {
 	
 	}
 	
+	@Autowired
+	private OrderDetailRepository orderDetailRepository;
 	//for index
 	@GetMapping("/mainPage")
 	public String findNewTop4Product(Model m){
 		List<Product> newTop4Product = pService.findNewTop4Product();
+		List<Object[]> mostSale = orderDetailRepository.getMostSale();
+		List<Product> top4Sale = new ArrayList<>();
+		
+		
+		for (Object[] result : mostSale) {
+	        Integer productId = ((Number) result[0]).intValue();
+	        System.out.println(productId);
+	        Product product = pService.findbyid(productId);
+	        System.out.println( "product = "+product);
+	        if(product != null) {
+	        	top4Sale.add(product);
+	        }
+	      
+	    }
+		
+		m.addAttribute("top4Sale",top4Sale);
 		m.addAttribute("newTop4Product",newTop4Product);
 		return "index";
 	}

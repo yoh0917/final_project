@@ -204,41 +204,49 @@
 
 	<!-- Best Sellers Section -->
 	<div class="container text-center">
-		<h2 class="display-4 fw-bold">暢銷排行</h2>
-		<div class="row">
-			<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-				<div class="product-item bg-light rounded p-3 text-center">
-					<img src="https://via.placeholder.com/296x444" alt="Product Image">
-					<div class="product-title mt-2">Apple iPhone 15 Pro Max</div>
-					<div class="product-price mt-2">NT$44,600</div>
-				</div>
-			</div>
-			<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-				<div class="product-item bg-light rounded p-3 text-center">
-					<img src="https://via.placeholder.com/296x444" alt="Product Image">
-					<div class="product-title mt-2">Apple iPhone 14 Pro Max</div>
-					<div class="product-price mt-2">
-						NT$29,900 <br> <span class="discounted-price">$33,600</span>
-					</div>
-					<div class="discount">-20%</div>
-				</div>
-			</div>
-			<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-				<div class="product-item bg-light rounded p-3 text-center">
-					<img src="https://via.placeholder.com/296x444" alt="Product Image">
-					<div class="product-title mt-2">Samsung Galaxy S24 Ultra</div>
-					<div class="product-price mt-2">NT$43,900</div>
-				</div>
-			</div>
-			<div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-				<div class="product-item bg-light rounded p-3 text-center">
-					<img src="https://via.placeholder.com/296x444" alt="Product Image">
-					<div class="product-title mt-2">Google Pixel 8a NT$16,490
-						NT$18,880 -30%</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <h2 class="display-4 fw-bold">熱銷排行</h2>
+    <div class="row justify-content-center" id="productContainer">
+        <div id="each" th:each="product : ${top4Sale}" class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card h-100 animate__animated animate__fadeInDown">
+                <div class="m-3 d-flex justify-content-center">
+                    <img width="200px" height="190px" th:src="@{/photos/download(photoid=${product.productPhoto[0].photoid})}" />
+                </div>
+                <!-- Product details -->
+                <div class="card-body p-2">
+                    <div class="text-center">
+                        <!-- Product brand -->
+                        <h3 class="fw-bolder mt-2" th:text="${product.productbrand}"></h3>
+                        <!-- Product name -->
+                        <h4 class="fw-bolder mt-2" th:text="${product.productName}"></h4>
+                        <!-- Product capacity -->
+                        <h4 class="fw-bolder mt-2" th:text="${product.capacity}"></h4>
+                        <!-- Product rating -->
+                        <div class="star-rating mb-3">
+                            <span th:each="i : ${#numbers.sequence(1,5)}" class="star2">
+                                <span th:if="${i <= product.avgScore}" class="star-full">&#9733;</span> <!-- Full star -->
+                                <span th:if="${i > product.avgScore && i - 1 < product.avgScore}" class="star-half">&#9734;</span> <!-- Half star -->
+                                <span th:if="${i > product.avgScore && i - 1 >= product.avgScore}" class="star-empty">&#9734;</span> <!-- Empty star -->
+                            </span>
+                        </div>
+                        <!-- Product price -->
+                        <div>
+                            <span class="mx-auto text-secondary" th:text="'$ ' + ${product.price}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-status visually-hidden">
+                    <span class="mx-auto text-secondary" th:text="${product.productstatus}"></span>
+                </div>
+                <!-- Product actions -->
+                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                    <div class="text-center">                                
+                        <a class="btn btn-outline-dark mt-auto" th:onclick="'GoToOne(' + ${product.productid} + ')'">詳情</a>                                          
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 	<!-- 引入底部 -->
 	<div th:replace="~{layout/footer.html}"></div>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
