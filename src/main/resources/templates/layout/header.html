@@ -1,39 +1,43 @@
 <div class="top-bar">
-	<div>
+	<div th:if="${session.user == null }">
 		立即加入會員，可享首次購買產品部分優惠！ <a th:href="@{/UserRegist}">點我註冊會員</a>
+	</div>
+	<div th:unless="${session.user == null }">
+		部分商品促銷中，歡迎參觀！
+		<!-- 		<a th:href="@{/UserRegist}">點我註冊會員</a> -->
 	</div>
 </div>
 
 <div class="navbar">
 	<div class="logo">
-		<a th:href="@{/mainPage}"><img th:src="@{/layout/img/logo.jpeg}" alt="SellPhone Logo"></a>
+		<a th:href="@{/mainPage}"><img th:src="@{/layout/img/logo.jpeg}"
+			alt="SellPhone Logo"></a>
 	</div>
 	<div class="menu">
 
-		<a th:href="@{/front/productlist}">商品總覽</a>
-		<a href="Orders/index.html">門號方案</a>
-		<a href="GetAllComments.html">售後維修</a>
-		<a href="PhonePlanSearchAll.html">討論區</a>
+		<a th:href="@{/front/productlist}">商品總覽</a> <a
+			th:href="@{/phoneplans/look}">門號方案</a> <a
+			th:href="@{/phonefixs/userlist}">售後維修</a> <a
+			th:href="@{/post/frontPage}">討論區</a>
 	</div>
-	<div class="search-bar">
-		<input type="text" placeholder="搜尋產品">
-	</div>
+
 	<div class="icons">
 		<th:block th:if="${session.ifAdminOrNot}">
 			<a th:href="@{/DashBoard/UserList}">後台</a>
 		</th:block>
 		<th:block th:if="${session.loginUsername != null}">
-			<a th:href="@{/UserLogout}"><i class="fa-solid fa-right-from-bracket"></i></a>
+			<a th:href="@{/UserLogout}"><i
+				class="fa-solid fa-right-from-bracket"></i></a>
 			<th:block th:if="${session.loginUsername != 'admin'}">
 				<div class="dropdown">
-					<a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i
-							class="fa-solid fa-user"></i></a>
+					<a class="dropdown-toggle" data-bs-toggle="dropdown"
+						aria-expanded="false"><i class="fa-solid fa-user"></i></a>
 					<ul class="dropdown-menu dropdown-menu-start">
 						<li><a class="dropdown-item" th:href="@{/UserInfo}">個人資料</a></li>
 						<li><a class="dropdown-item" th:href="@{/UserOrder}">我的訂單</a></li>
 						<li><a class="dropdown-item" th:href="@{/UserPlan}">我的方案</a></li>
 						<li><a class="dropdown-item" th:href="@{/UserPost}">我的文章</a></li>
-						<li><a class="dropdown-item" th:href="@{/UserFix}">我的維修</a></li>
+						<li><a class="dropdown-item" th:href="@{/phonefixs/userlist}">我的維修</a></li>
 					</ul>
 				</div>
 			</th:block>
@@ -42,7 +46,8 @@
 			<a th:href="@{/UserLogin}">Login</a>
 		</th:block>
 		<div th:if="${session.user != null }">
-			<a th:href="@{/cart(userId=${session.user.userName})}"><i class="fa-solid fa-cart-shopping"></i></a>
+			<a th:href="@{/cart(userId=${session.user.userName})}"><i
+				class="fa-solid fa-cart-shopping"></i></a>
 		</div>
 	</div>
 </div>

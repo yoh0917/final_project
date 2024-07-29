@@ -43,10 +43,24 @@ public class Product {
 
 	@Column(name = "PRODUCTSTATUS")
 	private Integer productstatus;
+	
+	private String color;
+	
+	private String capacity;
+	
+	private Double totalSocreNum;		//總分
+	
+	private Integer productviewnumber;  //觀看次數
+	
+	private Integer totalScore;		//總評論次數
+	
+	private Double avgScore;  //平均分數
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
 	private List<Photo> productPhoto = new ArrayList<>();
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product" )
+	private List<ProductScore> productscore = new ArrayList<>();
 	
 	
 	public String getProductbrand() {

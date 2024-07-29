@@ -2,35 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login/Register Interface</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>我的資料</title>
 
-<div th:replace="~{/layout/headerStylesheet.html}"></div>
+	<div th:replace="~{/layout/headerStylesheet.html}"></div>
 
-<link rel="stylesheet" th:href="@{/css/FrontedAll.css}" />
+	<link rel="stylesheet" th:href="@{/css/FrontedAll.css}" />
+	<script th:src="@{/user/fronted/js/UserInfo.js}"></script>
 
-<style>
-/* * {
+	<style>
+		/* {
 			border: 1px solid black;
 		} */
-a {
-	cursor: pointer;
-}
 
-input {
-	background-color: transparent;
-	height: 20px;
-}
+		a {
+			cursor: pointer;
+		}
 
-input:focus {
-	outline: none;
-}
+		input {
+			background-color: transparent;
+			height: 20px;
+		}
 
-.confirm_btn:hover {
-	font-weight: bold
-}
-</style>
+		input:focus {
+			outline: none;
+		}
+
+		a {
+			cursor: pointer;
+		}
+
+		input {
+			background-color: transparent;
+			height: 20px;
+		}
+
+		input:focus {
+			outline: none;
+
+
+		}
+
+		.confirm_btn:hover {
+			font-weight: bold
+		}
+	</style>
 
 </head>
 
@@ -64,21 +81,24 @@ input:focus {
 							<div class="col-9">
 								<div class="row justify-content-between">
 									<div class="col-8">
-										<label id="show_email" th:text="${user.email}"></label> <input
-											id="edit_email" type="text" class="com_text"
-											style="display: none; border: none;">
+										<label id="show_email" th:text="${user.email}"></label>
+										<input id="edit_email" type="text" class="com_text"
+											style="display: none; border: none; ">
 									</div>
 									<div class="col-4 text-end">
-										<a id="edit_email_link" onclick="editEmail();"> <i
-											class="fa-regular fa-pen-to-square"></i>
+										<a id="edit_email_link" onclick="editEmail();">
+											<i class="fa-regular fa-pen-to-square"></i>
 										</a>
 										<div id="confirm_email" style="display: none;">
 											<a class="confirm_btn" style="white-space: nowrap;"
-												onclick="editEmail();">取消</a> <a class=" confirm_btn"
-												style="white-space: nowrap;" onclick="updateEmail();">完成</a>
+												onclick="editEmail();">取消</a>
+											<a class=" confirm_btn" style="white-space: nowrap;"
+												onclick="updateEmail();">完成</a>
 										</div>
 									</div>
-									<div></div>
+									<div>
+
+									</div>
 								</div>
 							</div>
 
@@ -94,16 +114,19 @@ input:focus {
 											style="display: none; border: none;">
 									</div>
 									<div class="col-4 text-end">
-										<a id="edit_contactNum_link" onclick="editContactNum()"> <i
-											class="fa-regular fa-pen-to-square"></i>
+										<a id="edit_contactNum_link" onclick="editContactNum()">
+											<i class="fa-regular fa-pen-to-square"></i>
 										</a>
 										<div id="confirm_contactNum" style="display: none;">
 											<a class="confirm_btn" style="white-space: nowrap;"
-												onclick="editContactNum();">取消</a> <a class="confirm_btn"
-												style="white-space: nowrap;" onclick="updateContactNum();">完成</a>
+												onclick="editContactNum();">取消</a>
+											<a class="confirm_btn" style="white-space: nowrap;"
+												onclick="updateContactNum();">完成</a>
 										</div>
 									</div>
-									<div></div>
+									<div>
+
+									</div>
 								</div>
 							</div>
 						</div>
@@ -116,6 +139,7 @@ input:focus {
 			</div>
 		</div>
 	</div>
+
 </body>
 
 </html>

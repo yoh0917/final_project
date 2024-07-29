@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<meta charset="UTF-8">
+<title>列出訊息</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+ 
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="Content-Type" content="text/html; charset=utf-8" />
+	<!-- <link th:href="@{/shoppingcart/cart/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" /> -->
+	<link th:href="@{/shoppingcart/cart/css/style.css}" rel="stylesheet" type="text/css" media="all" />
+	<!-- <script th:src="@{/shoppingcart/cart/js/jquery.min.js}"></script> -->
+	<!-- <script th:src="@{/shoppingcart/cart/js/simpleCart.min.js}"></script> -->
+	<link th:href="@{/shoppingcart/cart/css/jquery-ui.css}" rel="stylesheet" type="text/css">
+	<!-- <script th:src="@{/shoppingcart/cart/js/bootstrap-3.1.1.min.js}" type="text/javascript"></script> -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
+	<link th:href="@{/shoppingcart/cart/css/animate.min.css}" rel="stylesheet">
+	<link th:href="@{/css/styles.css}" rel="stylesheet" />
+	<script th:src="@{/shoppingcart/cart/js/wow.min.js}"></script>
+	<div th:replace="~{/layout/headerStylesheet.html}"></div>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<link th:href="@{/layout/css/header.css}" rel="stylesheet"> 
+<style>
+	/* header 樣式 */
+	 
+	.top-bar {
+	    width: 100%;
+	    padding: 9px 0;
+	    background: black;
+	    color: white;
+	    text-align: center;
+	    font-size: 14px;
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    z-index: 1000;
+	}
+	
+	.top-bar a {
+	    color: white;
+	    font-weight: 500;
+	    text-decoration: underline;
+	}
+	 .navbar .icons a{
+        	color: black !important;
+        	
+        }
+	
+	.navbar .logo img {
+	    width: 180px;
+	    height: auto;
+	}
+	
+	.navbar .menu {
+	    display: flex;
+	    gap: 24px;
+	}
+	
+	.navbar .icons {
+		padding-right:50px;
+	}
+	
+	.navbar .menu a:hover {
+	    text-decoration: underline;
+	}
+	
+	.navbar .menu-item {
+	    position: relative;
+	}
+	
+	.navbar .menu-item:hover .submenu {
+	    display: block;
+	}
+	
+	.header-row {
+	    display: flex;
+	    border-radius: 5px;
+	    justify-content: space-between;
+	    align-items: center;
+	    margin-bottom: 20px;
+	}
+	
+	.header-row2 {
+	    display: flex;
+	    color: #8E8E8E;
+	    border-radius: 5px;
+	    align-items: center;
+	}
+	/*  */
+	
+   body {
+	    position: relative;
+	    display: flex;
+	    padding-top: 100px;
+	    margin: 0; 
+	    height: 100vh; 
+	    font-family: 'Satoshi', sans-serif;
+	    background-color: #ADADAD;
+	    
+	}
+
+	.container {
+	    margin-left: 250px !important;
+	    margin-right: 50px !important;
+	    width: calc(100% - 500px);
+	    box-sizing: border-box;
+	    padding: 50px 100px; 
+	    overflow-y: auto; /* 使内容超出时可以滾動 */
+	    background: white;
+	}
+
+
+	.pagination {
+	    display: flex;
+	    justify-content: center;
+	}
+	
+	.ck-editor__editable_inline {
+	    min-height: 200px;
+	}
+	
+	.accordion-item {
+	    border: 1px solid #7B7B7B;
+	    margin-bottom: 10px;
+	    border-radius: 5px;
+	}
+	
+	.accordion-header {
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    padding: 10px;
+	    background-color: #E0E0E0;
+	    color: #000;
+	    cursor: pointer;
+	    border-bottom: 1px solid #7B7B7B;
+	}
+	
+	.accordion-header.active {
+	    background-color: #7B7B7B;
+	    color: #fff;
+	}
+	
+	.accordion-body {
+	    padding: 10px;
+	    display: none;
+	    background-color: #f9f9f9;
+	}
+	
+	.accordion-body.show {
+	    display: block;
+	}
+	
+	.pagination .page-item .page-link {
+	    color: #6c757d;
+	    background-color: #f8f9fa;
+	    border: 1px solid #dee2e6;
+	}
+	
+	.pagination .page-item.active .page-link {
+	    color: #fff;
+	    background-color: #6c757d;
+	    border: 1px solid #6c757d;
+	}
+	
+	.pagination .page-item.disabled .page-link {
+	    color: #6c757d;
+	    background-color: #e9ecef;
+	    border: 1px solid #dee2e6;
+	}
+	
+	.edit-btn {
+	    display: flex;
+	    gap: 5px;
+	}
+	
+	.edit-btn .btn {
+	    flex: 1;
+	    text-align: center;
+	    font-size: 1rem;
+	    padding: 0.5rem 1rem;
+	}
+	
+	.search-container {
+	    display: flex;
+	    justify-content: flex-end;
+	    align-items: center;
+	    flex-grow: 1;
+	    margin-bottom: 20px;
+	}
+	
+	.search-form {
+	    display: flex;
+	    align-items: center;
+	    position: relative;
+	    border: 1px solid #ccc;
+	    border-radius: 4px;
+	    padding: 5px;
+	}
+	
+	.search-input {
+	    border: none;
+	    padding: 8px 40px 8px 10px;
+	    border-radius: 4px;
+	}
+	
+	.search-input:focus {
+	    outline: none;
+	}
+	
+	.search-button {
+	    position: absolute;
+	    right: 5px;
+	    top: 50%;
+	    transform: translateY(-50%);
+	    border: none;
+	    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+	    width: 24px;
+	    height: 24px;
+	    cursor: pointer;
+	    opacity: 0.7;
+	}
+	
+	.search-button:hover {
+	    opacity: 1;
+	}
+	
+	.tags-container {
+	    margin-left: 10px;
+	}
+	
+	.tags-container span {
+	    background-color: #7B7B7B;
+	    color: white;
+	    border-radius: 5px;
+	    padding: 5px 10px;
+	    margin-right: 5px;
+	}
+	
+	.tag-buttons {
+	    display: flex;
+	    gap: 10px;
+	    margin-left: 10px;
+	}
+	
+	.tag-buttons .btn {
+	    margin: 0.2px;
+	}
+	
+	.header-row {
+	    display: flex;
+	    align-items: center;
+	    justify-content: space-between;
+	}
+	
+	.actions {
+	    display: flex;
+	    align-items: center;
+	    gap: 10px;
+	    margin-left: auto;
+	}
+	
+	.modal-content {
+	    border-radius: 15px;
+	    overflow: hidden;
+	    background-color: #f9f9f9;
+	}
+	
+	.modal-header {
+	    background-color: #6c757d;
+	    color: white;
+	    padding: 15px;
+	}
+	
+	.modal-header .btn-close {
+	    background-color: white;
+	    border-radius: 50%;
+	}
+	
+	.modal-body {
+	    padding: 20px;
+	}
+	
+	.modal-body #postContent {
+	    background-color: #ffffff;
+	    padding: 10px;
+	    border-radius: 10px;
+	    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+	
+	.modal-body #commentsSection {
+	    margin-top: 20px;
+	    background-color: #f1f1f1;
+	    padding: 10px;
+	    border-radius: 10px;
+	}
+	
+	.modal-body #postComment {
+	    margin-top: 20px;
+	    background-color: #e9ecef;
+	    padding: 10px;
+	    border-radius: 10px;
+	}
+    </style>
+</head>
+<body>
+    <div th:replace="~{layout/header}"></div>
+    <div class="container">
+        <div class="header-row">
+            <h1>文章列表</h1>
+            <div class="tag-buttons">
+                <button th:each="tag : ${allTags}" th:text="${tag.name}" class="btn btn-outline-secondary"
+                        th:attr="data-tag-name=${tag.name}" onclick="filterPostsByTag(this)"></button>
+            </div>
+            <div class="actions">
+                <a class="btn btn-secondary" aria-current="page" th:href="@{/post/add}">新增文章</a>
+                <a class="btn btn-secondary" aria-current="page" th:href="@{/post/frontPage}">返回列表</a>
+            </div>
+        </div>
+        <div class="search-container">
+            <form th:action="@{/GetPostByTitle}" method="get" class="input-group">
+                <input type="text" id="title" name="title" placeholder="你想要找什麼呢？" class="form-control search-input">
+                <button type="submit" class="btn btn-outline-secondary search-button"></button>
+            </form>
+        </div>
+        <div class="accordion" id="accordionExample">
+            <th:block th:each="oneMsg : ${page.content}">
+                <div class="accordion-item">
+                    <div class="accordion-header" th:attr="data-id=${oneMsg.postId}">
+                    	<!-- <strong class="userName" th:text="${oneMsg.post.user != null ? oneMsg.post.user.userName : '未知用戶'}">用戶名</strong>
+        <strong class="userId" th:text="${oneMsg.post.user != null ? oneMsg.post.user.userId : '未知id'}">用戶id</strong> -->
+                        <span th:text="${oneMsg.title}" style="flex: 1;">標題</span>
+                        <div class="tags-container">
+                            <span th:each="tag : ${oneMsg.tags}" th:text="${tag.name}" class="badge bg-secondary"></span>
+                            
+                        </div>
+                        <br>
+                    </div>
+                    <div class="accordion-body" th:attr="id='collapse' + ${oneMsg.postId}">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text" th:utext="${oneMsg.postContent}"></p>
+                        <a class="btn btn-outline-secondary" th:href="@{/post/{id}(id=${oneMsg.postId})}">查看詳情</a>
+                        <hr>
+                        <div class="card-footer">
+                            發布時間: <span th:text="${#dates.format(oneMsg.postCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+        <div class="total" th:text="'總共有 ' + ${page.totalElements} + ' 筆'"></div>
+        <ul class="pagination" th:if="${page.totalPages != 0}">
+            <th:block th:switch="${page.number != 0}">
+                <li th:case="${true}" class="page-item">
+                    <a class="page-link" th:href="@{/post/frontPage(p=${page.number})}">上一頁</a>
+                </li>
+                <li th:case="${false}" class="page-item disabled">
+                    <a class="page-link">上一頁</a>
+                </li>
+            </th:block>
+            <th:block th:each="pageNumber : ${#numbers.sequence(1,page.totalPages)}">
+                <th:block th:switch="${page.number + 1 == pageNumber}">
+                    <li th:case="${false}" class="page-item">
+                        <a class="page-link" th:href="@{/post/frontPage(p=${pageNumber})}" th:text="${pageNumber}"></a>
+                    </li>
+                    <li th:case="${true}" class="page-item active">
+                        <span class="page-link" th:text="${pageNumber}"></span>
+                    </li>
+                </th:block>
+            </th:block>
+            <th:block th:switch="${page.number + 1 == page.totalPages}">
+                <li th:case="${false}" class="page-item">
+                    <a class="page-link" th:href="@{/post/frontPage(p=${page.number + 2})}">下一頁</a>
+                </li>
+                <li th:case="${true}" class="page-item disabled">
+                    <a class="page-link">下一頁</a>
+                </li>
+            </th:block>
+        </ul>
+    </div>
+    <script>
+        function viewDetails(postId) {
+            fetch('/post/details/' + postId)
+                .then(response => response.json())
+                .then(data => {
+                    const postContent = document.getElementById('postContent');
+                    const commentsSection = document.getElementById('commentsSection');
+                    if (postContent && commentsSection) {
+                        postContent.innerHTML = `
+                            <h3>${data.title}</h3>
+                            <p>${data.content}</p>
+                        `;
+                        commentsSection.innerHTML = data.comments.map(comment => `
+                            <div class="comment">
+                                <p><strong>${comment.author}</strong>: ${comment.content}</p>
+                            </div>
+                        `).join('');
+                        const postDetailsModal = new bootstrap.Modal(document.getElementById('postDetailsModal'));
+                        postDetailsModal.show();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            bindAccordionEvents();
+        });
+
+        function bindAccordionEvents() {
+            var headers = document.querySelectorAll(".accordion-header");
+            headers.forEach(function(header) {
+                header.addEventListener("click", function() {
+                    var body = this.nextElementSibling;
+                    var isActive = body.style.display === "block";
+                    document.querySelectorAll(".accordion-body").forEach(function(b) {
+                        b.style.display = "none";
+                    });
+                    document.querySelectorAll(".accordion-header").forEach(function(h) {
+                        h.classList.remove("active");
+                    });
+                    if (!isActive) {
+                        body.style.display = "block";
+                        this.classList.add("active");
+                    }
+                });
+            });
+        }
+
+       function filterPostsByTag(button) {
+            var tagName = button.getAttribute('data-tag-name');
+            fetch('/post/byTag?tagName=' + tagName)
+                .then(response => response.text())
+                .then(data => {
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(data, 'text/html');
+                    var newContent = doc.querySelector('#accordionExample').innerHTML;
+                    var accordion = document.getElementById('accordionExample');
+                    accordion.innerHTML = newContent;
+                    bindAccordionEvents(); // 重新绑定事件
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+    <script src="path/to/bootstrap.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 }
 
 body {
-    background-color: rgb(233, 214, 190);
+    background-color: #f0f0f0;
     font-family: 'Roboto', sans-serif;
     color: #333;
     display: flex;
@@ -14,7 +14,7 @@ body {
 }
 
 .formContainer {
-    background-color: #dbd6d6;
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -43,7 +43,7 @@ td {
 }
 
 .insertBtn {
-    background-color: #28a745;
+    background-color: #4a4a4a;
     border: none;
     border-radius: 10px;
     margin-right: 20px;
@@ -54,11 +54,11 @@ td {
 }
 
 .insertBtn:hover {
-    background-color: #218838;
+    background-color: #3b3b3b;
 }
 
 .cancleBtn {
-    background-color: #ff0e0e;
+    background-color: #707070;
     border: none;
     border-radius: 10px;
     margin-right: 20px;
@@ -69,5 +69,5 @@ td {
 }
 
 .cancleBtn:hover {
-    background-color: #c50a0a;
+    background-color: #585858;
 }

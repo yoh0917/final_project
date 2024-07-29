@@ -1,21 +1,17 @@
 package sellphone.orders.controller;
 
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import sellphone.orders.model.Order;
 import sellphone.orders.model.OrderDetail;
-import sellphone.orders.service.OrdersService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import sellphone.orders.service.OrdersService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Arrays;
+import java.util.*;
 
 @Controller
 @RequestMapping("/DashBoard/orders")
@@ -23,6 +19,32 @@ public class OrdersController {
 
     @Autowired
     private OrdersService ordersService;
+//
+//    @PostMapping("/save")
+//    @ResponseBody
+//    public String saveOrder(@RequestBody Order order, @RequestBody List<OrderDetail> orderDetails, HttpSession session) {
+//        // 設定訂單的基本資料
+//        order.setOrderId(ordersService.generateOrderId());  // 現在可以調用 generateOrderId()
+//        order.setCreateDate(new Date());
+//
+//        // 保存訂單和訂單明細
+//        ordersService.saveOrder(order, orderDetails);
+//        return "訂單已保存";
+//    }
+//
+//    @GetMapping("/checkout1")
+//    public String checkoutPage(Model model, HttpSession session) {
+//        List<CartView> carts = (List<CartView>) session.getAttribute("carts");
+//        model.addAttribute("carts", carts);
+//
+//        // 計算總計
+//        int totalAmount = carts.stream().mapToInt(cart -> cart.getQuantity() * cart.getPrice()).sum();
+//        model.addAttribute("totalAmount", totalAmount);
+//
+//        model.addAttribute("userId", carts.get(0).getUserId());
+//        return "OrderFrontend/Checkout1";
+//    }
+
 
     //查詢所有訂單
     @GetMapping
@@ -38,20 +60,6 @@ public class OrdersController {
     public List<OrderDetail> getOrderDetails(@PathVariable String orderId) {
         return ordersService.getOrderDetailsByOrderId(orderId);
     }
-//    @GetMapping("/{OrderId}")
-//    public String getOrderDetailsByOrderId(@PathVariable String OrderId, Model model) {
-//        model.addAttribute("order", ordersService.getOrderById(OrderId));
-//        model.addAttribute("orderDetails", ordersService.getOrderDetailsByOrderId(OrderId));
-//        return "OrderBackend/Orders";
-//    }
-
-//    @GetMapping("/order-details/{orderId}")
-//    public String getOrderDetails(@PathVariable String orderId, Model model) {
-//        List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(orderId);
-//        model.addAttribute("orderDetails", orderDetails);
-//        return "OrderBackend/OrderDetails :: details";
-//    }
-
 
     // 更新訂單
     @PostMapping("/update")
@@ -87,18 +95,6 @@ public class OrdersController {
         }
     }
 
-//
-//    // 處理新增訂單的提交
-//    @PostMapping("/add")
-//    public String addOrder(@ModelAttribute Order order, BindingResult result, Model model) {
-//        if (result.hasErrors()) {
-//            return "OrderBackend/AddOrder";
-//        }
-//        ordersService.saveOrder(order);
-//        return "redirect:/sellphone/orders";
-//    }
-
-
     // 刪除訂單（假刪除，更新訂單狀態為 "D"）
     @PostMapping("/delete")
     @ResponseBody
@@ -114,11 +110,6 @@ public class OrdersController {
         return "OrderBackend/DashboardOrder";
     }
 
-//    @GetMapping("/revenue")
-//    public String revenueAnalysis() {
-//        return "OrderFrontend/Cart";
-//    }
-
     //購物車
     @GetMapping("/cart1")
     public String cartPage() {
@@ -130,12 +121,6 @@ public class OrdersController {
     public String checkoutPage() {
         return "OrderFrontend/Checkout1";
     }
-
-//    @GetMapping("/checkout")
-//    public String revenueAnalysis() {
-//        return "OrderFrontend/Checkout";
-//    }
-
 
     //測試資料
     @GetMapping("/testproduct")

@@ -12,66 +12,63 @@
     <link th:href="@{/shoppingcart/checkout/css/style.default.css}" rel="stylesheet" id="theme-stylesheet">
     <link th:href="@{/shoppingcart/checkout/css/custom.css}" rel="stylesheet">
     <link rel="shortcut icon" th:href="@{/shoppingcart/checkout/img/favicon.png}">
+    <link th:href="@{/shoppingcart/cart/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+    <link th:href="@{/shoppingcart/cart/css/style.css}" rel="stylesheet" type="text/css" media="all" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
+    <link th:href="@{/shoppingcart/cart/css/animate.min.css}" rel="stylesheet">
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
-    <link th:href="@{/layout/css/header.css}" rel="stylesheet">
+    <script th:src="@{/shoppingcart/cart/js/wow.min.js}"></script>
+    <div th:replace="~{/layout/headerStylesheet.html}"></div>
+    <script>
+        new WOW().init();
+    </script>
+    <style>
+        body {
+            padding-top: 100px; /* 確保內容不被header遮住 */
+        }
+    </style>
 </head>
 <body>
-
 <!-- Header -->
-<div th:replace="~{/layout/header.html}"></div>
+<div class="header" th:replace="~{/layout/header.html}"></div>
 
 <div class="container">
     <section class="py-5">
         <h2 class="h5 text-uppercase mb-4">帳單詳細資料</h2>
         <div class="row">
             <div class="col-lg-8">
-                <form action="#">
+                <form id="checkoutForm">
                     <div class="row gy-3">
                         <div class="col-lg-6">
-                            <label class="form-label text-sm text-uppercase" for="firstName">名字</label>
-                            <input class="form-control form-control-lg" type="text" id="firstName" placeholder="輸入您的名字">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-label text-sm text-uppercase" for="lastName">姓氏</label>
-                            <input class="form-control form-control-lg" type="text" id="lastName" placeholder="輸入您的姓氏">
+                            <label class="form-label text-sm text-uppercase" for="firstName">姓名</label>
+                            <input class="form-control form-control-lg" type="text" id="firstName" placeholder="輸入您的姓名">
                         </div>
                         <div class="col-lg-6">
                             <label class="form-label text-sm text-uppercase" for="email">電子郵件地址</label>
-                            <input class="form-control form-control-lg" type="email" id="email" placeholder="例如：Jason@example.com">
+                            <input class="form-control form-control-lg" type="email" id="email" placeholder="例如：ABCD@example.com">
                         </div>
                         <div class="col-lg-6">
                             <label class="form-label text-sm text-uppercase" for="phone">電話號碼</label>
-                            <input class="form-control form-control-lg" type="tel" id="phone" placeholder="例如：+02 245354745">
+                            <input class="form-control form-control-lg" type="tel" id="phone" placeholder="例如：0912345678">
                         </div>
                         <div class="col-lg-6">
-                            <label class="form-label text-sm text-uppercase" for="company">公司名稱（可選）</label>
-                            <input class="form-control form-control-lg" type="text" id="company" placeholder="您的公司名稱">
-                        </div>
-                        <div class="col-lg-6 form-group">
-                            <label class="form-label text-sm text-uppercase" for="country">國家</label>
-                            <select class="country" id="country" data-customclass="form-control form-control-lg rounded-0">
-                                <option value>選擇您的國家</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-12">
-                            <label class="form-label text-sm text-uppercase" for="address">地址第一行</label>
-                            <input class="form-control form-control-lg" type="text" id="address" placeholder="門牌號碼和街道名稱">
-                        </div>
-                        <div class="col-lg-12">
-                            <label class="form-label text-sm text-uppercase" for="addressalt">地址第二行</label>
-                            <input class="form-control form-control-lg" type="text" id="addressalt" placeholder="公寓、套房、單位等（可選）">
-                        </div>
-                        <div class="col-lg-6">
-                            <label class="form-label text-sm text-uppercase" for="city">城市</label>
+                            <label class="form-label text-sm text-uppercase" for="city">縣市</label>
                             <input class="form-control form-control-lg" type="text" id="city">
                         </div>
                         <div class="col-lg-6">
-                            <label class="form-label text-sm text-uppercase" for="state">省/縣</label>
+                            <label class="form-label text-sm text-uppercase" for="state">鄉鎮市區</label>
                             <input class="form-control form-control-lg" type="text" id="state">
                         </div>
+                        <div class="col-lg-12">
+                            <label class="form-label text-sm text-uppercase" for="address">地址：街道名稱/巷/弄/號/樓</label>
+                            <input class="form-control form-control-lg" type="text" id="address" placeholder="街道名稱">
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="form-label text-sm text-uppercase" for="addressalt">附加詳細地址</label>
+                            <input class="form-control form-control-lg" type="text" id="addressalt" placeholder="(選填)公寓、套房、公司單位等">
+                        </div>
                     </div>
-
-                    <!-- 信用卡付款信息 -->
                     <h2 class="h5 text-uppercase mt-4">付款信息</h2>
                     <div class="row gy-3">
                         <div class="col-lg-12">
@@ -95,22 +92,33 @@
                             <input class="form-control form-control-lg" type="text" id="cvv" placeholder="***">
                         </div>
                         <div class="col-lg-12 form-group">
-                            <button class="btn btn-primary" type="submit">立即付款</button>
+                            <button class="btn btn-primary" type="button" onclick="submitOrder()">立即付款</button>
                         </div>
                     </div>
                 </form>
+                <div th:if="${message}" class="alert alert-success" role="alert">
+                    <span th:text="${message}"></span>
+                </div>
+                <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                    <span th:text="${errorMessage}"></span>
+                </div>
             </div>
-            <!-- 訂單摘要-->
             <div class="col-lg-4">
                 <div class="card border-0 rounded-0 p-lg-4 bg-light">
                     <div class="card-body">
                         <h5 class="text-uppercase mb-4">您的訂單</h5>
-                        <ul class="list-unstyled mb-0">
-                            <li class="d-flex align-items-center justify-content-between"><strong class="small fw-bold">紅色數字智能手錶</strong><span class="text-muted small">$250</span></li>
+                        <ul class="list-unstyled mb-0" id="orderSummary">
+                            <li th:each="cart : ${carts}" class="d-flex align-items-center justify-content-between order-item" th:data-product-id="${cart.productId}">
+                                <strong class="small fw-bold product-name" th:text="${cart.productName}"></strong>
+                                <span class="text-muted small product-price" th:text="${cart.price}"></span>
+                                <span class="text-muted small product-quantity" th:text="${cart.quantity}"></span>
+                                <span class="text-muted small product-total" th:text="${cart.price * cart.quantity}"></span>
+                            </li>
                             <li class="border-bottom my-2"></li>
-                            <li class="d-flex align-items-center justify-content-between"><strong class="small fw-bold">灰色耐克跑鞋</strong><span class="text-muted small">$351</span></li>
-                            <li class="border-bottom my-2"></li>
-                            <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small fw-bold">總計</strong><span>$601</span></li>
+                            <li class="d-flex align-items-center justify-content-between">
+                                <strong class="text-uppercase small fw-bold">總計</strong>
+                                <span id="totalAmount" th:text="${totalAmount}"></span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -122,7 +130,6 @@
 <!-- Footer -->
 <div th:replace="~{/layout/footer.html}"></div>
 
-<!-- JavaScript files-->
 <script th:src="@{/shoppingcart/checkout/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/vendor/glightbox/js/glightbox.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.js}"></script>
@@ -130,18 +137,68 @@
 <script th:src="@{/shoppingcart/checkout/vendor/choices.js/public/assets/scripts/choices.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/js/front.js}"></script>
 <script>
-    function injectSvgSprite(path) {
-        var ajax = new XMLHttpRequest();
-        ajax.open("GET", path, true);
-        ajax.send();
-        ajax.onload = function(e) {
-            var div = document.createElement("div");
-            div.className = 'd-none';
-            div.innerHTML = ajax.responseText;
-            document.body.insertBefore(div, document.body.childNodes[0]);
-        }
+    function submitOrder() {
+        var order = {
+            orderId: generateOrderId(),
+            status: "N",
+            createDate: new Date().getTime(),
+            totalAmount: parseFloat(document.getElementById("totalAmount").innerText),
+            payStatus: "N",
+            userName: document.getElementById("firstName").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            city: document.getElementById("city").value,
+            district: document.getElementById("state").value,
+            address: document.getElementById("address").value,
+            detailAddress: document.getElementById("addressalt").value
+        };
+
+        fetch('/sellphone/orders/saveOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("已成功插入資料庫");
+                    // 插入 O0002_ORDERDETAIL
+                    fetch('/sellphone/orders/saveOrderDetails', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ orderId: order.orderId })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("已成功插入訂單明細");
+                            } else {
+                                alert("插入訂單明細失敗: " + data.message);
+                            }
+                        })
+                        .catch(error => alert('插入訂單明細失敗: ' + error.message));
+                } else {
+                    alert("插入資料庫失敗: " + data.message);
+                }
+            })
+            .catch(error => alert('插入資料庫失敗: ' + error.message));
     }
-    injectSvgSprite('icons/orion-svg-sprite.svg');
+
+    function generateOrderId() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = ('0' + (date.getMonth() + 1)).slice(-2);
+        var day = ('0' + date.getDate()).slice(-2);
+        var hours = ('0' + date.getHours()).slice(-2);
+        var minutes = ('0' + date.getMinutes()).slice(-2);
+        var seconds = ('0' + date.getSeconds()).slice(-2);
+        var milliseconds = date.getMilliseconds().toString().padStart(3, '0');
+        return 'S' + year + month + day + hours + minutes + seconds + milliseconds;
+    }
 </script>
 </body>
 </html>

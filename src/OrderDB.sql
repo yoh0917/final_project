@@ -5,6 +5,68 @@ SELECT * FROM p0001_products
 SELECT * FROM O0001_ORDER
 SELECT * FROM O0002_ORDERDETAIL
 
+
+/*
+SELECT * FROM S1001_SHOPPINGCART_V
+
+WITH RankedPhotos AS (
+    SELECT
+        photoid,
+        photoFile,
+        productid,
+        ROW_NUMBER() OVER (PARTITION BY productid ORDER BY photoid) AS rn
+    FROM
+        photo
+)
+SELECT
+    S0001.USERID,
+    S0001.PRODUCTID,
+    S0001.COLOR,
+    S0001.STORAGE,
+    S0001.QUANTITY,
+    S0001.PRICE,
+    P0001.PRODUCTNAME,
+	CONCAT(P0001.PRODUCTNAME,P0001.color,P0001.capacity) NEWPRODUCTNAME,
+    P.photoFile
+FROM
+    S0001_SHOPPINGCART S0001
+LEFT JOIN p0001_products P0001
+    ON S0001.PRODUCTID = P0001.productid
+LEFT JOIN RankedPhotos P
+    ON S0001.PRODUCTID = P.productid AND P.rn = 1;
+
+
+CREATE TABLE O0001_ORDER (
+    ORDERID varchar(17) NOT NULL PRIMARY KEY,
+    STATUS varchar(1) NULL,
+    CREATEDATE datetime NULL,
+    TOTALAMOUNT int NULL,
+    PAYDATE datetime NULL,
+    PAYSTATUS varchar(1) NULL,
+    USERID varchar(10) NULL,
+    USERNAME varchar(50) NOT NULL,
+    NAME nvarchar(50) NULL,
+    EMAIL varchar(50) NULL,
+    PHONE varchar(15) NULL,
+    CITY nvarchar(10) NULL,
+    DISTRICT nvarchar(10) NULL,
+    ADDRESS nvarchar(100) NULL,
+    DETAILADDRESS nvarchar(255) NULL
+);
+
+CREATE TABLE O0002_ORDERDETAIL (
+    DETAILID varchar(10) NOT NULL PRIMARY KEY,
+    ORDERID varchar(17) NOT NULL,
+    PRODUCTID varchar(10) NULL,
+    PRODUCTNAME nvarchar(100) NULL,
+    COLOR nvarchar(30) NULL,
+    STORAGE nvarchar(30) NULL,
+    QUANTITY int NULL,
+    PRICE int NULL,
+    TOTAL int NULL,
+
+);
+
 CREATE TABLE S0001_SHOPPINGCART (
                                     USERID VARCHAR(50),
                                     PRODUCTID INT,
@@ -17,19 +79,29 @@ CREATE TABLE S0001_SHOPPINGCART (
 
 INSERT INTO S0001_SHOPPINGCART (USERID, PRODUCTID, COLOR, STORAGE, QUANTITY, PRICE)
 VALUES
-    ('admin', 1, 'ª÷¦â', '1000TB', 1, 50000),
-    ('admin', 2, '»È¦â', '512TB', 1, 40000);
+    ('admin', 1, 'ï¿½ï¿½ï¿½ï¿½', '1000TB', 1, 50000),
+    ('admin', 2, 'ï¿½È¦ï¿½', '512TB', 1, 40000);
+*/
 
+/*
+ALTER TABLE O0002_ORDERDETAIL ALTER COLUMN PRODUCTID INT
+-- ï¿½ï¿½s O0001_ORDER ï¿½ï¿½ï¿½
+ALTER TABLE O0001_ORDER
+ADD NAME nvarchar(50) NULL;
 
-/*ALTER TABLE O0002_ORDERDETAIL ALTER COLUMN PRODUCTID INT*/
+-- ï¿½ï¿½s O0002_ORDERDETAIL ï¿½ï¿½ï¿½
+ALTER TABLE O0002_ORDERDETAIL
+ADD PRODUCTNAME nvarchar(100) NULL;
+*/
+
 
 DECLARE @i INT = 1;
-DECLARE @seq INT = 1; -- °ß¤@ªº»¼¼W§Ç¦C
-DECLARE @detailSeq INT = 1; -- DETAILIDªº°ß¤@»¼¼W§Ç¦C
+DECLARE @seq INT = 1; -- ï¿½ß¤@ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½Ç¦C
+DECLARE @detailSeq INT = 1; -- DETAILIDï¿½ï¿½ï¿½ß¤@ï¿½ï¿½ï¿½Wï¿½Ç¦C
 
 WHILE @i <= 500
     BEGIN
-        -- ¥Í¦¨ÀH¾÷ªº CREATEDATE¡A½d³ò±q 2022-01-01 ¨ì 2024-12-31¡A¨Ã¥h°£²@¬í³¡¤À
+        -- ï¿½Í¦ï¿½ï¿½Hï¿½ï¿½ï¿½ï¿½ CREATEDATEï¿½Aï¿½dï¿½ï¿½q 2022-01-01 ï¿½ï¿½ 2024-12-31ï¿½Aï¿½Ã¥hï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½ï¿½
         DECLARE @RandomDateTime DATETIME2(0) = DATEADD(DAY, ABS(CHECKSUM(NEWID())) % (365 * 3), '20220101')
             + DATEADD(SECOND, ABS(CHECKSUM(NEWID())) % (24 * 60 * 60), 0);
         DECLARE @CREATEDATE DATETIME = CAST(CONCAT(
@@ -41,7 +113,7 @@ WHILE @i <= 500
                 RIGHT('0' + CAST(DATEPART(SECOND, @RandomDateTime) AS VARCHAR(2)), 2)
                                             ) AS DATETIME);
 
-        -- ¥Í¦¨ORDERID¡A®æ¦¡¬°S0YYMMDDHHMMSS + °ß¤@ªº»¼¼W§Ç¦C
+        -- ï¿½Í¦ï¿½ORDERIDï¿½Aï¿½æ¦¡ï¿½ï¿½S0YYMMDDHHMMSS + ï¿½ß¤@ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½Ç¦C
         DECLARE @ORDERID VARCHAR(15) = 'S0' + RIGHT('0' + CAST(YEAR(@CREATEDATE) % 100 AS VARCHAR(2)), 2)
             + RIGHT('0' + CAST(MONTH(@CREATEDATE) AS VARCHAR(2)), 2)
             + RIGHT('0' + CAST(DAY(@CREATEDATE) AS VARCHAR(2)), 2)
@@ -50,28 +122,28 @@ WHILE @i <= 500
             + RIGHT('0' + CAST(DATEPART(SECOND, @CREATEDATE) AS VARCHAR(2)), 2)
             + RIGHT('000' + CAST(@seq AS VARCHAR(3)), 3);
 
-        -- ¼W¥[§Ç¦C¥H½T«O°ß¤@©Ê
+        -- ï¿½Wï¿½[ï¿½Ç¦Cï¿½Hï¿½Tï¿½Oï¿½ß¤@ï¿½ï¿½
         SET @seq = @seq + 1;
 
         DECLARE @USERID VARCHAR(10) = 'P' + RIGHT('0000000' + CAST(@i AS VARCHAR(9)), 8);
         DECLARE @USERNAME VARCHAR(50) = 'User' + CAST(@i AS VARCHAR(10));
 
-        -- ¥Í¦¨STATUS¡A1¥e70%
+        -- ï¿½Í¦ï¿½STATUSï¿½A1ï¿½e70%
         DECLARE @STATUS VARCHAR(1) = CASE
                                          WHEN ABS(CHECKSUM(NEWID())) % 10 < 7 THEN '1'
                                          ELSE CAST(ABS(CHECKSUM(NEWID())) % 3 + 2 AS VARCHAR(1))
             END;
 
-        -- ¥Í¦¨TOTALAMOUNT¡A½d³ò10000¨ì50000
+        -- ï¿½Í¦ï¿½TOTALAMOUNTï¿½Aï¿½dï¿½ï¿½10000ï¿½ï¿½50000
         DECLARE @TOTALAMOUNT INT = ABS(CHECKSUM(NEWID())) % 40001 + 10000;
 
-        -- ¥Í¦¨PAYSTATUS¡A90%¬°P¡A10%¬°U
+        -- ï¿½Í¦ï¿½PAYSTATUSï¿½A90%ï¿½ï¿½Pï¿½A10%ï¿½ï¿½U
         DECLARE @PAYSTATUS VARCHAR(1) = CASE
                                             WHEN ABS(CHECKSUM(NEWID())) % 10 < 9 THEN 'P'
                                             ELSE 'U'
             END;
 
-        -- ¥Í¦¨PAYDATE¡A¦pªGPAYSTATUS¬°P«h¥Í¦¨¤é´Á¡A§_«h¬°NULL¡A¨Ã¥h°£²@¬í³¡¤À
+        -- ï¿½Í¦ï¿½PAYDATEï¿½Aï¿½pï¿½GPAYSTATUSï¿½ï¿½Pï¿½hï¿½Í¦ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½_ï¿½hï¿½ï¿½NULLï¿½Aï¿½Ã¥hï¿½ï¿½ï¿½@ï¿½ï¿½ï¿½ï¿½
         DECLARE @RandomPayDateTime DATETIME2(0) = DATEADD(DAY, ABS(CHECKSUM(NEWID())) % (365 * 3), '20220101')
             + DATEADD(SECOND, ABS(CHECKSUM(NEWID())) % (24 * 60 * 60), 0);
         DECLARE @PAYDATE DATETIME = CASE
@@ -86,30 +158,30 @@ WHILE @i <= 500
                                         ELSE NULL
             END;
 
-        -- ´¡¤J¨ìO0001_ORDERªí
+        -- ï¿½ï¿½ï¿½Jï¿½ï¿½O0001_ORDERï¿½ï¿½
         INSERT INTO dbo.O0001_ORDER (ORDERID, CREATEDATE, PAYDATE, PAYSTATUS, STATUS, TOTALAMOUNT, USERID, USERNAME)
         VALUES (@ORDERID, @CREATEDATE, @PAYDATE, @PAYSTATUS, @STATUS, @TOTALAMOUNT, @USERID, @USERNAME);
 
-        -- ­pºâ¨Cµ§­q³æªº²£«~¼Æ¶q¡AÀH¾÷¬°1¨ì3
+        -- ï¿½pï¿½ï¿½Cï¿½ï¿½ï¿½qï¿½æªºï¿½ï¿½ï¿½~ï¿½Æ¶qï¿½Aï¿½Hï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½3
         DECLARE @productCount INT = ABS(CHECKSUM(NEWID())) % 3 + 1;
         DECLARE @j INT = 1;
         DECLARE @totalDetailAmount INT = 0;
 
         WHILE @j <= @productCount
             BEGIN
-                -- ¥Í¦¨°ß¤@ªºDETAILID
+                -- ï¿½Í¦ï¿½ï¿½ß¤@ï¿½ï¿½DETAILID
                 DECLARE @DETAILID VARCHAR(10) = 'D' + RIGHT('0000000' + CAST(@detailSeq AS VARCHAR(7)), 7);
-                -- ¼W¥[DETAILIDªº§Ç¦C¥H½T«O°ß¤@©Ê
+                -- ï¿½Wï¿½[DETAILIDï¿½ï¿½ï¿½Ç¦Cï¿½Hï¿½Tï¿½Oï¿½ß¤@ï¿½ï¿½
                 SET @detailSeq = @detailSeq + 1;
 
-                -- ÀH¾÷¿ï¾ÜPRODUCTID¡A½d³ò1¨ì50
+                -- ï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½PRODUCTIDï¿½Aï¿½dï¿½ï¿½1ï¿½ï¿½50
                 DECLARE @PRODUCTID INT = ABS(CHECKSUM(NEWID())) % 50 + 1;
-                DECLARE @QUANTITY INT = 1; -- ¼Æ¶q©T©w¬°1
-                -- ¥Í¦¨PRICE¡A½d³ò5000¨ì50000
+                DECLARE @QUANTITY INT = 1; -- ï¿½Æ¶qï¿½Tï¿½wï¿½ï¿½1
+                -- ï¿½Í¦ï¿½PRICEï¿½Aï¿½dï¿½ï¿½5000ï¿½ï¿½50000
                 DECLARE @PRICE INT = ABS(CHECKSUM(NEWID())) % 45001 + 5000;
                 DECLARE @TOTAL INT = @QUANTITY * @PRICE;
 
-                -- ´¡¤J¨ìO0002_ORDERDETAILªí¡A¨Ï¥Î¨Ó¦ÛO0001ªºORDERID
+                -- ï¿½ï¿½ï¿½Jï¿½ï¿½O0002_ORDERDETAILï¿½ï¿½Aï¿½Ï¥Î¨Ó¦ï¿½O0001ï¿½ï¿½ORDERID
                 INSERT INTO dbo.O0002_ORDERDETAIL (DETAILID, QUANTITY, ORDERID, PRICE, PRODUCTID, TOTAL)
                 VALUES (@DETAILID, @QUANTITY, @ORDERID, @PRICE, @PRODUCTID, @TOTAL);
 
@@ -117,7 +189,7 @@ WHILE @i <= 500
                 SET @j = @j + 1;
             END;
 
-        -- §ó·sO0001ªºTOTALAMOUNT¨Ï¨äµ¥©óO0002ªºTOTALªº¥[Á`
+        -- ï¿½ï¿½sO0001ï¿½ï¿½TOTALAMOUNTï¿½Ï¨äµ¥ï¿½ï¿½O0002ï¿½ï¿½TOTALï¿½ï¿½ï¿½[ï¿½`
         UPDATE dbo.O0001_ORDER
         SET TOTALAMOUNT = @totalDetailAmount
         WHERE ORDERID = @ORDERID;

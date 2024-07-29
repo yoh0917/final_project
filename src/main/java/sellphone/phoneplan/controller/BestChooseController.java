@@ -18,9 +18,23 @@ public class BestChooseController {
 
     @GetMapping("/DashBoard/phoneplans")
     public String showBestPlanForm() {
-        return "phoneplan/choose"; // 確保這裡的名稱與你的模板文件名一致
+        return "phoneplan/choose"; 
     }
 
+    //測試
+    @GetMapping("/DashBoard/phoneplans/decide")
+    public String read() {
+        return "phoneplan/NewFile"; 
+    }
+   //測試 
+    
+    @GetMapping("/phoneplans/look")
+    
+    public String showBest() {
+        return "phoneplan/phoneplaninformation"; 
+    }
+    
+    
     @GetMapping("/DashBoard/phoneplans/getBestPlan")
     @ResponseBody
     public List<PhonePlanBean> getBestPlan(@RequestParam String telCompany, @RequestParam String planName,

@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+log.log
+# Ignore service account JSON file
+src/main/resources/my-service-account.json
+
