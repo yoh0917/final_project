@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket</title>
+</head>
+<body>
+    <div>
+        <input type="text" id="messageInput" placeholder="输入消息" />
+        <button onclick="sendMessage()">發送消息</button>
+    </div>
+    <div id="messages"></div>
+
+    <script type="text/javascript">
+        let websocket = new WebSocket("ws://localhost:8081/sellphoe/channel/echo");
+
+        // 連接打開
+        websocket.onopen = e => {
+            console.log("連接打開");
+        }
+
+        // 連接關閉
+        websocket.onclose = e => {
+            console.log(`連接關閉: code=${e.code}, reason=${e.reason}`);
+        }
+
+        // 收到消息
+        websocket.onmessage = e => {
+            console.log(`收到消息：${e.data}`);
+            let messagesDiv = document.getElementById("messages");
+            let messageElement = document.createElement("p");
+            messageElement.textContent = `收到消息：[${new Date().getTime()}] ${e.data}`;
+            messagesDiv.appendChild(messageElement);
+        }
+
+        // 連接有異常
+        websocket.onerror = e => {
+            console.log("連接異常");
+            console.error(e);
+        }
+
+        // 發出消息
+        function sendMessage() {
+            let messageInput = document.getElementById("messageInput");
+            let message = messageInput.value;
+            websocket.send(message);
+            messageInput.value = ''; // 清空輸入的對話框
+        }
+    </script>
+</body>
+</html>
