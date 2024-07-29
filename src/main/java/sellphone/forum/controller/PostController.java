@@ -107,6 +107,7 @@ public class PostController {
 //        return "post/postFrontPage";
 //        
 //    }
+    
 
     @GetMapping("/post/edit")
     public String editPost(@RequestParam Integer id, @RequestParam(value = "p", defaultValue = "1") Integer pageNum, Model model) {
