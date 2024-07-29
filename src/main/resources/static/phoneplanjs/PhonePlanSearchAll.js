@@ -1,4 +1,4 @@
-$(function () {
+$(document).ready(function () {
     let currentTelCompany = '';
     let currentContractType = '';
     let currentPlanID = '';
@@ -13,20 +13,20 @@ $(function () {
 
     function filterCompany(company) {
         currentTelCompany = company;
-        loadPlans(0, 8, currentTelCompany, currentContractType, currentPlanID);
+        loadPlans(currentTelCompany, currentContractType, currentPlanID);
     }
 
     function filterContract(contract) {
         currentContractType = contract;
-        loadPlans(0, 8, currentTelCompany, currentContractType, currentPlanID);
+        loadPlans(currentTelCompany, currentContractType, currentPlanID);
     }
 
     function clearFilters() {
         currentTelCompany = '';
         currentContractType = '';
         currentPlanID = '';
-        $('.searchID').val(''); // 清空輸入框的值
-        loadPlans(0, 8, currentTelCompany, currentContractType, currentPlanID);
+        $('.searchID').val(''); 
+        loadPlans(currentTelCompany, currentContractType, currentPlanID);
     }
 
     function setupEventListeners() {
@@ -60,44 +60,31 @@ $(function () {
         $('.insertBtn').on('click', function () {
             window.location.href = './DashBoard/phoneplans/create';
         });
-
-        $('.pagination').on('click', 'a', function (event) {
-            event.preventDefault();
-            let page = $(this).data('page');
-            loadPlans(page, 8, currentTelCompany, currentContractType, currentPlanID);
-        });
     }
 
     function filterByID(planID) {
         currentPlanID = planID;
         $('.companyFilter').removeClass("filterActive");
         $('.contractFilter').removeClass("filterActive");
-        loadPlans(0, 8, currentTelCompany, currentContractType, currentPlanID);
+        loadPlans(currentTelCompany, currentContractType, currentPlanID);
     }
 
-    function updatePlan(planID) {
-        planID = Number(planID).toString();
+ function updatePlan(planID) {
+    planID = Number(planID).toString();
 
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/sellphone/DashBoard/phoneplans/update';
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/sellphone/DashBoard/phoneplans/showFormForUpdate';
 
-        const methodField = document.createElement('input');
-        methodField.type = 'hidden';
-        methodField.name = '_method';
-        methodField.value = 'PUT';
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = "planID";
+    input.value = planID;
 
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = "planID";
-        input.value = planID;
-
-        form.appendChild(methodField);
-        form.appendChild(input);
-        document.body.appendChild(form);
-        form.submit();
-    }
-
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+}
     function deletePlan(planID) {
         if (confirm("你確定要刪除該列嗎？")) {
             const url = `/sellphone/DashBoard/phoneplans/delete/${planID}`;
@@ -117,74 +104,153 @@ $(function () {
         }
     }
 
-    function loadPlans(page, size, telCompany, contractType, planID) {
-        $.ajax({
-            url: '/sellphone/DashBoard/phoneplans/ajax',
-            data: {
-                page: page,
-                size: size,
-                telCompany: telCompany,
-                contractType: contractType,
-                planID: planID
-            },
-            success: function (data) {
-                let tableBody = $('tbody');
-                tableBody.empty();
-                data.content.forEach(plan => {
-                    tableBody.append(`
-                        <tr>
-                            <td class="planID">${plan.planID}</td>
-                            <td>${plan.planName}</td>
-                            <td>${plan.telCompany}</td>
-                            <td>${plan.contractType}</td>
-                            <td>${plan.contractDuration}</td>
-                            <td>${plan.generation}</td>
-                            <td>${plan.dataUsage}</td>
-                            <td>${plan.dataTransferRate}</td>
-                            <td>${plan.intraNetCall}</td>
-                            <td>${plan.interNetCall}</td>
-                            <td>${plan.localCall}</td>
-                            <td>${plan.discount}</td>
-                            <td>${plan.gift}</td>
-                            <td>
-                                <form action="/sellphone/DashBoard/phoneplans/showFormForUpdate" method="post">
-                                    <input type="hidden" name="planID" value="${plan.planID}">
-                                    <button type="submit" class="updateBtn">修改</button>
-                                </form>
-                            </td>
-                            <td>
-                                <a href="/sellphone/DashBoard/phoneplans/delete/${plan.planID}"><button class="deleteBtn">刪除</button></a>
-                            </td>
-                        </tr>
-                    `);
-                });
-                updatePagination(data.currentPage, data.totalPages);
+    function loadPlans(telCompany, contractType, planID) {
+        $('tbody tr').each(function () {
+            let telMatch = (telCompany === '' || $(this).find('.telCompany').text().trim() === telCompany);
+            let contractMatch = (contractType === '' || $(this).find('.contractType').text().trim() === contractType);
+            let idMatch = (planID === '' || $(this).find('.planID').text().trim().toLowerCase().indexOf(planID.toLowerCase()) !== -1);
+
+            if (telMatch && contractMatch && idMatch) {
+                $(this).removeClass('hidden');
+            } else {
+                $(this).addClass('hidden');
             }
         });
     }
 
-    function updatePagination(currentPage, totalPages) {
-        let pagination = $('.pagination ul');
-        pagination.empty();
-        pagination.append(`
-            <li class="${currentPage == 0 ? 'disabled' : ''}">
-                <a href="#" data-page="${currentPage - 1}">上一頁</a>
-            </li>
-        `);
-        for (let i = 0; i < totalPages; i++) {
-            pagination.append(`
-                <li class="${i == currentPage ? 'active' : ''}">
-                    <a href="#" data-page="${i}">${i + 1}</a>
-                </li>
-            `);
-        }
-        pagination.append(`
-            <li class="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                <a href="#" data-page="${currentPage + 1}">下一頁</a>
-            </li>
-        `);
-    }
-
     setupEventListeners();
-    loadPlans(0, 8, currentTelCompany, currentContractType, currentPlanID);
+    loadPlans(currentTelCompany, currentContractType, currentPlanID);
+
+    $('.refreshBtn').on('click', function () {
+        $('.contractFilter').removeClass("filterActive");
+        $('.companyFilter').removeClass("filterActive");
+        removeHidden($('tbody tr'));
+        $('tbody tr').removeClass("hidden2")
+    })
+
+    $('.companyFilter').on('click', function () {
+        console.log($(this).attr('value'));
+
+        let twm = $('.twmBtn').attr('value');
+        let chm = $('.chmBtn').attr('value');
+        let fet = $('.fetBtn').attr('value');
+
+        $('.contractFilter').removeClass("filterActive");
+        $('.companyFilter').removeClass("filterActive");
+
+        removeHidden($('tbody tr'));
+        $('tbody tr').removeClass("hidden2")
+
+        switch ($(this).attr('value')) {
+            case twm:
+                $(this).addClass("filterActive");
+                $('.telCompany').each(function () {
+                    let tel = $(this).text().trim();
+                    if (tel != twm) {
+                        addHidden($(this).parent());
+                    }
+                });
+                console.log(twm);
+
+                break;
+            case chm:
+
+                $(this).addClass("filterActive");
+                $('.telCompany').each(function () {
+                    let tel = $(this).text().trim();
+                    if (tel != chm) {
+                        addHidden($(this).parent());
+                    }
+                });
+
+                console.log(chm);
+                break;
+            case fet:
+
+                $(this).addClass("filterActive");
+                $('.telCompany').each(function () {
+                    let tel = $(this).text().trim();
+                    if (tel != fet) {
+                        addHidden($(this).parent());
+                    }
+                });
+                console.log(fet);
+                break;
+        }
+
+    })
+
+    $('.contractFilter').on('click', function () {
+        console.log("contractFilter");
+
+        let acq = $('.acquisitionBtn').attr('value');
+        let portability = $('.numPortabilityBtn').attr('value');
+        let retention = $('.retentionBtn').attr('value');
+
+        $('.contractFilter').removeClass("filterActive");;
+        $('tbody tr').removeClass("hidden2");
+
+        switch ($(this).attr('value')) {
+            case acq:
+
+                $(this).addClass("filterActive");
+                $('.contractType').each(function () {
+                    let contract = $(this).text().trim();
+                    if (contract != acq) {
+                        $(this).parent().addClass("hidden2");
+                    }
+                });
+
+                console.log(acq);
+                break;
+            case portability:
+
+                $(this).addClass("filterActive");
+                $('.contractType').each(function () {
+                    let contract = $(this).text().trim();
+                    if (contract != portability) {
+                        $(this).parent().addClass("hidden2");
+                    }
+                });
+
+                console.log(portability);
+                break;
+            case retention:
+
+                $(this).addClass("filterActive");
+                $('.contractType').each(function () {
+                    let contract = $(this).text().trim();
+                    if (contract != retention) {
+                        $(this).parent().addClass("hidden2");
+                    }
+                });
+
+                console.log(retention);
+                break;
+        }
+    })
+
+    $('.searchID').keyup(function () {
+        console.log("searchID")
+        $('.companyFilter').removeClass("filterActive");
+        $('.contractFilter').removeClass("filterActive");
+        $('tbody tr').removeClass('hidden');
+        $('tbody tr').removeClass('hidden2');
+        if ($(this).val() != "") {
+            let planID = $(this).val().trim().toLowerCase();
+            $('.planID').each(function () {
+                let ID = $(this).text().trim().toLowerCase();
+                if (ID.indexOf(planID) === -1) {
+                    $(this).closest('tr').addClass("hidden");
+                }
+            });
+        }
+    });
+
+ humane.theme = 'bigbox';
+
+        if (!sessionStorage.getItem('welcomeMessageShown')) {
+            humane.log("歡迎回來");
+            sessionStorage.setItem('welcomeMessageShown', 'true');
+        }
 });

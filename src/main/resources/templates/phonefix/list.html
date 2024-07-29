@@ -1,76 +1,110 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>手機維修列表</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
-    <style>
-        body {
-            background-color: #f8f9fa; /* 黑白灰背景 */
-            width: 85%; /
-            
-        }
-        .container {
-            background-color: #e9ecef; /* 容器背景 */
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 30%; /* 調整容器寬度 */
-            margin-right: auto;
-            margin-left: auto;
-            transform: translateX(17%); /* 往右偏移 */
-        }
-        h2 {
-            color: #343a40; /* 深灰色標題 */
-        }
-        .table {
-            background-color: #ffffff;
-        }
-        .table thead th {
-            background-color: #343a40; /* 深灰色表頭 */
-            color: #ffffff;
-        }
-        .table tbody tr:nth-child(odd) {
-            background-color: #dee2e6; /* 淺灰色奇數行 */
-        }
-        .table tbody tr:nth-child(even) {
-            background-color: #f8f9fa; /* 淺灰色偶數行 */
-        }
-        .btn {
-            border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            color: #ffffff;
-        }
-        .btn-primary {
-            background-color: #6c757d; /* 中灰色按鈕 */
-        }
-        .btn-primary:hover {
-            background-color: #5a6268; /* 深灰色按鈕 */
-        }
-        .btn-primary:focus {
-            box-shadow: 0 0 5px rgba(90, 98, 104, 0.5);
-        }
-        .btn-warning {
-            background-color: #adb5bd; /* 淺灰色按鈕 */
-        }
-        .btn-warning:hover {
-            background-color: #868e96; /* 中灰色按鈕 */
-        }
-        .btn-warning:focus {
-            box-shadow: 0 0 5px rgba(134, 142, 150, 0.5);
-        }
-        .btn-danger {
-            background-color: #343a40; /* 深灰色按鈕 */
-        }
-        .btn-danger:hover {
-            background-color: #212529; /* 更深灰色按鈕 */
-        }
-        .btn-danger:focus {
-            box-shadow: 0 0 5px rgba(52, 58, 64, 0.5);
-        }
-    </style>
-    <script>
+<meta charset="UTF-8">
+<title>手機維修列表</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
+<style>
+body {
+	background-color: #f8f9fa; /* 黑白灰背景 */
+	width: 85%;
+}
+
+.container {
+	background-color: #e9ecef; /* 容器背景 */
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	width: 30%; /* 調整容器寬度 */
+	margin-right: auto;
+	margin-left: auto;
+	transform: translateX(17%); /* 往右偏移 */
+}
+
+h2 {
+	color: #343a40; /* 深灰色標題 */
+}
+
+.table {
+	background-color: #ffffff;
+}
+
+.table thead th {
+	background-color: #343a40; /* 深灰色表頭 */
+	color: #ffffff;
+}
+
+.table tbody tr:nth-child(odd) {
+	background-color: #dee2e6; /* 淺灰色奇數行 */
+}
+
+.table tbody tr:nth-child(even) {
+	background-color: #f8f9fa; /* 淺灰色偶數行 */
+}
+
+.btn {
+	border: none;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	color: #ffffff;
+}
+
+.btn-primary {
+	background-color: #6c757d; /* 中灰色按鈕 */
+}
+
+.btn-primary:hover {
+	background-color: #5a6268; /* 深灰色按鈕 */
+}
+
+.btn-primary:focus {
+	box-shadow: 0 0 5px rgba(90, 98, 104, 0.5);
+}
+
+.btn-warning {
+	background-color: #adb5bd; /* 淺灰色按鈕 */
+}
+
+.btn-warning:hover {
+	background-color: #868e96; /* 中灰色按鈕 */
+}
+
+.btn-warning:focus {
+	box-shadow: 0 0 5px rgba(134, 142, 150, 0.5);
+}
+
+.btn-danger {
+	background-color: #343a40; /* 深灰色按鈕 */
+}
+
+.btn-danger:hover {
+	background-color: #212529; /* 更深灰色按鈕 */
+}
+
+.btn-danger:focus {
+	box-shadow: 0 0 5px rgba(52, 58, 64, 0.5);
+}
+
+.btn-black {
+    background-color: #000000; /* 黑色按鈕 */
+}
+
+.btn-black:hover {
+    background-color: #333333; /* 更深黑色按鈕 */
+}
+
+.btn-black:focus {
+    box-shadow: 0 0 5px rgba(52, 58, 64, 0.5);
+    color: #ffffff;
+}
+.img-thumbnail {
+	max-width: 100px;
+	max-height: 100px;
+}
+</style>
+<script>
         function confirmDelete(event) {
             if (!confirm("確認要刪除這條記錄嗎？")) {
                 event.preventDefault();
@@ -79,63 +113,169 @@
     </script>
 </head>
 <body>
-    <div th:replace="~{/layout/DashBoardSidebar.html}"></div>
-    <div class="container mt-5">
-        <h2 class="mb-4">手機維修列表</h2>
-        <div class="mb-3">
-            <a href="#" th:href="@{/DashBoard/phonefixs/create1}" class="btn btn-primary" style="background-color: #6c757d; color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">新增維修記錄</a>
-        </div>
-        <div style="overflow-x:auto;">
-            <table id="myTable" class="table table-bordered display" style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th>維修編號</th>
-                        <th>送修者</th>
-                        <th>送修日期</th>
-                        <th>維修費用</th>
-                        <th>維修細節</th>
-                        <th>維修狀態</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="phoneFix : ${list}">
-                        <td th:text="${phoneFix.fixID}">1</td>
-                        <td th:text="${phoneFix.fixName}">送修者</td>
-                        <td th:text="${phoneFix.fixDate}">送修日期</td>
-                        <td th:text="${phoneFix.fixCost}">維修費用</td>
-                        <td th:text="${phoneFix.fixPort}">維修細節</td>
-                        <td th:text="${phoneFix.fixState}">維修狀態</td>
-                        <td>
-                            <a th:href="@{/DashBoard/phonefixs/update(fixid=${phoneFix.fixID})}" class="btn btn-warning btn-sm" style="background-color: #adb5bd; color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">修改</a>
-                            <form th:action="@{/DashBoard/phonefixs/delete/{id}(id=${phoneFix.fixID})}" method="post" style="display:inline;" onsubmit="confirmDelete(event)">
-                                <button type="submit" class="btn btn-danger btn-sm" style="background-color: #343a40; color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">刪除</button>
-                            </form>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#myTable').DataTable({
-                responsive: true,
-                columnDefs: [
-                    { width: '9%', targets: 0 }, // 維修編號
-                    { width: '9%', targets: 1 }, // 送修者
-                    { width: '9%', targets: 2 }, // 送修日期
-                    { width: '9%', targets: 3 }, // 維修費用
-                    { width: '45%', targets: 4 }, // 維修部件
-                    { width: '9%', targets: 5 }, // 狀態
-                    { width: '9%', targets: 5 }  // 操作
-                ]
-            });
-        });
-    </script>
+	<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
+	<div class="container mt-5">
+		<h2 class="mb-4">手機維修列表</h2>
+		<div class="mb-3">
+			<!-- Trigger the modal with a button -->
+<button type="button" class="btn btn-black" data-toggle="modal" data-target="#addPhoneFixModal" style="background-color: black; color: white;">
+    新增維修記錄
+</button>
+		</div>
+		<div style="overflow-x: auto;">
+			<table id="myTable" class="table table-bordered display" style="width: 100%;">
+				<thead>
+					<tr>
+						<th>維修編號</th>
+						<th>客戶姓名</th>
+						<th>送修日期</th>
+						<th>維修費用</th>
+						<th>維修細節</th>
+						<th>維修狀態</th>
+						<th>手機損壞程度</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="phoneFix : ${list}">
+						<td th:text="${phoneFix.fixID}">1</td>
+						<td th:text="${phoneFix.fixName}">送修者</td>
+						<td th:text="${phoneFix.fixDate}">送修日期</td>
+						<td th:text="${phoneFix.fixCost}">維修費用</td>
+						<td th:text="${phoneFix.fixPort}">維修細節</td>
+						<td th:text="${phoneFix.fixState}">維修狀態</td>
+						<td>
+							<div th:each="photoId : ${phoneFix.fixPhotoBean}">
+								<img th:src="@{/phonefixs/downloadfixphoto(id=${photoId.id})}" alt="fix photo" class="img-thumbnail" />
+							</div>
+						</td>
+						<td><a th:href="@{/DashBoard/phonefixs/update(fixid=${phoneFix.fixID})}"
+							class="btn btn-warning btn-sm"
+							style="background-color: #adb5bd; color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">修改</a>
+							<form th:action="@{/DashBoard/phonefixs/delete/{id}(id=${phoneFix.fixID})}"
+								method="post" style="display: inline;" onsubmit="confirmDelete(event)">
+								<button type="submit" class="btn btn-danger btn-sm"
+									style="background-color: #343a40; color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">刪除</button>
+							</form></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div id="addPhoneFixModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">新增手機維修記錄</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<form id="fixform" th:action="@{/DashBoard/phonefixs/create}" method="post">
+						<div class="form-group">
+							<label for="fixName">送修者</label>
+							<input type="text" class="form-control" id="fixName" name="fixName" placeholder="請輸入維修名稱" required>
+						</div>
+						<div class="form-group">
+							<label for="fixDate">送修日期</label>
+							<input type="date" class="form-control" id="fixDate" name="fixDate" required>
+						</div>
+						<div class="form-group">
+							<label for="fixCost">維修費用</label>
+							<input type="number" class="form-control" id="fixCost" name="fixCost" placeholder="請輸入維修費用" required min="0">
+						</div>
+						<div class="form-group">
+							<label for="fixPort">維修細節</label>
+							<input type="text" class="form-control" id="fixPort" name="fixPort" placeholder="請輸入維修細節" required>
+						</div>
+						<div class="form-group">
+							<label for="fixState">維修狀態</label>
+							<select class="form-control" id="fixState" name="fixState" required>
+								<option value="" disabled selected>請選擇維修狀態</option>
+								<option value="未接單">未接單</option>
+								<option value="維修中">維修中</option>
+								<option value="已完成">已完成</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="fixPhoto">手機照片上傳</label>
+							<div class="custom-file">
+								<input type="file" class="custom-file-input" id="fixPhoto" name="file" accept="image/jpeg,image/png,image/webp" required>
+								<label class="custom-file-label" for="fixPhoto">選擇照片...</label>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">新訂單提交</button>
+					</form>
+					<div id="upload_result"></div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script th:src="@{/js/axios.min.js}"></script>
+	<script>
+		document.getElementById('fixform').addEventListener('submit', function(e){
+			console.log("Submitting form");
+			e.preventDefault();
+
+			const fixForm = document.getElementById('fixform');
+
+			// fixCost 金額限制
+			   const fixCost = document.getElementById('fixCost').value;
+            if (fixCost <= 0 || fixCost > 1000000) {
+                alert('維修費用必須為正值且不超過 1,000,000');
+                return;
+			}
+
+			const formdataObject = new FormData(fixForm);
+
+			axios.post('http://localhost:8081/sellphone/DashBoard/phonefixs/addphoto', formdataObject)
+			.then(res => {
+				console.log(res);
+				var resultBlock = document.getElementById('upload_result');
+				fixForm.reset();
+				resultBlock.innerHTML = res.data;
+				$('#addPhoneFixModal').modal('hide');
+				location.reload(); // Reload the page to see the new record in the list
+			})
+			.catch(err => {
+				console.error(err); 
+				var resultBlock = document.getElementById('upload_result');
+				resultBlock.innerHTML = '訂單新增失敗';
+			})
+		})
+
+		// Show selected file name
+		document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+			var fileName = document.getElementById("fixPhoto").files[0].name;
+			var nextSibling = e.target.nextElementSibling;
+			nextSibling.innerText = fileName;
+		})
+	</script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#myTable').DataTable({
+				responsive: true,
+				columnDefs: [
+					{ width: '9%', targets: 0 }, // 維修編號
+					{ width: '9%', targets: 1 }, // 送修者
+					{ width: '9%', targets: 2 }, // 送修日期
+					{ width: '9%', targets: 3 }, // 維修費用
+					{ width: '20%', targets: 4 }, // 維修部件
+					{ width: '10%', targets: 5 }, // 狀態
+					{ width: '15%', targets: 6, orderable: false }, // 圖片
+					{ width: '9%', targets: 7, orderable: false }  // 操作
+				]
+			});
+		});
+	</script>
 </body>
 </html>

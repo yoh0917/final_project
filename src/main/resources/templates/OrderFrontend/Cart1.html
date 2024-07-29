@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>結帳頁面</title>
+	<title>購物車頁面</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="Content-Type" content="text/html; charset=utf-8" />
 	<link th:href="@{/shoppingcart/cart/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
 	<link th:href="@{/shoppingcart/cart/css/style.css}" rel="stylesheet" type="text/css" media="all" />
-	<script th:src="@{/shoppingcart/cart/js/jquery.min.js}"></script>
-	<script th:src="@{/shoppingcart/cart/js/simpleCart.min.js}"></script>
-	<link th:href="@{/shoppingcart/cart/css/jquery-ui.css}" rel="stylesheet" type="text/css">
-	<script th:src="@{/shoppingcart/cart/js/bootstrap-3.1.1.min.js}" type="text/javascript"></script>
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
 	<link th:href="@{/shoppingcart/cart/css/animate.min.css}" rel="stylesheet">
@@ -19,81 +15,115 @@
 	<script>
 		new WOW().init();
 	</script>
+	<style>
+		.checkout-right, .checkout-right-basket {
+			font-size: 16px;
+		}
+		.checkout-right-basket {
+			border: 1px solid #e3e3e3;
+			padding: 20px;
+			background: #f9f9f9;
+		}
+		.checkout-right-basket h4 {
+			margin-bottom: 20px;
+		}
+		.checkout-right-basket table {
+			width: 100%;
+		}
+		.checkout-right-basket table td {
+			padding: 5px 0;
+		}
+		.checkout-right-basket .btn {
+			margin-bottom: 10px;
+			width: 100%;
+		}
+		.container {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 20px;
+		}
+		.header {
+			margin-bottom: 20px;
+		}
+	</style>
 </head>
 
 <body>
 <!-- Header -->
-<div th:replace="~{/layout/header.html}"></div>
+<div class="header" th:replace="~{/layout/header.html}"></div>
 
 <!-- breadcrumbs -->
 <div class="breadcrumbs">
 	<div class="container">
 		<ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-			<li><a th:href="@{/index}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>首頁</a></li>
-			<li class="active">購物車頁面</li>
+			<li><a th:href="@{/index}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
+			<li class="active">Checkout Page</li>
 		</ol>
 	</div>
 </div>
-<!-- //breadcrumbs -->
 
 <!-- checkout -->
 <div class="checkout">
 	<div class="container">
-		<h3 class="animated wow slideInLeft" data-wow-delay=".5s">您的購物車包含: <span th:text="${carts.size()} + ' 件商品'"></span></h3>
-		<div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
-			<table class="timetable_sub">
-				<thead>
-				<tr>
-					<th>序號</th>
-					<th>商品</th>
-					<th>數量</th>
-					<th>商品名稱</th>
-					<th>顏色</th>
-					<th>儲存空間</th>
-					<th>價格</th>
-					<th>刪除</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr th:each="cart, iterStat : ${carts}">
-					<td th:text="${iterStat.count}"></td>
-					<td><img th:src="@{'data:image/jpeg;base64,' + ${cart.photoBase64}}" alt=" " class="img-responsive" style="max-width: 150px; max-height: 150px; object-fit: cover;"/></td>
-					<td th:text="${cart.quantity}"></td>
-					<td th:text="${cart.productName}">商品名稱</td>
-					<td th:text="${cart.color}">顏色</td>
-					<td th:text="${cart.storage}">儲存空間</td>
-					<td th:text="${cart.price}"></td>
-					<td>
-						<button type="button" th:attr="data-id=${cart.productId}" class="btn btn-danger remove-item">刪除</button>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="checkout-left">
-			<div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s" style="float: right; width: 600px; padding: 20px; background: #f9f9f9; border: 1px solid #e3e3e3;">
-				<h4>總計</h4>
-				<table style="width: 100%;">
+		<div class="checkout-left" style="width: 70%;">
+			<h3 class="animated wow slideInLeft" data-wow-delay=".5s">您的購物車包含: <span th:text="${carts.size()} + ' 件商品'"></span></h3>
+			<div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
+				<table class="timetable_sub">
+					<thead>
 					<tr>
-						<td style="font-weight: bold;">商品總數</td>
-						<td th:text="${carts.size()}" style="text-align: right;"></td>
+						<th style="display: none;">序號</th>
+						<th style="width: 20%;">商品</th>
+						<th style="width: 30%;">商品名稱</th>
+						<th style="width: 15%;">顏色</th>
+						<th style="display: none;">儲存空間</th>
+						<th style="width: 15%;">數量</th>
+						<th style="width: 15%;">價格</th>
+						<th style="width: 5%;">刪除</th>
 					</tr>
-					<tr>
-						<td style="font-weight: bold;">小計</td>
-						<td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
+					</thead>
+					<tbody>
+					<tr th:each="cart, iterStat : ${carts}">
+						<td style="display: none;" th:text="${iterStat.count}"></td>
+						<td><img th:src="@{'data:image/jpeg;base64,' + ${cart.photoBase64}}" alt=" " class="img-responsive" style="max-width: 100px; max-height: 100px; object-fit: cover;"/></td>
+						<td th:text="${cart.productName}">商品名稱</td>
+						<td th:text="${cart.color}">顏色</td>
+						<td style="display: none;" th:text="${cart.storage}">儲存空間</td>
+
+						<td class="">
+							<button type="button" class="btn btn-outline-secondary quantity-decrease" th:data-id="${cart.productId}" th:data-user="${session.user.userName}">-</button>
+							<span class="quantity" th:text="${cart.quantity}" th:data-id="${cart.productId}"></span>
+							<button type="button" class="btn btn-outline-secondary quantity-increase" th:data-id="${cart.productId}" th:data-user="${session.user.userName}">+</button>
+						</td>
+						<td class="price" th:text="'$' + ${cart.price}"></td>
+						<td>
+							<button type="button" class="btn btn-danger remove-item" th:data-id="${cart.productId}" th:data-user="${session.user.userName}">刪除</button>
+						</td>
 					</tr>
-					<tr>
-						<td style="font-weight: bold;">總計</td>
-						<td th:text="'$' + ${totalPrice}" style="text-align: right;"></td>
-					</tr>
+					</tbody>
 				</table>
-				<div style="margin-top: 20px; display: flex; justify-content: space-between;">
-					<a th:href="@{/front/productlist}" class="btn btn-default" style="background-color: black; color: white; width: 45%;"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> 繼續購物</a>
-					<a th:href="@{/orders/checkout1}" class="btn btn-default" style="background-color: black; color: white; width: 45%; text-align: center;">結帳</a>
-				</div>
 			</div>
 		</div>
-		<div class="clearfix"> </div>
+		<div class="checkout-right-basket animated wow slideInLeft" data-wow-delay=".5s" style="width: 25%; margin-top: 20px;">
+			<h4>訂單資訊</h4>
+			<table>
+				<tr>
+					<td style="font-weight: bold;">商品總數</td>
+					<td id="total-items" th:text="${totalItems}" style="text-align: right;"></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">小計</td>
+					<td id="subtotal" th:text="'$' + ${subtotal}" style="text-align: right;"></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">總計</td>
+					<td id="total" th:text="'$' + ${total}" style="text-align: right;"></td>
+				</tr>
+			</table>
+			<div style="margin-top: 20px;">
+				<a th:href="@{/front/productlist}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">繼續購物</a>
+				<a th:href="@{/orders/checkout1}" class="btn btn-default" style="background-color: black; color: white; text-align: center;">結帳</a>
+			</div>
+		</div>
 	</div>
 </div>
 <!-- //checkout -->
@@ -102,11 +132,104 @@
 <div th:replace="~{/layout/footer.html}"></div>
 
 <script>
-	$(document).ready(function() {
-		$('.remove-item').on('click', function(){
-			var id = $(this).attr('data-id');
-			// Ajax call to remove item
+	document.addEventListener('DOMContentLoaded', function() {
+		const table = document.querySelector('.checkout-right table');
+
+		table.addEventListener('click', function(event) {
+			const target = event.target;
+			const productId = target.getAttribute('data-id');
+			const userId = target.getAttribute('data-user');
+
+			if (target.classList.contains('quantity-decrease')) {
+				updateQuantity(productId, userId, -1);
+			} else if (target.classList.contains('quantity-increase')) {
+				updateQuantity(productId, userId, 1);
+			} else if (target.classList.contains('remove-item')) {
+				removeCartItem(productId, userId, target);
+			}
 		});
+
+		function updateQuantity(productId, userId, delta) {
+			const quantityElem = document.querySelector(`.quantity[data-id="${productId}"]`);
+			let currentQuantity = parseInt(quantityElem.innerText, 10);
+			let newQuantity = currentQuantity + delta;
+
+			if (newQuantity <= 0) {
+				if (confirm('數量為0，是否要刪除此商品？')) {
+					removeCartItem(productId, userId, quantityElem.closest('tr').querySelector('.remove-item'));
+				} else {
+					newQuantity = 1;
+				}
+			} else if (newQuantity > 10) {
+				newQuantity = 10;
+			}
+
+			if (newQuantity !== currentQuantity && newQuantity > 0) {
+				fetch('/sellphone/cart/update', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					body: `productId=${productId}&userId=${userId}&delta=${newQuantity - currentQuantity}`
+				})
+						.then(response => response.text())
+						.then(data => {
+							if (data === "數量更新成功") {
+								quantityElem.innerText = newQuantity;
+								updateCartSummary(userId);
+							} else {
+								alert('更新數量失敗');
+							}
+						})
+						.catch(error => console.error('Error:', error));
+			}
+		}
+
+		function removeCartItem(productId, userId, button) {
+			if (confirm('您確定要刪除這個商品嗎？')) {
+				fetch('/sellphone/cart/remove', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					},
+					body: `productId=${productId}&userId=${userId}`
+				})
+						.then(response => response.text())
+						.then(data => {
+							if (data === "刪除成功") {
+								const row = button.closest('tr');
+								row.remove();
+								updateCartSummary(userId);
+							} else {
+								alert('刪除失敗');
+							}
+						})
+						.catch(error => console.error('Error:', error));
+			}
+		}
+
+		function updateCartSummary(userId) {
+			fetch(`/sellphone/cart/summary?userId=${userId}`)
+					.then(response => response.json())
+					.then(summary => {
+						document.getElementById('total-items').innerText = summary.totalItems;
+						document.getElementById('subtotal').innerText = '$' + summary.totalPrice;
+						document.getElementById('total').innerText = '$' + summary.totalPrice;
+
+						const cartItemCountSpan = document.querySelector('.checkout-left h3 span');
+						if (cartItemCountSpan) {
+							cartItemCountSpan.innerText = summary.totalItems + ' 件商品';
+						}
+
+						if (summary.totalItems === 0) {
+							const checkoutRight = document.querySelector('.checkout-right');
+							if (checkoutRight) {
+								checkoutRight.innerHTML = '<p>您的購物車是空的。</p>';
+							}
+						}
+					})
+					.catch(error => console.error('Error updating cart summary:', error));
+		}
 	});
 </script>
 

@@ -49,45 +49,76 @@ h2 {
 .btn-primary:focus {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+
+.btn-secondary {
+	background-color: #6c757d;
+	border-color: #6c757d;
+	color: #ffffff; /* 白色文字 */
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	margin-right: 10px; /* 右側間距 */
+}
+
+.btn-secondary:hover {
+	background-color: #5a6268; /* 深灰色 */
+	border-color: #5a6268;
+}
+
+.btn-secondary:focus {
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.custom-file-input {
+	border-color: #000000; /* 黑色邊框顏色 */
+}
+
+.custom-file-input:focus {
+	border-color: #000000;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.custom-file-label {
+	color: #000000; /* 黑色文字顏色 */
+}
 </style>
 </head>
 <body>
 	<div class="container mt-5">
 		<h2 class="mb-4">新增手機維修記錄</h2>
-		<form  id="fixform" th:action="@{/DashBoard/phonefixs/create}" method="post">
+		<form id="fixform" th:action="@{/DashBoard/phonefixs/create}" method="post">
 			<div class="form-group">
-				<label for="fixName">送修者</label> <input type="text"
-					class="form-control" id="fixName" name="fixName"
-					placeholder="請輸入維修名稱" required>
+				<label for="fixName">送修者</label> 
+				<input type="text" class="form-control" id="fixName" name="fixName" placeholder="請輸入維修名稱" required>
 			</div>
 			<div class="form-group">
-				<label for="fixDate">送修日期</label> <input type="date"
-					class="form-control" id="fixDate" name="fixDate" required>
+				<label for="fixDate">送修日期</label> 
+				<input type="date" class="form-control" id="fixDate" name="fixDate" required>
 			</div>
 			<div class="form-group">
-				<label for="fixCost">維修費用</label> <input type="number"
-					class="form-control" id="fixCost" name="fixCost"
-					placeholder="請輸入維修費用" required>
+				<label for="fixCost">維修費用</label> 
+				<input type="number" class="form-control" id="fixCost" name="fixCost" placeholder="請輸入維修費用" required min="0">
 			</div>
 			<div class="form-group">
-				<label for="fixPort">維修細節</label> <input type="text"
-					class="form-control" id="fixPort" name="fixPort"
-					placeholder="請輸入維修細節" required>
+				<label for="fixPort">維修細節</label> 
+				<input type="text" class="form-control" id="fixPort" name="fixPort" placeholder="請輸入維修細節" required>
 			</div>
 			<div class="form-group">
-				<label for="fixState">維修狀態</label> <select class="form-control"
-					id="fixState" name="fixState" required>
+				<label for="fixState">維修狀態</label> 
+				<select class="form-control" id="fixState" name="fixState" required>
 					<option value="" disabled selected>請選擇維修狀態</option>
 					<option value="未接單">未接單</option>
 					<option value="維修中">維修中</option>
 					<option value="已完成">已完成</option>
 				</select>
 			</div>
-			<div>
-				<label for="fixPhoto">維修照片</label> <input type="file"
-					id="fixPhoto" name="file" required />
+			<div class="form-group">
+				<label for="fixPhoto">維修照片</label> 
+				<div class="custom-file">
+					<input type="file" class="custom-file-input" id="fixPhoto" name="file" required>
+					<label class="custom-file-label" for="fixPhoto">選擇照片...</label>
+				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">提交</button>
+			<button type="submit" class="btn btn-primary">新訂單提交</button>
+			<button type="button" class="btn btn-secondary" onclick="history.back()">返回訂單頁面</button>
 		</form>
 		<div id="upload_result"></div>
 	</div>
@@ -99,11 +130,16 @@ h2 {
 
       const fixForm = document.getElementById('fixform');
 
+      // 验证 fixCost 为正值
+      const fixCost = document.getElementById('fixCost').value;
+      if (fixCost <= 0) {
+         alert('維修費用必須為正值');
+         return;
+      }
+
       const formdataObject = new FormData(fixForm);
 
-      axios.post('http://localhost:8081/sellphone/DashBoard/phonefixs/addphoto',formdataObject,
-     
-      )
+      axios.post('http://localhost:8081/sellphone/DashBoard/phonefixs/addphoto', formdataObject)
       .then(res => {
          console.log(res)
         
@@ -116,11 +152,16 @@ h2 {
       .catch(err => {
          console.error(err); 
          var resultBlock = document.getElementById('upload_result');
-         resultBlock.innerHTML = '上傳失敗'
+         resultBlock.innerHTML = '訂單新增失敗'
       })
    })
 
-
+   // Show selected file name
+   document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+	  var fileName = document.getElementById("fixPhoto").files[0].name;
+	  var nextSibling = e.target.nextElementSibling
+	  nextSibling.innerText = fileName
+   })
 </script>
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import sellphone.product.model.PhotoRepository;
 import sellphone.product.model.ProductRepository;
+import sellphone.product.model.ProductScore;
+import sellphone.product.model.ProductScoreRepository;
 import sellphone.product.model.Product;
 
 @Service
@@ -20,6 +22,9 @@ public class productservice {
 	
 	@Autowired
 	public PhotoRepository phRepo;
+	
+	@Autowired
+	public ProductScoreRepository scoreRepo;
 	
 	
 	public Product saveProduct(Product product) {
@@ -47,4 +52,31 @@ public class productservice {
 		
 		return allStatus;
 	}
+	
+	//用ID查評論
+	public ProductScore findbyUserIdAndProductid(String userId,Integer productid) {
+	return scoreRepo.findByUserNameAndProductid(userId, productid);		
+	}
+	
+	
+	//新增評論
+	public ProductScore productScoreSave(ProductScore productScore) {
+		return scoreRepo.save(productScore);
+	}
+	
+	//找尋評論
+	public List<ProductScore> findAllScore(Integer productid){
+		return scoreRepo.findByProductId(productid);
+	}
+	
+	//只找4個最新評論
+	public List<ProductScore> findTop4Score(Integer productid){
+		return scoreRepo.findTop4ByProductId(productid);
+	}
+	//只找4個最新商品(有上架的)
+	public List<Product> findNewTop4Product(){
+		return prRep.findNewTop4ByProductId();
+	}
+	
+	
 }

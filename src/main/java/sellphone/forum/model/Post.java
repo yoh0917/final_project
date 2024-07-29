@@ -28,7 +28,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import sellphone.dashboard.user.model.Users;
+import sellphone.user.model.Users;
 
 @Entity
 @Table(name = "F0001_POST")

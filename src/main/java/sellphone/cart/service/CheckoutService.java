@@ -1,19 +1,26 @@
 package sellphone.cart.service;
 
-import jakarta.transaction.Transactional;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
 import sellphone.cart.model.CartView;
+import sellphone.cart.repository.CartViewRepository;
 import sellphone.orders.model.Order;
 import sellphone.orders.model.OrderDetail;
 import sellphone.orders.repository.OrderDetailRepository;
 import sellphone.orders.repository.OrderRepository;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import ecpay.payment.integration.AllInOne;
+import ecpay.payment.integration.domain.AioCheckOutALL;
+import ecpay.payment.integration.exception.EcpayException;
 
 @Service
 public class CheckoutService {
@@ -24,70 +31,39 @@ public class CheckoutService {
 	@Autowired
 	private OrderDetailRepository orderDetailRepository;
 
-//	//查詢所有訂單
-//	public List<Order> getAllOrders() {
-//		return orderRepository.findAll();
-//	}
-//
-//	//ID查詢訂單
-//	public Optional<Order> getOrderById(String orderId) {
-//		return orderRepository.findById(orderId);
-//	}
-//
-//	//訂單ID查詢單筆訂單
-//	public List<OrderDetail> getOrderDetailsByOrderId(String orderId) {
-//		return orderDetailRepository.findByOrderId(orderId);
-//	}
-//
-//	//創建訂單
-//	public void saveOrder(Order order) {
-//		orderRepository.save(order);
-//	}
-//
-//	//修改
-//	public void updateOrder(Order order) {
-//		orderRepository.save(order);
-//	}
-//
-//	// 假刪除訂單，更新訂單狀態為 "D"
-//	public void deleteOrder(String orderId) {
-//		Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found with id " + orderId));
-//		order.setStatus("D");
-//		orderRepository.save(order);
-//	}
+	@Autowired
+	private CartViewRepository cartViewRepository;
 
-	private AtomicInteger sequence = new AtomicInteger(0);
+	private static final AtomicInteger sequence = new AtomicInteger(0);
 
-	@Transactional
-	public void saveOrder(Order order, List<OrderDetail> orderDetails) {
-		orderRepository.save(order);
-		orderDetailRepository.saveAll(orderDetails);
+	public List<CartView> getCartByUserId(String userId) {
+		return cartViewRepository.findByUserId(userId);
 	}
 
-	public void createOrderFromCart(List<CartView> carts) {
-		String orderId = generateOrderId();
-		CartView cartView = carts.get(0);  // 假設每個購物車的用戶ID都是相同的
+	public int calculateTotalAmount(List<CartView> carts) {
+		return carts.stream().collect(Collectors.summingInt(cart -> cart.getPrice() * cart.getQuantity()));
+	}
 
-		Order order = new Order();
-		order.setOrderId(orderId);
-		order.setCreateDate(new Date());
-		order.setTotalAmount(carts.stream().mapToInt(cart -> cart.getQuantity() * cart.getPrice()).sum());
-		order.setUserId(cartView.getUserId());
-		order.setUserName("");  // 暫時不填入用戶名
+	@Transactional
+	public void saveOrder(Order order) {
+		orderRepository.save(order);
+	}
 
-		List<OrderDetail> orderDetails = carts.stream().map(cart -> {
-			OrderDetail detail = new OrderDetail();
-			detail.setDetailId(generateOrderId() + "-" + sequence.incrementAndGet());
-			detail.setOrderId(orderId);
-			detail.setProductId(cart.getProductId());
-			detail.setProductName(cart.getProductName());
-			detail.setQuantity(cart.getQuantity());
-			detail.setPrice(cart.getPrice());
-			detail.setTotal(cart.getQuantity() * cart.getPrice());
-			return detail;
-		}).toList();
-
-		saveOrder(order, orderDetails);
+	@Transactional
+	public void saveOrderDetails(String orderId, String userId) {
+		List<CartView> cartItems = cartViewRepository.findByUserId(userId);
+		for (CartView item : cartItems) {
+			OrderDetail orderDetail = new OrderDetail();
+			orderDetail.setDetailId(generateDetailId(orderId));
+			orderDetail.setOrderId(orderId);
+			orderDetail.setProductId(item.getProductId());
+			orderDetail.setProductName(item.getProductName());
+			orderDetail.setColor(item.getColor());
+			orderDetail.setStorage(item.getStorage());
+			orderDetail.setQuantity(item.getQuantity());
+			orderDetail.setPrice(item.getPrice());
+			orderDetailRepository.save(orderDetail);
+		}
 	}
 
 	public String generateOrderId() {
@@ -95,4 +71,45 @@ public class CheckoutService {
 		String dateStr = sdf.format(new Date());
 		return "S" + dateStr + String.format("%03d", sequence.incrementAndGet());
 	}
+
+	private String generateDetailId(String orderId) {
+		Random random = new Random();
+		int randomInt = random.nextInt(900) + 100; // 生成100到999之間的隨機數
+		return "D" + orderId.substring(1, 14) + randomInt;
+	}
+
+//	private final AllInOne allInOne = new AllInOne("");
+//
+//	private String ecpayCheckout(String orderId, String userId) {
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/ddn HH:mm:ss");
+//		String dateStr = sdf.format(new Date());
+//
+//		Orders order = new Orders();
+//
+//		AioCheckOutALL obj = new AioCheckOutALL();
+////		System.out.println(orders.getOrderId().toString());
+//		obj.setMerchantTradeNo(orders.getOrderId().toString());//綠界傳訂單編號
+//		obj.setMerchantTradeDate(dateStr);//交易時間
+//		obj.setTotalAmount((orders.getTotalCost() + ""));//抓總金額
+//		obj.setTradeDesc("test Description");
+//		obj.setItemName("TestItem");
+//		// 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
+//
+//		// 交易結果
+//		obj.setReturnURL(url + "/comPETnion/backendReturn");
+//
+//		// 付款完成跳轉結果
+//		obj.setClientBackURL(url + "/comPETnion/frontendReturn?orderId=" + orders.getOrderId().toString());
+//		obj.setNeedExtraPaidInfo("N");
+//		// 商店轉跳網址 (Optional)
+//		try {
+//			String form = all.aioCheckOut(obj, null);
+//			return form;
+//		} catch (EcpayException e) {
+//			System.err.println("ECPay Exception: " + e.getMessage());
+//			throw e;
+//		}
+//	}
+
+
 }

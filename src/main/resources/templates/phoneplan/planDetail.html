@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{title}">方案詳情</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link th:href="@{/layout/css/header.css}" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .planContainer {
+            max-width: 1000px;
+            margin: 150px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .planDetails {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .planDetails p {
+            margin: 0;
+            padding: 10px 0;
+        }
+
+        .back-button {
+            text-align: center;
+        }
+
+        .back-button button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{/layout/header.html}"></div>
+
+    <div class="planContainer">
+        <h1 >方案詳情</h1>
+        <div class="planDetails">
+            <p>方案名稱: <span th:text="${plan.planName}"></span></p>
+            <p>電信公司: <span th:text="${plan.telCompany}"></span></p>
+            <p>網絡類型: <span th:text="${plan.generation}"></span></p>
+            <p>合約類型: <span th:text="${plan.contractType}"></span></p>
+            <p>合約期限: <span th:text="${plan.contractDuration}"></span></p>
+            <p>聯絡號碼: <span th:text="${phoneNum}"></span></p>
+        </div>
+       <div class="back-button">
+            <form action="/sellphone/mainPage" method="get">
+                <input type="hidden" name="lang" th:value="${#locale.language}" />
+                <button type="submit" th:text="#{backToHome}">回首頁</button>
+            </form>
+        </div>
+    </div>
+   <div> <iframe src='https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1OcRTZcD25BZQUl2HGDalafhYZ3_v7WaCHyXOmAOn2d4&font=Default&lang=en&initial_zoom=2&height=350' width='100%' height='350' webkitallowfullscreen mozallowfullscreen allowfullscreen frameborder='0'></iframe></div>
+</body>
+</html>

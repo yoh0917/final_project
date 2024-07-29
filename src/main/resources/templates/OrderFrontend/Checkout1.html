@@ -12,8 +12,27 @@
     <link th:href="@{/shoppingcart/checkout/css/style.default.css}" rel="stylesheet" id="theme-stylesheet">
     <link th:href="@{/shoppingcart/checkout/css/custom.css}" rel="stylesheet">
     <link rel="shortcut icon" th:href="@{/shoppingcart/checkout/img/favicon.png}">
+    <link th:href="@{/shoppingcart/cart/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+    <link th:href="@{/shoppingcart/cart/css/style.css}" rel="stylesheet" type="text/css" media="all" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
+    <link th:href="@{/shoppingcart/cart/css/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <script th:src="@{/shoppingcart/cart/js/wow.min.js}"></script>
+    <div th:replace="~{/layout/headerStylesheet.html}"></div>
+    <script>
+        new WOW().init();
+    </script>
+    <style>
+        body {
+            padding-top: 100px; /* 確保內容不被header遮住 */
+        }
+    </style>
 </head>
 <body>
+<!-- Header -->
+<div class="header" th:replace="~{/layout/header.html}"></div>
+
 <div class="container">
     <section class="py-5">
         <h2 class="h5 text-uppercase mb-4">帳單詳細資料</h2>
@@ -77,17 +96,29 @@
                         </div>
                     </div>
                 </form>
+                <div th:if="${message}" class="alert alert-success" role="alert">
+                    <span th:text="${message}"></span>
+                </div>
+                <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                    <span th:text="${errorMessage}"></span>
+                </div>
             </div>
             <div class="col-lg-4">
                 <div class="card border-0 rounded-0 p-lg-4 bg-light">
                     <div class="card-body">
                         <h5 class="text-uppercase mb-4">您的訂單</h5>
-                        <ul class="list-unstyled mb-0">
-                            <li class="d-flex align-items-center justify-content-between"><strong class="small fw-bold">紅色數字智能手錶</strong><span class="text-muted small">$250</span></li>
+                        <ul class="list-unstyled mb-0" id="orderSummary">
+                            <li th:each="cart : ${carts}" class="d-flex align-items-center justify-content-between order-item" th:data-product-id="${cart.productId}">
+                                <strong class="small fw-bold product-name" th:text="${cart.productName}"></strong>
+                                <span class="text-muted small product-price" th:text="${cart.price}"></span>
+                                <span class="text-muted small product-quantity" th:text="${cart.quantity}"></span>
+                                <span class="text-muted small product-total" th:text="${cart.price * cart.quantity}"></span>
+                            </li>
                             <li class="border-bottom my-2"></li>
-                            <li class="d-flex align-items-center justify-content-between"><strong class="small fw-bold">灰色耐克跑鞋</strong><span class="text-muted small">$351</span></li>
-                            <li class="border-bottom my-2"></li>
-                            <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small fw-bold">總計</strong><span>$601</span></li>
+                            <li class="d-flex align-items-center justify-content-between">
+                                <strong class="text-uppercase small fw-bold">總計</strong>
+                                <span id="totalAmount" th:text="${totalAmount}"></span>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -95,6 +126,10 @@
         </div>
     </section>
 </div>
+
+<!-- Footer -->
+<div th:replace="~{/layout/footer.html}"></div>
+
 <script th:src="@{/shoppingcart/checkout/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/vendor/glightbox/js/glightbox.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.js}"></script>
@@ -104,10 +139,10 @@
 <script>
     function submitOrder() {
         var order = {
-            orderId: "12345",
+            orderId: generateOrderId(),
             status: "N",
-            createDate: new Date(),
-            totalAmount: 601,
+            createDate: new Date().getTime(),
+            totalAmount: parseFloat(document.getElementById("totalAmount").innerText),
             payStatus: "N",
             userName: document.getElementById("firstName").value,
             email: document.getElementById("email").value,
@@ -118,37 +153,51 @@
             detailAddress: document.getElementById("addressalt").value
         };
 
-        var orderDetails = [
-            {
-                detailId: "1",
-                orderId: "12345",
-                productId: "P001",
-                productName: "紅色數字智能手錶",
-                quantity: 1,
-                price: 250,
-                total: 250
-            },
-            {
-                detailId: "2",
-                orderId: "12345",
-                productId: "P002",
-                productName: "灰色耐克跑鞋",
-                quantity: 1,
-                price: 351,
-                total: 351
-            }
-        ];
-
-        fetch('/orders/save', {
+        fetch('/sellphone/orders/saveOrder', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ order: order, orderDetails: orderDetails })
+            body: JSON.stringify(order)
         })
-            .then(response => response.text())
-            .then(data => alert(data))
-            .catch(error => console.error('Error:', error));
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("已成功插入資料庫");
+                    // 插入 O0002_ORDERDETAIL
+                    fetch('/sellphone/orders/saveOrderDetails', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ orderId: order.orderId })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert("已成功插入訂單明細");
+                            } else {
+                                alert("插入訂單明細失敗: " + data.message);
+                            }
+                        })
+                        .catch(error => alert('插入訂單明細失敗: ' + error.message));
+                } else {
+                    alert("插入資料庫失敗: " + data.message);
+                }
+            })
+            .catch(error => alert('插入資料庫失敗: ' + error.message));
+    }
+
+    function generateOrderId() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = ('0' + (date.getMonth() + 1)).slice(-2);
+        var day = ('0' + date.getDate()).slice(-2);
+        var hours = ('0' + date.getHours()).slice(-2);
+        var minutes = ('0' + date.getMinutes()).slice(-2);
+        var seconds = ('0' + date.getSeconds()).slice(-2);
+        var milliseconds = date.getMilliseconds().toString().padStart(3, '0');
+        return 'S' + year + month + day + hours + minutes + seconds + milliseconds;
     }
 </script>
 </body>
