@@ -23,8 +23,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpSession;
-import sellphone.dashboard.user.model.Users;
-import sellphone.dashboard.user.service.UserService;
+import sellphone.user.model.Users;
+import sellphone.user.service.UserService;
 import sellphone.forum.model.Comment;
 import sellphone.forum.model.Post;
 import sellphone.forum.model.Tag;
