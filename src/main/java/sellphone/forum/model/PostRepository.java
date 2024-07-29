@@ -8,7 +8,9 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
@@ -20,5 +22,16 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	Page<Post> findByTitleContainingIgnoreCase(String title, org.springframework.data.domain.Pageable pageable);
 	
 	Page<Post> findByTagsName(String tagName, Pageable pageable);
-}
+	
+	 @Transactional
+	    @Modifying
+	    @Query("UPDATE Post p SET p.likeCount = p.likeCount + 1 WHERE p.postId = :postId")
+	    void incrementLikeCount(Integer postId);
+
+	    @Transactional
+	    @Modifying
+	    @Query("UPDATE Post p SET p.likeCount = p.likeCount - 1 WHERE p.postId = :postId")
+	    void decrementLikeCount(Integer postId);
+	}
+
 
