@@ -16,17 +16,12 @@ public class BestChooseController {
     @Autowired
     private BestPlanService bestPlanService;
 
-    @GetMapping("/DashBoard/phoneplans")
+    @GetMapping("/head/phoneplans")
     public String showBestPlanForm() {
         return "phoneplan/choose"; 
     }
 
-    //測試
-    @GetMapping("/DashBoard/phoneplans/decide")
-    public String read() {
-        return "phoneplan/NewFile"; 
-    }
-   //測試 
+ 
     
     @GetMapping("/phoneplans/look")
     
@@ -35,14 +30,14 @@ public class BestChooseController {
     }
     
     
-    @GetMapping("/DashBoard/phoneplans/getBestPlan")
+    @GetMapping("/phoneplans/getBestPlan")
     @ResponseBody
     public List<PhonePlanBean> getBestPlan(@RequestParam String telCompany, @RequestParam String planName,
                                            @RequestParam String contractType, @RequestParam String generation, @RequestParam String dataUsage) {
         return bestPlanService.findBestPlans(telCompany, planName, contractType, generation, dataUsage);
     }
 
-    @GetMapping("/DashBoard/phoneplans/getOptions")
+    @GetMapping("/phoneplans/getOptions")
     @ResponseBody
     public List<String> getOptions(@RequestParam String currentId, @RequestParam String currentValue) {
         switch (currentId) {

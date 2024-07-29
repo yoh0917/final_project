@@ -164,7 +164,7 @@ button:hover {
 
 	<div class="container">
 		<h1 th:text="#{title}">Phone Number Application</h1>
-		<form id="phoneForm" th:action="@{/DashBoard/customers/create}" th:object="${customer}" method="post">
+		<form id="phoneForm" th:action="@{/customers/create}" th:object="${customer}" method="post">
 			<label for="phoneNumber" th:text="#{phoneNumber}">Phone Number</label>
 			<input type="text" th:field="*{phoneNum}" id="phoneNumber" required />
 
