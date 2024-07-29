@@ -14,8 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
-import sellphone.dashboard.user.model.Users;
-import sellphone.dashboard.user.service.UserService;
+import sellphone.user.model.Users;
+import sellphone.user.service.UserService;
 import sellphone.forum.model.Comment;
 import sellphone.forum.model.CommentRepository;
 import sellphone.forum.model.Post;
