@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sellphone.dashboard.user.model.UserRepository;
-import sellphone.dashboard.user.model.Users;
+import sellphone.user.model.UserRepository;
+import sellphone.user.model.Users;
 import sellphone.forum.model.Comment;
 import sellphone.forum.model.CommentRepository;
 import sellphone.forum.model.Post;
