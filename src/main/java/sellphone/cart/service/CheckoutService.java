@@ -3,6 +3,7 @@ package sellphone.cart.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -78,8 +79,58 @@ public class CheckoutService {
 		return "D" + orderId.substring(1, 14) + randomInt;
 	}
 
-//	private final AllInOne allInOne = new AllInOne("");
-//
+	Order order = new Order();
+	OrderDetail orderDetail = new OrderDetail();
+
+	public String ecpayCheckout(String orderId ) {
+
+		Optional<Order> orderOptional = orderRepository.findById(orderId);
+		Order order = orderOptional.get();
+		AllInOne all = new AllInOne("");
+		Date createTime = order.getCreateDate();
+		Integer getTotalAmount = order.getTotalAmount();
+
+
+		// 定義 SimpleDateFormat 來格式化 Date
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+		// 將 Date 格式化為指定格式的字符串
+		String formattedDate = simpleDateFormat.format(createTime);
+		System.out.println(formattedDate);
+
+		// 網址
+		String url = "http://localhost:8081";
+
+//		System.out.println(test);
+		AioCheckOutALL obj = new AioCheckOutALL();
+//		System.out.println(orders.getOrderId().toString());
+		obj.setMerchantTradeNo(order.getOrderId().toString());//綠界傳訂單編號
+//		obj.setMerchantTradeDate(formattedDate);
+//		obj.setTotalAmount((orders.getTotalCost() + ""));//抓總金額
+
+
+		// 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
+
+		// 交易結果
+		obj.setReturnURL(url + "/orders/backendReturn");
+
+		// 付款完成跳轉結果
+		obj.setClientBackURL(url + "/orders/frontendReturn?orderId=" + order.getOrderId().toString());
+		obj.setNeedExtraPaidInfo("N");
+		// 商店轉跳網址 (Optional)
+		try {
+			String form = all.aioCheckOut(obj, null);
+			return form;
+		} catch (EcpayException e) {
+			System.err.println("ECPay Exception: " + e.getMessage());
+			throw e;
+		}
+	}
+
+
+
+	//private final AllInOne allInOne = new AllInOne("");
+
 //	private String ecpayCheckout(String orderId, String userId) {
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/ddn HH:mm:ss");
 //		String dateStr = sdf.format(new Date());
@@ -94,6 +145,9 @@ public class CheckoutService {
 //		obj.setTradeDesc("test Description");
 //		obj.setItemName("TestItem");
 //		// 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
+//
+//		// 網址
+//		String url = "http://localhost:8081";
 //
 //		// 交易結果
 //		obj.setReturnURL(url + "/comPETnion/backendReturn");
