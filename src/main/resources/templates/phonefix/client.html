@@ -27,7 +27,7 @@
         let websocket = new WebSocket("ws://localhost:8081/sellphone/channel/echo");
 
         websocket.onopen = e => {
-            console.log("連接打開打开");
+            console.log("連接打開");
         }
 
         websocket.onclose = e => {
@@ -36,9 +36,13 @@
 
         websocket.onmessage = e => {
             console.log(`收到消息：${e.data}`);
+            
+            // 修改部分 - 提取和格式化时间，移除时间戳
             let messagesDiv = document.getElementById("messages");
             let messageElement = document.createElement("p");
-            messageElement.textContent = `收到消息：[${new Date().getTime()}] ${e.data}`;
+            let messageData = e.data.replace(/\[\d+\]\s*/, ''); // 移除时间戳
+            let currentTime = new Date().toLocaleTimeString(); // 获取当前时间
+            messageElement.textContent = `${currentTime} - ${messageData}`; // 添加时间戳到消息前
             messagesDiv.appendChild(messageElement);
         }
 
@@ -49,7 +53,7 @@
 
         function sendMessage() {
             let messageInput = document.getElementById("messageInput");
-            let message = messageInput.value;
+            let message = `客戶: ${messageInput.value}`;
             websocket.send(message);
             messageInput.value = '';
         }
