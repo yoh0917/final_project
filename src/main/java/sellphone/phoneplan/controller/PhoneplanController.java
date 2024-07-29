@@ -78,7 +78,7 @@ public class PhoneplanController {
         return ResponseEntity.ok(bestPlans);
     }
 
-    @GetMapping("/DashBoard/phoneplans/export/excel")
+    @GetMapping("/phoneplans/export/excel")
     public ResponseEntity<byte[]> exportToExcel(@RequestParam("planIDs") String planIDs) throws IOException {
         List<Integer> planIDList = Arrays.stream(planIDs.split(",")).map(Integer::parseInt).collect(Collectors.toList());
         List<PhonePlanBean> selectedPlans = phoneplanService.findPlansByIds(planIDList);

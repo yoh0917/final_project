@@ -26,4 +26,5 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findNewTop4ByProductId();
 	
 	
+	
 }

@@ -132,7 +132,7 @@
                     <td th:text="${plan.phoneNum}"></td>
                     <td th:text="${plan.agreementDate}"></td>
                     <td>
-                        <form th:action="@{/DashBoard/customers/update}" method="post">
+                        <form th:action="@{/customers/update}" method="post">
                             <input type="hidden" name="userPhonePlanID" th:value="${plan.userPhonePlanID}" />
                             <button type="submit" th:text="#{modifyPlan}">修改方案</button>
                         </form>

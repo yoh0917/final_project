@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>客户端的WebSocket</title>
+    <style>
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 300px;
+            height: 200px;
+            overflow-y: scroll;
+        }
+        #messageInput {
+            width: 250px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <input type="text" id="messageInput" placeholder="输入消息" />
+        <button onclick="sendMessage()">發送</button>
+    </div>
+    <div id="messages"></div>
+
+    <script type="text/javascript">
+        let websocket = new WebSocket("ws://localhost:8081/sellphone/channel/echo");
+
+        websocket.onopen = e => {
+            console.log("連接打開");
+        }
+
+        websocket.onclose = e => {
+            console.log(`連接關閉: code=${e.code}, reason=${e.reason}`);
+        }
+
+        websocket.onmessage = e => {
+            console.log(`收到消息：${e.data}`);
+            
+            // 修改部分 - 提取和格式化时间，移除时间戳
+            let messagesDiv = document.getElementById("messages");
+            let messageElement = document.createElement("p");
+            let messageData = e.data.replace(/\[\d+\]\s*/, ''); // 移除时间戳
+            let currentTime = new Date().toLocaleTimeString(); // 获取当前时间
+            messageElement.textContent = `${currentTime} - ${messageData}`; // 添加时间戳到消息前
+            messagesDiv.appendChild(messageElement);
+        }
+
+        websocket.onerror = e => {
+            console.log("連接異常");
+            console.error(e);
+        }
+
+        function sendMessage() {
+            let messageInput = document.getElementById("messageInput");
+            let message = `客戶: ${messageInput.value}`;
+            websocket.send(message);
+            messageInput.value = '';
+        }
+    </script>
+</body>
+</html>
