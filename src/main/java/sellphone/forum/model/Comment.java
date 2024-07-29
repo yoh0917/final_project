@@ -1,11 +1,16 @@
 package sellphone.forum.model;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,7 +19,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import sellphone.user.model.Users;
 
@@ -50,12 +58,41 @@ public class Comment {
         @JoinColumn(name = "userName", referencedColumnName = "userName")
     })
     private Users users;
-//    
-//    @Column(name = "userName", nullable = false)
-//    private String userName;
     
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parentCommentId")
+    private Comment parentComment;
     
-	
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> replies;
+    
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int likeCount = 0;
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "commentLikes",
+        joinColumns = @JoinColumn(name = "commentId"),
+        inverseJoinColumns = @JoinColumn(name = "userId")
+    )
+    private Set<Users> likedUsers = new HashSet<>();
+   
+	public Set<Users> getLikedUsers() {
+		return likedUsers;
+	}
+
+	public void setLikedUsers(Set<Users> likedUsers) {
+		this.likedUsers = likedUsers;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
 	public Comment() {
 		
 	}
@@ -68,7 +105,23 @@ public class Comment {
         this.users = users;
     }
 
+	
 
+	public Comment getParentComment() {
+		return parentComment;
+	}
+
+	public void setParentComment(Comment parentComment) {
+		this.parentComment = parentComment;
+	}
+
+	public List<Comment> getReplies() {
+		return replies;
+	}
+
+	public void setReplies(List<Comment> replies) {
+		this.replies = replies;
+	}
 
 	public Integer getCommentId() {
 		return commentId;
@@ -110,6 +163,7 @@ public class Comment {
     public void setPost(Post post) {
         this.post = post;
     }
+    
 
 
 	public String getCommentContent() {
