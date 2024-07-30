@@ -5,12 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import sellphone.cart.service.CheckoutService;
 import sellphone.orders.model.Order;
 import sellphone.orders.repository.OrderRepository;
 import sellphone.orders.service.OrdersService;
+import sellphone.cart.service.PayOrderService;
 import sellphone.user.model.Users;
+
+import java.util.Optional;
 
 
 @Controller
@@ -25,6 +27,9 @@ public class PaymentController {
 
     @Autowired
     private OrdersService ordersService;
+
+    @Autowired
+    private PayOrderService payOrderService;
 
 //    @GetMapping("/ecpayCheckout")
 //    public ResponseEntity<String> ecpayCheckout(@RequestParam String orderId) {
@@ -54,9 +59,23 @@ public class PaymentController {
 
     @GetMapping("/OrderFrontend/Shopping-Success")
     public String shoppingSuccess(@RequestParam("orderId") String orderId, Model model, HttpSession session) {
+        Optional<Order> order = payOrderService.getOrderById(orderId);
+        model.addAttribute("orderId", orderId);
+        model.addAttribute("order", order.get());
+        model.addAttribute("orderDetails", payOrderService.getOrderDetailsByOrderId(orderId));
 
         return "OrderFrontend/Shopping-Success";
     }
+
+//    @GetMapping("/OrderFrontend/Shopping-Success")
+//    public String shoppingSuccess(@PathVariable String orderId, Model model) {
+//        Optional<Order> order = payOrderService.getOrderById(orderId);
+//
+//        model.addAttribute("order", order.get());
+//        model.addAttribute("orderDetails", payOrderService.getOrderDetailsByOrderId(orderId));
+//        return "order/orderPaymentSuccessful"; // 這裡應該返回對應的 Thymeleaf 模板名稱
+//
+//    }
 
 //    @PostMapping("/backendReturn")
 //    public void handleBackendReturn(@RequestParam Map<String, String> params) {
