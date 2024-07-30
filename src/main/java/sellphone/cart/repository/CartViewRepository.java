@@ -7,6 +7,6 @@ import sellphone.cart.model.CartView;
 import java.util.List;
 
 @Repository
-public interface CartViewRepository extends JpaRepository<CartView, Long> {
+public interface CartViewRepository extends JpaRepository<CartView, Integer> {
     List<CartView> findByUserId(String userId);
 }
