@@ -50,13 +50,13 @@
         .fix-cost-column {
             width: 120px; /* 縮小維修金額的表格寬度 */
         }
-         .fix-name-column {
+        .fix-name-column {
             width: 150px; /* 縮小送修者的表格寬度 */
         }
-         .fix-state-column {
+        .fix-state-column {
             width: 120px; /* 縮小維修狀態的表格寬度 */
         }
-         .fix-date-column {
+        .fix-date-column {
             width: 110px; /* 縮小維修狀態的表格寬度 */
         }
     </style>
@@ -64,7 +64,7 @@
 <body>
     <div class="container mt-5">
         <h2 class="mb-4">手機維修訂單修改</h2>
-        <form th:action="@{/DashBoard/phonefixs/save}" method="post">
+        <form th:action="@{/DashBoard/phonefixs/save}" method="post" onsubmit="return checkForm()">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -98,7 +98,7 @@
                             <input type="text" class="form-control" th:name="fixPort" th:value="${phone.fixPort}"/>
                         </td>
                         <td>
-                            <select class="form-control" th:name="fixState" required>
+                            <select class="form-control" th:name="fixState" id="fixState" required>
                                 <option th:value="${phone.fixState}" th:text="${phone.fixState}" selected></option>
                                 <option value="待處理">待處理</option>
                                 <option value="維修中">維修中</option>
@@ -121,5 +121,14 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function checkForm() {
+            var fixState = document.getElementById("fixState").value;
+            if (fixState === "已完成") {
+                alert("已向客戶送出email,通知客戶來領取貨物");
+            }
+            return true; // 繼續提交表單
+        }
+    </script>
 </body>
 </html>
