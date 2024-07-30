@@ -37,7 +37,7 @@ public class EchoChannel {
             }
         }
     }
-
+//session get開啟即時對話
     @OnOpen
     public void onOpen(Session session, EndpointConfig endpointConfig) {
         sessions.add(session);
@@ -49,7 +49,7 @@ public class EchoChannel {
         sessions.remove(session);
         LOGGER.info("[websocket] 連結以斷開：id={}，reason={}", session.getId(), closeReason);
     }
-
+//連接GG沒辦法成功GET session時
     @OnError
     public void onError(Session session, Throwable throwable) throws IOException {
         sessions.remove(session);

@@ -20,8 +20,10 @@ public class Order {
 	@Column(name = "STATUS")
 	private String status;
 
+
 	@Column(name = "CREATEDATE")
 	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private Date createDate;
 
 	@Column(name = "TOTALAMOUNT")

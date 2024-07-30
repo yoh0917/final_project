@@ -15,55 +15,58 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/orders")
 public class CheckoutTableController {
 
     @Autowired
     private CheckoutService checkoutService;
+
     @PostMapping("/saveOrder")
-    public Map<String, Object> saveOrder(@RequestBody Order order, HttpSession session) {
-        Map<String, Object> response = new HashMap<>();
-        try {
+    @ResponseBody
+    public String saveOrder(@ModelAttribute Order order, HttpSession session, Model model) {
+        //存訂單
+        System.out.println(1);
             Users user = (Users) session.getAttribute("user");
-            if (user == null) {
-                response.put("success", false);
-                response.put("message", "User not found in session.");
-                return response;
-            }
+            String userId = user.getUserId();
+            String userName = user.getUserName();
 
-            String userId = user.getUserName();
+            order.setUserName(userName);
             order.setUserId(userId);
-            checkoutService.saveOrder(order);
-            response.put("success", true);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", e.getMessage());
-        }
-        return response;
+            Order order1 = checkoutService.saveOrder(order);
+        //存訂單明細
+        System.out.println(2);
+        String orderId = order1.getOrderId();
+        checkoutService.saveOrderDetails(orderId, userId);
+        //ECPay 結帳
+        System.out.println(3);
+        String aioCheckOutALLForm = checkoutService.ecpayCheckout(orderId,userId);
+        model.addAttribute("aioCheckOutALLForm", aioCheckOutALLForm);
+        System.out.println(4);
+        return aioCheckOutALLForm;
     }
 
-    @PostMapping("/saveOrderDetails")
-    public Map<String, Object> saveOrderDetails(@RequestBody Map<String, String> request, HttpSession session) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            String orderId = request.get("orderId");
-            Users user = (Users) session.getAttribute("user");
-            if (user == null) {
-                response.put("success", false);
-                response.put("message", "User not found in session.");
-                return response;
-            }
-
-            String userId = user.getUserName();
-            checkoutService.saveOrderDetails(orderId, userId);
-            response.put("success", true);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", e.getMessage());
-        }
-        return response;
-    }
+//    @PostMapping("/saveOrderDetails")
+//    public Map<String, Object> saveOrderDetails(@RequestBody Map<String, String> request, HttpSession session) {
+//        Map<String, Object> response = new HashMap<>();
+//        try {
+//            String orderId = request.get("orderId");
+//            Users user = (Users) session.getAttribute("user");
+//            if (user == null) {
+//                response.put("success", false);
+//                response.put("message", "User not found in session.");
+//                return response;
+//            }
+//
+//            String userId = user.getUserName();
+//            checkoutService.saveOrderDetails(orderId, userId);
+//            response.put("success", true);
+//        } catch (Exception e) {
+//            response.put("success", false);
+//            response.put("message", e.getMessage());
+//        }
+//        return response;
+//    }
 //    @PostMapping("/save")
 //    public Map<String, Object> saveOrder(@RequestBody Order order, HttpSession session) {
 //        Map<String, Object> response = new HashMap<>();
