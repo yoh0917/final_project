@@ -10,3 +10,4 @@ import java.util.List;
 public interface CartViewRepository extends JpaRepository<CartView, Integer> {
     List<CartView> findByUserId(String userId);
 }
+//SSS
