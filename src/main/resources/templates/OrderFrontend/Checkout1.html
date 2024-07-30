@@ -38,61 +38,66 @@
         <h2 class="h5 text-uppercase mb-4">帳單詳細資料</h2>
         <div class="row">
             <div class="col-lg-8">
-                <form id="checkoutForm">
+                <form id="checkoutForm" th:action="@{/orders/saveOrder}" method="post" onsubmit="prepareOrderData(event)">
                     <div class="row gy-3">
                         <div class="col-lg-6">
-                            <label class="form-label text-sm text-uppercase" for="firstName">姓名</label>
-                            <input class="form-control form-control-lg" type="text" id="firstName" placeholder="輸入您的姓名">
+                            <label class="form-label text-sm text-uppercase" for="name">姓名</label>
+                            <input class="form-control form-control-lg" type="text" id="name" name="name" placeholder="輸入您的姓名">
                         </div>
                         <div class="col-lg-6">
                             <label class="form-label text-sm text-uppercase" for="email">電子郵件地址</label>
-                            <input class="form-control form-control-lg" type="email" id="email" placeholder="例如：ABCD@example.com">
+                            <input class="form-control form-control-lg" type="email" id="email" name="email" placeholder="例如：ABCD@example.com">
                         </div>
                         <div class="col-lg-6">
                             <label class="form-label text-sm text-uppercase" for="phone">電話號碼</label>
-                            <input class="form-control form-control-lg" type="tel" id="phone" placeholder="例如：0912345678">
+                            <input class="form-control form-control-lg" type="tel" id="phone" name="phone" placeholder="例如：0912345678">
                         </div>
                         <div class="col-lg-6">
                             <label class="form-label text-sm text-uppercase" for="city">縣市</label>
-                            <input class="form-control form-control-lg" type="text" id="city">
+                            <input class="form-control form-control-lg" type="text" id="city" name="city">
                         </div>
                         <div class="col-lg-6">
-                            <label class="form-label text-sm text-uppercase" for="state">鄉鎮市區</label>
-                            <input class="form-control form-control-lg" type="text" id="state">
+                            <label class="form-label text-sm text-uppercase" for="district">鄉鎮市區</label>
+                            <input class="form-control form-control-lg" type="text" id="district" name="district">
                         </div>
                         <div class="col-lg-12">
                             <label class="form-label text-sm text-uppercase" for="address">地址：街道名稱/巷/弄/號/樓</label>
-                            <input class="form-control form-control-lg" type="text" id="address" placeholder="街道名稱">
+                            <input class="form-control form-control-lg" type="text" id="address" name="address" placeholder="街道名稱">
                         </div>
                         <div class="col-lg-12">
-                            <label class="form-label text-sm text-uppercase" for="addressalt">附加詳細地址</label>
-                            <input class="form-control form-control-lg" type="text" id="addressalt" placeholder="(選填)公寓、套房、公司單位等">
+                            <label class="form-label text-sm text-uppercase" for="detailAddress">附加詳細地址</label>
+                            <input class="form-control form-control-lg" type="text" id="detailAddress" name="detailAddress" placeholder="(選填)公寓、套房、公司單位等">
                         </div>
                     </div>
                     <h2 class="h5 text-uppercase mt-4">付款信息</h2>
                     <div class="row gy-3">
                         <div class="col-lg-12">
                             <label class="form-label text-sm text-uppercase" for="cardName">持卡人姓名</label>
-                            <input class="form-control form-control-lg" type="text" id="cardName" placeholder="持卡人姓名">
+                            <input class="form-control form-control-lg" type="text" id="cardName" name="cardName" placeholder="持卡人姓名">
                         </div>
                         <div class="col-lg-12">
                             <label class="form-label text-sm text-uppercase" for="cardNumber">卡號</label>
-                            <input class="form-control form-control-lg" type="text" id="cardNumber" placeholder="0000 0000 0000 0000">
+                            <input class="form-control form-control-lg" type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000">
                         </div>
                         <div class="col-lg-4">
                             <label class="form-label text-sm text-uppercase" for="expMonth">到期日</label>
-                            <input class="form-control form-control-lg" type="text" id="expMonth" placeholder="MM">
+                            <input class="form-control form-control-lg" type="text" id="expMonth" name="expMonth" placeholder="MM">
                         </div>
                         <div class="col-lg-4">
                             <label class="form-label text-sm text-uppercase" for="expYear">&nbsp;</label>
-                            <input class="form-control form-control-lg" type="text" id="expYear" placeholder="YYYY">
+                            <input class="form-control form-control-lg" type="text" id="expYear" name="expYear" placeholder="YYYY">
                         </div>
                         <div class="col-lg-4">
                             <label class="form-label text-sm text-uppercase" for="cvv">CVC/CVV</label>
-                            <input class="form-control form-control-lg" type="text" id="cvv" placeholder="***">
+                            <input class="form-control form-control-lg" type="text" id="cvv" name="cvv" placeholder="***">
                         </div>
+                        <input type="hidden" id="orderId" name="orderId">
+                        <input type="hidden" id="status" name="status">
+                        <input type="hidden" id="createDate" name="createDate">
+                        <input type="hidden" id="totalAmount" name="totalAmount">
+                        <input type="hidden" id="payStatus" name="payStatus">
                         <div class="col-lg-12 form-group">
-                            <button class="btn btn-primary" type="button" onclick="submitOrder()">立即付款</button>
+                            <button class="btn btn-primary" type="submit">立即付款</button>
                         </div>
                     </div>
                 </form>
@@ -117,7 +122,7 @@
                             <li class="border-bottom my-2"></li>
                             <li class="d-flex align-items-center justify-content-between">
                                 <strong class="text-uppercase small fw-bold">總計</strong>
-                                <span id="totalAmount" th:text="${totalAmount}"></span>
+                                <span id="totalAmountDisplay" th:text="${totalAmount}"></span>
                             </li>
                         </ul>
                     </div>
@@ -137,67 +142,36 @@
 <script th:src="@{/shoppingcart/checkout/vendor/choices.js/public/assets/scripts/choices.min.js}"></script>
 <script th:src="@{/shoppingcart/checkout/js/front.js}"></script>
 <script>
-    function submitOrder() {
-        var order = {
-            orderId: generateOrderId(),
-            status: "N",
-            createDate: new Date().getTime(),
-            totalAmount: parseFloat(document.getElementById("totalAmount").innerText),
-            payStatus: "N",
-            userName: document.getElementById("firstName").value,
-            email: document.getElementById("email").value,
-            phone: document.getElementById("phone").value,
-            city: document.getElementById("city").value,
-            district: document.getElementById("state").value,
-            address: document.getElementById("address").value,
-            detailAddress: document.getElementById("addressalt").value
-        };
-
-        fetch('/sellphone/orders/saveOrder', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(order)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("已成功插入資料庫");
-                    // 插入 O0002_ORDERDETAIL
-                    fetch('/sellphone/orders/saveOrderDetails', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ orderId: order.orderId })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("已成功插入訂單明細");
-                            } else {
-                                alert("插入訂單明細失敗: " + data.message);
-                            }
-                        })
-                        .catch(error => alert('插入訂單明細失敗: ' + error.message));
-                } else {
-                    alert("插入資料庫失敗: " + data.message);
-                }
-            })
-            .catch(error => alert('插入資料庫失敗: ' + error.message));
+    function prepareOrderData(event) {
+        const orderId = generateOrderId();
+        document.getElementById('orderId').value = orderId;
+        document.getElementById('status').value = "N";
+        document.getElementById('createDate').value = formatDate(new Date()); // 使用自定義格式
+        document.getElementById('totalAmount').value = parseFloat(document.getElementById("totalAmountDisplay").innerText);
+        document.getElementById('payStatus').value = "N";
     }
 
     function generateOrderId() {
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = ('0' + (date.getMonth() + 1)).slice(-2);
-        var day = ('0' + date.getDate()).slice(-2);
-        var hours = ('0' + date.getHours()).slice(-2);
-        var minutes = ('0' + date.getMinutes()).slice(-2);
-        var seconds = ('0' + date.getSeconds()).slice(-2);
-        var milliseconds = date.getMilliseconds().toString().padStart(3, '0');
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        const hours = ('0' + date.getHours()).slice(-2);
+        const minutes = ('0' + date.getMinutes()).slice(-2);
+        const seconds = ('0' + date.getSeconds()).slice(-2);
+        const milliseconds = date.getMilliseconds().toString().padStart(3, '0');
         return 'S' + year + month + day + hours + minutes + seconds + milliseconds;
+    }
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        const hours = ('0' + date.getHours()).slice(-2);
+        const minutes = ('0' + date.getMinutes()).slice(-2);
+        const seconds = ('0' + date.getSeconds()).slice(-2);
+        const milliseconds = date.getMilliseconds().toString().padStart(3, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
     }
 </script>
 </body>
