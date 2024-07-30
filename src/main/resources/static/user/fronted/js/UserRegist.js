@@ -177,11 +177,11 @@ $(function () {
     // ============== auto fill for Regist page ===============
 
     $('#registfill').on('click', function () {
-        $('#usernameinput').val('eeit183test')
+        $('#usernameinput').val('eeit183test2')
         $('#birthdayinput').val(new Date('2000-01-01').toISOString().substring(0, 10))
         $('#contactnuminput').val('0987705857')
         $('#emailinput').val('eeit183test@gmail.com')
-        $('#accountinput').val('eeit183test')
+        $('#accountinput').val('eeit183test2')
         $('#passwordinput').val('123456')
         $('#passwordcheck').val('123456')
 
