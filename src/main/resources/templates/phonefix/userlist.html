@@ -12,6 +12,7 @@
         body,
         html {
             height: 100%;
+            background-color: #f2f2f2; /* 修改背景顏色為淺灰色 */
         }
 
         .container {
@@ -101,6 +102,11 @@
             border-radius: 10px; /* 圓潤邊框 */
         }
 
+        #popupHeader {
+            display: flex;
+            justify-content: flex-end;
+        }
+
         #messages {
             border: 1px solid #ccc;
             padding: 10px;
@@ -108,6 +114,7 @@
             overflow-y: scroll;
             border-radius: 5px; /* 圓潤邊框 */
             background-color: #e9ecef; /* 灰色背景 */
+            margin-bottom: 10px; /* 增加底部空間 */
         }
 
         #messageInput {
@@ -119,16 +126,27 @@
         }
 
         .popup-button {
-            background-color: #007bff;
+            background-color: grey;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 5px 10px; /* 縮小按鈕 */
             border-radius: 5px; /* 圓潤邊框 */
             cursor: pointer;
+            font-size: 14px; /* 縮小字體 */
         }
 
         .popup-button:hover {
-            background-color: #0056b3;
+            background-color: #333333;
+        }
+
+        .popup-button:focus {
+            box-shadow: 0 0 5px rgba(90, 98, 104, 0.5);
+        }
+
+        #popupForm {
+            display: flex; /* 使用彈性布局 */
+            justify-content: space-between; /* 讓元素兩端對齊 */
+            align-items: center; /* 垂直對齊 */
         }
     </style>
 </head>
@@ -139,8 +157,11 @@
     <div class="container">
         <div class="order-list" th:if="${session.userId}">
             <h3 th:text="${session.userId} ? '我的維修訂單 ' : '目前無使用者登入'"></h3>
-            <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">維修表單申請</a>
-            <button onclick="togglePopup()" class="btn btn-primary">與維修員洽談</button>
+            <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary" 
+                style="background-color: black; color: white;">維修表單申請</a>
+            <button onclick="togglePopup()" class="btn btn-black" 
+                style="background-color: lightgrey; color: black;">與維修員洽談</button>
+
             <div class="text-center"></div>
             <table>
                 <thead>
@@ -176,12 +197,14 @@
 
     <!-- 彈出式窗口 -->
     <div id="popup">
-        <div>
+        <div id="popupHeader">
+            <button id="closeButton" onclick="togglePopup()" class="popup-button">關閉</button>
+        </div>
+        <div id="messages"></div>
+        <div id="popupForm">
             <input type="text" id="messageInput" placeholder="輸入訊息" />
             <button onclick="sendMessage()" class="popup-button">發送</button>
         </div>
-        <div id="messages"></div>
-        <button onclick="togglePopup()" class="popup-button">關閉</button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

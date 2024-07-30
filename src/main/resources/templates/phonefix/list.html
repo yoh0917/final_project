@@ -88,17 +88,20 @@ h2 {
 }
 
 .btn-black {
-    background-color: #000000; /* 黑色按鈕 */
+    background-color: #ffffff; /* 白色按鈕 */
+    color: #000000;
 }
 
 .btn-black:hover {
-    background-color: #333333; /* 更深黑色按鈕 */
+    background-color: #333333; /* 深灰色按鈕 */
+    color: #ffffff;
 }
 
 .btn-black:focus {
     box-shadow: 0 0 5px rgba(52, 58, 64, 0.5);
     color: #ffffff;
 }
+
 .img-thumbnail {
 	max-width: 100px;
 	max-height: 100px;
@@ -119,6 +122,11 @@ h2 {
 	border-radius: 10px; /* 圓潤邊框 */
 }
 
+#popupHeader {
+	display: flex;
+	justify-content: flex-end;
+}
+
 #messages {
 	border: 1px solid #ccc;
 	padding: 10px;
@@ -126,6 +134,7 @@ h2 {
 	overflow-y: scroll;
 	border-radius: 5px; /* 圓潤邊框 */
 	background-color: #e9ecef; /* 灰色背景 */
+	margin-bottom: 10px; /* 增加底部空間 */
 }
 
 #messageInput {
@@ -140,9 +149,10 @@ h2 {
 	background-color: #6c757d; /* 灰色按鈕 */
 	color: #ffffff;
 	border: none;
-	padding: 10px 20px;
+	padding: 5px 10px; /* 縮小按鈕 */
 	border-radius: 5px; /* 圓潤邊框 */
 	cursor: pointer;
+	font-size: 14px; /* 縮小字體 */
 }
 
 .popup-button:hover {
@@ -151,6 +161,12 @@ h2 {
 
 .popup-button:focus {
 	box-shadow: 0 0 5px rgba(90, 98, 104, 0.5);
+}
+
+#popupForm {
+	display: flex; /* 使用彈性布局 */
+	justify-content: space-between; /* 讓元素兩端對齊 */
+	align-items: center; /* 垂直對齊 */
 }
 </style>
 <script>
@@ -169,7 +185,8 @@ function confirmDelete(event) {
 			<!-- Trigger the modal with a button -->
 			<button type="button" class="btn btn-black" data-toggle="modal" data-target="#addPhoneFixModal"
 				style="background-color: black; color: white;">新增維修記錄</button>
-			<button type="button" class="btn btn-primary" onclick="togglePopup()">與客戶聯繫</button>
+		<button type="button" class="btn btn-black" onclick="togglePopup()"
+    style="background-color: white; color: black;">與客戶聯繫</button>
 		</div>
 		<div style="overflow-x: auto;">
 			<table id="myTable" class="table table-bordered display" style="width: 100%;">
@@ -213,12 +230,14 @@ function confirmDelete(event) {
 
 	<!-- 彈出式窗口 -->
 	<div id="popup">
-		<div>
+		<div id="popupHeader">
+			<button id="closeButton" onclick="togglePopup()" class="popup-button">關閉</button>
+		</div>
+		<div id="messages"></div>
+		<div id="popupForm">
 			<input type="text" id="messageInput" placeholder="輸入訊息" />
 			<button onclick="sendMessage()" class="popup-button">發送</button>
 		</div>
-		<div id="messages"></div>
-		<button onclick="togglePopup()" class="popup-button">關閉</button>
 	</div>
 
 	<!-- Modal -->
