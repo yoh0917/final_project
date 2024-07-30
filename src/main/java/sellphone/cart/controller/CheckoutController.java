@@ -29,7 +29,7 @@ public class CheckoutController {
             return "redirect:/sellphone/login";
         }
 
-        String userId = user.getUserName();
+        String userId = user.getUserId();
         System.out.println("User found in session. UserId: " + userId); // 記錄userId
         List<CartView> carts = checkoutService.getCartByUserId(userId);
         model.addAttribute("carts", carts);

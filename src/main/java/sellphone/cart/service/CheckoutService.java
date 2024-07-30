@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import sellphone.cart.model.CartView;
+import sellphone.cart.repository.CartRepository;
 import sellphone.cart.repository.CartViewRepository;
 import sellphone.orders.model.Order;
 import sellphone.orders.model.OrderDetail;
@@ -34,6 +35,9 @@ public class CheckoutService {
 
 	@Autowired
 	private CartViewRepository cartViewRepository;
+
+	@Autowired
+	private CartRepository cartRepository;
 
 	private static final AtomicInteger sequence = new AtomicInteger(0);
 
@@ -65,6 +69,11 @@ public class CheckoutService {
 			orderDetail.setPrice(item.getPrice());
 			orderDetailRepository.save(orderDetail);
 		}
+	}
+
+	@Transactional
+	public void deleteCartByUserId(String userId) {
+		cartRepository.deleteByUserId(userId);
 	}
 
 	public String generateOrderId() {
@@ -139,54 +148,6 @@ public class CheckoutService {
 
 			String form = all.aioCheckOut(obj, null);
 			return form;
-
-		// 商店轉跳網址 (Optional)
-//		try {
-//			String form = all.aioCheckOut(obj, null);
-//			return form;
-//		} catch (EcpayException e) {
-//			System.err.println("ECPay Exception: " + e.getMessage());
-//			throw e;
-//		}
 	}
-
-
-
-	//private final AllInOne allInOne = new AllInOne("");
-
-//	private String ecpayCheckout(String orderId, String userId) {
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/ddn HH:mm:ss");
-//		String dateStr = sdf.format(new Date());
-//
-//		Orders order = new Orders();
-//
-//		AioCheckOutALL obj = new AioCheckOutALL();
-////		System.out.println(orders.getOrderId().toString());
-//		obj.setMerchantTradeNo(orders.getOrderId().toString());//綠界傳訂單編號
-//		obj.setMerchantTradeDate(dateStr);//交易時間
-//		obj.setTotalAmount((orders.getTotalCost() + ""));//抓總金額
-//		obj.setTradeDesc("test Description");
-//		obj.setItemName("TestItem");
-//		// 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
-//
-//		// 網址
-//		String url = "http://localhost:8081";
-//
-//		// 交易結果
-//		obj.setReturnURL(url + "/comPETnion/backendReturn");
-//
-//		// 付款完成跳轉結果
-//		obj.setClientBackURL(url + "/comPETnion/frontendReturn?orderId=" + orders.getOrderId().toString());
-//		obj.setNeedExtraPaidInfo("N");
-//		// 商店轉跳網址 (Optional)
-//		try {
-//			String form = all.aioCheckOut(obj, null);
-//			return form;
-//		} catch (EcpayException e) {
-//			System.err.println("ECPay Exception: " + e.getMessage());
-//			throw e;
-//		}
-//	}
-
 
 }
