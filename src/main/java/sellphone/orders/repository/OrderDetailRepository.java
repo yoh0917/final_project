@@ -10,6 +10,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
     List<OrderDetail> findByOrderId(String orderId);
     
     
-    @Query(value = "SELECT TOP 4 PRODUCTID,  COUNT(*) FROM O0002_ORDERDETAIL GROUP BY PRODUCTID ORDER BY 2 DESC ",nativeQuery = true)
+    @Query(value = "SELECT TOP 4 PRODUCTID, SUM (QUANTITY) FROM O0002_ORDERDETAIL GROUP BY PRODUCTID ORDER BY 2 DESC ",nativeQuery = true)
     List<Object[]> getMostSale();
 }

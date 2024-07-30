@@ -136,9 +136,9 @@
 	<div class="hero-section text-start">
 		<div class="container">
 			<div class="main-title">你的科技生活，從這裡開始</div>
-			<div class="subtitle">Browse our meticulously curated
-				collection of mobile phones, crafted to highlight your individuality
-				and meet your personal needs.</div>
+<!--			<div class="subtitle">Browse our meticulously curated-->
+<!--				collection of mobile phones, crafted to highlight your individuality-->
+<!--				and meet your personal needs.</div>-->
 			<!--  <a th:href="@{/ProductHomepage}">Shop Now</a> -->
 			<div class="shop-now-btn">
 				<a th:href="@{/front/productlist}">Shop Now</a>
@@ -147,16 +147,18 @@
 	</div>
 
 	<!-- Brands Section -->
-	<div class="Rectangle3">
-		<!-- <img src="logo/samsung_icon.png" alt="Samsung Logo" class="mx-2">
-    <img src="logo/apple_logo_icon.png" alt="Apple Logo" class="mx-2">
-    <img src="logo/sony_icon.png" alt="Sony Logo" class="mx-2">
-    <img src="logo/htc_icon.png" alt="HTC Logo" class="mx-2">
-    <img src="logo/samsung_icon.png" alt="Samsung Logo" class="mx-2">
-    <img src="logo/apple_logo_icon.png" alt="Apple Logo" class="mx-2"> -->
-	</div>
+<!--	<div class="Rectangle3">-->
+<!--		&lt;!&ndash; <img src="logo/samsung_icon.png" alt="Samsung Logo" class="mx-2">-->
+<!--    <img src="logo/apple_logo_icon.png" alt="Apple Logo" class="mx-2">-->
+<!--    <img src="logo/sony_icon.png" alt="Sony Logo" class="mx-2">-->
+<!--    <img src="logo/htc_icon.png" alt="HTC Logo" class="mx-2">-->
+<!--    <img src="logo/samsung_icon.png" alt="Samsung Logo" class="mx-2">-->
+<!--    <img src="logo/apple_logo_icon.png" alt="Apple Logo" class="mx-2"> &ndash;&gt;-->
+<!--	</div>-->
 
 	<!-- New Arrivals Section -->
+    <br>
+    <br>
 <div class="container text-center">
     <h2 class="display-4 fw-bold">新品到貨</h2>
     <div class="row justify-content-center" id="productContainer">
@@ -243,9 +245,12 @@
                         <a class="btn btn-outline-dark mt-auto" th:onclick="'GoToOne(' + ${product.productid} + ')'">詳情</a>                                          
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
+        <br>
+        <br>
 </div>
 	<!-- 引入底部 -->
 	<div th:replace="~{layout/footer.html}"></div>
