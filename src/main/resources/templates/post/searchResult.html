@@ -21,7 +21,7 @@
 	
 		position: relative;
 		display: flex; 
-        padding-top: 200px;
+        padding-top: 120px;
         margin: 0; /* 添加，移除默认的body margin */
         height: 100vh; /* 添加，使页面高度填满屏幕 */
         font-family: 'Satoshi', sans-serif;
@@ -200,6 +200,9 @@
 		align-items: center;
 		width: 100%;
 	}
+	.tags-container {
+	    margin-left: 10px;
+	}
 	
 	.back-button {
 		margin-left: auto;
@@ -276,8 +279,12 @@
                 <div class="accordion-item">
                     <div class="accordion-header" th:attr="data-id=${oneMsg.postId}">
                         <span th:text="${oneMsg.title}" style="flex: 1;">標題</span>
+                        <div class="like-display">
+                            <i class="fa-regular fa-heart"></i>
+                            <span id="likeCount" th:text="${oneMsg.likeCount}">0</span>
+                        </div>
                         <div class="tags-container">
-                            <span th:each="tag : ${oneMsg.tags}" th:text="${tag.name}" class="tag-label"></span>
+                            <span th:each="tag : ${oneMsg.tags}" th:text="${tag.name}" class="badge bg-secondary"></span>
                         </div>
                         <!-- <div class="edit-btn">
                             <a th:href="@{/post/edit(id=${oneMsg.postId})}" class="btn btn-outline-dark btn-sm">編輯</a>

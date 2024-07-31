@@ -25,8 +25,10 @@
 	<link th:href="@{/css/styles.css}" rel="stylesheet" />
 	<script th:src="@{/shoppingcart/cart/js/wow.min.js}"></script>
 	<div th:replace="~{/layout/headerStylesheet.html}"></div>
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
+	
 	<link th:href="@{/layout/css/header.css}" rel="stylesheet"> 
+	
 	 
    <style>
    		
@@ -69,14 +71,6 @@
 		    gap: 24px;
 		}
 		
-		/* .navbar .menu a {
-		    font-size: 16px;
-		    color: black;
-		    text-decoration: none;
-		    position: relative;
-		    padding: 10px 0;
-		    line-height: 1;
-		} */
 		
 		.navbar .menu a:hover {
 		    text-decoration: underline;
@@ -183,9 +177,30 @@
             align-items: center;
         }
 
+       
         .postCreatedTime {
             color: #8E8E8E;
-        }
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		}
+		
+		.edit-button-container {
+		    margin-left: auto; /* 確保編輯按鈕靠右 */
+		}
+		
+		.btn-icon {
+		    background: none;
+		    border: none;
+		    color: #343a40;
+		    cursor: pointer;
+		    display: flex;
+		    align-items: center;
+		}
+		
+		.btn-icon:hover {
+		    color: #495057;
+		}
 
         .tags-container {
             margin-right: 20px;
@@ -274,8 +289,12 @@
 		    border: none;
 		    color: #343a40;
 		    cursor: pointer;
-		    display: flex;
-		    align-items: center;
+		    /* display: flex; */
+		   /*  padding-left: 65px; */
+		    /* align-items: center; */
+		}
+		.btn-icon2{
+		    margin-right: 20px;
 		}
 		
 		.btn-icon:hover {
@@ -370,10 +389,19 @@
         }
         .like-container {
             display: flex;
-            align-items: center;
+            align-items: end;
             justify-content:space-between;
             margin-left: auto; 
         }
+        .right-container{
+        	display: flex;
+        	flex-direction:row;
+            align-items: end;
+            gap: 0;
+        }
+        .favorite-form {
+		    margin-right: 10px; /* 確保按鈕之間有間距 */
+		}
         .like-display, .btn-icon {
 		    display: flex;
 		    align-items: center;
@@ -387,9 +415,6 @@
 			align-items: center;
 		    font-size: 0.8em;
 		}
-		#likeButton{
-			margin-right:100px;
-		}
 
 		.like-display span, .btn-icon i {
 			
@@ -397,11 +422,15 @@
 		}	
 
 		.btn-icon {
+			margin-left: 10px; /* 確保按鈕之間有間距 */
 		    background: none;
 		    border: none;
 		    color: #343a40;
 		    cursor: pointer;
+		    display: flex;
+   			align-items: center;
 		}
+		
 
 		.btn-icon:hover {
    			 color: #495057;
@@ -476,18 +505,58 @@
         <h1 th:text="${postTitle}">文章標題</h1>
         <div class="actions">
             <a class="btn btn-outline-dark" th:href="@{/post/frontPage}">回列表</a>
-            <button th:if="${post.user != null and currentUserId == post.user.userId}" class="btn btn-secondary" onclick="editPost('${post.postId}', '${post.title}', '${post.postContent}')">編輯貼文</button>
         </div>
     </div>
     <hr>
 
     <div class="postCreatedTime">
-        <span th:text="${#dates.format(post.postCreatedTime, 'yyyy-MM-dd HH:mm:ss')}">發布時間</span>
+    <span th:text="${#dates.format(post.postCreatedTime, 'yyyy-MM-dd HH:mm:ss')}">發布時間</span>
+    
+    <div class="edit-button-container" th:if="${post.user != null and currentUserId == post.user.userId}">
+    <i class="fa-solid fa-ellipsis-vertical" id="postOptionsButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="postOptionsButton">
+        <li><a class="dropdown-item" th:href="@{'/post/editFront/' + ${post.postId}}"><i class="fa-solid fa-pen-to-square"></i> 編輯貼文</a></li>
+        <li>
+            <form th:action="@{/post/delete}" method="post" onsubmit="return confirm('確定要刪除這篇貼文嗎？');">
+			    <input type="hidden" name="id" th:value="${post.postId}" />
+			    <button type="submit" class="dropdown-item">
+			        <i class="fa-solid fa-trash"></i> 刪除貼文
+			    </button>
+			</form>
+        </li>
+    </ul>
+</div>
+</div>
+	<!-- 編輯貼文模態視窗 -->
+<div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPostModalLabel">編輯貼文</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPostForm">
+                    <input type="hidden" id="editPostId" name="postId" th:value="${post.postId}">
+                    <div class="mb-3">
+                        <label for="editPostTitle" class="form-label">標題</label>
+                        <input type="text" class="form-control" id="editPostTitle" name="title" th:value="${post.title}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPostContent" class="form-label">內容</label>
+                        <textarea class="form-control" id="editPostContent" name="postContent" th:text="${post.postContent}"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">提交</button>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
 
     <div class="post-content">
         <p th:utext="${postContent}">文章內容顯示在這裡</p>
     </div>
+    
     <!-- 點讚動作 -->
     <div class="like-container">
     	<!-- 左邊的按钮，只顯示圖示和讚數，不具備點擊功能 -->
@@ -495,12 +564,22 @@
        		<i class="fa-regular fa-heart"></i>
         	<span id="likeCount" th:text="${post.likeCount}">0</span>
     	</div>
-
+		
+		<div class="right-container">
     	<!-- 右邊的按钮，可以點擊但不顯示讚數 -->
-    	<button id="likeButton" class="btn-icon" data-post-id="${post.postId}" th:classappend="${hasLiked ? 'liked' : ''}" th:onclick="'toggleLike(' + ${post.postId} + ')'" style="margin-left: 10px;">
+    	<button id="likeButton" class="btn-icon btn-icon2" data-post-id="${post.postId}" th:classappend="${hasLiked ? 'liked' : ''}" th:onclick="'toggleLike(' + ${post.postId} + ')'" style="margin-left: 10px;">
        		<i class="fa-regular fa-heart" id="likeIcon"></i>
     	</button>
+    	<!-- 收藏按紐 -->
+           <form th:action="@{/post/favorite/toggle}" method="post" class="favorite-form">
+		    <input type="hidden" name="postId" th:value="${post.postId}">
+		    <button type="submit" class="btn-icon" th:classappend="${isFavorited ? 'favorited' : ''}">
+		        <i class="fa-star" th:classappend="${isFavorited ? 'fa-solid' : 'fa-regular'}"></i> 
+		    </button>
+			</form>
+		</div>
 	</div>
+	
     <hr>
     <!-- 留言區 -->
     <div class="comments-section">
@@ -553,7 +632,9 @@
 </div>
     <span th:text="${comment.commentContent}">評論內容</span><br>
     <span class="comment-time" th:text="${#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}">評論時間</span>
-    <span class="badge bg-secondary" th:data-comment-id="${comment.commentId}">回覆</span>
+    <!-- <span class="badge bg-secondary" th:data-comment-id="${comment.commentId}">回覆</span> -->
+    <span class="badge bg-secondary reply-button" th:onclick="'toggleReplyForm(\'' + ${comment.commentId} + '\')'">回覆</span>
+
 
     <!-- 回覆表單 -->
 <div th:id="'reply-form-' + ${comment.commentId}" style="display: none;">
@@ -562,7 +643,7 @@
         <input type="hidden" name="userId" th:value="${session.userId}">
         <input type="hidden" name="parentCommentId" th:value="${comment.commentId}">
         <textarea name="commentContent" placeholder="回覆..."></textarea>
-        <button type="submit" class="btn btn-secondary">送出</button>
+        <button type="submit" class="badge bg-secondary reply-button">送出</button>
     </form>
 </div>
 </div>
@@ -590,14 +671,14 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form th:action="@{/comment/edit}" method="post">
+                <form id="editCommentForm">
                     <input type="hidden" id="editCommentId" name="commentId">
                     <input type="hidden" id="editPostId" name="postId">
                     <div class="mb-3">
                         <label for="editCommentContent" class="form-label">留言內容</label>
                         <textarea class="form-control" id="editCommentContent" name="commentContent"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-secondary">送出</button>
+                    <button type="submit" class="btn btn-secondary">保存修改</button>
                 </form>
             </div>
         </div>
@@ -616,8 +697,82 @@
         </button>
     </form>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+$(document).ready(function() {
+            $('.delete-post-btn').click(function(e) {
+                e.preventDefault();
+                var postId = $(this).data('post-id');
+                if (confirm('確定要刪除這篇貼文嗎？')) {
+                    $.ajax({
+                        url: '/sellphone/post/delete',
+                        type: 'POST',
+                        data: { id: postId },
+                        success: function(response) {
+                            window.location.href = '/sellphone/post/frontPage';
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                            alert('刪除貼文失敗，請稍後再試。');
+                        }
+                    });
+                }
+            });
+        });
+ 
+function editPost() {
+    var editPostModal = new bootstrap.Modal(document.getElementById('editPostModal'), {
+        keyboard: false
+    });
+    editPostModal.show();
+}
+
+
+
+$(document).ready(function() {
+    $('#editPostForm').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: '/sellphone/post/edit',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('編輯貼文失敗，請稍後再試。');
+            }
+        });
+    });
+
+    // 修改评论编辑表单的提交处理
+    $('#editCommentForm').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        console.log("Form data:", formData); // 添加這行來查看發送的數據
+        $.ajax({
+            url: '/sellphone/comment/edit',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('編輯失敗：' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                console.error('Status:', status);
+                console.error('Response:', xhr.responseText);
+                alert('編輯留言失敗，請稍後再試。');
+            }
+        });
+    });
+});
+
 function editComment(commentId, commentContent, postId) {
     console.log("Editing comment with ID:", commentId);
     console.log("Comment content:", commentContent);
@@ -672,6 +827,7 @@ function toggleLike(postId) {
         }
     });
 }
+
 function toggleCommentLike(commentId) {
     console.log('Sending comment like toggle request for commentId:', commentId);
     $.ajax({
@@ -697,24 +853,76 @@ function toggleCommentLike(commentId) {
     });
 }
 
-function showReplyForm(commentId) {
+   document.addEventListener('DOMContentLoaded', function() {
+    // 使用事件委托处理回复按钮点击
+    document.querySelector('.comments-section').addEventListener('click', function(event) {
+        if (event.target.classList.contains('reply-button')) {
+            var commentId = event.target.getAttribute('data-comment-id');
+            toggleReplyForm(commentId);
+        }
+    });
+});
+
+function toggleReplyForm(commentId) {
     var replyForm = document.getElementById('reply-form-' + commentId);
     if (replyForm) {
-        replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+        if (replyForm.style.display === 'none' || replyForm.style.display === '') {
+            replyForm.style.display = 'block';
+        } else {
+            replyForm.style.display = 'none';
+        }
     } else {
         console.error('Reply form not found for comment ID:', commentId);
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('[data-comment-id]').forEach(button => {
-        button.addEventListener('click', function() {
-            var commentId = this.getAttribute('data-comment-id');
-            showReplyForm(commentId);
-        });
-    });
-});
+// 移除之前的事件监听器代码
 
+      document.addEventListener('DOMContentLoaded', function() {
+       var favoriteButton = document.getElementById('favoriteButton');
+       if (favoriteButton) {
+           favoriteButton.addEventListener('click', function() {
+               var postId = this.getAttribute('data-post-id');
+               var icon = document.getElementById('favoriteIcon');
+               
+               console.log('Toggling favorite for post:', postId);
+               
+               fetch('/sellphone/post/favorite/toggle', {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type': 'application/x-www-form-urlencoded',
+                       'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').getAttribute('content')
+                   },
+                   body: 'postId=' + postId
+               })
+               .then(response => {
+                   console.log('Response status:', response.status);
+                   if (!response.ok) {
+                       throw new Error('Network response was not ok');
+                   }
+                   return response.json();
+               })
+               .then(data => {
+                   console.log('Received data:', data);
+                   if (data.isFavorited) {
+                       this.classList.add('favorited');
+                       icon.classList.remove('fa-regular');
+                       icon.classList.add('fa-solid');
+                       console.log('Post favorited');
+                   } else {
+                       this.classList.remove('favorited');
+                       icon.classList.remove('fa-solid');
+                       icon.classList.add('fa-regular');
+                       console.log('Post unfavorited');
+                   }
+               })
+               .catch(error => {
+                   console.error('Error:', error);
+                   alert('操作失败，请稍后重试');
+               });
+           });
+       }
+   });
 
 </script>
 </body>
