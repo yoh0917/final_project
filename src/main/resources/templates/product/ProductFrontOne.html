@@ -320,13 +320,13 @@
 			let color = document.querySelector('#color').innerHTML;
 			let inputQuantity = document.querySelector('#inputQuantity').value;
 			let price = document.querySelector('#price').innerHTML;
-			let userName = document.querySelector('#loginUsername').value;
+			let userid = document.querySelector('#userid').value;
 			console.log(productid);
 			console.log(capacity);
 			console.log(color);
 			console.log(inputQuantity);
 			console.log(price);
-			console.log(userName);
+			console.log(userid);
 			axios.get('/sellphone/addproductcart', {
 
 				params: {
@@ -335,7 +335,7 @@
 					color: color,
 					quantity: inputQuantity,
 					price: price,
-					userId: userName
+					userId: userid
 				}	
 			})
 				.then(res => {
