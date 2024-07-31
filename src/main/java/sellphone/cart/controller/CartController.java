@@ -118,6 +118,7 @@ public class CartController {
     @PostMapping("/cart/update")
     @ResponseBody
     public String updateCartQuantity(@RequestParam int productId, @RequestParam String userId, @RequestParam int delta) {
+        System.out.println(userId);
         try {
             cartService.updateQuantity(productId, userId, delta);
             return "數量更新成功";
