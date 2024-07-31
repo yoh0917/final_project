@@ -1,5 +1,6 @@
 package sellphone.forum.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -59,7 +60,11 @@ public class PostService {
         return postRepo.findByUserUserId(userId);
     }
     public List<Post> getPostsByTagName(String tagName) {
-        return postRepo.findByTagsName(tagName);
+        Tag tag = tagRepo.findByName(tagName);
+        if (tag != null) {
+            return tag.getPosts();
+        }
+        return new ArrayList<>();
     }
 
     public List<Post> getBookmarkedPosts(String userId) {

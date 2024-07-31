@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -187,9 +188,9 @@ public class PostController {
     @GetMapping("/post/byTag")
     public String getPostsByTag(@RequestParam String tagName, Model model) {     
         List<Post> posts = postService.getPostsByTagName(tagName);
-        model.addAttribute("posts", posts);
+        model.addAttribute("page", new PageImpl<>(posts));
         model.addAttribute("selectedTag", tagName);
-        return "post/frontPage :: #accordionExample"; // 只返回需要的片段
+        return "post/postFrontPage :: #accordionExample"; // 只返回需要的片段
     }
     
     @GetMapping("/post/frontPage")
