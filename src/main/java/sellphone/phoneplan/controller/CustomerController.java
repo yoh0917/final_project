@@ -38,7 +38,7 @@ public class CustomerController {
     @Autowired
     private SmsService smsService;
 
-    @GetMapping("/DashBoard/customers/create")
+    @GetMapping("/customers/create")
     public String createCustomerForm(Model model) {
         List<PhonePlanBean> plans = customerService.findAllPlans();
         model.addAttribute("plans", plans);
@@ -46,7 +46,7 @@ public class CustomerController {
         return "phoneplan/customers";
     }
 
-    @PostMapping("/DashBoard/customers/create")
+    @PostMapping("/customers/create")
     public String createCustomer(@RequestParam("selectedPlan") int selectedPlanId,
                                  @RequestParam("phoneNum") String phoneNum) throws Exception {
         PhonePlanBean selectedPlan = customerService.findPhonePlanById(selectedPlanId);
@@ -70,10 +70,10 @@ public class CustomerController {
                                        selectedPlan.getPlanName(), selectedPlan.getTelCompany(), selectedPlan.getContractType(), qrCodeText);
         smsService.sendSMS(phoneNum, message);
 
-        return "redirect:/DashBoard/customers/plans";
+        return "redirect:/customers/plans";
     }
 
-    @GetMapping("/DashBoard/customers/plans")
+    @GetMapping("/customers/plans")
     public String viewCustomerPlans(Model model) {
         Users user = usersRepository.findByUserId("2406140003");
         if (user == null) {
@@ -86,7 +86,7 @@ public class CustomerController {
         return "phoneplan/viewPlans";
     }
 
-    @PostMapping("/DashBoard/customers/update")
+    @PostMapping("/customers/update")
     public String showFormForUpdate(@RequestParam("userPhonePlanID") int userPhonePlanID, Model model) {
         UserPhonePlanList userPPL = userPPPLR.findById(userPhonePlanID).orElse(null);
 
@@ -105,7 +105,7 @@ public class CustomerController {
         return "phoneplan/customersupdateForm";
     }
 
-    @PostMapping("/DashBoard/customers/saveUpdate")
+    @PostMapping("/customers/saveUpdate")
     public String saveUpdate(@RequestParam("userPhonePlanID") int userPhonePlanID,
                              @RequestParam("planName") String planName, 
                              @RequestParam("phoneNum") String phoneNum,
@@ -128,7 +128,7 @@ public class CustomerController {
             return "phoneplan/customersupdateForm";
         }
 
-        return "redirect:/DashBoard/customers/plans";
+        return "redirect:/customers/plans";
     }
 
     private void generateQRCode(String text, String filePath) throws Exception {

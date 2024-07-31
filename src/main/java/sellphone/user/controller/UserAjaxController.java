@@ -117,8 +117,9 @@ public class UserAjaxController {
 	public String checkUserAccount(@RequestParam("param") String userAccount) {
 		
 		Users user = userRepo.findByUserAccount(userAccount);
-		if (user != null)
+		if (user != null) {
 			return "此帳號已經存在";
+		}
 		else {
 			return "";			
 		}

@@ -37,6 +37,8 @@ public class ProductScore {
 
 	private Integer productid;
 	
+	private String userId;
+	
 	private Integer scorenum;   //評分
 	@Lob
 	private String review;

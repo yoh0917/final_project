@@ -30,7 +30,7 @@
         <div class="searchMenu">
             <div class="buttonMenu">
                 <a th:href="@{/DashBoard/phoneplans/create}"><button class="insertBtn">新增方案</button></a>
-                <a th:href="@{/DashBoard/customers/plans}"><button class="insertBtn">查詢所有申辦方案</button></a>
+                <a th:href="@{/customers/plans}"><button class="insertBtn">查詢所有申辦方案</button></a>
                 <div th:text="'總共有 ' + ${phonePlans.size()} + ' 筆'"></div>
             </div>
             <input class="searchID" type="text" placeholder="輸入方案代碼">

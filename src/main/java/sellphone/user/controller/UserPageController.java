@@ -117,7 +117,6 @@ public class UserPageController {
 	}
 	
 	@GetMapping("/confirmAccount")
-	@ResponseBody
 	public String confirmAccount(@RequestParam("userId") String userId, Model model) {
 		Users user = userService.findById(userId);
 		
@@ -125,7 +124,7 @@ public class UserPageController {
 			if(user.getStatus() == 0) {
 				user.setStatus(1);
 				userService.update(user);
-				return "帳戶啟動成功";
+				return "user/fronted/confirmAccount";
 			}
 		}
 		

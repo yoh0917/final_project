@@ -44,7 +44,7 @@ public class CartController {
     		@RequestParam String storage,
     		@RequestParam int quantity,
     		@RequestParam int price   		
-    		) {  	
+    		) {
     	Cart cart = new Cart();
     	cart.setProductId(productId);
     	cart.setUserId(userId);
@@ -84,7 +84,7 @@ public class CartController {
             return "redirect:/sellphone/login"; // 若session中無user則重定向到登入頁面
         }
 
-        String userId = user.getUserName();
+        String userId = user.getUserId();
         System.out.println("User found in session. UserId: " + userId); // 記錄userId
         List<CartView> carts = cartService.getCartItems(userId);
         session.setAttribute("carts", carts);

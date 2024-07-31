@@ -67,9 +67,7 @@ public class UserController {
 	public String UserPlanInfo(Model m, HttpServletRequest req, HttpServletResponse resp) {
 
 		String userId = (String) req.getSession().getAttribute("userId");
-		System.out.println(userId);
 		Users user = uService.findById(userId);
-		System.out.println(user);
 		m.addAttribute("user", user);
 
 		return "/user/fronted/UserInfo";
@@ -97,7 +95,6 @@ public class UserController {
 	public String UserPlanList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 
 		String userId = (String) req.getSession().getAttribute("userId");
-		System.out.println(userId);
 		List<UserPhonePlanList> userPhonePlanList = userPplR.findAllByuserId(userId);
 		m.addAttribute("planList", userPhonePlanList);
 

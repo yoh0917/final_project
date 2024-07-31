@@ -9,6 +9,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +43,8 @@ public class PhoneFixController {
 	private PhoneFixRepository rp;
 	@Autowired
 	private PhoneFixPhotoRepository photorp;
+    @Autowired
+    private JavaMailSender mailSender;
 
 //後臺主頁秀出整體資料
 	@GetMapping("/DashBoard/phonefixs")
@@ -61,7 +65,7 @@ public class PhoneFixController {
 	}
 
 	
-//後臺儲存修改資料
+//後臺修改資料
 	@PostMapping("/DashBoard/phonefixs/save")
 	@Transactional
 	public String save(@RequestParam Integer fixID, @RequestParam String fixName, @RequestParam String fixDate,
@@ -80,9 +84,26 @@ public class PhoneFixController {
 		phone.setFixState(fixState);
 		rp.save(phone);
 
+		if ("已完成".equals(fixState)) {
+            sendCompletionEmail(phone.getUser().getUserId());
+        }
+		
 		return "redirect:/DashBoard/phonefixs";
 	}
+//讓controller在完成時會寄出email
+    private void sendCompletionEmail(String userId) {
+    	Users user=userRepository.findByUserId(userId);
+    	String userEmail=user.getEmail();
+    	System.out.println("--------------------mail確定有get------------------------------");
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(userEmail);
+        message.setSubject("訂單完成通知");
+        message.setText("您好，您的訂單已完成，請來門市取貨。");
 
+        mailSender.send(message);
+    }
+    
+    
 	@GetMapping("/DashBoard/phonefixs/create1")
 	public String creare1() {
 		return "phonefix/form";

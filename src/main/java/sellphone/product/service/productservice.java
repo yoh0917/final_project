@@ -54,8 +54,8 @@ public class productservice {
 	}
 	
 	//用ID查評論
-	public ProductScore findbyUserIdAndProductid(String userId,Integer productid) {
-	return scoreRepo.findByUserNameAndProductid(userId, productid);		
+	public ProductScore findbyUserNameAndProductid(String userName,Integer productid) {
+	return scoreRepo.findByUserNameAndProductid(userName, productid);		
 	}
 	
 	

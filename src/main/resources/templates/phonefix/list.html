@@ -88,29 +88,94 @@ h2 {
 }
 
 .btn-black {
-    background-color: #000000; /* 黑色按鈕 */
+    background-color: #ffffff; /* 白色按鈕 */
+    color: #000000;
 }
 
 .btn-black:hover {
-    background-color: #333333; /* 更深黑色按鈕 */
+    background-color: #333333; /* 深灰色按鈕 */
+    color: #ffffff;
 }
 
 .btn-black:focus {
     box-shadow: 0 0 5px rgba(52, 58, 64, 0.5);
     color: #ffffff;
 }
+
 .img-thumbnail {
 	max-width: 100px;
 	max-height: 100px;
 }
+
+/* 彈出式窗口的樣式 */
+#popup {
+	display: none;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	border: 1px solid #ccc;
+	padding: 20px;
+	background-color: #f8f9fa;
+	z-index: 1000;
+	width: 300px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 10px; /* 圓潤邊框 */
+}
+
+#popupHeader {
+	display: flex;
+	justify-content: flex-end;
+}
+
+#messages {
+	border: 1px solid #ccc;
+	padding: 10px;
+	height: 200px;
+	overflow-y: scroll;
+	border-radius: 5px; /* 圓潤邊框 */
+	background-color: #e9ecef; /* 灰色背景 */
+	margin-bottom: 10px; /* 增加底部空間 */
+}
+
+#messageInput {
+	width: 200px; /* 調整寬度 */
+	border-radius: 5px; /* 圓潤邊框 */
+	border: 1px solid #ccc;
+	padding: 5px;
+	margin-right: 10px;
+}
+
+.popup-button {
+	background-color: #6c757d; /* 灰色按鈕 */
+	color: #ffffff;
+	border: none;
+	padding: 5px 10px; /* 縮小按鈕 */
+	border-radius: 5px; /* 圓潤邊框 */
+	cursor: pointer;
+	font-size: 14px; /* 縮小字體 */
+}
+
+.popup-button:hover {
+	background-color: #5a6268;
+}
+
+.popup-button:focus {
+	box-shadow: 0 0 5px rgba(90, 98, 104, 0.5);
+}
+
+#popupForm {
+	display: flex; /* 使用彈性布局 */
+	justify-content: space-between; /* 讓元素兩端對齊 */
+	align-items: center; /* 垂直對齊 */
+}
 </style>
 <script>
-        function confirmDelete(event) {
-            if (!confirm("確認要刪除這條記錄嗎？")) {
-                event.preventDefault();
-            }
-        }
-    </script>
+function confirmDelete(event) {
+    if (!confirm("確認要刪除這條記錄嗎？")) {
+        event.preventDefault();
+    }
+}
+</script>
 </head>
 <body>
 	<div th:replace="~{/layout/DashBoardSidebar.html}"></div>
@@ -118,9 +183,10 @@ h2 {
 		<h2 class="mb-4">手機維修列表</h2>
 		<div class="mb-3">
 			<!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-black" data-toggle="modal" data-target="#addPhoneFixModal" style="background-color: black; color: white;">
-    新增維修記錄
-</button>
+			<button type="button" class="btn btn-black" data-toggle="modal" data-target="#addPhoneFixModal"
+				style="background-color: black; color: white;">新增維修記錄</button>
+		<button type="button" class="btn btn-black" onclick="togglePopup()"
+    style="background-color: white; color: black;">與客戶聯繫</button>
 		</div>
 		<div style="overflow-x: auto;">
 			<table id="myTable" class="table table-bordered display" style="width: 100%;">
@@ -149,17 +215,28 @@ h2 {
 								<img th:src="@{/phonefixs/downloadfixphoto(id=${photoId.id})}" alt="fix photo" class="img-thumbnail" />
 							</div>
 						</td>
-						<td><a th:href="@{/DashBoard/phonefixs/update(fixid=${phoneFix.fixID})}"
-							class="btn btn-warning btn-sm"
+						<td><a th:href="@{/DashBoard/phonefixs/update(fixid=${phoneFix.fixID})}" class="btn btn-warning btn-sm"
 							style="background-color: #adb5bd; color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">修改</a>
-							<form th:action="@{/DashBoard/phonefixs/delete/{id}(id=${phoneFix.fixID})}"
-								method="post" style="display: inline;" onsubmit="confirmDelete(event)">
+							<form th:action="@{/DashBoard/phonefixs/delete/{id}(id=${phoneFix.fixID})}" method="post" style="display: inline;"
+								onsubmit="confirmDelete(event)">
 								<button type="submit" class="btn btn-danger btn-sm"
 									style="background-color: #343a40; color: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">刪除</button>
 							</form></td>
 					</tr>
 				</tbody>
 			</table>
+		</div>
+	</div>
+
+	<!-- 彈出式窗口 -->
+	<div id="popup">
+		<div id="popupHeader">
+			<button id="closeButton" onclick="togglePopup()" class="popup-button">關閉</button>
+		</div>
+		<div id="messages"></div>
+		<div id="popupForm">
+			<input type="text" id="messageInput" placeholder="輸入訊息" />
+			<button onclick="sendMessage()" class="popup-button">發送</button>
 		</div>
 	</div>
 
@@ -195,7 +272,7 @@ h2 {
 							<label for="fixState">維修狀態</label>
 							<select class="form-control" id="fixState" name="fixState" required>
 								<option value="" disabled selected>請選擇維修狀態</option>
-								<option value="未接單">未接單</option>
+								<option value="待處理">待處理</option>
 								<option value="維修中">維修中</option>
 								<option value="已完成">已完成</option>
 							</select>
@@ -277,5 +354,45 @@ h2 {
 			});
 		});
 	</script>
+	<script>
+        let websocket = new WebSocket("ws://localhost:8081/sellphone/channel/echo");
+
+        websocket.onopen = e => {
+            console.log("連接打開");
+        }
+
+        websocket.onclose = e => {
+            console.log(`連接關閉: code=${e.code}, reason=${e.reason}`);
+        }
+
+        websocket.onmessage = e => {
+            console.log(`收到消息：${e.data}`);
+
+            // 修改部分 - 提取和格式化時間，移除時間戳
+            let messagesDiv = document.getElementById("messages");
+            let messageElement = document.createElement("p");
+            let messageData = e.data.replace(/\[\d+\]\s*/, ''); // 移除時間戳
+            let currentTime = new Date().toLocaleTimeString(); // 獲取當前時間
+            messageElement.textContent = `${currentTime} - ${messageData}`; // 添加時間戳到消息前
+            messagesDiv.appendChild(messageElement);
+        }
+
+        websocket.onerror = e => {
+            console.log("連接異常");
+            console.error(e);
+        }
+
+        function sendMessage() {
+            let messageInput = document.getElementById("messageInput");
+            let message = `管理員: ${messageInput.value}`;
+            websocket.send(message);
+            messageInput.value = '';
+        }
+
+        function togglePopup() {
+            let popup = document.getElementById('popup');
+            popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
 </body>
 </html>

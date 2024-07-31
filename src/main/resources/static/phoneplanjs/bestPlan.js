@@ -74,7 +74,7 @@
                 return;
             }
 
-            var url = '/sellphone/DashBoard/customers/create' + 
+            var url = '/sellphone/customers/create' + 
                     '?telCompany=' + encodeURIComponent(telCompany) + 
                     '&planName=' + encodeURIComponent(planName) + 
                     '&contractType=' + encodeURIComponent(contractType) + 
@@ -108,7 +108,7 @@
 
             if (nextId) {
                 $.ajax({
-                    url: '/sellphone/DashBoard/phoneplans/getOptions',
+                    url: '/sellphone/phoneplans/getOptions',
                     type: 'GET',
                     data: {
                         currentId: currentId,
@@ -147,7 +147,7 @@
             }
 
             $.ajax({
-                url: '/sellphone/DashBoard/phoneplans/getBestPlan',
+                url: '/sellphone/phoneplans/getBestPlan',
                 type: 'GET',
                 data: {
                     telCompany: telCompany,
@@ -239,7 +239,7 @@
                 return;
             }
 
-            var url = '/sellphone/DashBoard/phoneplans/export/excel?planIDs=' + selectedPlans.join(",");
+            var url = '/sellphone/phoneplans/export/excel?planIDs=' + selectedPlans.join(",");
             fetch(url)
                 .then(response => response.blob())
                 .then(blob => {

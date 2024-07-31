@@ -12,6 +12,7 @@
         body,
         html {
             height: 100%;
+            background-color: #f2f2f2; /* 修改背景顏色為淺灰色 */
         }
 
         .container {
@@ -20,7 +21,7 @@
             justify-content: center;
             flex-direction: column;
             height: 100%;
-            margin-top: 80px; /*控制CONTROLLER的位子 */
+            margin-top: 80px;
         }
 
         .order-list {
@@ -80,23 +81,88 @@
             max-width: 100px;
             max-height: 100px;
         }
-                .user-message {
-            margin-top: 150px; /* 控制 <h3> 的向下移動 */
-            text-align: center; /* 使 <h3> 內容居中 */
+
+        .user-message {
+            margin-top: 150px;
+            text-align: center;
+        }
+
+        /* 彈出式窗口的樣式 */
+        #popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #f8f9fa;
+            z-index: 1000;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px; /* 圓潤邊框 */
+        }
+
+        #popupHeader {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 200px;
+            overflow-y: scroll;
+            border-radius: 5px; /* 圓潤邊框 */
+            background-color: #e9ecef; /* 灰色背景 */
+            margin-bottom: 10px; /* 增加底部空間 */
+        }
+
+        #messageInput {
+            width: 200px; /* 調整寬度 */
+            border-radius: 5px; /* 圓潤邊框 */
+            border: 1px solid #ccc;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        .popup-button {
+            background-color: grey;
+            color: #fff;
+            border: none;
+            padding: 5px 10px; /* 縮小按鈕 */
+            border-radius: 5px; /* 圓潤邊框 */
+            cursor: pointer;
+            font-size: 14px; /* 縮小字體 */
+        }
+
+        .popup-button:hover {
+            background-color: #333333;
+        }
+
+        .popup-button:focus {
+            box-shadow: 0 0 5px rgba(90, 98, 104, 0.5);
+        }
+
+        #popupForm {
+            display: flex; /* 使用彈性布局 */
+            justify-content: space-between; /* 讓元素兩端對齊 */
+            align-items: center; /* 垂直對齊 */
         }
     </style>
 </head>
 
 <body>
     <div th:replace="~{/layout/header.html}"></div>
- <h3 class="user-message" th:text="${session.userId} ? '歡迎申請訂單' : '請先註冊或以客戶端進入'"></h3>
+    <h3 class="user-message" th:text="${session.userId} ? '歡迎申請訂單' : '請先註冊或以客戶端進入'"></h3>
     <div class="container">
         <div class="order-list" th:if="${session.userId}">
-                <h3 th:text="${session.userId} ? '我的維修訂單 ' : '目前無使用者登入'"></h3>
-                
-                <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary">維修表單申請</a>
-            <div class="text-center">
-            </div>
+            <h3 th:text="${session.userId} ? '我的維修訂單 ' : '目前無使用者登入'"></h3>
+            <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary" 
+                style="background-color: black; color: white;">維修表單申請</a>
+            <button onclick="togglePopup()" class="btn btn-black" 
+                style="background-color: lightgrey; color: black;">與維修員洽談</button>
+
+            <div class="text-center"></div>
             <table>
                 <thead>
                     <tr>
@@ -128,11 +194,64 @@
             </table>
         </div>
     </div>
+
+    <!-- 彈出式窗口 -->
+    <div id="popup">
+        <div id="popupHeader">
+            <button id="closeButton" onclick="togglePopup()" class="popup-button">關閉</button>
+        </div>
+        <div id="messages"></div>
+        <div id="popupForm">
+            <input type="text" id="messageInput" placeholder="輸入訊息" />
+            <button onclick="sendMessage()" class="popup-button">發送</button>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript">
+        let websocket = new WebSocket("ws://localhost:8081/sellphone/channel/echo");
+
+        websocket.onopen = e => {
+            console.log("連接打開");
+        }
+
+        websocket.onclose = e => {
+            console.log(`連接關閉: code=${e.code}, reason=${e.reason}`);
+        }
+
+        websocket.onmessage = e => {
+            console.log(`收到消息：${e.data}`);
+
+            // 修改部分 - 提取和格式化時間，移除時間戳
+            let messagesDiv = document.getElementById("messages");
+            let messageElement = document.createElement("p");
+            let messageData = e.data.replace(/\[\d+\]\s*/, ''); // 移除時間戳
+            let currentTime = new Date().toLocaleTimeString(); // 獲取當前時間
+            messageElement.textContent = `${currentTime} - ${messageData}`; // 添加時間戳到消息前
+            messagesDiv.appendChild(messageElement);
+        }
+
+        websocket.onerror = e => {
+            console.log("連接異常");
+            console.error(e);
+        }
+
+        function sendMessage() {
+            let messageInput = document.getElementById("messageInput");
+            let message = `客戶: ${messageInput.value}`;
+            websocket.send(message);
+            messageInput.value = '';
+        }
+
+        function togglePopup() {
+            let popup = document.getElementById('popup');
+            popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
+        }
     </script>
 </body>
 
