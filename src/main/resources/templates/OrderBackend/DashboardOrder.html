@@ -6,16 +6,27 @@
   <title>Dashboard</title>
   <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-  <!-- Nucleo Icons -->
-  <link th:href="@{/order/assets/css/nucleo-icons.css}" rel="stylesheet" />
-  <link th:href="@{/order/assets/css/nucleo-svg.css}" rel="stylesheet" />
-  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" th:href="@{/order/assets/css/nucleo-icons.css}" />
+  <link rel="stylesheet" th:href="@{/order/assets/css/nucleo-svg.css}" />
   <script src="https://kit.fontawesome.com/349ee9c857.js" crossorigin="anonymous"></script>
-  <!-- CSS Files -->
-  <link id="pagestyle" th:href="@{/order/assets/css/corporate-ui-dashboard.css}" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{/order/assets/css/corporate-ui-dashboard.css}" />
+  <link rel="stylesheet" th:href="@{/order/style.css}" />
 </head>
 <body class="g-sidenav-show bg-gray-100">
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+
+<!-- SideBar -->
+<div class="sidebar" th:replace="~{/layout/DashBoardSidebar.html}"></div>
+
+<!-- Header -->
+<header class="top-navbar">
+  <div class="top-navbar-container">
+    <a th:href="@{/DashBoard/orders}">訂單管理</a>
+    <a th:href="@{/DashBoard/orders/add}">新增訂單</a>
+    <a th:href="@{/DashBoard/orders/revenue}">營收分析</a>
+  </div>
+</header>
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg" style="margin-left: 220px; margin-top: 60px;">
   <div class="container-fluid py-4 px-5">
     <div class="row">
       <div class="col-lg-3 col-md-6 mb-4">
@@ -30,9 +41,9 @@
             <p class="text-sm text-secondary mb-1">Revenue</p>
             <h4 class="mb-2 font-weight-bold" th:text="${revenue}">$99,118.5</h4>
             <div class="d-flex align-items-center">
-                                <span class="text-sm text-success font-weight-bolder">
-                                    <i class="fa fa-chevron-up text-xs me-1"></i>10.5%
-                                </span>
+              <span class="text-sm text-success font-weight-bolder">
+                <i class="fa fa-chevron-up text-xs me-1"></i>10.5%
+              </span>
               <span class="text-sm ms-1">from $89,740.00</span>
             </div>
           </div>
@@ -50,9 +61,9 @@
             <p class="text-sm text-secondary mb-1">Transactions</p>
             <h4 class="mb-2 font-weight-bold" th:text="${transactions}">376</h4>
             <div class="d-flex align-items-center">
-                                <span class="text-sm text-success font-weight-bolder">
-                                    <i class="fa fa-chevron-up text-xs me-1"></i>55%
-                                </span>
+              <span class="text-sm text-success font-weight-bolder">
+                <i class="fa fa-chevron-up text-xs me-1"></i>55%
+              </span>
               <span class="text-sm ms-1">from 243</span>
             </div>
           </div>
@@ -69,9 +80,9 @@
             <p class="text-sm text-secondary mb-1">Avg. Transaction</p>
             <h4 class="mb-2 font-weight-bold" th:text="${avgTransaction}">$450.53</h4>
             <div class="d-flex align-items-center">
-                                <span class="text-sm text-success font-weight-bolder">
-                                    <i class="fa fa-chevron-up text-xs me-1"></i>22%
-                                </span>
+              <span class="text-sm text-success font-weight-bolder">
+                <i class="fa fa-chevron-up text-xs me-1"></i>22%
+              </span>
               <span class="text-sm ms-1">from $369.30</span>
             </div>
           </div>
@@ -88,9 +99,9 @@
             <p class="text-sm text-secondary mb-1">Coupon Sales</p>
             <h4 class="mb-2 font-weight-bold" th:text="${couponSales}">$23,364.55</h4>
             <div class="d-flex align-items-center">
-                                <span class="text-sm text-success font-weight-bolder">
-                                    <i class="fa fa-chevron-up text-xs me-1"></i>18%
-                                </span>
+              <span class="text-sm text-success font-weight-bolder">
+                <i class="fa fa-chevron-up text-xs me-1"></i>18%
+              </span>
               <span class="text-sm ms-1">from $19,800.40</span>
             </div>
           </div>
@@ -127,5 +138,7 @@
 <script th:src="@{/order/assets/js/plugins/smooth-scrollbar.min.js}"></script>
 <script src="https://buttons.github.io/buttons.js" async defer></script>
 <script th:src="@{/order/assets/js/corporate-ui-dashboard.js}"></script>
+<script th:src="@{/order/orderjs.js}"></script>
+<script th:src="@{/order/revenueChart.js}"></script>
 </body>
 </html>

@@ -65,7 +65,7 @@ public class Post {
     private Date postLastUpdatedTime;
     
     @ManyToMany
-    @JoinTable(name = "POST_TAG",
+    @JoinTable(name = "F0004_POST_TAG",
     joinColumns = @JoinColumn(name = "postId"),
     inverseJoinColumns = @JoinColumn(name = "tagId"))
     private List<Tag> tags = new ArrayList<>();
@@ -73,8 +73,40 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+    
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int commentCount = 0;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "F0005_postFavorites",
+        joinColumns = @JoinColumn(name = "postId"),
+        inverseJoinColumns = @JoinColumn(name = "userId")
+    )
+    private Set<Users> favoritedUsers = new HashSet<>();
+    
 
-    @Lob
+    public Set<Users> getFavoritedUsers() {
+		return favoritedUsers;
+	}
+    
+    public boolean isFavoritedByUser(Users user) {
+        return favoritedUsers.contains(user);
+    }
+
+	public void setFavoritedUsers(Set<Users> favoritedUsers) {
+		this.favoritedUsers = favoritedUsers;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	@Lob
     @Column(nullable = true)
     private byte[] image;
     
@@ -84,7 +116,7 @@ public class Post {
     //哪些用戶點讚了這篇文章
     @ManyToMany
     @JoinTable(
-        name = "postLikes",
+        name = "F0003_postLikes",
         joinColumns = @JoinColumn(name = "postId"),
         inverseJoinColumns = @JoinColumn(name = "userId")
     )

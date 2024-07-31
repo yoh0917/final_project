@@ -20,6 +20,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import sellphone.admin.service.AdminService;
+import sellphone.forum.model.Post;
+import sellphone.forum.service.PostService;
 import sellphone.user.DTO.UserDTO;
 import sellphone.user.model.UserPasswordToken;
 import sellphone.user.model.UserPasswordTokenRepository;
@@ -42,6 +44,7 @@ public class UserController {
 
 	@Autowired
 	private UserMailService uMailService;
+	
 
 	@Autowired
 	private UserRepository userRepository ;
@@ -76,11 +79,17 @@ public class UserController {
 		return "/user/fronted/UserOrder";
 	}
 
-	@GetMapping("/UserPostList")
-	public String UserPostList(Model m, HttpServletRequest req, HttpServletResponse resp) {
-
-		return "/user/fronted/UserPost";
-	}
+//	@GetMapping("/UserPostList")
+//	public String userPostList(Model model, HttpServletRequest req, HttpServletResponse resp) {
+//	    String userId = (String) req.getSession().getAttribute("userId");
+//	    if (userId == null) {
+//	        // 用戶未登錄，重定向到登錄頁面
+//	        return "redirect:/login";
+//	    }
+//	    System.out.println(userId);
+//	    model.addAttribute("userId", userId); 
+//	    return "/user/fronted/UserPost";
+//	}
 
 	@GetMapping("/UserPlanList")
 	public String UserPlanList(Model m, HttpServletRequest req, HttpServletResponse resp) {

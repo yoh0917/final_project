@@ -90,9 +90,9 @@
 						<td style="display: none;" th:text="${cart.storage}">儲存空間</td>
 
 						<td class="">
-							<button type="button" class="btn btn-outline-secondary quantity-decrease" th:data-id="${cart.productId}" th:data-user="${session.user.userName}">-</button>
+							<button type="button" class="btn btn-outline-secondary quantity-decrease" th:data-id="${cart.productId}" th:data-user="${session.user.userId}">-</button>
 							<span class="quantity" th:text="${cart.quantity}" th:data-id="${cart.productId}"></span>
-							<button type="button" class="btn btn-outline-secondary quantity-increase" th:data-id="${cart.productId}" th:data-user="${session.user.userName}">+</button>
+							<button type="button" class="btn btn-outline-secondary quantity-increase" th:data-id="${cart.productId}" th:data-user="${session.user.userId}">+</button>
 						</td>
 						<td class="price" th:text="'$' + ${cart.price}"></td>
 						<td>

@@ -3,6 +3,7 @@ package sellphone.user.model;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,6 +70,18 @@ public class Users {
 	
 	@ManyToMany(mappedBy = "likedUsers")
     private Set<Post> likedPosts = new LinkedHashSet<>();
+	
+	@ManyToMany(mappedBy = "favoritedUsers")
+	private Set<Post> favoritePosts = new HashSet<>();
+	
+
+	public Set<Post> getFavoritePosts() {
+		return favoritePosts;
+	}
+
+	public void setFavoritePosts(Set<Post> favoritePosts) {
+		this.favoritePosts = favoritePosts;
+	}
 
 	public Users() {
 	}

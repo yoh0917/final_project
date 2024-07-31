@@ -46,7 +46,7 @@
 			<a th:href="@{/UserLogin}">Login</a>
 		</th:block>
 		<div th:if="${session.user != null }">
-			<a th:href="@{/cart(userId=${session.user.userName})}"><i
+			<a th:href="@{/cart(userId=${session.user.userId})}"><i
 				class="fa-solid fa-cart-shopping"></i></a>
 		</div>
 	</div>
