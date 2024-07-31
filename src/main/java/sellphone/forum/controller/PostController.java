@@ -367,6 +367,21 @@ public class PostController {
             model.addAttribute("posts", bookmarkedPosts);
             return "user/fronted/bookmarkedPosts"; 
         }
+        @GetMapping("/reportPost/{postId}")
+        public String reportPost(@PathVariable Integer postId, RedirectAttributes redirectAttributes) {
+            Post post = postService.findPostById(postId);
+            if (post != null) {
+                Users user = post.getUser();
+                if (user != null) {
+                    user.setReportNum(user.getReportNum() + 1);
+                    userService.insert(user);
+                    redirectAttributes.addFlashAttribute("message", "檢舉成功");
+                    return "redirect:/post/frontPage";
+                }
+            }
+            redirectAttributes.addFlashAttribute("error", "檢舉失敗");
+            return "redirect:/post/frontPage";
+        }
 
 
 
