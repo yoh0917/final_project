@@ -7,65 +7,84 @@
     <link rel="stylesheet" th:href="@{/order/style.css}">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .form-container {
+            margin-top: 20px;
+        }
+        .form-title {
+            margin-bottom: 20px;
+        }
+        .form-section {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .form-section label {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
 <div th:replace="~{/layout/DashBoardSidebar.html}"></div>
 
-<header>
-    <div class="top-navbar">
-        <div class="top-navbar-container">
-<!--            <a >管理系統</a>-->
-            <a th:href="@{/DashBoard/orders}">訂單管理</a>
-            <a th:href="@{/DashBoard/orders/add}">新增訂單</a>
-            <a th:href="@{/DashBoard/orders/revenue}">營收分析</a>
-<!--            <a th:href="@{/DashBoard/orders/cart1}">購物車</a>-->
-<!--            <a th:href="@{/DashBoard/orders/testproduct}">測試資料</a>-->
-<!--            <a th:href="@{/DashBoard/orders/checkout}">結帳</a>-->
-        </div>
+<header class="top-navbar">
+    <div class="top-navbar-container">
+        <a th:href="@{/DashBoard/orders}">訂單管理</a>
+        <a th:href="@{/DashBoard/orders/add}">新增訂單</a>
+        <a th:href="@{/DashBoard/orders/revenue}">營收分析</a>
     </div>
 </header>
 
 <div class="container" style="margin-left: 220px; margin-top: 60px;">
-    <h1>新增訂單</h1>
+<!--    <h1>新增訂單</h1>-->
     <div class="card form-section">
         <div class="card-body">
             <h3 class="form-title">新增訂單</h3>
             <form id="orderForm" th:action="@{/orders/add}" method="post">
-                <div class="mb-3">
-                    <label for="orderIdInput" class="form-label">訂單編號</label>
-                    <input type="text" class="form-control" id="orderIdInput" name="orderId">
+                <div class="row form-container">
+                    <div class="col-md-6 mb-3">
+                        <label for="orderIdInput" class="form-label">訂單編號</label>
+                        <input type="text" class="form-control" id="orderIdInput" name="orderId">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="userIdInput" class="form-label">顧客ID</label>
+                        <input type="text" class="form-control" id="userIdInput" name="userId">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="userIdInput" class="form-label">顧客ID</label>
-                    <input type="text" class="form-control" id="userIdInput" name="userId">
+                <div class="row form-container">
+                    <div class="col-md-6 mb-3">
+                        <label for="userNameInput" class="form-label">顧客姓名</label>
+                        <input type="text" class="form-control" id="userNameInput" name="userName">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="statusInput" class="form-label">訂單狀態</label>
+                        <input type="text" class="form-control" id="statusInput" name="status">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="userNameInput" class="form-label">顧客姓名</label>
-                    <input type="text" class="form-control" id="userNameInput" name="userName">
+                <div class="row form-container">
+                    <div class="col-md-6 mb-3">
+                        <label for="totalAmountInput" class="form-label">總計</label>
+                        <input type="text" class="form-control" id="totalAmountInput" name="totalAmount">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="createDateInput" class="form-label">創建日期</label>
+                        <input type="date" class="form-control" id="createDateInput" name="createDate">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="statusInput" class="form-label">訂單狀態</label>
-                    <input type="text" class="form-control" id="statusInput" name="status">
+                <div class="row form-container">
+                    <div class="col-md-6 mb-3">
+                        <label for="payStatusInput" class="form-label">支付狀態</label>
+                        <input type="text" class="form-control" id="payStatusInput" name="payStatus">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="payDateInput" class="form-label">支付日期</label>
+                        <input type="date" class="form-control" id="payDateInput" name="payDate">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="totalAmountInput" class="form-label">總計</label>
-                    <input type="text" class="form-control" id="totalAmountInput" name="totalAmount">
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary">保存更改</button>
+                    <button type="reset" class="btn btn-warning">清除</button>
                 </div>
-                <div class="mb-3">
-                    <label for="createDateInput" class="form-label">創建日期</label>
-                    <input type="date" class="form-control" id="createDateInput" name="createDate">
-                </div>
-                <div class="mb-3">
-                    <label for="payStatusInput" class="form-label">支付狀態</label>
-                    <input type="text" class="form-control" id="payStatusInput" name="payStatus">
-                </div>
-                <div class="mb-3">
-                    <label for="payDateInput" class="form-label">支付日期</label>
-                    <input type="date" class="form-control" id="payDateInput" name="payDate">
-                </div>
-                <button type="submit" class="btn btn-primary">保存更改</button>
-                <button type="reset" class="btn btn-warning">清除</button>
             </form>
         </div>
     </div>
