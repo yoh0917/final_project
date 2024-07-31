@@ -44,6 +44,8 @@ public class Users {
 
 	private int status;
 
+	private int reportNum; 
+
 	@Column(nullable = false, columnDefinition = "Datetime2(0) default Getdate()")
 	private LocalDateTime createTime;
 
@@ -223,5 +225,15 @@ public class Users {
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
     }
+
+	public Integer getReportNum() {
+		return reportNum;
+	}
+
+	public void setReportNum(int reportNum) {
+		this.reportNum = reportNum;
+	}
+    
+    
 
 }

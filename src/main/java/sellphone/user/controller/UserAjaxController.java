@@ -84,10 +84,12 @@ public class UserAjaxController {
 
 		HttpSession session = req.getSession();
 		int status = 0;
+		int reportNum = 0;
 		String userId = userUtil.createUserId(session.getId());
 		user.setUserId(userId);
 		user.setStatus(status);
 		user.setCreateTime(LocalDateTime.now());
+		user.setReportNum(reportNum);
 		uService.insert(user);
 		
 		userMailService.sendConfirmAccountEmail(user);
