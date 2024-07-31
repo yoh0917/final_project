@@ -132,20 +132,20 @@ public class CommentController {
 	    response.put("likeCount", commentService.findCommentById(commentId).getLikeCount());
 	    return ResponseEntity.ok(response);
 	}
-	@GetMapping("/reportComment/{commentId}")
-    public String reportComment(@PathVariable Integer commentId, RedirectAttributes redirectAttributes) {
+	@GetMapping("/reportComment/{commentId}/{postId}")
+    public String reportComment(@PathVariable Integer commentId, @PathVariable Integer postId, RedirectAttributes redirectAttributes) {
         Comment comment = commentService.findCommentById(commentId);
         if (comment != null) {
             Users user = comment.getUsers();
             if (user != null) {
                 user.setReportNum(user.getReportNum() + 1);
                 userService.insert(user);
-                redirectAttributes.addFlashAttribute("message", "檢舉成功");
-                return "redirect:/post/frontPage";
+                redirectAttributes.addFlashAttribute("message", "檢舉成功 將由管理員進行審核!");
+                return "redirect:/post/" + postId;
             }
         }
         redirectAttributes.addFlashAttribute("error", "檢舉失敗");
-        return "redirect:/post/frontPage";
+        return "redirect:/post/" + postId;
     }
 	
 	

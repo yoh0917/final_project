@@ -610,6 +610,15 @@
     <!-- 留言區 -->
     <div class="comments-section">
     <h3>留言</h3>
+    <!-- 檢舉訊息 -->
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+	    <strong th:text="${message}"></strong>
+	    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+	<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+	    <strong th:text="${error}"></strong>
+	    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
     <div th:each="comment : ${comments}">  
     <!-- <div th:each="comment : ${comments}" th:if="${comment.parentCommentId == null}">  -->
     <div class="comment">
@@ -648,16 +657,21 @@
                     </li>
                 </ul>
             </th:block>
+            
             <th:block th:if="${comment.users == null or currentUserId != comment.users.userId}">
-                <i class="fa-solid fa-ellipsis-vertical" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" th:href="@{/reportComment/{commentId}(commentId=${comment.commentId})}">檢舉</a></li>
-                </ul>
-            </th:block>
+			    <i class="fa-solid fa-ellipsis-vertical" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
+			    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+			        <li><a class="dropdown-item" th:href="@{'/reportComment/' + ${comment.commentId} + '/' + ${post.postId}}">檢舉</a></li>
+			    </ul>
+			    
+			</th:block>
+			
         </div>
     </div>
 </div>
+	
     <span th:text="${comment.commentContent}">評論內容</span><br>
+    
     <span class="comment-time" th:text="${#temporals.format(comment.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}">評論時間</span>
     <!-- <span class="badge bg-secondary" th:data-comment-id="${comment.commentId}">回覆</span> -->
     <span class="badge bg-secondary reply-button" th:onclick="'toggleReplyForm(\'' + ${comment.commentId} + '\')'">回覆</span>
@@ -716,11 +730,15 @@
                             </li>
                         </ul>
                     </th:block>
+                    	
+                    	
+                    
                     <th:block th:if="${reply.users == null or currentUserId != reply.users.userId}">
                         <i class="fa-solid fa-ellipsis-vertical" id="replyDropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"></i>
                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="replyDropdownMenuButton">
                             <li><a class="dropdown-item" href="#">檢舉</a></li>
                         </ul>
+                        
                     </th:block>
                 </div>
             </div>
@@ -781,8 +799,19 @@
         </button>
     </form>
 </div>
+			
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    var alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            var bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 3000);  // 3秒後自動關閉
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function() {
   const autoFillButton = document.querySelector('.auto-fill-btn');
@@ -847,8 +876,6 @@ $(document).ready(function() {
             }
         });
     });
-
-    // 修改评论编辑表单的提交处理
     $('#editCommentForm').submit(function(e) {
         e.preventDefault();
         var formData = $(this).serialize();

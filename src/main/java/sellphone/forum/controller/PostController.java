@@ -375,7 +375,7 @@ public class PostController {
                 if (user != null) {
                     user.setReportNum(user.getReportNum() + 1);
                     userService.insert(user);
-                    redirectAttributes.addFlashAttribute("message", "檢舉成功");
+                    redirectAttributes.addFlashAttribute("reportSuccess", "檢舉已成功提交");
                     return "redirect:/post/frontPage";
                 }
             }
