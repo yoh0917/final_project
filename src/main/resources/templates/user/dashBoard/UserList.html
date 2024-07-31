@@ -26,7 +26,8 @@
 						<th>手機號碼</th>
 						<th>建立時間</th>
 						<th>上次登入</th>
-						<th>會員狀態</th>
+						<th>狀態</th>
+						<th>檢舉次數</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -42,10 +43,12 @@
 							<td></td>
 							<td></td>
 							<td></td>
+							<td></td>
 						</tr>
 					</th:block>
 					<th:block th:unless="${userList == null}">
 						<th:block th:each="user : ${userList}">
+							<th:block th:unless="${user.status == -2}">
 							<tr>
 								<td th:text="${user.userId}"></td>
 								<td th:text="${user.userName}"></td>
@@ -54,8 +57,9 @@
 								<td th:text="${user.contactNum}"></td>
 								<td th:text="${user.createTime}"></td>
 								<td th:text="${user.prevlogTime}"></td>
-								<td class="status" th:text="${user.statusDescrib}"></td>
-								<td class="control" th:if="${user.statusDescrib == '封鎖'}">
+								<td class="status" th:text="${user.userStatus.statusDescrib}"></td>
+								<td class="report-Num" th:text="${user.reportNum}"></td>
+								<td class="control" th:if="${user.userStatus.statusDescrib == '封鎖'}">
 									<button class="blockBtn hidden" onclick="blockUser(this)">
 										<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt="" width="25px"
 											height="25px">
@@ -70,7 +74,7 @@
 									</button>
 								</td>
 
-								<td class="control" th:unless="${user.statusDescrib == '封鎖'}">
+								<td class="control" th:unless="${user.userStatus.statusDescrib == '封鎖'}">
 									<button class="blockBtn" onclick="blockUser(this)">
 										<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt="" width="25px"
 											height="25px">
@@ -86,6 +90,7 @@
 								</td>
 
 							</tr>
+							</th:block>
 						</th:block>
 					</th:block>
 				</tbody>

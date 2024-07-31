@@ -1,4 +1,9 @@
 const serverContext = 'http://localhost:8081/sellphone'
+//window.onload = function() {
+//            changeRowColor('row2', 'lightblue');
+//};
+
+
 function findUser(userId, row) {
     url = serverContext + '/findUserViewByUserId';
     object = { userId, userId };
