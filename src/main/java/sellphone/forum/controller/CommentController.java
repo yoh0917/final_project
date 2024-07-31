@@ -45,46 +45,49 @@ public class CommentController {
 	
 
 	@PostMapping("/comment/add")
-    public String addComment(@RequestParam("commentContent") String commentContent,
-                             @RequestParam("postId") Integer postId,
-                             @RequestParam("userId") String userId,
-                             @RequestParam(value = "parentCommentId", required = false) Integer parentCommentId,
-                             RedirectAttributes redirectAttributes) {
-        Post post = postService.findPostById(postId);
-        Users user = userService.findById(userId);
-        if (post != null && user != null) {
-            Comment comment = new Comment();
-            comment.setCommentContent(commentContent);
-            comment.setPost(post);
-            comment.setUsers(user);
-            if (parentCommentId != null) {
-                Comment parentComment = commentService.findCommentById(parentCommentId);
-                comment.setParentComment(parentComment);
-            }
-            commentService.saveComment(comment);
-            redirectAttributes.addFlashAttribute("successMessage", "留言已新增");
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "文章或用戶不存在");
-        }
-        return "redirect:/post/" + postId;
-    }
+	public String addComment(
+	    @RequestParam(value = "commentContent", required = false) String commentContent,
+	    @RequestParam("postId") Integer postId,
+	    @RequestParam("userId") String userId,
+	    @RequestParam(value = "parentCommentId", required = false) Integer parentCommentId,
+	    @RequestParam(value = "action", required = false) String action,
+	    RedirectAttributes redirectAttributes) {
+
+	    // 檢查是否為一鍵輸入
+	    if ("autoFill".equals(action)) {
+	        commentContent = "感謝分享這篇文章，內容很有意思！";
+	    }
+
+	    // 檢查評論內容是否為空
+	    if (commentContent == null || commentContent.trim().isEmpty()) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "留言內容不能為空");
+	        return "redirect:/post/" + postId;
+	    }
+
+	    Post post = postService.findPostById(postId);
+	    Users user = userService.findById(userId);
+
+	    if (post != null && user != null) {
+	        Comment comment = new Comment();
+	        comment.setCommentContent(commentContent);
+	        comment.setPost(post);
+	        comment.setUsers(user);
+
+	        if (parentCommentId != null) {
+	            Comment parentComment = commentService.findCommentById(parentCommentId);
+	            comment.setParentComment(parentComment);
+	        }
+
+	        commentService.saveComment(comment);
+	        redirectAttributes.addFlashAttribute("successMessage", "留言已新增");
+	    } else {
+	        redirectAttributes.addFlashAttribute("errorMessage", "文章或用戶不存在");
+	    }
+
+	    return "redirect:/post/" + postId;
+	}
 	
-//	@PostMapping("/comment/edit")
-//	@ResponseBody
-//	public String editComment(@RequestParam("commentId") Integer commentId,
-//	                          @RequestParam("commentContent") String commentContent,
-//	                          @RequestParam("postId") Integer postId,
-//	                          RedirectAttributes redirectAttributes,
-//	                          Model model) {
-//	    Optional<Comment> commentOptional = commentRepository.findById(commentId);
-//	    if (commentOptional.isPresent()) {
-//	        Comment comment = commentOptional.get();
-//	        comment.setCommentContent(commentContent);
-//	        commentRepository.save(comment);
-//	    }
-//	    redirectAttributes.addAttribute("postId", postId);
-//	    return "redirect:/post/{postId}"; 
-//	}
+
 	@PostMapping("/comment/edit")
 	@ResponseBody
 	public ResponseEntity<?> editComment(

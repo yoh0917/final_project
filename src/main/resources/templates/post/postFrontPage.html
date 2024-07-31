@@ -308,6 +308,14 @@
 	    padding: 10px;
 	    border-radius: 10px;
 	}
+	.active-tag {
+        background-color: 	#3C3C3C; /* 你可以根据需要更改颜色 */
+        color: white; /* 文字颜色 */
+    }
+    .active-tag:hover {
+    background-color: #5A5A5A; /* 你可以根据需要更改颜色 */
+    color: #FFFFFF; /* 文字颜色 */
+}
     </style>
 </head>
 <body>
@@ -316,17 +324,16 @@
         <div class="header-row">
             <h1>文章列表</h1>
             <div class="tag-buttons">
-                <button th:each="tag : ${allTags}" 
-                        th:text="${tag.name}" 
-                        class="btn" 
-                        th:classappend="${tag.name == selectedTag} ? 'btn-primary' : 'btn-outline-secondary'"
-                        th:attr="data-tag-name=${tag.name}" 
-                        onclick="filterPostsByTag(this)">
-                </button>
-            </div>
+			    <a th:each="tag : ${allTags}" 
+			       th:text="${tag.name}" 
+			       class="btn" 
+			       th:classappend="${tag.name == selectedTag} ? 'btn-primary active-tag' : 'btn-outline-secondary'"
+			       th:href="@{/post/byTag(tagName=${tag.name})}">
+			    </a>
+			</div>
             <div class="actions">
                 <a class="btn btn-secondary" aria-current="page" th:href="@{/post/add}">新增文章</a>
-                <a class="btn btn-secondary" aria-current="page" th:href="@{/post/frontPage}">返回列表</a>
+                <a class="btn btn-secondary" aria-current="page" th:href="@{/post/frontPage}">所有文章</a>
             </div>
         </div>
         <div class="search-container">
@@ -361,6 +368,7 @@
                 </div>
             </th:block>
         </div>
+        <!-- 分頁控制 -->
         <div class="total" th:text="'總共有 ' + ${page.totalElements} + ' 筆'"></div>
         <ul class="pagination" th:if="${page.totalPages != 0}">
             <th:block th:switch="${page.number != 0}">
@@ -457,7 +465,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (newContent) {
                 var accordion = document.getElementById('accordionExample');
                 accordion.innerHTML = newContent.innerHTML;
-                bindAccordionEvents(); // 调用绑定事件函数
+                bindAccordionEvents(); // 重新綁定事件
             } else {
                 console.error("Could not find #accordionExample in the response");
             }

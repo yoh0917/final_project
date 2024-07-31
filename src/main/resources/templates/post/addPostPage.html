@@ -242,6 +242,10 @@
                 </div>
                 
                 <input type="submit" class="btn btn-dark" value="送出">
+                <!-- 添加一键輸入按钮 -->
+                <button type="button" class="btn btn-secondary" onclick="autoFillPost()">
+                    一鍵輸入
+                </button>
             </form>
         </div>
     </div>
@@ -275,6 +279,12 @@
             document.querySelector('#postContent').value = editorInstance.getData();
         });
     });
+    
+    function autoFillPost() {
+        document.getElementById("postTitle").value = "iPhone 15系列的快更新iOS 17.0.3發佈？";
+        editorInstance.setData("15系列的朋友快更新iOS 17.0.3發佈 針對發熱問題的更新上線 代碼21A360 也針對一些安全性做更新");
+        document.getElementById("tag1").checked = true; // 自動選擇一個標籤
+    }
 </script>
 </body>
 </html>
