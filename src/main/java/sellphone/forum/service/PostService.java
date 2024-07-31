@@ -59,12 +59,12 @@ public class PostService {
     public List<Post> getUserPosts(String userId) {
         return postRepo.findByUserUserId(userId);
     }
-    public List<Post> getPostsByTagName(String tagName) {
+    public Page<Post> getPostsByTagName(String tagName, Pageable pageable) {
         Tag tag = tagRepo.findByName(tagName);
         if (tag != null) {
-            return tag.getPosts();
+            return postRepo.findByTagsContaining(tag, pageable);
         }
-        return new ArrayList<>();
+        return Page.empty(pageable);
     }
 
     public List<Post> getBookmarkedPosts(String userId) {

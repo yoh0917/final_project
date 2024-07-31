@@ -19,6 +19,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	
 	List<Post> findByTagsName(String tagName);
 	
+	Page<Post> findByTagsContaining(Tag tag, Pageable pageable);
+	
     
     @Query("SELECT p FROM Post p JOIN p.favoritedUsers u WHERE u.userId = :userId")
     List<Post> findBookmarkedByUserId(@Param("userId") String userId);

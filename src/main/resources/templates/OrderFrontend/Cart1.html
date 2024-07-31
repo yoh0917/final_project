@@ -96,7 +96,7 @@
 						</td>
 						<td class="price" th:text="'$' + ${cart.price}"></td>
 						<td>
-							<button type="button" class="btn btn-danger remove-item" th:data-id="${cart.productId}" th:data-user="${session.user.userName}">刪除</button>
+							<button type="button" class="btn btn-danger remove-item" th:data-id="${cart.productId}" th:data-user="${session.user.userId}">刪除</button>
 						</td>
 					</tr>
 					</tbody>
