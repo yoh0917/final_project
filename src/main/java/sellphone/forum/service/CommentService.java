@@ -12,6 +12,7 @@ import sellphone.user.model.Users;
 import sellphone.forum.model.Comment;
 import sellphone.forum.model.CommentRepository;
 import sellphone.forum.model.Post;
+import sellphone.forum.model.PostRepository;
 
 @Service
 public class CommentService {
@@ -20,10 +21,18 @@ public class CommentService {
     private CommentRepository commentRepo;
     
     @Autowired
+    private PostRepository postRepo;
+    
+    @Autowired
     private UserRepository userRepo;
 
+    @Transactional
     public Comment saveComment(Comment comment) {
-        return commentRepo.save(comment);
+        Comment savedComment = commentRepo.save(comment);
+        Post post = savedComment.getPost();
+        post.setCommentCount(post.getCommentCount() + 1);
+        postRepo.save(post);
+        return savedComment;
     }
 
     public Comment findCommentById(Integer commentId) {
@@ -35,8 +44,13 @@ public class CommentService {
         return commentRepo.findByPost(post);
     }
 
+    @Transactional
     public void deleteCommentById(Integer commentId) {
+        Comment comment = commentRepo.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
+        Post post = comment.getPost();
         commentRepo.deleteById(commentId);
+        post.setCommentCount(post.getCommentCount() - 1);
+        postRepo.save(post);
     }
     
     @Transactional

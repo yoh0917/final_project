@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import sellphone.user.model.Users;
 import sellphone.user.service.UserService;
@@ -95,19 +99,6 @@ public class PostController {
         //return "post/postFrontPage";
         
     }
-//    @GetMapping("/post/page")
-//    public String findByFrontPage(@RequestParam(value = "p", defaultValue = "1") Integer pageNum, 
-//                             @RequestParam(value = "keyword", required=false) String keyword, Model model) {
-//        Page<Post> page = postService.findByPage(pageNum);
-//        Post latestPost = postService.findLatestPost();
-//        List<Tag> allTags = tagService.findAllTags();  
-//        model.addAttribute("latestPost", latestPost);
-//        model.addAttribute("page", page);
-//        model.addAttribute("allTags", allTags);  
-//        return "post/postFrontPage";
-//        
-//    }
-    
 
     @GetMapping("/post/edit")
     public String editPost(@RequestParam Integer id, @RequestParam(value = "p", defaultValue = "1") Integer pageNum, Model model) {
@@ -118,22 +109,64 @@ public class PostController {
         model.addAttribute("pageNum", pageNum);
         return "post/editPostPage";
     }
-
-//    @PostMapping("/post/editPost")
-//    public String editPostContent(@ModelAttribute Post post, @RequestParam("pageNum") Integer pageNum) {
-//        postService.savePost(post);
-//        return "redirect:/post/page?p=" + pageNum;
-//    }
+ 
     @PostMapping("/post/editPost")
     public String editPostContent(@ModelAttribute Post post, @RequestParam("pageNum") Integer pageNum) {
         postService.updatePost(post);
         return "redirect:/post/page?p=" + pageNum;
     }
+    
+ // 新增前台編輯文章的GET請求
+    @GetMapping("/post/editFront/{postId}")
+    public String showEditFrontPostPage(@PathVariable("postId") Integer postId, Model model, HttpSession session) {
+        Post post = postService.findPostById(postId);
+        Users user = post.getUser();
+        String currentUserId = (String) session.getAttribute("userId");
+        if (currentUserId == null || !currentUserId.equals(user.getUserId())) {
+            // 如果用戶未登入或不是該文章的作者，重定向到文章詳情頁
+            return "redirect:/post/" + postId;
+        }
+        model.addAttribute("post", post);
+        return "post/editFrontPostPage";
+    }
 
+    // 新增前台編輯文章的POST請求
+    @PostMapping("/post/editFront")
+    public String editFrontPost(@RequestParam("postId") Integer postId, 
+                                @RequestParam("title") String title,
+                                @RequestParam("postContent") String postContent,
+                                RedirectAttributes redirectAttributes) {
+        Post post = postService.findPostById(postId);
+        if (post != null) {
+            post.setTitle(title);
+            post.setPostContent(postContent);
+            postService.savePost(post);
+            redirectAttributes.addFlashAttribute("successMessage", "貼文已更新");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "貼文不存在");
+        }
+        return "redirect:/post/" + postId;
+    }
+
+//    @PostMapping("/post/delete")
+//    @ResponseBody
+//    public ResponseEntity<?> deletePost(@RequestParam("id") Integer postId) {
+//        try {
+//            postService.deletePostById(postId);
+//            return ResponseEntity.ok().build();
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("刪除失敗");
+//        }
+//    }
     @PostMapping("/post/delete")
-    public String deletePost(@RequestParam("id") Integer postId, @RequestParam("p") Integer pageNum) {
-        postService.deletePostById(postId);
-        return "redirect:/post/page?p=" + pageNum;
+    public String deletePost(@RequestParam("id") Integer postId, RedirectAttributes redirectAttributes) {
+        try {
+            postService.deletePost(postId);
+            redirectAttributes.addFlashAttribute("message", "貼文已成功刪除");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "刪除貼文失敗：" + e.getMessage());
+        }
+        return "redirect:/post/frontPage";
     }
 
     @GetMapping("/post/find")
@@ -153,12 +186,13 @@ public class PostController {
     }
 
     @GetMapping("/post/byTag")
-    public String getPostsByTag(@RequestParam String tagName, Model model) {
-        List<Post> posts = postService.findPostsByTag(tagName);
-        model.addAttribute("posts", posts);
-        model.addAttribute("tagName", tagName);
-        return "post/searchResult";
+    public String getPostsByTag(@RequestParam String tagName, Model model) {     
+        List<Post> posts = postService.getPostsByTagName(tagName);
+        model.addAttribute("page", new PageImpl<>(posts));
+        model.addAttribute("selectedTag", tagName);
+        return "post/postFrontPage :: #accordionExample"; // 只返回需要的片段
     }
+    
     @GetMapping("/post/frontPage")
     public String findByPageFront(@RequestParam(value = "p", defaultValue = "1") Integer pageNum, 
                              @RequestParam(value = "keyword", required=false) String keyword, Model model) {
@@ -185,9 +219,13 @@ public class PostController {
         List<Comment> comments = commentService.findCommentsByPostId(post);
         String currentUserId = (String) session.getAttribute("userId");
         boolean hasLiked = false;
+        boolean isFavorited = false;
         if (currentUserId != null) {
             hasLiked = postService.hasUserLikedPost(postId, currentUserId);
+            Users currentUser = userService.findById(currentUserId);  // Assume there is a method to find user by ID
+            isFavorited = post.getFavoritedUsers().contains(currentUser);
         }
+        
         model.addAttribute("post", post);  // 傳遞整個post對象
         model.addAttribute("comments", comments);  // 傳遞整個comment對象
         model.addAttribute("postTitle", post.getTitle());
@@ -199,6 +237,7 @@ public class PostController {
         model.addAttribute("postName", post.getPostId());
         model.addAttribute("currentUserId", currentUserId);
         model.addAttribute("hasLiked", hasLiked);  // 添加 hasLiked 到模型中
+        model.addAttribute("isFavorited", isFavorited);
         return "post/frontPageDetail";
     }
     @PostMapping("/post/like/toggle")
@@ -215,5 +254,77 @@ public class PostController {
         response.put("likeCount", postService.findPostById(postId).getLikeCount());
         return response;
     }
+    @GetMapping("/user/favorites")
+    public String getUserFavorites(Model model, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+        Users user = userService.findById(userId);
+        List<Post> favorites = new ArrayList<>(user.getFavoritePosts());
+        model.addAttribute("favorites", favorites);
+        return "user/favorites";
+    }
+    
+    @PostMapping("/post/favorite/toggle")
+    public String toggleFavorite(@RequestParam("postId") Integer postId, HttpSession session, RedirectAttributes redirectAttributes) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            redirectAttributes.addFlashAttribute("error", "請先登入會員");
+            return "redirect:/login";
+        }
+        boolean isFavorited = postService.toggleFavorite(postId, userId);
+        redirectAttributes.addFlashAttribute("message", isFavorited ? "已收藏" : "已取消收藏");
+        return "redirect:/post/" + postId;
+    }
+    
+    @GetMapping("/user-posts")
+    public String redirectToUserPostsAndFavorites() {
+        return "redirect:/user/postsAndFavorites";
+    }
 
+    @GetMapping("/user/postsAndFavorites")
+    public String getUserPostsAndFavorites(Model model, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+
+        Users user = userService.findById(userId);
+        List<Post> userPosts = postService.findPostsByUserId(userId);
+        List<Post> favoritePosts = new ArrayList<>(user.getFavoritePosts());
+
+        model.addAttribute("userPosts", userPosts);
+        model.addAttribute("favoritePosts", favoritePosts);
+
+        return "post/postsAndFavorites";  // 确保路径与模板位置匹配
+    }
+
+        @GetMapping("/UserPostList")
+        public String userPostList(Model model, HttpServletRequest req, HttpServletResponse resp) {
+            String userId = (String) req.getSession().getAttribute("userId");
+            if (userId == null) {
+                return "redirect:/login";
+            }
+            List<Post> userPosts = postService.getUserPosts(userId);
+            model.addAttribute("userId", userId);
+            model.addAttribute("posts", userPosts);
+            return "/user/fronted/UserPost";
+        }
+        @GetMapping("/bookmarkedPosts")
+        public String bookmarkedPosts(Model model, HttpServletRequest req) {
+            String userId = (String) req.getSession().getAttribute("userId");
+            if (userId == null) {
+                return "redirect:/login";
+            }
+            List<Post> bookmarkedPosts = postService.getBookmarkedPosts(userId);
+            model.addAttribute("userId", userId);
+            model.addAttribute("posts", bookmarkedPosts);
+            return "user/fronted/bookmarkedPosts"; 
+        }
+
+
+    
 }
+    
+
