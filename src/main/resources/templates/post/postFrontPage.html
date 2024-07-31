@@ -316,8 +316,13 @@
         <div class="header-row">
             <h1>文章列表</h1>
             <div class="tag-buttons">
-                <button th:each="tag : ${allTags}" th:text="${tag.name}" class="btn btn-outline-secondary"
-                        th:attr="data-tag-name=${tag.name}" onclick="filterPostsByTag(this)"></button>
+                <button th:each="tag : ${allTags}" 
+                        th:text="${tag.name}" 
+                        class="btn" 
+                        th:classappend="${tag.name == selectedTag} ? 'btn-primary' : 'btn-outline-secondary'"
+                        th:attr="data-tag-name=${tag.name}" 
+                        onclick="filterPostsByTag(this)">
+                </button>
             </div>
             <div class="actions">
                 <a class="btn btn-secondary" aria-current="page" th:href="@{/post/add}">新增文章</a>
@@ -334,14 +339,15 @@
             <th:block th:each="oneMsg : ${page.content}">
                 <div class="accordion-item">
                     <div class="accordion-header" th:attr="data-id=${oneMsg.postId}">
-                    	<!-- <strong class="userName" th:text="${oneMsg.post.user != null ? oneMsg.post.user.userName : '未知用戶'}">用戶名</strong>
-        <strong class="userId" th:text="${oneMsg.post.user != null ? oneMsg.post.user.userId : '未知id'}">用戶id</strong> -->
                         <span th:text="${oneMsg.title}" style="flex: 1;">標題</span>
+                        <!-- 在這裡添加顯示讚數的區塊 -->
+                        <div class="like-display">
+                            <i class="fa-regular fa-heart"></i>
+                            <span id="likeCount" th:text="${oneMsg.likeCount}">0</span>
+                        </div>
                         <div class="tags-container">
                             <span th:each="tag : ${oneMsg.tags}" th:text="${tag.name}" class="badge bg-secondary"></span>
-                            
                         </div>
-                        <br>
                     </div>
                     <div class="accordion-body" th:attr="id='collapse' + ${oneMsg.postId}">
                         <h5 class="card-title"></h5>
@@ -386,6 +392,8 @@
         </ul>
     </div>
     <script>
+    	
+    	
         function viewDetails(postId) {
             fetch('/post/details/' + postId)
                 .then(response => response.json())
@@ -409,45 +417,57 @@
                 .catch(error => console.error('Error:', error));
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            bindAccordionEvents();
-        });
-
         function bindAccordionEvents() {
-            var headers = document.querySelectorAll(".accordion-header");
-            headers.forEach(function(header) {
-                header.addEventListener("click", function() {
-                    var body = this.nextElementSibling;
-                    var isActive = body.style.display === "block";
-                    document.querySelectorAll(".accordion-body").forEach(function(b) {
-                        b.style.display = "none";
-                    });
-                    document.querySelectorAll(".accordion-header").forEach(function(h) {
-                        h.classList.remove("active");
-                    });
-                    if (!isActive) {
-                        body.style.display = "block";
-                        this.classList.add("active");
-                    }
-                });
+    var headers = document.querySelectorAll(".accordion-header");
+    headers.forEach(function(header) {
+        header.addEventListener("click", function() {
+            var body = this.nextElementSibling;
+            var isActive = body.style.display === "block";
+            document.querySelectorAll(".accordion-body").forEach(function(b) {
+                b.style.display = "none";
             });
-        }
+            document.querySelectorAll(".accordion-header").forEach(function(h) {
+                h.classList.remove("active");
+            });
+            if (!isActive) {
+                body.style.display = "block";
+                this.classList.add("active");
+            }
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    bindAccordionEvents();
+});
 
        function filterPostsByTag(button) {
-            var tagName = button.getAttribute('data-tag-name');
-            fetch('/post/byTag?tagName=' + tagName)
-                .then(response => response.text())
-                .then(data => {
-                    var parser = new DOMParser();
-                    var doc = parser.parseFromString(data, 'text/html');
-                    var newContent = doc.querySelector('#accordionExample').innerHTML;
-                    var accordion = document.getElementById('accordionExample');
-                    accordion.innerHTML = newContent;
-                    bindAccordionEvents(); // 重新绑定事件
-                })
-                .catch(error => console.error('Error:', error));
-        }
+    var tagName = button.getAttribute('data-tag-name');
+    fetch('/post/byTag?tagName=' + encodeURIComponent(tagName))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.text();
+        })
+        .then(data => {
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(data, 'text/html');
+            var newContent = doc.querySelector('#accordionExample');
+            if (newContent) {
+                var accordion = document.getElementById('accordionExample');
+                accordion.innerHTML = newContent.innerHTML;
+                bindAccordionEvents(); // 调用绑定事件函数
+            } else {
+                console.error("Could not find #accordionExample in the response");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('抓取資料时出错: ' + error.message);
+        });
+}
     </script>
-    <script src="path/to/bootstrap.js"></script>
+    
 </body>
 </html>

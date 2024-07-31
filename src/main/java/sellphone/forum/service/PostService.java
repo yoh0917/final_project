@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sellphone.user.model.UserRepository;
 import sellphone.user.model.Users;
+import sellphone.user.service.UserService;
 import sellphone.forum.model.Comment;
 import sellphone.forum.model.CommentRepository;
 import sellphone.forum.model.Post;
@@ -38,6 +39,9 @@ public class PostService {
     
     @Autowired
     private UserRepository userRepo;
+    
+    @Autowired
+    private UserService userService;
 
     public Post savePost(Post post) {
         return postRepo.save(post);
@@ -46,6 +50,20 @@ public class PostService {
     public Post findPostById(Integer postId) {
         Optional<Post> optional = postRepo.findById(postId);
         return optional.orElse(null);
+    }
+    
+    public List<Post> findPostsByUserId(String userId) {
+        return postRepo.findByUserUserId(userId);
+    }
+    public List<Post> getUserPosts(String userId) {
+        return postRepo.findByUserUserId(userId);
+    }
+    public List<Post> getPostsByTagName(String tagName) {
+        return postRepo.findByTagsName(tagName);
+    }
+
+    public List<Post> getBookmarkedPosts(String userId) {
+        return postRepo.findBookmarkedByUserId(userId);
     }
 
     public Page<Post> findPostsByTitle(String title, Integer pageNumber) {
@@ -112,6 +130,10 @@ public class PostService {
         Tag tag = tagRepo.findByName(tagName);
         return tag != null ? tag.getPosts() : Collections.emptyList();
     }
+    public void deletePost(Integer postId) {
+        // 實現刪除邏輯
+        postRepo.deleteById(postId);
+    }
     
     public boolean hasUserLikedPost(Integer postId, String userId) {
         Post post = postRepo.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
@@ -137,5 +159,21 @@ public class PostService {
             return true;
         }
     }
+    @Transactional
+    public boolean toggleFavorite(Integer postId, String userId) {
+        Post post = postRepo.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        Users user = userService.findById(userId);
+        
+        if (post.getFavoritedUsers().contains(user)) {
+            post.getFavoritedUsers().remove(user);
+            user.getFavoritePosts().remove(post);
+            return false; // 取消收藏
+        } else {
+            post.getFavoritedUsers().add(user);
+            user.getFavoritePosts().add(post);
+            return true; // 添加收藏
+        }
+    }
+    
     
 }
