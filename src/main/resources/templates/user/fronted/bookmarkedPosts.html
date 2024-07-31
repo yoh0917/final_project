@@ -76,6 +76,7 @@
                     發布時間: <span th:text="${#dates.format(post.postCreatedTime, 'yyyy-MM-dd HH:mm')}">發布時間</span>
                 </div>
                 <div class="post-content" th:utext="${post.postContent}">文章內容</div>
+                <a th:href="@{/post/{id}(id=${post.postId})}" class="btn btn-outline-secondary btn-details">查看詳情</a>
             </div>
         </div>
     </div>

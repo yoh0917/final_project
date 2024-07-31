@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -186,11 +191,17 @@ public class PostController {
     }
 
     @GetMapping("/post/byTag")
-    public String getPostsByTag(@RequestParam String tagName, Model model) {     
-        List<Post> posts = postService.getPostsByTagName(tagName);
-        model.addAttribute("page", new PageImpl<>(posts));
+    public String getPostsByTag(@RequestParam String tagName, 
+                                @RequestParam(defaultValue = "1") int page, 
+                                Model model) {
+        Page<Post> postsPage = postService.getPostsByTagName(tagName, PageRequest.of(page - 1, 10)); // 假設每頁10篇文章
+        List<Tag> allTags = tagService.findAllTags();
+        
+        model.addAttribute("page", postsPage);
+        model.addAttribute("allTags", allTags);
         model.addAttribute("selectedTag", tagName);
-        return "post/postFrontPage :: #accordionExample"; // 只返回需要的片段
+        
+        return "post/postFrontPage"; // 返回完整的頁面
     }
     
     @GetMapping("/post/frontPage")
@@ -212,11 +223,45 @@ public class PostController {
         return ResponseEntity.ok(comments);
     }
     
+//    @GetMapping("/post/{id}")
+//    public String getPostDetails(@PathVariable("id")Integer postId, Model model,HttpSession session) {
+//        Post post = postService.findPostById(postId);
+//        Users user = post.getUser();
+//        List<Comment> comments = commentService.findCommentsByPostId(post);
+//        String currentUserId = (String) session.getAttribute("userId");
+//        boolean hasLiked = false;
+//        boolean isFavorited = false;
+//        if (currentUserId != null) {
+//            hasLiked = postService.hasUserLikedPost(postId, currentUserId);
+//            Users currentUser = userService.findById(currentUserId); 
+//            isFavorited = post.getFavoritedUsers().contains(currentUser);
+//        }
+//        
+//        model.addAttribute("post", post);  // 傳遞整個post對象
+//        model.addAttribute("comments", comments);  // 傳遞整個comment對象
+//        model.addAttribute("postTitle", post.getTitle());
+//        model.addAttribute("postContent", post.getPostContent());
+//        model.addAttribute("userId", user.getUserId());
+//        model.addAttribute("userName", user.getUserName());
+//        model.addAttribute("postTime", post.getPostCreatedTime());
+//        model.addAttribute("postId", post.getPostId());
+//        model.addAttribute("postName", post.getPostId());
+//        model.addAttribute("currentUserId", currentUserId);
+//        model.addAttribute("hasLiked", hasLiked);  // 添加 hasLiked 到模型中
+//        model.addAttribute("isFavorited", isFavorited);
+//        return "post/frontPageDetail";
+//    }
     @GetMapping("/post/{id}")
-    public String getPostDetails(@PathVariable("id")Integer postId, Model model,HttpSession session) {
+    public String getPostDetails(@PathVariable("id") Integer postId, Model model, HttpSession session) {
         Post post = postService.findPostById(postId);
         Users user = post.getUser();
         List<Comment> comments = commentService.findCommentsByPostId(post);
+
+        // 过滤掉回复评论，只保留主评论
+        List<Comment> mainComments = comments.stream()
+                                             .filter(comment -> comment.getParentComment() == null)
+                                             .collect(Collectors.toList());
+
         String currentUserId = (String) session.getAttribute("userId");
         boolean hasLiked = false;
         boolean isFavorited = false;
@@ -225,9 +270,9 @@ public class PostController {
             Users currentUser = userService.findById(currentUserId);  // Assume there is a method to find user by ID
             isFavorited = post.getFavoritedUsers().contains(currentUser);
         }
-        
+
         model.addAttribute("post", post);  // 傳遞整個post對象
-        model.addAttribute("comments", comments);  // 傳遞整個comment對象
+        model.addAttribute("comments", mainComments);  // 傳遞過濾後的主评论对像
         model.addAttribute("postTitle", post.getTitle());
         model.addAttribute("postContent", post.getPostContent());
         model.addAttribute("userId", user.getUserId());
