@@ -84,10 +84,12 @@ public class UserAjaxController {
 
 		HttpSession session = req.getSession();
 		int status = 0;
+		int reportNum = 0;
 		String userId = userUtil.createUserId(session.getId());
 		user.setUserId(userId);
 		user.setStatus(status);
 		user.setCreateTime(LocalDateTime.now());
+		user.setReportNum(reportNum);
 		uService.insert(user);
 		
 		userMailService.sendConfirmAccountEmail(user);
@@ -117,8 +119,9 @@ public class UserAjaxController {
 	public String checkUserAccount(@RequestParam("param") String userAccount) {
 		
 		Users user = userRepo.findByUserAccount(userAccount);
-		if (user != null)
+		if (user != null) {
 			return "此帳號已經存在";
+		}
 		else {
 			return "";			
 		}

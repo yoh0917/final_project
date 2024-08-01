@@ -10,9 +10,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface PostRepository extends JpaRepository<Post, Integer> {
+	
+	List<Post> findByUserUserId(String userId);
+	
+	List<Post> findByTagsName(String tagName);
+	
+	Page<Post> findByTagsContaining(Tag tag, Pageable pageable);
+	
+    
+    @Query("SELECT p FROM Post p JOIN p.favoritedUsers u WHERE u.userId = :userId")
+    List<Post> findBookmarkedByUserId(@Param("userId") String userId);
 
 	@Query("from Post")
 	Page<Post> findLatest(org.springframework.data.domain.Pageable pgb);

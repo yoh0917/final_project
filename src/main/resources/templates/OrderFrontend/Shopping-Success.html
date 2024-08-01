@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>支付成功</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/shoppingcart/checkout/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/vendor/choices.js/public/assets/styles/choices.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+    <link th:href="@{/shoppingcart/checkout/css/style.default.css}" rel="stylesheet" id="theme-stylesheet">
+    <link th:href="@{/shoppingcart/checkout/css/custom.css}" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{/shoppingcart/checkout/img/favicon.png}">
+    <link th:href="@{/shoppingcart/cart/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+    <link th:href="@{/shoppingcart/cart/css/style.css}" rel="stylesheet" type="text/css" media="all" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,400italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
+    <link th:href="@{/shoppingcart/cart/css/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <script th:src="@{/shoppingcart/cart/js/wow.min.js}"></script>
+    <div th:replace="~{/layout/headerStylesheet.html}"></div>
+    <script>
+        new WOW().init();
+    </script>
+    <style>
+        body {
+            padding-top: 150px; /* 確保內容不被header遮住 */
+        }
+        .container {
+            max-width: 900px;
+        }
+        .btn-custom {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<div class="header" th:replace="~{/layout/header.html}"></div>
+
+<div class="container">
+    <div class="text-center mb-4">
+        <h1 class="display-4">支付成功！</h1>
+        <p>您的訂單已經成功處理。</p>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>收件資訊</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>收件人姓名：</strong><span th:text="${order.userName}"></span></p>
+            <p><strong>電子信箱：</strong><span th:text="${order.email}"></span></p>
+            <p><strong>收件人電話：</strong><span th:text="${order.phone}"></span></p>
+            <p><strong>收件地址：</strong><span th:text="${order.address}"></span></p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>訂單資訊</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>訂單編號：</strong><span th:text="${order.orderId}"></span></p>
+            <p><strong>訂單日期：</strong><span th:text="${order.createDate}"></span></p>
+            <p><strong>訂單狀態：</strong><span th:text="${order.status}"></span></p>
+            <p><strong>付款日期：</strong><span th:text="${order.payDate}"></span></p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>商品明細</h2>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>商品</th>
+                    <th>數量</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="detail : ${orderDetails}">
+                    <td th:text="${detail.productName}"></td>
+                    <td th:text="${detail.quantity}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>訂單總金額</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>NT$</strong><span th:text="${order.totalAmount}"></span></p>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a th:href="@{/front/productlist}" class="btn btn-custom mb-3">繼續購物</a>
+    </div>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{/layout/footer.html}"></div>
+
+<script th:src="@{/shoppingcart/checkout/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/glightbox/js/glightbox.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/nouislider/nouislider.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/swiper/swiper-bundle.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/vendor/choices.js/public/assets/scripts/choices.min.js}"></script>
+<script th:src="@{/shoppingcart/checkout/js/front.js}"></script>
+</body>
+</html>

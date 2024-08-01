@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org/">
 
 <head>
-	<meta charset="UTF-8">
-	<title>會員總覽</title>
-	<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
-	<link rel="stylesheet" th:href="@{/User/dashBoard/css/UserList.css}" />
+<meta charset="UTF-8">
+<title>會員總覽</title>
+<link rel="stylesheet"
+	href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+<link rel="stylesheet" th:href="@{/User/dashBoard/css/UserList.css}" />
 
 </head>
 
@@ -26,7 +27,8 @@
 						<th>手機號碼</th>
 						<th>建立時間</th>
 						<th>上次登入</th>
-						<th>會員狀態</th>
+						<th>狀態</th>
+						<th>檢舉次數</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -42,50 +44,67 @@
 							<td></td>
 							<td></td>
 							<td></td>
+							<td></td>
 						</tr>
 					</th:block>
 					<th:block th:unless="${userList == null}">
 						<th:block th:each="user : ${userList}">
-							<tr>
-								<td th:text="${user.userId}"></td>
-								<td th:text="${user.userName}"></td>
-								<td th:text="${user.userAccount}"></td>
-								<td th:text="${user.email}"></td>
-								<td th:text="${user.contactNum}"></td>
-								<td th:text="${user.createTime}"></td>
-								<td th:text="${user.prevlogTime}"></td>
-								<td class="status" th:text="${user.statusDescrib}"></td>
-								<td class="control" th:if="${user.statusDescrib == '封鎖'}">
-									<button class="blockBtn hidden" onclick="blockUser(this)">
-										<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt="" width="25px"
-											height="25px">
-									</button>
-									<button class="unblockBtn" onclick="unblockUser(this)">
-										<img th:src="@{/user/dashBoard/img/unblockIcon.png}" alt="" width="20px"
-											height="20px">
-									</button>
-									<button class="deleteBtn" onclick="deleteUser(this)">
-										<img th:src="@{/user/dashBoard/img/deleteIcon.png}" alt="" width="25px"
-											height="25px">
-									</button>
-								</td>
+							<th:block th:unless="${user.status == -2}">
+								<tr>
+									<td th:text="${user.userId}"></td>
+									<td th:text="${user.userName}"></td>
+									<td th:text="${user.userAccount}"></td>
+									<td th:text="${user.email}"></td>
+									<td th:text="${user.contactNum}"></td>
+									<td th:text="${user.createTime}"></td>
+									<td th:text="${user.prevlogTime}"></td>
+									<td class="status" th:text="${user.userStatus.statusDescrib}"></td>
 
-								<td class="control" th:unless="${user.statusDescrib == '封鎖'}">
-									<button class="blockBtn" onclick="blockUser(this)">
-										<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt="" width="25px"
-											height="25px">
-									</button>
-									<button class="unblockBtn hidden" onclick="unblockUser(this)">
-										<img th:src="@{/user/dashBoard/img/unblockIcon.png}" alt="" width="20px"
-											height="20px">
-									</button>
-									<button class="deleteBtn" onclick="deleteUser(this)">
-										<img th:src="@{/user/dashBoard/img/deleteIcon.png}" alt="" width="25px"
-											height="25px">
-									</button>
-								</td>
+									<th:block th:if="${user.reportNum >= 5}">
+										<td class="report-Num red" th:text="${user.reportNum}"></td>
+									</th:block>
+									<th:block th:unless="${user.reportNum >= 5}">
+										<td class="report-Num " th:text="${user.reportNum}"></td>
+									</th:block>
 
-							</tr>
+<!-- 									<th:block th:if="${user.reportNum >= 5}"> -->
+										<th:block th:if="${user.userStatus.statusDescrib == '封鎖'}">
+											<td class="control">
+												<button class="blockBtn hidden" onclick="blockUser(this)">
+													<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt=""
+														width="25px" height="25px">
+												</button>
+												<button class="unblockBtn" onclick="unblockUser(this)">
+													<img th:src="@{/user/dashBoard/img/unblockIcon.png}" alt=""
+														width="20px" height="20px">
+												</button>
+											
+												<button class="deleteBtn" onclick="deleteUser(this)">
+													<img th:src="@{/user/dashBoard/img/deleteIcon.png}" alt=""
+														width="25px" height="25px">
+												</button>
+											</td>
+										</th:block>
+										<th:block th:if="${user.userStatus.statusDescrib != '封鎖'}">
+											<td class="control">
+												<button class="blockBtn" onclick="blockUser(this)">
+													<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt=""
+														width="25px" height="25px">
+												</button>
+												<button class="unblockBtn hidden"
+													onclick="unblockUser(this)">
+													<img th:src="@{/user/dashBoard/img/unblockIcon.png}" alt=""
+														width="20px" height="20px">
+												</button>
+												<button class="deleteBtn" onclick="deleteUser(this)">
+													<img th:src="@{/user/dashBoard/img/deleteIcon.png}" alt=""
+														width="25px" height="25px">
+												</button>
+											</td>
+										</th:block>
+<!-- 									</th:block> -->
+								</tr>
+							</th:block>
 						</th:block>
 					</th:block>
 				</tbody>
@@ -94,7 +113,8 @@
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js"></script>
 	<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<script th:src="@{/user/dashBoard/js/UserList.js}"></script>

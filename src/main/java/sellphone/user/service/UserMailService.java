@@ -36,13 +36,11 @@ public class UserMailService {
 
 			SimpleMailMessage msg = new SimpleMailMessage();
 			msg.setFrom("eeit183test@gmail.com");
-			System.out.println(user.getEmail());
 			msg.setTo(user.getEmail());
 
 			msg.setSubject("Sellphone會員中心 帳戶啟用通知");
 			msg.setText("您好： \n\n" + "請點選以下連結進行帳戶啟用：\n\n" + resetLink + "\n\n" + "sellphone 感謝您的註冊 \n\n"
 					+ "Best Regards, \n " + "Sellphone cooperation");
-			System.out.println("before send");
 			mailSender.send(msg);
 
 			return "success";

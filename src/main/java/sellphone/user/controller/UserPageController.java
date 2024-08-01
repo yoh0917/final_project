@@ -34,6 +34,12 @@ public class UserPageController {
 	private UserViewService uVService;
 	
 	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private UserService uService;
+	
+	@Autowired
 	private UserMailService uMailService;
 	
 	@Autowired
@@ -117,7 +123,6 @@ public class UserPageController {
 	}
 	
 	@GetMapping("/confirmAccount")
-	@ResponseBody
 	public String confirmAccount(@RequestParam("userId") String userId, Model model) {
 		Users user = userService.findById(userId);
 		
@@ -125,7 +130,7 @@ public class UserPageController {
 			if(user.getStatus() == 0) {
 				user.setStatus(1);
 				userService.update(user);
-				return "帳戶啟動成功";
+				return "user/fronted/confirmAccount";
 			}
 		}
 		
@@ -152,9 +157,7 @@ public class UserPageController {
 	@GetMapping("/DashBoard/UserList")
 	public String userList(Model m) throws ServletException, IOException {
 
-		List<UserView> userList = uVService.findAll();
-		
-		System.out.println(userList);
+		List<Users> userList = userRepository.findAll();
 		m.addAttribute("userList", userList);
 
 		return "user/dashBoard/UserList";

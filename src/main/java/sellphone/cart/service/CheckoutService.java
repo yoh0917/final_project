@@ -3,6 +3,7 @@ package sellphone.cart.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import sellphone.cart.model.CartView;
+import sellphone.cart.repository.CartRepository;
 import sellphone.cart.repository.CartViewRepository;
 import sellphone.orders.model.Order;
 import sellphone.orders.model.OrderDetail;
@@ -34,6 +36,9 @@ public class CheckoutService {
 	@Autowired
 	private CartViewRepository cartViewRepository;
 
+	@Autowired
+	private CartRepository cartRepository;
+
 	private static final AtomicInteger sequence = new AtomicInteger(0);
 
 	public List<CartView> getCartByUserId(String userId) {
@@ -45,8 +50,8 @@ public class CheckoutService {
 	}
 
 	@Transactional
-	public void saveOrder(Order order) {
-		orderRepository.save(order);
+	public Order saveOrder(Order order) {
+		return orderRepository.save(order);
 	}
 
 	@Transactional
@@ -66,6 +71,11 @@ public class CheckoutService {
 		}
 	}
 
+	@Transactional
+	public void deleteCartByUserId(String userId) {
+		cartRepository.deleteByUserId(userId);
+	}
+
 	public String generateOrderId() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		String dateStr = sdf.format(new Date());
@@ -78,38 +88,66 @@ public class CheckoutService {
 		return "D" + orderId.substring(1, 14) + randomInt;
 	}
 
-//	private final AllInOne allInOne = new AllInOne("");
-//
-//	private String ecpayCheckout(String orderId, String userId) {
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/ddn HH:mm:ss");
-//		String dateStr = sdf.format(new Date());
-//
-//		Orders order = new Orders();
-//
-//		AioCheckOutALL obj = new AioCheckOutALL();
-////		System.out.println(orders.getOrderId().toString());
-//		obj.setMerchantTradeNo(orders.getOrderId().toString());//綠界傳訂單編號
-//		obj.setMerchantTradeDate(dateStr);//交易時間
-//		obj.setTotalAmount((orders.getTotalCost() + ""));//抓總金額
-//		obj.setTradeDesc("test Description");
-//		obj.setItemName("TestItem");
-//		// 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
-//
-//		// 交易結果
-//		obj.setReturnURL(url + "/comPETnion/backendReturn");
-//
-//		// 付款完成跳轉結果
-//		obj.setClientBackURL(url + "/comPETnion/frontendReturn?orderId=" + orders.getOrderId().toString());
-//		obj.setNeedExtraPaidInfo("N");
-//		// 商店轉跳網址 (Optional)
-//		try {
-//			String form = all.aioCheckOut(obj, null);
-//			return form;
-//		} catch (EcpayException e) {
-//			System.err.println("ECPay Exception: " + e.getMessage());
-//			throw e;
-//		}
-//	}
+	Order order = new Order();
+	OrderDetail orderDetail = new OrderDetail();
 
+	private final AllInOne all = new AllInOne("");
+
+	public String ecpayCheckout(String orderId ,String userId) {
+
+		Optional<Order> orderOptional = orderRepository.findById(orderId);
+		Order order = orderOptional.get();
+	 	List<CartView> cartViews = cartViewRepository.findByUserId(userId);
+		List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(order.getOrderId());
+
+
+		// 定義 ECPay 物件，初始化時指定配置文件路徑
+//		AllInOne all = new AllInOne("");
+
+		Date createTime = order.getCreateDate();
+		Integer getTotalAmount = order.getTotalAmount();
+
+
+		// 定義 SimpleDateFormat 來格式化 Date
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String formattedDate = simpleDateFormat.format(order.getCreateDate());
+		// 將 Date 格式化為指定格式的字符串
+//		String formattedDate = simpleDateFormat.format(createTime);
+//		System.out.println(formattedDate);
+
+		// 網址
+		String url = "http://localhost:8081";
+
+//		System.out.println(test);
+		AioCheckOutALL obj = new AioCheckOutALL();
+		System.out.println(order.getOrderId().toString());
+//		obj.setMerchantTradeNo(order.getOrderId().toString());//綠界傳訂單編號
+		obj.setMerchantTradeNo(order.getOrderId());
+		obj.setMerchantTradeDate(formattedDate);
+		obj.setTotalAmount((order.getTotalAmount() + ""));//抓總金額
+		obj.setTradeDesc("tttt");
+		// 設置商品名稱
+//		StringBuilder itemName = new StringBuilder();
+//		for (OrderDetail detail : orderDetails) {
+//			itemName.append(detail.getProductName())
+//					.append(" x ")
+//					.append(detail.getQuantity())
+//					.append("#");
+//		}
+//		obj.setItemName(itemName.toString().substring(0, itemName.length() - 1));
+
+		obj.setItemName("test");
+		// 交易結果回傳網址，只接受 https 開頭的網站，可以使用 ngrok
+
+		// 交易結果
+		obj.setReturnURL(url + "/sellphone/OrderFrontend/Shopping-Success");
+
+		// 付款完成跳轉結果
+		obj.setClientBackURL(url + "/sellphone/OrderFrontend/Shopping-Success?orderId=" + order.getOrderId().toString());
+		obj.setNeedExtraPaidInfo("N");
+
+			String form = all.aioCheckOut(obj, null);
+			return form;
+	}
 
 }

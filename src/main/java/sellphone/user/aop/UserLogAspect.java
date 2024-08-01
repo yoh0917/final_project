@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class UserLogAspect {
 	
-	@Pointcut("execution(* sellphone.user.controller.DashBoardFilter.checkLogin(..))")
-    public void dashBoardAcessPointCut() {
+	@Pointcut("execution(* sellphone.user.controller.UserController.checkLogin(..))")
+    public void loginPointCut() {
     }
 	
-	@Around("dashBoardAcessPointCut()")
-	public Object dashboardAcessAround(ProceedingJoinPoint pjp) throws Throwable {
+	@Around("loginPointCut()")
+	public Object loginAround(ProceedingJoinPoint pjp) throws Throwable {
 		
 		System.out.println("before login");
 		Object obj = pjp.proceed();

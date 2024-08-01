@@ -3,7 +3,7 @@ package sellphone.forum.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "POST_TAG")
+@Table(name = "F0004_POST_TAG")
 public class PostTag {
 
     @Id
