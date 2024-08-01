@@ -90,14 +90,14 @@
                     <input type="text" class="form-control" id="postTitle" th:field="*{title}" placeholder="請輸入標題" required>
                 </div>
                 <div class="mb-3">
-                    <label for="postTags" class="form-label">標籤</label>
-                    <div class="multiselect-container">
-                        <th:block th:each="tag : ${allTags}">
-                            <input type="checkbox" th:field="*{tags}" th:value="${tag.tagId}" th:id="${'tag' + tag.tagId}" th:checked="${post.tags.contains(tag)}">
-                            <label th:for="${'tag' + tag.tagId}" th:text="${tag.name}"></label>
-                        </th:block>
-                    </div>
-                </div>
+				    <label for="postTags" class="form-label">標籤</label>
+				    <div class="multiselect-container">
+				        <th:block th:each="tag : ${allTags}">
+				            <input type="checkbox" th:field="*{tags}" th:value="${tag.tagId}" th:id="${'tag' + tag.tagId}" th:checked="${post.tags.contains(tag)}">
+				            <label th:for="${'tag' + tag.tagId}" th:text="${tag.name}"></label>
+				        </th:block>
+				    </div>
+				</div>
                 <div class="mb-3">
                     <label for="postContent" class="form-label">內文</label>
                     <textarea class="form-control" id="postContent" th:field="*{postContent}" placeholder="請輸入內文"></textarea>

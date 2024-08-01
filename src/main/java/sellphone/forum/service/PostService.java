@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -80,33 +81,23 @@ public class PostService {
         postRepo.deleteById(postId);
     }
     @Transactional
-    public void updatePost(Post updatedPost) {
+    public void updatePost(Post updatedPost, List<Integer> tagIds) {
         Post existingPost = postRepo.findById(updatedPost.getPostId())
-            .orElseThrow(() -> new IllegalArgumentException("Invalid post Id:" + updatedPost.getPostId()));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid post Id:" + updatedPost.getPostId()));
 
-        // 更新貼文的其他屬性
+        // 更新貼文的標題和內容
         existingPost.setTitle(updatedPost.getTitle());
         existingPost.setPostContent(updatedPost.getPostContent());
 
-        // 更新評論
-        List<Comment> existingComments = existingPost.getComments();
-        List<Comment> updatedComments = updatedPost.getComments();
-
-        // 刪除已不存在的評論
-        for (Iterator<Comment> iterator = existingComments.iterator(); iterator.hasNext();) {
-            Comment existingComment = iterator.next();
-            if (!updatedComments.contains(existingComment)) {
-                iterator.remove();
-                existingComment.setPost(null);
-            }
+        // 更新標籤
+        if (tagIds != null) {
+            List<Tag> updatedTags = tagIds.stream()
+                    .map(tagRepo::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
+            existingPost.setTags(updatedTags);
         }
-
-//        // 添加新的評論
-//        for (Comment updatedComment : updatedComments) {
-//            if (!existingComments.contains(updatedComment)) {
-//                existingPost.addComment(updatedComment);
-//            }
-//        }
 
         postRepo.save(existingPost);
     }
