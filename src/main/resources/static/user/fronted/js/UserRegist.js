@@ -198,7 +198,7 @@ $(function () {
     })
 
     $('#eeit183testfill').on('click', function () {
-        $('#input_phone_num').val('eeit183test');
+        $('#input_phone_num').val('eeit183test2');
         $('#input_password').val('123456');
     })
 
