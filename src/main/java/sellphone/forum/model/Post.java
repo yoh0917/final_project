@@ -191,8 +191,9 @@ public class Post {
     }
 
     public void setTags(List<Tag> tags) {
-        this.tags = tags;
+        this.tags = tags != null ? tags : new ArrayList<>();
     }
+
 
     public List<Comment> getComments() {
         return comments;
