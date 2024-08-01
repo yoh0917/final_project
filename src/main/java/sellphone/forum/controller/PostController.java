@@ -116,8 +116,17 @@ public class PostController {
     }
  
     @PostMapping("/post/editPost")
-    public String editPostContent(@ModelAttribute Post post, @RequestParam("pageNum") Integer pageNum) {
-        postService.updatePost(post);
+    public String editPostContent(
+            @ModelAttribute Post post, 
+            @RequestParam("pageNum") Integer pageNum,
+            @RequestParam(value = "tags", required = false) List<Integer> tagIds,  // 确保接收 tagIds 参数
+            RedirectAttributes redirectAttributes) {
+        if (post != null) {
+            postService.updatePost(post, tagIds);  // 传递 tagIds 参数
+            redirectAttributes.addFlashAttribute("successMessage", "貼文已更新");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "貼文不存在");
+        }
         return "redirect:/post/page?p=" + pageNum;
     }
     
