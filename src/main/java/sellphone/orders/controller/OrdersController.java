@@ -122,21 +122,4 @@ public class OrdersController {
         return "OrderFrontend/Checkout1";
     }
 
-    //測試資料
-    @GetMapping("/testproduct")
-    @ResponseBody
-    public List<Map<String, Object>> getOrderDetails() {
-        return Arrays.asList(
-                Map.of(
-                        "顧客ID", "P00000288",
-                        "總計", 41503,
-                        "商品明細", Arrays.asList(
-                                Map.of("產品ID", 39, "數量", 1, "價格", 40160, "總計", 40160),
-                                Map.of("產品ID", 33, "數量", 1, "價格", 5917, "總計", 5917),
-                                Map.of("產品ID", 26, "數量", 1, "價格", 42881, "總計", 42881)
-                        )
-                )
-        );
-    }
-
 }
