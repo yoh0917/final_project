@@ -42,6 +42,7 @@ public class EchoChannel {
     public void onOpen(Session session, EndpointConfig endpointConfig) {
         sessions.add(session);
         LOGGER.info("[websocket] 新的連接：id={}", session.getId());
+        System.out.println("AAAAAAAAAAA" + session.getId());
     }
 
     @OnClose

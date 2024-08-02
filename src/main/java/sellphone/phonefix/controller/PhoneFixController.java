@@ -190,6 +190,9 @@ public class PhoneFixController {
 	public String userlist(HttpServletRequest request,Model model) {
 		HttpSession session = request.getSession();
 		String userId = (String) session.getAttribute("userId");
+		Optional<Users> useraaa =  userRepository.findById(userId);
+		String ccc = useraaa.get().getUserName();
+		session.setAttribute("userbean", ccc);
 		List<PhoneFixBean> list = rp.findListById(userId);
 		model.addAttribute("list", list);
 	    return "phonefix/userlist"; // 这里的 "userlist" 是指你的模板文件名，如 userlist.html
@@ -226,6 +229,7 @@ public class PhoneFixController {
 		String useId = (String) session.getAttribute("userId");
 		//Users user = (String) session.getAttribute("userId");
 		Users users = userRepository.findById(useId).orElseThrow(() -> new RuntimeException("User not found"));
+	
 //		users.setUserId(userId);
 		model.addAttribute("user",users);
 		PhoneFixBean fixbean = new PhoneFixBean();

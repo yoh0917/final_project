@@ -156,7 +156,11 @@
     <h3 class="user-message" th:text="${session.userId} ? '歡迎申請訂單' : '請先註冊或以客戶端進入'"></h3>
     <div class="container">
         <div class="order-list" th:if="${session.userId}">
-            <h3 th:text="${session.userId} ? '我的維修訂單 ' : '目前無使用者登入'"></h3>
+            <!-- <h3 th:text="${session.userId} ? ${session.userName} +'的維修訂單 ' : '目前無使用者登入'"></h3>-->
+            <!-- <h3 id="GG" th:text="${session.userbean} +'的維修訂單 '"></h3>-->
+            <h3 th:text="${session.userbean} + '的維修訂單'"></h3>
+              <input type="hidden" id="GG" th:value="${session.userbean}">
+            
             <a th:href="@{/phonefixs/frontform1}" class="btn btn-primary" 
                 style="background-color: black; color: white;">維修表單申請</a>
             <button onclick="togglePopup()" class="btn btn-black" 
@@ -246,8 +250,10 @@
 
         function sendMessage() {
             let messageInput = document.getElementById("messageInput");
-            let userId = document.getElementById("userId").value; // 獲取會員ID
-       let message = `會員ID: ${userId}: ${messageInput.value}`;
+            //let userId = document.getElementById("userId").value; // value直接抓session的值
+             let GG = document.getElementById("GG").value; // textContenth才可以抓<h3>的值
+             console.log( "這裡是GGGGG" +GG);
+       let message = ` ${GG}: ${messageInput.value}`;
             websocket.send(message);
             messageInput.value = '';
         }
