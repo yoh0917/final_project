@@ -156,8 +156,6 @@
     <h3 class="user-message" th:text="${session.userId} ? '歡迎申請訂單' : '請先註冊或以客戶端進入'"></h3>
     <div class="container">
         <div class="order-list" th:if="${session.userId}">
-            <!-- <h3 th:text="${session.userId} ? ${session.userName} +'的維修訂單 ' : '目前無使用者登入'"></h3>-->
-            <!-- <h3 id="GG" th:text="${session.userbean} +'的維修訂單 '"></h3>-->
             <h3 th:text="${session.userbean} + '的維修訂單'"></h3>
               <input type="hidden" id="GG" th:value="${session.userbean}">
             

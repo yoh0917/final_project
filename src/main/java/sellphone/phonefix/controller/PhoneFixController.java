@@ -186,16 +186,41 @@ public class PhoneFixController {
 	}
 	
 	//前台主頁面新增
+	//這頁面有問題 0802 => Websocket completed 非會員登入掛掉
 	@GetMapping("/phonefixs/userlist")
 	public String userlist(HttpServletRequest request,Model model) {
+		System.out.println("AAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCCCCC");
 		HttpSession session = request.getSession();
+		System.out.println("=====");
 		String userId = (String) session.getAttribute("userId");
+		if (userId == null) {
+		    System.out.println("User ID is null");
+		    return "phonefix/notaccount";
+		}
+		
+		System.out.println("2222");
 		Optional<Users> useraaa =  userRepository.findById(userId);
-		String ccc = useraaa.get().getUserName();
-		session.setAttribute("userbean", ccc);
-		List<PhoneFixBean> list = rp.findListById(userId);
-		model.addAttribute("list", list);
-	    return "phonefix/userlist"; // 这里的 "userlist" 是指你的模板文件名，如 userlist.html
+		System.out.println("GG");
+		
+//		if (!useraaa.isPresent()) {
+//		    System.out.println("User not found in the repository");
+//		    return "phonefix/notaccount";
+//		}
+		
+		
+
+			String ccc =useraaa.get().getUserName();
+			session.setAttribute("userbean", ccc);
+			List<PhoneFixBean> list = rp.findListById(userId);
+			model.addAttribute("list", list);
+		    return "phonefix/userlist"; // 这里的 "userlist" 是指你的模板文件名，如 userlist.html
+			
+		
+//		String ccc =useraaa.get().getUserName();
+//		session.setAttribute("userbean", ccc);
+//		List<PhoneFixBean> list = rp.findListById(userId);
+//		model.addAttribute("list", list);
+//	    return "phonefix/userlist"; // 这里的 "userlist" 是指你的模板文件名，如 userlist.html
 	}
 	
 
