@@ -195,6 +195,9 @@
         </div>
     </div>
 
+    <!-- 隱藏的會員ID輸入 -->
+    <input type="hidden" id="userId" th:value="${session.userId}">
+
     <!-- 彈出式窗口 -->
     <div id="popup">
         <div id="popupHeader">
@@ -243,7 +246,8 @@
 
         function sendMessage() {
             let messageInput = document.getElementById("messageInput");
-            let message = `客戶: ${messageInput.value}`;
+            let userId = document.getElementById("userId").value; // 獲取會員ID
+       let message = `會員ID: ${userId}: ${messageInput.value}`;
             websocket.send(message);
             messageInput.value = '';
         }
