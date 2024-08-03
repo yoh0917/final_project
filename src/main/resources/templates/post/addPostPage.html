@@ -200,10 +200,22 @@
 <div class="container">
     <div class="header-container">
         <h1>新增文章</h1> 
+       
         <div class="back-button">
             <a class="btn btn-secondary" aria-current="page" th:href="@{/post/frontPage}">返回列表</a>
         </div>
+        
     </div>
+     <!-- 成功消息 -->
+		<div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+		    <span th:text="${successMessage}"></span>
+		    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+        <!-- 被封鎖者獲得的錯誤訊息 -->
+        <div th:if="${restrictionMessage != null}" class="alert alert-warning alert-dismissible fade show alert-auto-dismiss" role="alert">
+            <span th:text="${restrictionMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     
     <br>
 
@@ -253,6 +265,7 @@
 
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 <script>
+	
     let editorInstance;
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -285,6 +298,24 @@
         editorInstance.setData("15系列的朋友快更新iOS 17.0.3發佈 針對發熱問題的更新上線 代碼21A360 也針對一些安全性做更新");
         document.getElementById("tag1").checked = true; // 自動選擇一個標籤
     }
+    
+    $(document).ready(function() {
+            setTimeout(function() {
+                $(".alert-auto-dismiss").fadeOut("slow", function() {
+                    $(this).remove();
+                });
+            }, 3000); 
+        });
+        
+    document.addEventListener('DOMContentLoaded', function() {
+    var alerts = document.querySelectorAll('.alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            var bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 3000);   
+    });
+});
 </script>
 </body>
 </html>
