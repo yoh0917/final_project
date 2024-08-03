@@ -65,9 +65,15 @@ public class CommentController {
 	        redirectAttributes.addFlashAttribute("errorMessage", "留言內容不能為空");
 	        return "redirect:/post/" + postId;
 	    }
+	    //檢查使用者狀態
+	    Users user = userService.findById(userId);
+	    if (user.getStatus() == -3) {
+	    	redirectAttributes.addFlashAttribute("restrictionMessage", "您的帳戶已被禁用，無法新增留言。");
+	        return "redirect:/post/" + postId;
+	    }
 
 	    Post post = postService.findPostById(postId);
-	    Users user = userService.findById(userId);
+//	    Users user = userService.findById(userId);
 
 	    if (post != null && user != null) {
 	        Comment comment = new Comment();

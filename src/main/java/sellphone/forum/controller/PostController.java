@@ -60,13 +60,22 @@ public class PostController {
 	private UserService userService;
 
     @GetMapping("/post/add")
-    public String addposts(Model model, HttpSession session) {
+    public String addposts(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         String userId = (String) session.getAttribute("userId");
         String userName = (String) session.getAttribute("userName");
+        Users user = userService.findById(userId);
+        if (user.getStatus() == -3) {
+            redirectAttributes.addFlashAttribute("errorMessage", "您的帳戶已被禁用，無法新增文章。");
+            return "redirect:/post/frontPage";
+        }
         Post latestPost = postService.findLatestPost();
         model.addAttribute("latestPost", latestPost);
         model.addAttribute("userId", userId);
         model.addAttribute("userName", userName);
+        
+        if (model.containsAttribute("successMessage")) {
+            model.addAttribute("successMessage", model.asMap().get("successMessage"));
+        }
         return "post/addPostPage";
     }
 
@@ -76,15 +85,21 @@ public class PostController {
                           @RequestParam("tags") List<String> tags, 
                           @RequestParam("userId") String userId,
                           @RequestParam("userName") String userName,
-                          Model model) {
+                          Model model,RedirectAttributes redirectAttributes) {
+    	Users user = userService.findById(userId);
+    	if (user.getStatus() == -3) {
+            redirectAttributes.addFlashAttribute("errorMessage", "您的帳戶已被禁用，無法新增文章。");
+            return "redirect:/post/add";
+        }
+
         Post post = new Post();
         post.setTitle(title);
         post.setPostContent(content);
-        
-        Users user = userService.findById(userId);
         post.setUser(user);
 
         postService.savePostWithTags(post, tags);
+        
+        redirectAttributes.addFlashAttribute("successMessage", "文章新增成功！");
 
         Post latestPost = postService.findLatestPost();
         model.addAttribute("latestPost", latestPost);
@@ -215,15 +230,20 @@ public class PostController {
     
     @GetMapping("/post/frontPage")
     public String findByPageFront(@RequestParam(value = "p", defaultValue = "1") Integer pageNum, 
-                             @RequestParam(value = "keyword", required=false) String keyword, Model model) {
+                             @RequestParam(value = "keyword", required=false) String keyword, Model model, HttpSession session) {
         Page<Post> page = postService.findByPage(pageNum);
         Post latestPost = postService.findLatestPost();
         List<Tag> allTags = tagService.findAllTags();  
+        
+        String restrictionMessage = (String) session.getAttribute("restrictionMessage");
+        model.addAttribute("restrictionMessage", restrictionMessage);
+        
         model.addAttribute("latestPost", latestPost);
         model.addAttribute("page", page);
         model.addAttribute("allTags", allTags);  
         return "post/postFrontPage";
     }
+    
     @GetMapping("/sellphone/comments")
     @ResponseBody
     public ResponseEntity<List<Comment>> getComments(@RequestParam Integer postId) {
