@@ -610,6 +610,11 @@
     <!-- 留言區 -->
     <div class="comments-section">
     <h3>留言</h3>
+    <!-- 若是用戶被封鎖時彈出的錯誤訊息 -->
+    <div th:if="${restrictionMessage != null}" class="alert alert-warning alert-dismissible fade show alert-auto-dismiss" role="alert">
+            <span th:text="${restrictionMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
     <!-- 檢舉訊息 -->
     <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
 	    <strong th:text="${message}"></strong>
@@ -802,6 +807,14 @@
 			
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
+$(document).ready(function() {
+            setTimeout(function() {
+                $(".alert-auto-dismiss").fadeOut("slow", function() {
+                    $(this).remove();
+                });
+            }, 3000); 
+        });
 
 document.addEventListener('DOMContentLoaded', function() {
     var alerts = document.querySelectorAll('.alert');
@@ -1092,6 +1105,8 @@ function editReply(replyId, replyContent, postId) {
 
 function confirmDeleteReply() {
     return confirm("确定要刪除這則回覆嗎？");
+    
+    
 }
 
 </script>

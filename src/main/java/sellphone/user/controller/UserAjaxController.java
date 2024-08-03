@@ -174,9 +174,9 @@ public class UserAjaxController {
 		Users user = uService.findById(userId);
 
 		int status = user.getStatus();
-		if (status != -1) {
-			user.setStatus(-1);
-		} else if (status == -1) {
+		if (status != -3) {
+			user.setStatus(-3);
+		} else if (status == -3) {
 			user.setStatus(1);
 		}
 

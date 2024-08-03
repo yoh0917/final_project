@@ -323,6 +323,7 @@
     <div class="container">
         <div class="header-row">
             <h1>文章列表</h1>
+            
             <div class="tag-buttons">
 			    <a th:each="tag : ${allTags}" 
 			       th:text="${tag.name}" 
@@ -341,6 +342,10 @@
                 <input type="text" id="title" name="title" placeholder="你想要找什麼呢？" class="form-control search-input">
                 <button type="submit" class="btn btn-outline-secondary search-button"></button>
             </form>
+        </div>
+        <div th:if="${restrictionMessage != null}" class="alert alert-warning alert-dismissible fade show alert-auto-dismiss" role="alert">
+            <span th:text="${restrictionMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <div class="accordion" id="accordionExample">
             <th:block th:each="oneMsg : ${page.content}">
@@ -400,6 +405,13 @@
         </ul>
     </div>
     <script>
+    	$(document).ready(function() {
+            setTimeout(function() {
+                $(".alert-auto-dismiss").fadeOut("slow", function() {
+                    $(this).remove();
+                });
+            }, 3000); 
+        });
     	
     	
         function viewDetails(postId) {
