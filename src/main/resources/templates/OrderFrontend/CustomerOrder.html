@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>所有訂單</title>
+</head>
+<body>
+<h2>所有訂單</h2>
+<table>
+    <thead>
+    <tr>
+        <th>訂單編號</th>
+        <th>顧客ID</th>
+        <th>顧客姓名</th>
+        <th>訂單狀態</th>
+        <th>總計</th>
+        <th>創建日期</th>
+        <th>支付狀態</th>
+        <th>支付日期</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.orderId}">訂單編號</td>
+        <td th:text="${order.userId}">顧客ID</td>
+        <td th:text="${order.userName}">顧客姓名</td>
+        <td th:text="${order.status}">訂單狀態</td>
+        <td th:text="${order.totalAmount}">總計</td>
+        <td th:text="${#dates.format(order.createDate, 'yyyy-MM-dd HH:mm:ss')}">創建日期</td>
+        <td th:text="${order.payStatus}">支付狀態</td>
+        <td th:text="${#dates.format(order.payDate, 'yyyy-MM-dd HH:mm:ss')}">支付日期</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

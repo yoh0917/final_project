@@ -52,4 +52,19 @@ public class OrdersService {
 		order.setStatus("D");
 		orderRepository.save(order);
 	}
+
+	//Customer findOrdersByUserId
+	public List<Order> findOrdersByUserId(String userId) {
+		return orderRepository.findByUserId(userId);
+	}
+
+	//Customer findOrderDetailsByOrderId
+	public List<OrderDetail> findOrderDetailsByOrderId(String orderId) {
+		return orderDetailRepository.findByOrderId(orderId);
+	}
+
+	public List<Order> getOrdersByUserId(String userId) {
+		return orderRepository.findByUserId(userId);
+	}
+
 }

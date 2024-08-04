@@ -76,7 +76,8 @@ public class UserController {
 	@GetMapping("/UserOrderList")
 	public String UserOrderList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 
-		return "/user/fronted/UserOrder";
+//		return "/user/fronted/UserOrder";
+		return "/OrderFrontend/CustomerOrder";
 	}
 
 //	@GetMapping("/UserPostList")
