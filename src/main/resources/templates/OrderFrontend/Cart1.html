@@ -42,6 +42,10 @@
 			justify-content: space-between;
 			margin-top: 20px;
 		}
+		.container.test {
+    		min-height: calc(100vh - 82px - 279px - 40px);
+		
+		
 		.header {
 			margin-bottom: 20px;
 		}
@@ -64,7 +68,7 @@
 
 <!-- checkout -->
 <div class="checkout">
-	<div class="container">
+	<div class="container test">
 		<div class="checkout-left" style="width: 70%;">
 			<h3 class="animated wow slideInLeft" data-wow-delay=".5s">您的購物車包含: <span th:text="${carts.size()} + ' 件商品'"></span></h3>
 			<div class="checkout-right animated wow slideInUp" data-wow-delay=".5s">
