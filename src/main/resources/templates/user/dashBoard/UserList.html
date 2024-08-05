@@ -68,7 +68,7 @@
 									</th:block>
 
 <!-- 									<th:block th:if="${user.reportNum >= 5}"> -->
-										<th:block th:if="${user.userStatus.statusDescrib == '封鎖'}">
+										<th:block th:if="${user.status == -3}">
 											<td class="control">
 												<button class="blockBtn hidden" onclick="blockUser(this)">
 													<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt=""
@@ -85,7 +85,7 @@
 												</button>
 											</td>
 										</th:block>
-										<th:block th:if="${user.userStatus.statusDescrib != '封鎖'}">
+										<th:block th:if="${user.status != -3}">
 											<td class="control">
 												<button class="blockBtn" onclick="blockUser(this)">
 													<img th:src="@{/user/dashBoard/img/blockIcon.png}" alt=""
