@@ -699,7 +699,9 @@
 <div th:each="reply : ${comment.replies}" class="reply-container">
     <div class="reply">
         <div class="reply-header">
-            <strong th:text="${reply.users.userName}">回覆用戶</strong>
+        	<strong th:text="${reply.users != null ? (reply.users.userName + (reply.users.userId == post.user.userId ? ' （樓主)' : '')) : '未知用戶'}">回覆用戶</strong>
+            <!-- <strong th:text="${reply.users.userName}">回覆用戶</strong> -->
+            
             <span class="reply-time" th:text="${#temporals.format(reply.commentCreatedTime, 'yyyy-MM-dd HH:mm:ss')}">回覆時間</span>
             <span class="reply-to">回覆 
                 <strong th:text="${comment.users.userName}">原評論作者</strong>
