@@ -39,7 +39,7 @@ public class CustomerOrderController {
         return "OrderFrontend/CustomerOrder";
     }
 
-    @GetMapping("/order/details/{orderId}")
+    @GetMapping("/customerOrder/details/{orderId}")
     @ResponseBody
     public List<OrderDetail> getOrderDetails(@PathVariable String orderId) {
         return ordersService.getOrderDetailsByOrderId(orderId);

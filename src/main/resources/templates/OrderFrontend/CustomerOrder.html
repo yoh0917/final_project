@@ -13,6 +13,8 @@
     <link th:href="@{/css/styles.css}" rel="stylesheet">
     <link th:href="@{/layout/css/header.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -23,103 +25,42 @@
 <section class="py-2 mt-5">
     <div class="container px-4 px-lg-5 mt-5">
         <h2 class="text-center">使用者訂單</h2>
-        <table id="orderTable" class="table table-striped">
-            <thead class="thead-light">
-            <tr>
-                <th>訂單編號</th>
-<!--                <th>顧客ID</th>-->
-                <th>顧客姓名</th>
-<!--                <th>訂單狀態</th>-->
-                <th>總計</th>
-                <th>創建日期</th>
-<!--                <th>支付狀態</th>-->
-<!--                <th>支付日期</th>-->
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="order : ${orders}" th:id="${order.orderId}">
-                <td th:text="${order.orderId}">訂單編號</td>
-<!--                <td th:text="${order.userId}">顧客ID</td>-->
-                <td th:text="${order.userName}">顧客姓名</td>
-<!--                <td th:text="${order.status}">訂單狀態</td>-->
-                <td th:text="${order.totalAmount}">總計</td>
-                <td th:text="${#dates.format(order.createDate, 'yyyy-MM-dd HH:mm:ss')}">創建日期</td>
-<!--                <td th:text="${order.payStatus}">支付狀態</td>-->
-<!--                <td th:text="${#dates.format(order.payDate, 'yyyy-MM-dd HH:mm:ss')}">支付日期</td>-->
-                <td>
-                    <div class="edit-delete-btns">
-                        <button type="button" class="btn details-btn" onclick="toggleDetails(this)" data-orderid="${order.orderId}">明細</button>
-                    </div>
-                </td>
-            </tr>
-            <tr class="details-row" style="display: none;">
-                <td colspan="9">
-                    <div class="details-content"></div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive mb-4">
+            <table id="orderTable" class="display table">
+                <thead class="thead-light">
+                <tr>
+                    <th>訂單編號</th>
+                    <th>顧客姓名</th>
+                    <th>總計</th>
+                    <th>創建日期</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}" th:id="${order.orderId}">
+                    <td th:text="${order.orderId}">訂單編號</td>
+                    <td th:text="${order.userName}">顧客姓名</td>
+                    <td th:text="${order.totalAmount}">總計</td>
+                    <td th:text="${#dates.format(order.createDate, 'yyyy-MM-dd HH:mm:ss')}">創建日期</td>
+                    <td>
+                        <div class="edit-delete-btns">
+                            <button type="button" class="btn customer-details-btn">明細</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 
 <!-- 引用footer -->
 <div th:replace="~{/layout/footer.html}"></div>
 
-<script>
-    async function toggleDetails(button) {
-        const orderId = button.getAttribute('data-orderid');
-        const detailsRow = button.closest('tr').nextElementSibling;
-
-        if (detailsRow.style.display === 'none') {
-            try {
-                const response = await fetch(`/order/details/${orderId}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                let detailsHtml = `
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>產品編號</th>
-                                    <th>產品名稱</th>
-                                    <th>顏色</th>
-                                    <th>容量</th>
-                                    <th>數量</th>
-                                    <th>價格</th>
-                                    <th>總計</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                    `;
-                data.forEach(detail => {
-                    detailsHtml += `
-                            <tr>
-                                <td>${detail.productId}</td>
-                                <td>${detail.productName}</td>
-                                <td>${detail.color}</td>
-                                <td>${detail.storage}</td>
-                                <td>${detail.quantity}</td>
-                                <td>${detail.price}</td>
-                                <td>${detail.total}</td>
-                            </tr>
-                        `;
-                });
-                detailsHtml += `
-                            </tbody>
-                        </table>
-                    `;
-                detailsRow.querySelector('.details-content').innerHTML = detailsHtml;
-                detailsRow.style.display = '';
-            } catch (error) {
-                console.error('Error fetching order details:', error);
-            }
-        } else {
-            detailsRow.style.display = 'none';
-        }
-    }
-</script>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" th:src="@{/order/customerOrderjs.js}"></script>
 </body>
 
 </html>
