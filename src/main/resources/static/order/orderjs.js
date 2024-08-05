@@ -31,7 +31,7 @@ $(document).ready(function() {
             success: function (data) {
                 var details = '<tr class="details-row"><td colspan="9"><ul>';
                 data.forEach(function(detail) {
-                    details += '<li>產品ID: ' + detail.productId + ' 數量: ' + detail.count + ' 價格: ' + detail.price + ' 總計: ' + detail.total + '</li>';
+                    details += '<li>產品ID: ' + detail.productId + ' 產品: ' + detail.productName+ ' 數量: ' + detail.quantity + ' 價格: ' + detail.price + '</li>';
                 });
                 details += '</ul></td></tr>';
                 row.after(details);

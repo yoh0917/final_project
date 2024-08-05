@@ -69,37 +69,18 @@
                             <input class="form-control form-control-lg" type="text" id="detailAddress" name="detailAddress" placeholder="(選填)公寓、套房、公司單位等">
                         </div>
                     </div>
-                    <h2 class="h5 text-uppercase mt-4">付款信息</h2>
-                    <div class="row gy-3">
-                        <div class="col-lg-12">
-                            <label class="form-label text-sm text-uppercase" for="cardName">持卡人姓名</label>
-                            <input class="form-control form-control-lg" type="text" id="cardName" name="cardName" placeholder="持卡人姓名">
-                        </div>
-                        <div class="col-lg-12">
-                            <label class="form-label text-sm text-uppercase" for="cardNumber">卡號</label>
-                            <input class="form-control form-control-lg" type="text" id="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label text-sm text-uppercase" for="expMonth">到期日</label>
-                            <input class="form-control form-control-lg" type="text" id="expMonth" name="expMonth" placeholder="MM">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label text-sm text-uppercase" for="expYear">&nbsp;</label>
-                            <input class="form-control form-control-lg" type="text" id="expYear" name="expYear" placeholder="YYYY">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label text-sm text-uppercase" for="cvv">CVC/CVV</label>
-                            <input class="form-control form-control-lg" type="text" id="cvv" name="cvv" placeholder="***">
-                        </div>
+                    <div>
                         <input type="hidden" id="orderId" name="orderId">
                         <input type="hidden" id="status" name="status">
                         <input type="hidden" id="createDate" name="createDate">
                         <input type="hidden" id="totalAmount" name="totalAmount">
                         <input type="hidden" id="payStatus" name="payStatus">
                         <div class="col-lg-12 form-group">
-                            <button class="btn btn-primary" type="submit">立即付款</button>
+                            <button class="btn btn-primary mt-4" type="submit">立即付款</button>
+                            <button class="btn btn-secondary mt-4" type="button" onclick="fillFakeData()">一鍵輸入</button>
                         </div>
                     </div>
+
                 </form>
                 <div th:if="${message}" class="alert alert-success" role="alert">
                     <span th:text="${message}"></span>
@@ -172,6 +153,16 @@
         const seconds = ('0' + date.getSeconds()).slice(-2);
         const milliseconds = date.getMilliseconds().toString().padStart(3, '0');
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
+    }
+
+    function fillFakeData() {
+        document.getElementById('name').value = '王小明';
+        document.getElementById('email').value = 'wang@example.com';
+        document.getElementById('phone').value = '0912345678';
+        document.getElementById('city').value = '台北市';
+        document.getElementById('district').value = '信義區';
+        document.getElementById('address').value = '忠孝東路四段101號';
+        document.getElementById('detailAddress').value = '10樓之2';
     }
 </script>
 </body>

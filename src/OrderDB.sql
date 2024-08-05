@@ -96,13 +96,41 @@ ADD PRODUCTNAME nvarchar(100) NULL;
 
 
 DECLARE @i INT = 1;
-DECLARE @seq INT = 1; -- �ߤ@�����W�ǦC
-DECLARE @detailSeq INT = 1; -- DETAILID���ߤ@���W�ǦC
+DECLARE @seq INT = 1; -- 訂單序號
+DECLARE @detailSeq INT = 1; -- DETAILID序號
+
+-- 定義產品資料
+DECLARE @Products TABLE (
+                            PRODUCTID INT,
+                            DESCRIPTION NVARCHAR(255),
+                            PRICE INT,
+                            PRODUCTNAME NVARCHAR(50),
+                            STOCKQUANTITY INT,
+                            PRODUCTBRAND NVARCHAR(50),
+                            PRODUCTSTATUS INT,
+                            capacity NVARCHAR(10),
+                            color NVARCHAR(10)
+                        );
+
+-- 插入產品資料
+INSERT INTO @Products (PRODUCTID, DESCRIPTION, PRICE, PRODUCTNAME, STOCKQUANTITY, PRODUCTBRAND, PRODUCTSTATUS, capacity, color)
+VALUES
+    (1, 'A15仿生晶片，優秀的性能與效能', 18000, 'iPhone 13', 44, 'Apple', 1, '128GB', '紅色'),
+    (2, '6.7吋Super Retina XDR顯示屏，耐用設計，增強防摔', 44000, 'iPhone 14 Pro Max', 10, 'Apple', 1, '256GB', '白色'),
+    (3, '6.1吋6.7吋Super Retina XDR顯示屏，強化玻璃', 26000, 'iPhone 15', 28, 'Apple', 1, '512GB', '黑色'),
+    (4, '6.1吋Super Retina XDR顯示屏，性能提升', 28500, 'iPhone 15 Plus', 37, 'Apple', 1, '256GB', '金色'),
+    (5, '6.1吋Super Retina XDR顯示屏，強化設計', 32000, 'iPhone 15 Pro', 8, 'Apple', 1, '256GB', '白色'),
+    (6, '6.7吋Super Retina XDR顯示屏，效能優化', 39000, 'iPhone 15 Pro Max', 22, 'Apple', 1, '256GB', '黑色'),
+    (7, 'Galaxy M14 5G 6.6吋', 4490, 'Samsung M14', 55, 'Samsung', 1, '128GB', '白色'),
+    (8, '6.5吋FHD+ Super AMOLED 120Hz顯示螢幕', 6390, 'Samsung M34', 33, 'Samsung', 1, '256GB', '藍色'),
+    (9, '搭載Vision Booster的6.5吋Super AMOLED螢幕', 4790, 'Samsung A15', 3, 'Samsung', 1, '128GB', '白色'),
+    (10, '擁有5000高容量電池的A35', 7590, 'Samsung A35', 5, 'Samsung', 1, '256GB', '霧釉藍'),
+    (11, '配備5000高容量電池的A55', 9790, 'Samsung A55', 36, 'Samsung', 1, '128GB', '冰藍雪');
 
 WHILE @i <= 500
     BEGIN
-        -- �ͦ��H���� CREATEDATE�A�d��q 2022-01-01 �� 2024-12-31�A�åh���@����
-        DECLARE @RandomDateTime DATETIME2(0) = DATEADD(DAY, ABS(CHECKSUM(NEWID())) % (365 * 3), '20220101')
+        -- 產生隨機 CREATEDATE，範圍從 2023-01-01 到 2024-08-06，並加上一個隨機時間
+        DECLARE @RandomDateTime DATETIME2(0) = DATEADD(DAY, ABS(CHECKSUM(NEWID())) % (365 + 217), '20230101')
             + DATEADD(SECOND, ABS(CHECKSUM(NEWID())) % (24 * 60 * 60), 0);
         DECLARE @CREATEDATE DATETIME = CAST(CONCAT(
                 YEAR(@RandomDateTime), '-',
@@ -113,38 +141,39 @@ WHILE @i <= 500
                 RIGHT('0' + CAST(DATEPART(SECOND, @RandomDateTime) AS VARCHAR(2)), 2)
                                             ) AS DATETIME);
 
-        -- �ͦ�ORDERID�A�榡��S0YYMMDDHHMMSS + �ߤ@�����W�ǦC
-        DECLARE @ORDERID VARCHAR(15) = 'S0' + RIGHT('0' + CAST(YEAR(@CREATEDATE) % 100 AS VARCHAR(2)), 2)
+        -- 產生ORDERID，格式為S0YYMMDDHHMMSS + 序號 + 隨機數
+        DECLARE @ORDERID VARCHAR(18) = 'S0' + RIGHT('0' + CAST(YEAR(@CREATEDATE) % 100 AS VARCHAR(2)), 2)
             + RIGHT('0' + CAST(MONTH(@CREATEDATE) AS VARCHAR(2)), 2)
             + RIGHT('0' + CAST(DAY(@CREATEDATE) AS VARCHAR(2)), 2)
             + RIGHT('0' + CAST(DATEPART(HOUR, @CREATEDATE) AS VARCHAR(2)), 2)
             + RIGHT('0' + CAST(DATEPART(MINUTE, @CREATEDATE) AS VARCHAR(2)), 2)
             + RIGHT('0' + CAST(DATEPART(SECOND, @CREATEDATE) AS VARCHAR(2)), 2)
-            + RIGHT('000' + CAST(@seq AS VARCHAR(3)), 3);
+            + RIGHT('000' + CAST(@seq AS VARCHAR(3)), 3)
+            + CAST(ABS(CHECKSUM(NEWID())) % 1000 AS VARCHAR(3));
 
-        -- �W�[�ǦC�H�T�O�ߤ@��
+        -- 增加序號以確保唯一
         SET @seq = @seq + 1;
 
         DECLARE @USERID VARCHAR(10) = 'P' + RIGHT('0000000' + CAST(@i AS VARCHAR(9)), 8);
         DECLARE @USERNAME VARCHAR(50) = 'User' + CAST(@i AS VARCHAR(10));
 
-        -- �ͦ�STATUS�A1�e70%
+        -- 產生STATUS，70%為1
         DECLARE @STATUS VARCHAR(1) = CASE
                                          WHEN ABS(CHECKSUM(NEWID())) % 10 < 7 THEN '1'
                                          ELSE CAST(ABS(CHECKSUM(NEWID())) % 3 + 2 AS VARCHAR(1))
             END;
 
-        -- �ͦ�TOTALAMOUNT�A�d��10000��50000
+        -- 產生TOTALAMOUNT，範圍從10000到50000
         DECLARE @TOTALAMOUNT INT = ABS(CHECKSUM(NEWID())) % 40001 + 10000;
 
-        -- �ͦ�PAYSTATUS�A90%��P�A10%��U
+        -- 產生PAYSTATUS，90%為P，10%為U
         DECLARE @PAYSTATUS VARCHAR(1) = CASE
                                             WHEN ABS(CHECKSUM(NEWID())) % 10 < 9 THEN 'P'
                                             ELSE 'U'
             END;
 
-        -- �ͦ�PAYDATE�A�p�GPAYSTATUS��P�h�ͦ�����A�_�h��NULL�A�åh���@����
-        DECLARE @RandomPayDateTime DATETIME2(0) = DATEADD(DAY, ABS(CHECKSUM(NEWID())) % (365 * 3), '20220101')
+        -- 產生PAYDATE，若PAYSTATUS為P則生成日期時間，否則為NULL
+        DECLARE @RandomPayDateTime DATETIME2(0) = DATEADD(DAY, ABS(CHECKSUM(NEWID())) % (365 + 217), '20230101')
             + DATEADD(SECOND, ABS(CHECKSUM(NEWID())) % (24 * 60 * 60), 0);
         DECLARE @PAYDATE DATETIME = CASE
                                         WHEN @PAYSTATUS = 'P' THEN CAST(CONCAT(
@@ -158,38 +187,62 @@ WHILE @i <= 500
                                         ELSE NULL
             END;
 
-        -- ���J��O0001_ORDER��
+        -- 插入到 O0001_ORDER 表
         INSERT INTO dbo.O0001_ORDER (ORDERID, CREATEDATE, PAYDATE, PAYSTATUS, STATUS, TOTALAMOUNT, USERID, USERNAME)
         VALUES (@ORDERID, @CREATEDATE, @PAYDATE, @PAYSTATUS, @STATUS, @TOTALAMOUNT, @USERID, @USERNAME);
 
-        -- �p��C���q�檺���~�ƶq�A�H����1��3
+        -- 計算當前訂單的產品數量，範圍為1到3
         DECLARE @productCount INT = ABS(CHECKSUM(NEWID())) % 3 + 1;
         DECLARE @j INT = 1;
         DECLARE @totalDetailAmount INT = 0;
 
         WHILE @j <= @productCount
             BEGIN
-                -- �ͦ��ߤ@��DETAILID
-                DECLARE @DETAILID VARCHAR(10) = 'D' + RIGHT('0000000' + CAST(@detailSeq AS VARCHAR(7)), 7);
-                -- �W�[DETAILID���ǦC�H�T�O�ߤ@��
-                SET @detailSeq = @detailSeq + 1;
+                -- 生成唯一的 DETAILID，格式為D + 日期時間 + 隨機數
+                DECLARE @DETAILID VARCHAR(17) = 'D' + FORMAT(@CREATEDATE, 'yyyyMMddHHmmss') + RIGHT('000' + CAST(ABS(CHECKSUM(NEWID())) % 1000 AS VARCHAR(3)), 3);
 
-                -- �H�����PRODUCTID�A�d��1��50
-                DECLARE @PRODUCTID INT = ABS(CHECKSUM(NEWID())) % 50 + 1;
-                DECLARE @QUANTITY INT = 1; -- �ƶq�T�w��1
-                -- �ͦ�PRICE�A�d��5000��50000
-                DECLARE @PRICE INT = ABS(CHECKSUM(NEWID())) % 45001 + 5000;
-                DECLARE @TOTAL INT = @QUANTITY * @PRICE;
+                -- 隨機選擇一個產品
+                DECLARE @SelectedProduct TABLE (
+                                                   PRODUCTID INT,
+                                                   DESCRIPTION NVARCHAR(255),
+                                                   PRICE INT,
+                                                   PRODUCTNAME NVARCHAR(50),
+                                                   STOCKQUANTITY INT,
+                                                   PRODUCTBRAND NVARCHAR(50),
+                                                   PRODUCTSTATUS INT,
+                                                   capacity NVARCHAR(10),
+                                                   color NVARCHAR(10)
+                                               );
+                INSERT INTO @SelectedProduct
+                SELECT TOP 1 * FROM @Products
+                ORDER BY NEWID();
 
-                -- ���J��O0002_ORDERDETAIL��A�ϥΨӦ�O0001��ORDERID
-                INSERT INTO dbo.O0002_ORDERDETAIL (DETAILID, QUANTITY, ORDERID, PRICE, PRODUCTID, TOTAL)
-                VALUES (@DETAILID, @QUANTITY, @ORDERID, @PRICE, @PRODUCTID, @TOTAL);
+                DECLARE @PRODUCTID INT;
+                DECLARE @PRICE INT;
+                DECLARE @PRODUCTNAME NVARCHAR(50);
+                DECLARE @CAPACITY NVARCHAR(10);
+                DECLARE @COLOR NVARCHAR(10);
+                DECLARE @QUANTITY INT = 1; -- 數量設定為1
+                DECLARE @TOTAL INT;
+
+                SELECT @PRODUCTID = PRODUCTID,
+                       @PRICE = PRICE,
+                       @PRODUCTNAME = PRODUCTNAME,
+                       @CAPACITY = capacity,
+                       @COLOR = color
+                FROM @SelectedProduct;
+
+                SET @TOTAL = @QUANTITY * @PRICE;
+
+                -- 插入到 O0002_ORDERDETAIL 表
+                INSERT INTO dbo.O0002_ORDERDETAIL (DETAILID, QUANTITY, ORDERID, PRICE, PRODUCTID, TOTAL, PRODUCTNAME, STORAGE, COLOR)
+                VALUES (@DETAILID, @QUANTITY, @ORDERID, @PRICE, @PRODUCTID, @TOTAL, @PRODUCTNAME, @CAPACITY, @COLOR);
 
                 SET @totalDetailAmount = @totalDetailAmount + @TOTAL;
                 SET @j = @j + 1;
             END;
 
-        -- ��sO0001��TOTALAMOUNT�Ϩ䵥��O0002��TOTAL���[�`
+        -- 更新 O0001_ORDER 的 TOTALAMOUNT 為 O0002_ORDERDETAIL 的 TOTAL 合計
         UPDATE dbo.O0001_ORDER
         SET TOTALAMOUNT = @totalDetailAmount
         WHERE ORDERID = @ORDERID;

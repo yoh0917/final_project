@@ -53,43 +53,24 @@ public class OrdersService {
 		orderRepository.save(order);
 	}
 
-//	private AtomicInteger sequence = new AtomicInteger(0);
-//
-//	@Transactional
-//	public void saveOrder(Order order, List<OrderDetail> orderDetails) {
-//		orderRepository.save(order);
-//		orderDetailRepository.saveAll(orderDetails);
+	//Customer findOrdersByUserId
+	public List<Order> findOrdersByUserId(String userId) {
+		return orderRepository.findByUserId(userId);
+	}
+
+	//Customer findOrderDetailsByOrderId
+	public List<OrderDetail> findOrderDetailsByOrderId(String orderId) {
+		return orderDetailRepository.findByOrderId(orderId);
+	}
+
+	public List<Order> getOrdersByUserId(String userId) {
+		return orderRepository.findByUserId(userId);
+	}
+
+
+
+//	public List<OrderDetail> getOrderDetailsByOrderId(String orderId) {
+//		return orderDetailRepository.findByOrderOrderId(orderId);
 //	}
-//
-//	public void createOrderFromCart(List<CartView> carts) {
-//		String orderId = generateOrderId();
-//		CartView cartView = carts.get(0);  // 假設每個購物車的用戶ID都是相同的
-//
-//		Order order = new Order();
-//		order.setOrderId(orderId);
-//		order.setCreateDate(new Date());
-//		order.setTotalAmount(carts.stream().mapToInt(cart -> cart.getQuantity() * cart.getPrice()).sum());
-//		order.setUserId(cartView.getUserId());
-//		order.setUserName("");  // 暫時不填入用戶名
-//
-//		List<OrderDetail> orderDetails = carts.stream().map(cart -> {
-//			OrderDetail detail = new OrderDetail();
-//			detail.setDetailId(generateOrderId() + "-" + sequence.incrementAndGet());
-//			detail.setOrderId(orderId);
-//			detail.setProductId(cart.getProductId());
-//			detail.setProductName(cart.getProductName());
-//			detail.setQuantity(cart.getQuantity());
-//			detail.setPrice(cart.getPrice());
-//			detail.setTotal(cart.getQuantity() * cart.getPrice());
-//			return detail;
-//		}).toList();
-//
-//		saveOrder(order, orderDetails);
-//	}
-//
-//	public String generateOrderId() {
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-//		String dateStr = sdf.format(new Date());
-//		return "S" + dateStr + String.format("%03d", sequence.incrementAndGet());
-//	}
+
 }

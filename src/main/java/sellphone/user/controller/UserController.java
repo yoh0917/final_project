@@ -76,7 +76,8 @@ public class UserController {
 	@GetMapping("/UserOrderList")
 	public String UserOrderList(Model m, HttpServletRequest req, HttpServletResponse resp) {
 
-		return "/user/fronted/UserOrder";
+//		return "/user/fronted/UserOrder";
+		return "/OrderFrontend/CustomerOrder";
 	}
 
 //	@GetMapping("/UserPostList")
@@ -131,20 +132,28 @@ public class UserController {
 
 		// check user status
 		switch (user.getStatus()) {
-		case 1: {
-			session.setAttribute("loginUsername", user.getUserName());
-			session.setAttribute("userId",user.getUserId());
-			session.setAttribute("user",user);
+		case 1:
+        case -3: {
+            session.setAttribute("loginUsername", user.getUserName());
+            session.setAttribute("userId", user.getUserId());
+            session.setAttribute("user", user);
 
-			user.setPrevlogTime(LocalDateTime.now());
-			uService.insert(user);
-			return "redirect:/mainPage";
-		}
+            if (user.getStatus() == -3) {
+                session.setAttribute("restrictionMessage", "您因發言不當受到檢舉, 將無法進行發文及留言");
+            } else {
+                session.removeAttribute("restrictionMessage");
+            }
+
+            user.setPrevlogTime(LocalDateTime.now());
+            uService.insert(user);
+            return "redirect:/mainPage";
+        }
 		case 0: {
 			return "redirect:/UserConfirmFailed";
 		}
+		
 		default: {
-			return "redirect:/UserLoginStatusFailed";
+			return "redirect:/UserConfirmFailed";
 		}
 		}
 

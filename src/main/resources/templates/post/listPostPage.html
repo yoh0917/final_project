@@ -169,7 +169,7 @@
             </tbody>
         </table>
         <div class="total" th:text="'總共有 ' + ${page.totalElements} + ' 筆'"></div>
-        <ul class="pagination" th:if="${page.totalPages != 0}">
+        <!-- <ul class="pagination" th:if="${page.totalPages != 0}">
             <th:block th:switch="${page.number != 0}">
                 <li th:case="${true}" class="page-item">
                     <a class="page-link" th:href="@{/post/page(p=${page.number})}">上一頁</a>
@@ -196,7 +196,7 @@
                     <a class="page-link">下一頁</a>
                 </li>
             </th:block>
-        </ul>
+        </ul> -->
     </div>
 
     <!-- Modal -->
