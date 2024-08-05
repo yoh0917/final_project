@@ -2,7 +2,6 @@ package sellphone.orders.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import sellphone.orders.model.DashboardDay;
 import sellphone.orders.model.DashboardYear;
 import sellphone.orders.repository.DashboardDayRepository;
@@ -14,26 +13,20 @@ import java.util.List;
 public class DashboardService {
 
     @Autowired
-    private DashboardDayRepository dayRepository;
+    private DashboardDayRepository dashboardDayRepository;
 
     @Autowired
-    private DashboardYearRepository yearRepository;
+    private DashboardYearRepository dashboardYearRepository;
 
-
-//    public List<Dashboard> getAllReports() {
-//        return dashboardRepository.findAll();
-//    }
-//
-//    public List<Dashboard> getYearlyRevenue(String year) {
-//        return dashboardRepository.findByYyyy(year);
-//    }
-
-
-    public List<DashboardDay> getDailyRevenueByYear(String year) {
-        return dayRepository.findByYyyyStartingWith(year);
+    public List<String> getAllYears() {
+        return dashboardYearRepository.findAllYears();
     }
 
-    public List<DashboardYear> getMonthlyRevenueByYear(String year) {
-        return yearRepository.findByYyyyStartingWith(year);
+    public List<DashboardYear> getYearlyData(String year) {
+        return dashboardYearRepository.findByYyyy(year);
+    }
+
+    public List<DashboardDay> getMonthlyData(String year, String month) {
+        return dashboardDayRepository.findByMonthAndYear(month, year);
     }
 }

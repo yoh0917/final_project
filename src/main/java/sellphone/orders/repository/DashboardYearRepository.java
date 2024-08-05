@@ -7,8 +7,8 @@ import sellphone.orders.model.DashboardYear;
 import java.util.List;
 
 public interface DashboardYearRepository extends JpaRepository<DashboardYear, String> {
-    List<DashboardYear> findByYyyyStartingWith(String year);
+    List<DashboardYear> findByYyyy(String year);
 
-    @Query("SELECT d FROM O1102_DAILYREPORT_V d WHERE d.yyyy = :year")
-    List<DashboardYear> findByYear(String year);
+    @Query("SELECT DISTINCT d.yyyy FROM O1101_MONTHREPORT_V d ORDER BY d.yyyy")
+    List<String> findAllYears();
 }

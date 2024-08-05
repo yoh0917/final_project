@@ -7,8 +7,6 @@ import sellphone.orders.model.DashboardDay;
 import java.util.List;
 
 public interface DashboardDayRepository extends JpaRepository<DashboardDay, String> {
-    List<DashboardDay> findByYyyyStartingWith(String year);
-
-    @Query("SELECT d FROM O1102_DAILYREPORT_V d WHERE d.yyyy = :year")
-    List<DashboardDay> findByYear(String year);
+    @Query("SELECT d FROM O1102_DAILYREPORT_V d WHERE d.mm = :month AND d.yyyy = :year")
+    List<DashboardDay> findByMonthAndYear(String month, String year);
 }

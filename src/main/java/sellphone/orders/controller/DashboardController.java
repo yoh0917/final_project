@@ -1,55 +1,82 @@
 package sellphone.orders.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import sellphone.orders.model.DashboardDay;
+import sellphone.orders.model.DashboardYear;
 import sellphone.orders.service.DashboardService;
 
-@Controller
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/DashBoard/orders/dashboard")
 public class DashboardController {
 
     @Autowired
     private DashboardService dashboardService;
 
-    @GetMapping("/DashBoard/orders/dashboard")
-    public String getDashboard(Model model) {
-        model.addAttribute("revenue", 99118.5);
-        model.addAttribute("transactions", 376);
-        model.addAttribute("avgTransaction", 450.53);
-        model.addAttribute("couponSales", 23364.55);
-        model.addAttribute("overviewBalance", 87982.80);
-        return "DashboardOrder1";
+    @GetMapping("/years")
+    public List<String> getAllYears() {
+        return dashboardService.getAllYears();
     }
 
-    @GetMapping("/DashBoard/orders/getYearlyDailyRevenue/{year}")
-    public String getYearlyDailyRevenue(@PathVariable String year, Model model) {
-        model.addAttribute("data", dashboardService.getDailyRevenueByYear(year));
-        return "jsonTemplate";
+    @GetMapping("/yearly")
+    public List<DashboardYear> getYearlyData(@RequestParam String year) {
+        return dashboardService.getYearlyData(year);
+    }
+
+    @GetMapping("/monthly")
+    public List<DashboardDay> getMonthlyData(@RequestParam String year, @RequestParam String month) {
+        return dashboardService.getMonthlyData(year, month);
     }
 }
-
-
+//@RestController
+//@RequestMapping("/DashBoard/orders")
+//public class DashboardController {
+//
+//    @Autowired
+//    private DashboardService dashboardService;
+//
 //    @GetMapping("/dashboard")
-//    public String getDashboard(Model model) {
-//        List<Dashboard> reports = dashboardService.getAllReports();
-//        model.addAttribute("reports", reports);
-//        return "OrderBackend/DashboardOrder";
+//    public Map<String, Object> showDashboard(@RequestParam(required = false) String year,
+//                                             @RequestParam(required = false) String month) {
+//        LocalDate now = LocalDate.now();
+//        String currentYear = year != null ? year : String.valueOf(now.getYear());
+//        String currentMonth = month != null ? month : String.format("%02d", now.getMonthValue());
+//
+//        List<String> years = dashboardService.getAllYears();
+//        List<String> months = List.of("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12");
+//
+//        List<DashboardYear> yearlyData = dashboardService.getYearlyData(currentYear);
+//        List<DashboardDay> monthlyData = dashboardService.getDailyRevenueByMonthAndYear(currentMonth, currentYear);
+//
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("years", years);
+//        response.put("months", months);
+//        response.put("selectedYear", currentYear);
+//        response.put("selectedMonth", currentMonth);
+//        response.put("yearlyData", yearlyData);
+//        response.put("monthlyData", monthlyData);
+//
+//        return response;
 //    }
 //
-//    @GetMapping("/getYearlyRevenue/{year}")
-//    @ResponseBody
-//    public List<Dashboard> getYearlyRevenue(@PathVariable String year) {
-//        return dashboardService.getYearlyRevenue(year);
+//    @GetMapping("/yearly-data")
+//    public ResponseEntity<?> getYearlyData(@RequestParam String year) {
+//        try {
+//            List<DashboardYear> data = dashboardService.getYearlyData(year);
+//            return ResponseEntity.ok(data);
+//        } catch (Exception e) {
+//            Map<String, String> error = new HashMap<>();
+//            error.put("error", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+//        }
 //    }
 //
-//    @GetMapping("/DashBoard/orders/getYearlyDailyRevenue")
-//    public List<DashboardDay> getYearlyDailyRevenue(@RequestParam("year") String year) {
-//        return dashboardService.getDailyReportsByYear(year);
+//    @GetMapping("/monthly-data")
+//    public List<DashboardDay> getMonthlyData(@RequestParam String year, @RequestParam String month) {
+//        return dashboardService.getDailyRevenueByMonthAndYear(month, year);
 //    }
-//
-//    @GetMapping("/getDailyRevenueByYear")
-//    public List<DashboardDay> getDailyRevenueByYear(@RequestParam("year") String year) {
-//        return dashboardService.getDailyRevenueByYear(year);
-//    }
+//}
