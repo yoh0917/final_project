@@ -28,6 +28,7 @@ function blockUser(button) {
     Swal.fire({
         title: '確定封鎖該使用者嗎?',
         icon: 'warning',
+        text: '封鎖將造成使用者無法發布文章',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -43,8 +44,8 @@ function blockUser(button) {
                 data: { userId: userId },
                 success: function () {
                     Swal.fire({
-                        title: '訊息',
-                        text: '該使用者已被封鎖。',
+                        title: '該使用者已被封鎖',
+                        text: '如需解除封鎖，點選黃色按鈕即可',
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
                         confirmButtonText: '確認'
@@ -62,6 +63,7 @@ function blockUser(button) {
 function unblockUser(button) {
     Swal.fire({
         title: '確定解除封鎖該使用者嗎?',
+        text: '解除封鎖將讓使用者可以發布文章',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -78,8 +80,8 @@ function unblockUser(button) {
                 data: { "userId": userId },
                 success: function () {
                     Swal.fire({
-                        title: '訊息',
-                        text: '該使用者已被解除封鎖。',
+                        title:'該使用者已被解除封鎖',
+                        text: '如需再次封鎖，點選紅色按鈕即可',
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
                         confirmButtonText: '確認'
