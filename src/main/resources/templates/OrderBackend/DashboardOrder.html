@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,134 +12,125 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="#">銷售儀表板</a>
     <div class="navbar-nav">
-      <a class="nav-link active" href="#" id="yearlyView">年度視圖</a>
-      <a class="nav-link" href="#" id="monthlyView">月度視圖</a>
+      <a class="nav-link active" id="yearlyView" href="#">年度視圖</a>
+      <a class="nav-link" id="monthlyView" href="#">月度視圖</a>
     </div>
   </div>
 </nav>
 
 <div class="container mt-4">
-  <div id="yearSelector">
-    <label for="yearSelect">選擇年份：</label>
-    <select id="yearSelect" class="form-select" style="width: 200px;"></select>
+  <div class="row mb-3">
+    <div class="col">
+      <select id="yearSelector" class="form-select">
+        <option th:each="year : ${years}" th:value="${year}" th:text="${year}"
+                th:selected="${year == selectedYear}"></option>
+      </select>
+    </div>
+    <div class="col">
+      <select id="monthSelector" class="form-select" style="display: none;">
+        <option th:each="month : ${months}" th:value="${month}" th:text="${month}"
+                th:selected="${month == selectedMonth}"></option>
+      </select>
+    </div>
   </div>
-  <div id="monthSelector" style="display: none;">
-    <label for="monthSelect">選擇月份：</label>
-    <select id="monthSelect" class="form-select" style="width: 200px;"></select>
-  </div>
+
   <div class="row">
     <div class="col-md-6">
-      <canvas id="quantityChart"></canvas>
+      <canvas id="revenueChart"></canvas>
     </div>
     <div class="col-md-6">
-      <canvas id="revenueChart"></canvas>
+      <canvas id="orderCountChart"></canvas>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  let quantityChart, revenueChart;
-  const yearlyViewBtn = document.getElementById('yearlyView');
-  const monthlyViewBtn = document.getElementById('monthlyView');
-  const yearSelector = document.getElementById('yearSelector');
-  const monthSelector = document.getElementById('monthSelector');
-  const yearSelect = document.getElementById('yearSelect');
-  const monthSelect = document.getElementById('monthSelect');
+<script th:inline="javascript">
+  const yearlyData = /*[[${yearlyData}]]*/ [];
+  const monthlyData = /*[[${monthlyData}]]*/ [];
+  let currentView = 'yearly';
 
-  yearlyViewBtn.addEventListener('click', () => {
-    monthSelector.style.display = 'none';
-    loadYearlyData(yearSelect.value);
-  });
-  monthlyViewBtn.addEventListener('click', () => {
-    monthSelector.style.display = 'block';
-    loadMonthlyData(yearSelect.value, monthSelect.value);
-  });
-  yearSelect.addEventListener('change', () => {
-    if (monthSelector.style.display === 'none') {
-      loadYearlyData(yearSelect.value);
-    } else {
-      loadMonthlyData(yearSelect.value, monthSelect.value);
-    }
-  });
-  monthSelect.addEventListener('change', () => loadMonthlyData(yearSelect.value, monthSelect.value));
+  function updateCharts() {
+    const data = currentView === 'yearly' ? yearlyData : monthlyData;
+    const labels = data.map(item => currentView === 'yearly' ? item.yyyyMM : item.mmdd);
+    const revenues = data.map(item => item.totalAmount);
+    const orderCounts = data.map(item => item.orderCount);
 
-  function initCharts() {
-    quantityChart = new Chart(document.getElementById('quantityChart').getContext('2d'), {
-      type: 'line',
-      data: { labels: [], datasets: [{ label: '銷售件數', data: [], borderColor: 'blue', fill: false }] },
-      options: { responsive: true, title: { display: true, text: '銷售件數' } }
-    });
+    updateChart('revenueChart', '營收', labels, revenues);
+    updateChart('orderCountChart', '訂單數', labels, orderCounts);
+  }
 
-    revenueChart = new Chart(document.getElementById('revenueChart').getContext('2d'), {
-      type: 'line',
-      data: { labels: [], datasets: [{ label: '營業額', data: [], borderColor: 'green', fill: false }] },
-      options: { responsive: true, title: { display: true, text: '營業額' } }
+  function updateChart(chartId, label, labels, data) {
+    const ctx = document.getElementById(chartId).getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: label,
+          data: data,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
     });
   }
 
-  function loadYearlyData(year) {
-    fetch(`/DashBoard/orders/dashboard/yearly?year=${year}`)
+  document.getElementById('yearSelector').addEventListener('change', function() {
+    const year = this.value;
+    fetch(`/sellphone/DashBoard/orders/yearly-data?year=${year}`)
             .then(response => response.json())
-            .then(data => updateYearlyCharts(data));
-  }
-
-  function loadMonthlyData(year, month) {
-    fetch(`/DashBoard/orders/dashboard/monthly?year=${year}&month=${month}`)
-            .then(response => response.json())
-            .then(data => updateMonthlyCharts(data));
-  }
-
-  function updateYearlyCharts(data) {
-    const labels = data.map(item => item.yyyyMM.substring(4) + '月');
-    const quantities = data.map(item => item.orderCount);
-    const revenues = data.map(item => item.totalAmount);
-
-    updateChart(quantityChart, labels, quantities, '月度銷售件數');
-    updateChart(revenueChart, labels, revenues, '月度營業額');
-  }
-
-  function updateMonthlyCharts(data) {
-    const labels = data.map(item => item.dd + '日');
-    const quantities = data.map(item => item.orderCount);
-    const revenues = data.map(item => item.totalAmount);
-
-    updateChart(quantityChart, labels, quantities, '日銷售件數');
-    updateChart(revenueChart, labels, revenues, '日營業額');
-  }
-
-  function updateChart(chart, labels, data, label) {
-    chart.data.labels = labels;
-    chart.data.datasets[0].data = data;
-    chart.data.datasets[0].label = label;
-    chart.update();
-  }
-
-  function populateYearSelect() {
-    fetch('/DashBoard/orders/dashboard/years')
-            .then(response => response.json())
-            .then(years => {
-              years.forEach(year => {
-                const option = new Option(year, year);
-                yearSelect.add(option);
-              });
-              loadYearlyData(years[0]);
+            .then(data => {
+              yearlyData.length = 0;
+              yearlyData.push(...data);
+              if (currentView === 'yearly') {
+                updateCharts();
+              }
             });
-  }
+  });
 
-  function populateMonthSelect() {
-    for (let month = 1; month <= 12; month++) {
-      const monthStr = month.toString().padStart(2, '0');
-      const option = new Option(monthStr + '月', monthStr);
-      monthSelect.add(option);
-    }
-  }
+  document.getElementById('monthSelector').addEventListener('change', function() {
+    const year = document.getElementById('yearSelector').value;
+    const month = this.value;
+    fetch(`/sellphone/DashBoard/orders/monthly-data?year=${year}&month=${month}`)
+            .then(response => response.json())
+            .then(data => {
+              monthlyData.length = 0;
+              monthlyData.push(...data);
+              if (currentView === 'monthly') {
+                updateCharts();
+              }
+            });
+  });
 
-  window.onload = () => {
-    initCharts();
-    populateYearSelect();
-    populateMonthSelect();
-  };
+  document.getElementById('yearlyView').addEventListener('click', function(e) {
+    e.preventDefault();
+    currentView = 'yearly';
+    document.getElementById('monthSelector').style.display = 'none';
+    this.classList.add('active');
+    document.getElementById('monthlyView').classList.remove('active');
+    updateCharts();
+  });
+
+  document.getElementById('monthlyView').addEventListener('click', function(e) {
+    e.preventDefault();
+    currentView = 'monthly';
+    document.getElementById('monthSelector').style.display = 'block';
+    this.classList.add('active');
+    document.getElementById('yearlyView').classList.remove('active');
+    updateCharts();
+  });
+
+  updateCharts();
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
