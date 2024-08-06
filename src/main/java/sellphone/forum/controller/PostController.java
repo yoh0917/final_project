@@ -177,16 +177,7 @@ public class PostController {
         return "redirect:/post/" + postId;
     }
 
-//    @PostMapping("/post/delete")
-//    @ResponseBody
-//    public ResponseEntity<?> deletePost(@RequestParam("id") Integer postId) {
-//        try {
-//            postService.deletePostById(postId);
-//            return ResponseEntity.ok().build();
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("刪除失敗");
-//        }
-//    }
+
     @PostMapping("/post/delete")
     public String deletePost(@RequestParam("id") Integer postId, RedirectAttributes redirectAttributes) {
         try {
@@ -252,56 +243,32 @@ public class PostController {
         return ResponseEntity.ok(comments);
     }
     
-//    @GetMapping("/post/{id}")
-//    public String getPostDetails(@PathVariable("id")Integer postId, Model model,HttpSession session) {
-//        Post post = postService.findPostById(postId);
-//        Users user = post.getUser();
-//        List<Comment> comments = commentService.findCommentsByPostId(post);
-//        String currentUserId = (String) session.getAttribute("userId");
-//        boolean hasLiked = false;
-//        boolean isFavorited = false;
-//        if (currentUserId != null) {
-//            hasLiked = postService.hasUserLikedPost(postId, currentUserId);
-//            Users currentUser = userService.findById(currentUserId); 
-//            isFavorited = post.getFavoritedUsers().contains(currentUser);
-//        }
-//        
-//        model.addAttribute("post", post);  // 傳遞整個post對象
-//        model.addAttribute("comments", comments);  // 傳遞整個comment對象
-//        model.addAttribute("postTitle", post.getTitle());
-//        model.addAttribute("postContent", post.getPostContent());
-//        model.addAttribute("userId", user.getUserId());
-//        model.addAttribute("userName", user.getUserName());
-//        model.addAttribute("postTime", post.getPostCreatedTime());
-//        model.addAttribute("postId", post.getPostId());
-//        model.addAttribute("postName", post.getPostId());
-//        model.addAttribute("currentUserId", currentUserId);
-//        model.addAttribute("hasLiked", hasLiked);  // 添加 hasLiked 到模型中
-//        model.addAttribute("isFavorited", isFavorited);
-//        return "post/frontPageDetail";
-//    }
+
     @GetMapping("/post/{id}")
     public String getPostDetails(@PathVariable("id") Integer postId, Model model, HttpSession session) {
         Post post = postService.findPostById(postId);
         Users user = post.getUser();
+        
         List<Comment> comments = commentService.findCommentsByPostId(post);
 
-        // 过滤掉回复评论，只保留主评论
+        //過濾掉回覆評論，只保留主評論
         List<Comment> mainComments = comments.stream()
                                              .filter(comment -> comment.getParentComment() == null)
                                              .collect(Collectors.toList());
 
         String currentUserId = (String) session.getAttribute("userId");
+        
         boolean hasLiked = false;
         boolean isFavorited = false;
+     // 如果當前用戶已登錄，檢查是否點讚和收藏該文章
         if (currentUserId != null) {
             hasLiked = postService.hasUserLikedPost(postId, currentUserId);
-            Users currentUser = userService.findById(currentUserId);  // Assume there is a method to find user by ID
+            Users currentUser = userService.findById(currentUserId);  
             isFavorited = post.getFavoritedUsers().contains(currentUser);
         }
 
         model.addAttribute("post", post);  // 傳遞整個post對象
-        model.addAttribute("comments", mainComments);  // 傳遞過濾後的主评论对像
+        model.addAttribute("comments", mainComments);  // 傳遞過濾後的主評論對象
         model.addAttribute("postTitle", post.getTitle());
         model.addAttribute("postContent", post.getPostContent());
         model.addAttribute("userId", user.getUserId());
@@ -310,10 +277,12 @@ public class PostController {
         model.addAttribute("postId", post.getPostId());
         model.addAttribute("postName", post.getPostId());
         model.addAttribute("currentUserId", currentUserId);
-        model.addAttribute("hasLiked", hasLiked);  // 添加 hasLiked 到模型中
+        model.addAttribute("hasLiked", hasLiked);  
         model.addAttribute("isFavorited", isFavorited);
         return "post/frontPageDetail";
     }
+    
+    
     @PostMapping("/post/like/toggle")
     @ResponseBody
     public Map<String, Object> togglePostLike(@RequestParam("postId") Integer postId, HttpSession session) {
@@ -328,6 +297,7 @@ public class PostController {
         response.put("likeCount", postService.findPostById(postId).getLikeCount());
         return response;
     }
+    //文章愛心
     @GetMapping("/user/favorites")
     public String getUserFavorites(Model model, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
@@ -339,7 +309,7 @@ public class PostController {
         model.addAttribute("favorites", favorites);
         return "user/favorites";
     }
-    
+    //收藏按鈕
     @PostMapping("/post/favorite/toggle")
     public String toggleFavorite(@RequestParam("postId") Integer postId, HttpSession session, RedirectAttributes redirectAttributes) {
         String userId = (String) session.getAttribute("userId");
@@ -356,7 +326,8 @@ public class PostController {
     public String redirectToUserPostsAndFavorites() {
         return "redirect:/user/postsAndFavorites";
     }
-
+    
+    //文章愛心
     @GetMapping("/user/postsAndFavorites")
     public String getUserPostsAndFavorites(Model model, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
@@ -371,12 +342,13 @@ public class PostController {
         model.addAttribute("userPosts", userPosts);
         model.addAttribute("favoritePosts", favoritePosts);
 
-        return "post/postsAndFavorites";  // 确保路径与模板位置匹配
+        return "post/postsAndFavorites";  
     }
 
-        @GetMapping("/UserPostList")
-        public String userPostList(Model model, HttpServletRequest req, HttpServletResponse resp) {
-            String userId = (String) req.getSession().getAttribute("userId");
+    //我的文章
+     @GetMapping("/UserPostList")
+     public String userPostList(Model model, HttpServletRequest req, HttpServletResponse resp) {
+         String userId = (String) req.getSession().getAttribute("userId");
             if (userId == null) {
                 return "redirect:/login";
             }
@@ -384,32 +356,36 @@ public class PostController {
             model.addAttribute("userId", userId);
             model.addAttribute("posts", userPosts);
             return "/user/fronted/UserPost";
+      }
+        
+     //我的收藏
+     @GetMapping("/bookmarkedPosts")
+     public String bookmarkedPosts(Model model, HttpServletRequest req) {
+         String userId = (String) req.getSession().getAttribute("userId");
+         if (userId == null) {
+             return "redirect:/login";
+         }
+         List<Post> bookmarkedPosts = postService.getBookmarkedPosts(userId);
+         model.addAttribute("userId", userId);
+         model.addAttribute("posts", bookmarkedPosts);
+         return "user/fronted/bookmarkedPosts"; 
         }
-        @GetMapping("/bookmarkedPosts")
-        public String bookmarkedPosts(Model model, HttpServletRequest req) {
-            String userId = (String) req.getSession().getAttribute("userId");
-            if (userId == null) {
-                return "redirect:/login";
-            }
-            List<Post> bookmarkedPosts = postService.getBookmarkedPosts(userId);
-            model.addAttribute("userId", userId);
-            model.addAttribute("posts", bookmarkedPosts);
-            return "user/fronted/bookmarkedPosts"; 
-        }
-        @GetMapping("/reportPost/{postId}")
-        public String reportPost(@PathVariable Integer postId, RedirectAttributes redirectAttributes) {
-            Post post = postService.findPostById(postId);
-            if (post != null) {
-                Users user = post.getUser();
-                if (user != null) {
-                    user.setReportNum(user.getReportNum() + 1);
-                    userService.insert(user);
-                    redirectAttributes.addFlashAttribute("reportSuccess", "檢舉已成功提交");
-                    return "redirect:/post/frontPage";
-                }
-            }
-            redirectAttributes.addFlashAttribute("error", "檢舉失敗");
-            return "redirect:/post/frontPage";
+        
+     //檢舉
+     @GetMapping("/reportPost/{postId}")
+     public String reportPost(@PathVariable Integer postId, RedirectAttributes redirectAttributes) {
+         Post post = postService.findPostById(postId);
+         if (post != null) {
+             Users user = post.getUser();
+             if (user != null) {
+                 user.setReportNum(user.getReportNum() + 1);
+                 userService.insert(user);
+                 redirectAttributes.addFlashAttribute("reportSuccess", "檢舉已成功提交");
+                 return "redirect:/post/frontPage";
+             }
+         }
+         redirectAttributes.addFlashAttribute("error", "檢舉失敗");
+         return "redirect:/post/frontPage";
         }
 
 
