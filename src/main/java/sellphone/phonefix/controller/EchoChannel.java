@@ -28,6 +28,7 @@ public class EchoChannel {
     public void onMessage(String message, Session session) throws IOException {
         LOGGER.info("[websocket] 收到消息：id={}，message={}", session.getId(), message);
 
+        System.out.println("sessionsize:" + sessions.size());
         // 廣播消息給對話框
         synchronized (sessions) {
             for (Session s : sessions) {
